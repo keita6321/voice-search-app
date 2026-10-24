@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>今期アニメ 声優検索</title>
+<style>
+:root{--bg:#f6f6f9;--card:#fff;--tx:#1b1b22;--sub:#6b6b78;--ac:#5b4bdb;--ln:#e4e4ec;color-scheme:light dark}
+@media(prefers-color-scheme:dark){:root{--bg:#121216;--card:#1c1c23;--tx:#f0f0f5;--sub:#9a9aa8;--ac:#8f82ff;--ln:#2c2c36}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;padding-bottom:env(safe-area-inset-bottom)}
+header{position:sticky;top:0;z-index:5;background:var(--bg);padding:calc(env(safe-area-inset-top) + 12px) 14px 10px;border-bottom:1px solid var(--ln)}
+h1{font-size:17px;margin:0 0 8px;display:flex;justify-content:space-between;align-items:baseline}
+h1 small{font-size:12px;color:var(--sub);font-weight:400}
+input{width:100%;font:inherit;font-size:16px;padding:12px 14px;border:1px solid var(--ln);border-radius:12px;background:var(--card);color:var(--tx)}
+input:focus{outline:2px solid var(--ac);border-color:transparent}
+main{padding:12px 14px;max-width:640px;margin:auto}
+.hint{color:var(--sub);font-size:13px;margin:4px 2px 10px}
+.item{display:block;width:100%;text-align:left;font:inherit;color:inherit;background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:12px 14px;margin-bottom:8px;cursor:pointer}
+.item:active{transform:scale(.98)}
+.item b{display:block}.item span{font-size:12px;color:var(--sub)}
+.back{background:none;border:0;color:var(--ac);font:inherit;font-weight:600;padding:6px 0;cursor:pointer}
+.who{margin:4px 0 14px}.who h2{margin:0;font-size:22px}.who span{color:var(--sub);font-size:13px}
+.work{background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:14px;margin-bottom:12px}
+.work h3{margin:0 0 2px;font-size:16px}.work p{margin:0 0 10px;color:var(--sub);font-size:14px}
+.vod{display:block;text-align:center;text-decoration:none;font-weight:700;color:#fff;background:var(--ac);padding:13px;border-radius:10px;margin-top:8px}
+.vod:active{opacity:.8}.none{font-size:13px;color:var(--sub)}
+footer{font-size:11px;color:var(--sub);text-align:center;padding:16px 14px 28px}
+[hidden]{display:none}
+</style>
+</head>
+<body>
+<header>
+  <h1>声優検索 <small id="season"></small></h1>
+  <input id="q" type="search" placeholder="声優名・ひらがなで検索（例：つだ）" autocomplete="off" enterkeyhint="search">
+</header>
+<main>
+  <section id="s1"><div class="hint" id="hint"></div><div id="list"></div></section>
+  <section id="s2" hidden></section>
+</main>
+<footer>※本ページのリンクにはアフィリエイトを含みます。配信状況は各サービスでご確認ください。</footer>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+// 全角半角・カタカナ/ひらがな・空白や中黒を正規化
+const norm=s=>s.normalize('NFKC').toLowerCase().replace(/[\u30a1-\u30f6]/g,c=>String.fromCharCode(c.charCodeAt(0)-96)).replace(/[\s・･]/g,'');
+let D,A=[];
+
+fetch('data.json').then(r=>r.json()).then(d=>{
+  D=d;A=d.voice_actors.map(a=>({...a,k:norm(a.name+a.reading)}));
+  $('#season').textContent=d.season.replace('-',' ');
+  route();
+}).catch(()=>{$('#list').textContent='data.json を読み込めませんでした。ローカル確認時は簡易サーバー経由で開いてください。'});
+
+function list(){
+  const q=norm($('#q').value),r=q?A.filter(a=>a.k.includes(q)):A;
+  $('#hint').textContent=q?`${r.length}件ヒット。タップして選択`:`今期の声優 ${A.length}名（読み順）`;
+  $('#list').innerHTML=r.length?r.map(a=>`<button class="item" data-id="${esc(a.actor_id)}"><b>${esc(a.name)}</b><span>${esc(a.reading)}・${a.roles.length}作品</span></button>`).join(''):'<div class="none">該当なし。ひらがなでも試してください。</div>';
+}
+function detail(a){
+  $('#s2').innerHTML=`<button class="back" id="bk">← 検索にもどる</button>
+  <div class="who"><h2>${esc(a.name)}</h2><span>${esc(a.reading)}</span></div>`+
+  a.roles.map(r=>{const w=D.works[r.work_id];return `<div class="work"><h3>${esc(w.title)}</h3><p>役：${esc(r.character_name)}</p>`+
+    (w.vod_links.length?w.vod_links.map(v=>`<a class="vod" href="${esc(v.url)}" target="_blank" rel="sponsored noopener">${esc(v.provider)}で見る</a>`).join(''):'<div class="none">配信情報は準備中です</div>')+'</div>'}).join('');
+  $('#bk').onclick=()=>history.back();
+}
+function route(){
+  const id=location.hash.slice(1),a=A.find(x=>x.actor_id===id);
+  $('#s1').hidden=!!a;$('#s2').hidden=!a;
+  if(a){detail(a);scrollTo(0,0)}else list();
+}
+$('#q').addEventListener('input',list);
+$('#list').addEventListener('click',e=>{const b=e.target.closest('.item');if(b){$('#q').blur();location.hash=b.dataset.id}});
+addEventListener('hashchange',route);
+</script>
+</body>
+</html>
