@@ -3,89 +3,95 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#f0f3f8">
-<title>放送中アニメの声優検索｜2026年秋</title>
+<meta name="theme-color" content="#f8f7f2">
+<title>CAST NOW｜2026年秋アニメの声優検索</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f0f3f8;--sf:#fff;--tx:#101828;--sub:#667085;--ln:#e1e6ef;--ac:#ff4f7b;--r:22px;color-scheme:light dark}
-@media(prefers-color-scheme:dark){:root{--bg:#0e1118;--sf:#181c26;--tx:#f2f4f8;--sub:#98a2b3;--ln:#252b38;--ac:#ff6d92}}
+:root{--bg:#f8f7f2;--sf:#fff;--tx:#192944;--sub:#827f77;--ln:#deddd7;--ac:#62517f;--r:16px;color-scheme:light}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;background:var(--bg);color:var(--tx);font:500 16px/1.55 "Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif}
+body{margin:0;background:var(--bg);color:var(--tx);font:500 15px/1.55 "Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP",sans-serif}
 button{font:inherit;color:inherit;cursor:pointer}
 :focus-visible{outline:3px solid var(--ac);outline-offset:2px}
 [hidden]{display:none!important}
-.wrap{max-width:560px;margin:auto}
+.wrap{max-width:760px;margin:auto;padding:0 24px}
 
-/* ---- ステップ1 ---- */
-.top{padding:calc(env(safe-area-inset-top) + 28px) 20px 14px}
-.top h1{margin:0;font-size:28px;line-height:1.3;font-weight:900;letter-spacing:-.01em}
-.top p{margin:8px 0 0;color:var(--sub);font-size:14px}
-.sbar{position:sticky;top:0;z-index:4;padding:10px 16px 12px;background:linear-gradient(var(--bg) 70%,transparent)}
-.sbox{display:flex;align-items:center;gap:10px;background:var(--sf);border-radius:999px;padding:0 8px 0 18px;box-shadow:0 6px 24px -10px rgba(16,24,40,.35);border:2px solid transparent;transition:border-color .15s}
+/* ---- 検索画面 ---- */
+.top{text-align:center;padding:calc(env(safe-area-inset-top) + 34px) 0 18px}
+.brand{display:flex;align-items:center;justify-content:center;gap:1px;color:var(--tx);font-family:Arial,sans-serif;font-size:clamp(34px,8vw,48px);font-weight:900;line-height:1;letter-spacing:.015em}
+.brand svg{width:.78em;height:.92em;flex:none;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.tagline{margin:4px 0 28px!important;color:var(--tx)!important;font-size:14px!important;font-weight:700;letter-spacing:.12em}
+.top h1{margin:0;text-align:left;font-size:20px;line-height:1.4;font-weight:900;letter-spacing:.01em}
+.top p{margin:0;color:var(--sub);font-size:13px}
+.sbar{position:sticky;top:0;z-index:4;padding:8px 0 12px;background:linear-gradient(var(--bg) 75%,transparent)}
+.sbox{display:flex;align-items:center;gap:10px;background:var(--sf);border-radius:999px;padding:0 8px 0 16px;box-shadow:0 2px 8px rgba(35,42,53,.04);border:1.5px solid var(--ln);transition:border-color .15s}
 .sbox:focus-within{border-color:var(--ac)}
 .sbox svg{flex:none;width:22px;height:22px;stroke:var(--sub);fill:none;stroke-width:2.4;stroke-linecap:round}
-#q{flex:1;min-width:0;border:0;background:none;color:var(--tx);font:inherit;font-size:17px;font-weight:700;padding:16px 0;outline:none}
-#q::placeholder{color:var(--sub);font-weight:500}
+#q{flex:1;min-width:0;border:0;background:none;color:var(--tx);font:inherit;font-size:15px;font-weight:500;padding:13px 0;outline:none}
+#q::placeholder{color:#99968f;font-weight:400}
 #q::-webkit-search-cancel-button{display:none}
-#clr{width:40px;height:40px;border:0;border-radius:50%;background:var(--bg);font-size:18px;line-height:1;color:var(--sub)}
-.cnt{padding:6px 24px 8px;font-size:13px;color:var(--sub);font-weight:700}
-.row{display:flex;align-items:center;gap:14px;width:100%;padding:12px 20px;border:0;background:none;text-align:left;transition:background .12s,transform .12s}
-.row:active{background:var(--sf);transform:scale(.985)}
-.av{flex:none;width:52px;height:52px;border-radius:18px;display:grid;place-items:center;color:#fff;font-weight:900;font-size:22px;background:hsl(var(--h) 78% 56%)}
-.row:nth-child(3n) .av{border-radius:50%}
-.nm{flex:1;min-width:0}.nm b{display:block;font-size:18px;font-weight:900;line-height:1.3}.nm span{font-size:13px;color:var(--sub)}
-.ct{flex:none;font-size:12px;font-weight:700;color:var(--sub);background:var(--sf);border-radius:999px;padding:4px 11px}
-.row .ch{flex:none;width:9px;height:9px;border-right:2.5px solid var(--sub);border-top:2.5px solid var(--sub);transform:rotate(45deg);opacity:.5;margin-left:-4px}
-.empty{padding:40px 28px;text-align:center;color:var(--sub)}.empty b{display:block;font-size:18px;color:var(--tx);margin-bottom:4px}
+#clr{width:34px;height:34px;border:0;border-radius:50%;background:var(--bg);font-size:16px;line-height:1;color:var(--sub)}
+.cnt{padding:3px 4px 10px;font-size:12px;color:var(--sub);font-weight:500}
+#list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.row{display:flex;align-items:center;gap:10px;min-width:0;min-height:62px;padding:7px 12px;border:0;border-radius:13px;background:var(--sf);text-align:left;box-shadow:0 2px 6px rgba(35,42,53,.12);transition:transform .12s,box-shadow .12s}
+.row:active{transform:scale(.985);box-shadow:0 1px 3px rgba(35,42,53,.1)}
+.av{flex:none;width:42px;height:42px;border-radius:11px;display:grid;place-items:center;overflow:hidden;background:hsl(var(--h) 38% 89%)}
+.av svg{width:100%;height:100%}
+.nm{flex:1;min-width:0}.nm b{display:block;overflow:hidden;font-size:15px;font-weight:700;line-height:1.35;text-overflow:ellipsis;white-space:nowrap}
+.row .ch{flex:none;width:8px;height:8px;border-right:1.7px solid var(--sub);border-top:1.7px solid var(--sub);transform:rotate(45deg);opacity:.75}
+.empty{grid-column:1/-1;padding:40px 20px;text-align:center;color:var(--sub)}.empty b{display:block;font-size:17px;color:var(--tx);margin-bottom:4px}
 
-/* ---- ステップ2 ---- */
-.hero{position:relative;overflow:hidden;color:#fff;background:hsl(var(--h) 78% 52%);border-radius:0 0 36px 36px;padding:calc(env(safe-area-inset-top) + 14px) 22px 0}
-.back{width:44px;height:44px;border:0;border-radius:50%;background:rgba(255,255,255,.22);color:#fff;display:grid;place-items:center;backdrop-filter:blur(8px)}
-.back svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
-.hero h2{margin:26px 0 2px;font-size:clamp(38px,12vw,52px);line-height:1.1;font-weight:900;letter-spacing:-.02em;word-break:keep-all;overflow-wrap:anywhere}
-.hero small{display:block;font-size:14px;opacity:.85}
-.hero em{font-style:normal;display:inline-block;margin:14px 0 0;font-size:13px;font-weight:700;background:rgba(255,255,255,.22);border-radius:999px;padding:4px 14px}
-.wave{display:flex;align-items:flex-end;gap:5px;height:64px;margin:18px -4px 0}
-.wave i{flex:1;border-radius:4px 4px 0 0;background:rgba(255,255,255,.3);height:var(--b);transform-origin:bottom;animation:bar .7s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i)*18ms)}
+/* ---- 声優詳細 ---- */
+.hero{position:relative;overflow:hidden;color:var(--tx);background:var(--bg);border-bottom:1px solid var(--ln);padding:calc(env(safe-area-inset-top) + 14px) 22px 0}
+.detail-bar{display:flex;align-items:center;gap:12px}
+.detail-brand{font-family:Arial,sans-serif;font-size:16px;font-weight:900;letter-spacing:.04em}
+.back{width:42px;height:42px;border:1px solid var(--ln);border-radius:50%;background:var(--sf);color:var(--tx);display:grid;place-items:center}
+.back svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.hero h2{margin:28px 0 2px;font-size:clamp(32px,8vw,44px);line-height:1.2;font-weight:900;letter-spacing:-.02em;word-break:keep-all;overflow-wrap:anywhere}
+.hero small{display:block;font-size:14px;color:var(--sub)}
+.hero em{font-style:normal;display:inline-block;margin:14px 0 0;font-size:13px;font-weight:700;color:var(--ac);background:#eeeaf3;border-radius:999px;padding:5px 14px}
+.wave{display:flex;align-items:flex-end;gap:5px;height:44px;margin:18px -4px 0}
+.wave i{flex:1;border-radius:4px 4px 0 0;background:#ded8e7;height:var(--b);transform-origin:bottom;animation:bar .7s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i)*18ms)}
 @keyframes bar{from{transform:scaleY(.05)}}
 .works{padding:22px 16px calc(env(safe-area-inset-bottom) + 36px)}
 .works>h3{margin:0 8px 12px;font-size:14px;color:var(--sub);font-weight:700}
-.work{background:var(--sf);border-radius:var(--r);padding:20px 18px 18px;margin-bottom:14px}
+.work{background:var(--sf);border:1px solid #ebe9e3;border-radius:var(--r);padding:20px 18px 18px;margin-bottom:14px;box-shadow:0 2px 6px rgba(35,42,53,.06)}
 .work h4{margin:0;font-size:20px;line-height:1.35;font-weight:900}
 .role{display:inline-flex;align-items:center;gap:8px;margin:8px 0 16px;font-size:14px;color:var(--sub)}
-.role b{color:var(--tx);font-weight:900;background:hsl(var(--h) 90% 60%/.18);border-radius:8px;padding:2px 10px}
+.role b{color:var(--ac);font-weight:700;background:#eeeaf3;border-radius:8px;padding:2px 10px}
 .vods{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.vod{display:flex;align-items:center;justify-content:center;gap:8px;min-height:56px;padding:10px 12px;border-radius:16px;text-decoration:none;font-size:14px;font-weight:900;line-height:1.3;text-align:center;color:var(--t,#fff);background:var(--c,var(--ac));box-shadow:0 8px 18px -10px var(--c,var(--ac));transition:transform .12s}
+.vod{display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:10px 12px;border:1px solid var(--ln);border-radius:13px;text-decoration:none;font-size:14px;font-weight:700;line-height:1.3;text-align:center;color:var(--tx);background:var(--sf);transition:transform .12s,background .12s}
 .vod:active{transform:scale(.96)}
+.vod:hover{background:var(--bg)}
 .vod:last-child:nth-child(odd){grid-column:1/-1}
 .vod:before{content:"";flex:none;border-left:11px solid currentColor;border-top:7px solid transparent;border-bottom:7px solid transparent}
 .soon{font-size:13px;color:var(--sub);background:var(--bg);border-radius:14px;padding:14px;text-align:center}
-.pr{padding:0 28px 30px;font-size:11px;color:var(--sub);text-align:center}
+.pr{padding:24px 4px 30px;font-size:11px;color:var(--sub);text-align:center}
 .live{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:900;color:#fff;background:var(--ac);border-radius:999px;padding:5px 14px 5px 11px;margin-bottom:12px}
 .live i{width:8px;height:8px;border-radius:50%;background:#fff;animation:pulse 1.6s infinite}@keyframes pulse{50%{opacity:.25}}
 #sub{font-size:17px;font-weight:900;color:var(--tx);margin-top:10px}#scope{margin-top:4px}
-.ph{position:relative;overflow:hidden;display:grid;place-items:center;color:#fff;font-weight:900;background:hsl(var(--h) 70% 50%)}
+.ph{position:relative;overflow:hidden;display:grid;place-items:center;color:var(--tx);font-weight:900;background:hsl(var(--h) 24% 88%)}
 .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .thumb{aspect-ratio:16/9;border-radius:16px;margin-bottom:14px;font-size:44px}
 .work h4{margin:0 0 14px}.cr{font-size:10px;color:var(--sub);margin:-8px 0 12px}
 .cast{display:flex;align-items:center;gap:14px;margin:0 0 16px}
 .chara{flex:none;width:80px;height:80px;border-radius:24px;font-size:32px}
 .cast small{display:block;font-size:12px;color:var(--sub)}.cast b{display:block;font-size:19px;line-height:1.35;font-weight:900}
-.off{display:flex;align-items:center;justify-content:center;gap:6px;min-height:48px;margin:0 0 12px;border-radius:14px;border:2px solid var(--ln);color:var(--tx);text-decoration:none;font-size:14px;font-weight:900}.off:after{content:"↗";color:var(--sub)}.off:active{background:var(--bg)}
+.off{display:flex;align-items:center;justify-content:center;gap:6px;min-height:48px;margin:0 0 12px;border-radius:13px;border:1px solid var(--ln);color:var(--tx);text-decoration:none;font-size:14px;font-weight:700}.off:after{content:"↗";color:var(--sub)}.off:active{background:var(--bg)}
+@media(max-width:400px){.wrap{padding:0 16px}.top{padding-top:calc(env(safe-area-inset-top) + 24px)}#list{grid-template-columns:1fr}.row{min-height:60px}.top h1{font-size:18px}.tagline{margin-bottom:22px!important}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 <div class="wrap">
  <section id="s1">
-  <div class="top"><span class="live"><i></i>放送中</span><h1>いま放送中のアニメから<br>声優をさがす</h1><p id="sub">&nbsp;</p><p id="scope"></p></div>
+  <div class="top"><div class="brand" aria-label="CAST NOW"><span>CAST N</span><svg viewBox="0 0 24 30" aria-hidden="true"><rect x="8" y="2" width="8" height="16" rx="4"/><path d="M4 13v1a8 8 0 0 0 16 0v-1M12 22v5m-4 0h8"/></svg><span>W</span></div><p class="tagline">声優、いまここに</p><h1 id="sub">2026年 秋アニメ</h1></div>
   <div class="sbar"><label class="sbox">
    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
    <input id="q" type="search" placeholder="今期の声優を名前・ひらがなで検索" autocomplete="off" enterkeyhint="search" aria-label="声優を検索">
    <button id="clr" type="button" hidden aria-label="入力を消す">✕</button></label></div>
-  <div class="cnt" id="cnt"></div>
+  <div class="cnt" id="cnt">今期放送中の声優（あいうえお順）</div>
   <div id="list"></div>
  </section>
  <section id="s2" hidden></section>
@@ -104,22 +110,22 @@ fetch('data.json').then(r=>r.json()).then(d=>{
   D=d;A=d.voice_actors.map(a=>({...a,k:norm(a.name+a.reading),h:hue(a.actor_id)}));
   const [y,s]=d.season.split('-'),M={winter:['冬','1〜3月'],spring:['春','4〜6月'],summer:['夏','7〜9月'],autumn:['秋','10〜12月'],fall:['秋','10〜12月']}[s]||[s,''];
   const dt=new Date(d.updated_at).toLocaleDateString('ja-JP',{timeZone:'Asia/Tokyo',month:'numeric',day:'numeric'});
-  $('#sub').textContent=`${y}年 ${M[0]}アニメ（${M[1]}期）`;
-  $('#scope').textContent=`今期に放送・配信中の作品だけが対象です。過去作や来期作は含みません。${Object.keys(d.works).length}作品・${A.length}名を収録（${dt}更新）`;
+  $('#sub').textContent=`${y}年 ${M[0]}アニメ`;
+  $('#cnt').textContent=`今期放送中の声優（あいうえお順）・${A.length}名`;
   route();
 }).catch(()=>{$('#list').innerHTML='<div class="empty"><b>データを読み込めませんでした</b>data.json を同じ場所に置き、サーバー経由で開いてください。</div>'});
 
 function list(){
   const v=$('#q').value,q=norm(v),r=q?A.filter(a=>a.k.includes(q)):A;
   $('#clr').hidden=!v;
-  $('#cnt').textContent=q?(r.length?`${r.length}名が見つかりました。タップして選んでください`:''):'今期出演中の声優（あいうえお順）';
-  $('#list').innerHTML=r.length?r.map(a=>`<button class="row" data-id="${esc(a.actor_id)}" style="--h:${a.h}"><span class="av">${esc([...a.name][0])}</span><span class="nm"><b>${esc(a.name)}</b><span>${esc(a.reading)}</span></span><span class="ct">${a.roles.length}作品</span><i class="ch"></i></button>`).join(''):`<div class="empty"><b>「${esc(v)}」は今期の作品に見つかりません</b>過去作・来期作は対象外です。名前の一部やひらがなでも探せます。</div>`;
+  $('#cnt').textContent=q?(r.length?`${r.length}名が見つかりました`:'検索結果はありません'):`今期放送中の声優（あいうえお順）・${A.length}名`;
+  $('#list').innerHTML=r.length?r.map(a=>`<button class="row" data-id="${esc(a.actor_id)}" style="--h:${a.h}"><span class="av" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M5 48c1-10 8-15 19-15s18 5 19 15" fill="hsl(var(--h) 31% 52%)"/><path d="M12 20c0-9 5-14 12-14s12 5 12 14v5H12z" fill="hsl(var(--h) 27% 43%)"/><ellipse cx="24" cy="23" rx="9" ry="11" fill="#f1cdb7"/><path d="M15 19c1-8 5-12 10-12 4 0 8 3 9 9-5 0-8-2-10-5-2 4-5 6-9 8" fill="hsl(var(--h) 27% 43%)"/><circle cx="21" cy="23" r=".8" fill="#514b4a"/><circle cx="27" cy="23" r=".8" fill="#514b4a"/><path d="M22 28q2 2 4 0" fill="none" stroke="#b77974" stroke-width=".8" stroke-linecap="round"/></svg></span><span class="nm"><b>${esc(a.name)}</b></span><i class="ch" aria-hidden="true"></i></button>`).join(''):`<div class="empty"><b>「${esc(v)}」は今期の作品に見つかりません</b>過去作・来期作は対象外です。名前の一部やひらがなでも探せます。</div>`;
 }
 function ph(cls,key,text,src,alt){return `<div class="ph ${cls}" style="--h:${hue(key)}">${esc([...text][0])}${src?`<img src="${esc(src)}" alt="${esc(alt)}" loading="lazy" referrerpolicy="no-referrer">`:''}</div>`}
 function detail(a){
-  const bars=Array.from({length:28},(_,i)=>`<i style="--i:${i};--b:${12+Math.round(Math.abs(Math.sin(i*1.7+a.h))*52)}px"></i>`).join('');
+  const bars=Array.from({length:28},(_,i)=>`<i style="--i:${i};--b:${8+Math.round(Math.abs(Math.sin(i*1.7+a.h))*32)}px"></i>`).join('');
   $('#s2').style.setProperty('--h',a.h);
-  $('#s2').innerHTML=`<div class="hero"><button class="back" id="bk" aria-label="検索にもどる"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+  $('#s2').innerHTML=`<div class="hero"><div class="detail-bar"><button class="back" id="bk" aria-label="検索にもどる"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><span class="detail-brand">CAST NOW</span></div>
   <h2>${esc(a.name)}</h2><small>${esc(a.reading)}</small><em>今期 ${a.roles.length}作品に出演中</em><div class="wave" aria-hidden="true">${bars}</div></div>
   <div class="works"><h3>今期の出演作品と、見られるサービス</h3>`+a.roles.map(r=>{const w=D.works[r.work_id];
    return `<div class="work">${ph('thumb',r.work_id,w.title,w.thumbnail,w.title)}${w.credit?`<div class="cr">${esc(w.credit)}</div>`:''}<h4>${esc(w.title)}</h4>
