@@ -3,113 +3,141 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>今期アニメ 声優検索</title>
+<meta name="theme-color" content="#f0f3f8">
+<title>放送中アニメの声優検索｜2026年秋</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
 <style>
-:root{color-scheme:light;--bg:#f7f5f2;--surface:#fff;--surface-soft:#f1eeea;--tx:#252321;--sub:#817b75;--accent:#7958d6;--accent-dark:#6041b9;--accent-soft:#eee8fc;--line:#eae6e1;--shadow:0 18px 50px rgba(46,34,24,.07)}
-@media(prefers-color-scheme:dark){:root{color-scheme:dark;--bg:#17151b;--surface:#211e26;--surface-soft:#2b2731;--tx:#f5f1f8;--sub:#b1aab9;--accent:#b4a0ff;--accent-dark:#c9bcff;--accent-soft:#342d46;--line:#37323d;--shadow:0 18px 50px rgba(0,0,0,.18)}}
-*{box-sizing:border-box}
-body{min-width:320px;margin:0;background:var(--bg);color:var(--tx);font:15px/1.65 system-ui,-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;padding-bottom:env(safe-area-inset-bottom);-webkit-font-smoothing:antialiased}
-header{position:relative;overflow:hidden;padding:calc(env(safe-area-inset-top) + 20px) 24px 42px;background:radial-gradient(ellipse at 90% 0%,rgba(255,255,255,.18),transparent 34%),linear-gradient(135deg,#6849bf,#9271e5 58%,#aa8ce9);color:#fff}
-header:after{position:absolute;content:"";width:280px;height:280px;right:-100px;bottom:-210px;border:1px solid rgba(255,255,255,.2);border-radius:50%;box-shadow:0 0 0 28px rgba(255,255,255,.04),0 0 0 58px rgba(255,255,255,.04)}
-.topbar,.hero,.search-wrap{position:relative;z-index:1;max-width:920px;margin:0 auto}
-.topbar{display:flex;align-items:center;justify-content:space-between}
-.brand{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:750;letter-spacing:.04em}
-.brand-mark{display:grid;width:34px;height:34px;place-items:center;border:1px solid rgba(255,255,255,.36);border-radius:12px;background:rgba(255,255,255,.15);font-size:17px}
-.season{padding:5px 11px;border:1px solid rgba(255,255,255,.34);border-radius:999px;background:rgba(255,255,255,.12);font-size:12px;font-weight:650}
-.hero{padding:34px 0 22px}
-.eyebrow{margin:0 0 8px;color:rgba(255,255,255,.78);font-size:12px;font-weight:700;letter-spacing:.16em}
-h1{margin:0;font-size:clamp(30px,6vw,44px);font-weight:800;letter-spacing:.015em;line-height:1.25}
-.lead{margin:10px 0 0;color:rgba(255,255,255,.82);font-size:14px}
-.search-wrap{display:flex;align-items:center;gap:12px;padding:7px 8px 7px 17px;border:1px solid rgba(255,255,255,.55);border-radius:17px;background:#fff;box-shadow:0 14px 34px rgba(49,31,91,.2);color:#312a3b}
-.search-icon{flex:none;color:#8d7aa9}
-input{width:100%;min-width:0;border:0;outline:0;background:transparent;color:#312a3b;font:inherit;font-size:15px}
-input::placeholder{color:#9e97a5}
-input:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:4px}
-main{width:min(100% - 40px,920px);min-height:45vh;margin:0 auto;padding:30px 0 52px}
-.list-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 2px 16px}
-.section-title{margin:0;font-size:17px;font-weight:750;letter-spacing:.02em}
-.hint{color:var(--sub);font-size:13px}
-#list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.item{display:flex;align-items:center;gap:13px;width:100%;min-width:0;padding:15px;text-align:left;font:inherit;color:inherit;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:0 3px 12px rgba(46,34,24,.025);cursor:pointer;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
-.item:hover{transform:translateY(-2px);border-color:rgba(121,88,214,.4);box-shadow:var(--shadow)}
-.item:focus-visible,.back:focus-visible,.vod:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
-.item .avatar{display:grid;flex:none;width:44px;height:44px;place-items:center;border-radius:14px;background:var(--accent-soft);color:var(--accent-dark);font-size:18px;font-weight:800}
-.item-copy{display:grid;min-width:0;gap:1px}
-.item b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px;font-weight:750}
-.item span{color:var(--sub);font-size:12px}
-.count{flex:none;margin-left:auto;padding:4px 8px;border-radius:999px;background:var(--surface-soft);color:var(--sub);font-size:11px}
-.empty{grid-column:1/-1;padding:32px 16px;text-align:center;border:1px dashed var(--line);border-radius:16px;color:var(--sub)}
-.back{margin:0 0 20px;padding:0;border:0;background:none;color:var(--accent-dark);font:inherit;font-weight:700;cursor:pointer}
-.who{margin:0 0 24px;padding:24px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(135deg,var(--surface),var(--accent-soft))}
-.who h2{margin:0;font-size:28px;letter-spacing:.02em;line-height:1.35}.who span{color:var(--sub);font-size:14px}
-.detail-label{margin:0 0 12px 2px;font-size:14px;font-weight:750}
-.work{margin-bottom:12px;padding:19px;border:1px solid var(--line);border-radius:17px;background:var(--surface);box-shadow:0 4px 18px rgba(46,34,24,.03)}
-.work h3{margin:0 0 5px;font-size:16px;line-height:1.5}.work p{margin:0 0 13px;color:var(--sub);font-size:13px}
-.role{display:inline-flex;padding:4px 9px;border-radius:999px;background:var(--surface-soft);color:var(--sub);font-size:12px}
-.vod{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:9px;padding:12px;border:1px solid var(--line);border-radius:11px;background:var(--surface-soft);color:var(--tx);font-size:13px;font-weight:700;text-align:center;text-decoration:none;transition:background .18s ease,border-color .18s ease}
-.vod:hover{border-color:var(--accent);background:var(--accent-soft)}
-.none{color:var(--sub);font-size:13px}
-footer{padding:20px 20px 30px;color:var(--sub);font-size:11px;text-align:center}
+:root{--bg:#f0f3f8;--sf:#fff;--tx:#101828;--sub:#667085;--ln:#e1e6ef;--ac:#ff4f7b;--r:22px;color-scheme:light dark}
+@media(prefers-color-scheme:dark){:root{--bg:#0e1118;--sf:#181c26;--tx:#f2f4f8;--sub:#98a2b3;--ln:#252b38;--ac:#ff6d92}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--tx);font:500 16px/1.55 "Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
 [hidden]{display:none!important}
-@media(max-width:600px){header{padding-right:20px;padding-left:20px;padding-bottom:30px}.hero{padding-top:29px}.lead{font-size:13px}main{width:min(100% - 32px,480px);padding-top:24px}#list{grid-template-columns:1fr;gap:9px}.item{padding:12px}.avatar{width:42px;height:42px}.list-head{align-items:flex-start;flex-direction:column;gap:2px}.who{padding:20px}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+.wrap{max-width:560px;margin:auto}
+
+/* ---- ステップ1 ---- */
+.top{padding:calc(env(safe-area-inset-top) + 28px) 20px 14px}
+.top h1{margin:0;font-size:28px;line-height:1.3;font-weight:900;letter-spacing:-.01em}
+.top p{margin:8px 0 0;color:var(--sub);font-size:14px}
+.sbar{position:sticky;top:0;z-index:4;padding:10px 16px 12px;background:linear-gradient(var(--bg) 70%,transparent)}
+.sbox{display:flex;align-items:center;gap:10px;background:var(--sf);border-radius:999px;padding:0 8px 0 18px;box-shadow:0 6px 24px -10px rgba(16,24,40,.35);border:2px solid transparent;transition:border-color .15s}
+.sbox:focus-within{border-color:var(--ac)}
+.sbox svg{flex:none;width:22px;height:22px;stroke:var(--sub);fill:none;stroke-width:2.4;stroke-linecap:round}
+#q{flex:1;min-width:0;border:0;background:none;color:var(--tx);font:inherit;font-size:17px;font-weight:700;padding:16px 0;outline:none}
+#q::placeholder{color:var(--sub);font-weight:500}
+#q::-webkit-search-cancel-button{display:none}
+#clr{width:40px;height:40px;border:0;border-radius:50%;background:var(--bg);font-size:18px;line-height:1;color:var(--sub)}
+.cnt{padding:6px 24px 8px;font-size:13px;color:var(--sub);font-weight:700}
+.row{display:flex;align-items:center;gap:14px;width:100%;padding:12px 20px;border:0;background:none;text-align:left;transition:background .12s,transform .12s}
+.row:active{background:var(--sf);transform:scale(.985)}
+.av{flex:none;width:52px;height:52px;border-radius:18px;display:grid;place-items:center;color:#fff;font-weight:900;font-size:22px;background:hsl(var(--h) 78% 56%)}
+.row:nth-child(3n) .av{border-radius:50%}
+.nm{flex:1;min-width:0}.nm b{display:block;font-size:18px;font-weight:900;line-height:1.3}.nm span{font-size:13px;color:var(--sub)}
+.ct{flex:none;font-size:12px;font-weight:700;color:var(--sub);background:var(--sf);border-radius:999px;padding:4px 11px}
+.row .ch{flex:none;width:9px;height:9px;border-right:2.5px solid var(--sub);border-top:2.5px solid var(--sub);transform:rotate(45deg);opacity:.5;margin-left:-4px}
+.empty{padding:40px 28px;text-align:center;color:var(--sub)}.empty b{display:block;font-size:18px;color:var(--tx);margin-bottom:4px}
+
+/* ---- ステップ2 ---- */
+.hero{position:relative;overflow:hidden;color:#fff;background:hsl(var(--h) 78% 52%);border-radius:0 0 36px 36px;padding:calc(env(safe-area-inset-top) + 14px) 22px 0}
+.back{width:44px;height:44px;border:0;border-radius:50%;background:rgba(255,255,255,.22);color:#fff;display:grid;place-items:center;backdrop-filter:blur(8px)}
+.back svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.hero h2{margin:26px 0 2px;font-size:clamp(38px,12vw,52px);line-height:1.1;font-weight:900;letter-spacing:-.02em;word-break:keep-all;overflow-wrap:anywhere}
+.hero small{display:block;font-size:14px;opacity:.85}
+.hero em{font-style:normal;display:inline-block;margin:14px 0 0;font-size:13px;font-weight:700;background:rgba(255,255,255,.22);border-radius:999px;padding:4px 14px}
+.wave{display:flex;align-items:flex-end;gap:5px;height:64px;margin:18px -4px 0}
+.wave i{flex:1;border-radius:4px 4px 0 0;background:rgba(255,255,255,.3);height:var(--b);transform-origin:bottom;animation:bar .7s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i)*18ms)}
+@keyframes bar{from{transform:scaleY(.05)}}
+.works{padding:22px 16px calc(env(safe-area-inset-bottom) + 36px)}
+.works>h3{margin:0 8px 12px;font-size:14px;color:var(--sub);font-weight:700}
+.work{background:var(--sf);border-radius:var(--r);padding:20px 18px 18px;margin-bottom:14px}
+.work h4{margin:0;font-size:20px;line-height:1.35;font-weight:900}
+.role{display:inline-flex;align-items:center;gap:8px;margin:8px 0 16px;font-size:14px;color:var(--sub)}
+.role b{color:var(--tx);font-weight:900;background:hsl(var(--h) 90% 60%/.18);border-radius:8px;padding:2px 10px}
+.vods{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.vod{display:flex;align-items:center;justify-content:center;gap:8px;min-height:56px;padding:10px 12px;border-radius:16px;text-decoration:none;font-size:14px;font-weight:900;line-height:1.3;text-align:center;color:var(--t,#fff);background:var(--c,var(--ac));box-shadow:0 8px 18px -10px var(--c,var(--ac));transition:transform .12s}
+.vod:active{transform:scale(.96)}
+.vod:last-child:nth-child(odd){grid-column:1/-1}
+.vod:before{content:"";flex:none;border-left:11px solid currentColor;border-top:7px solid transparent;border-bottom:7px solid transparent}
+.soon{font-size:13px;color:var(--sub);background:var(--bg);border-radius:14px;padding:14px;text-align:center}
+.pr{padding:0 28px 30px;font-size:11px;color:var(--sub);text-align:center}
+.live{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:900;color:#fff;background:var(--ac);border-radius:999px;padding:5px 14px 5px 11px;margin-bottom:12px}
+.live i{width:8px;height:8px;border-radius:50%;background:#fff;animation:pulse 1.6s infinite}@keyframes pulse{50%{opacity:.25}}
+#sub{font-size:17px;font-weight:900;color:var(--tx);margin-top:10px}#scope{margin-top:4px}
+.ph{position:relative;overflow:hidden;display:grid;place-items:center;color:#fff;font-weight:900;background:hsl(var(--h) 70% 50%)}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.thumb{aspect-ratio:16/9;border-radius:16px;margin-bottom:14px;font-size:44px}
+.work h4{margin:0 0 14px}.cr{font-size:10px;color:var(--sub);margin:-8px 0 12px}
+.cast{display:flex;align-items:center;gap:14px;margin:0 0 16px}
+.chara{flex:none;width:80px;height:80px;border-radius:24px;font-size:32px}
+.cast small{display:block;font-size:12px;color:var(--sub)}.cast b{display:block;font-size:19px;line-height:1.35;font-weight:900}
+.off{display:flex;align-items:center;justify-content:center;gap:6px;min-height:48px;margin:0 0 12px;border-radius:14px;border:2px solid var(--ln);color:var(--tx);text-decoration:none;font-size:14px;font-weight:900}.off:after{content:"↗";color:var(--sub)}.off:active{background:var(--bg)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-<header>
-  <div class="topbar">
-    <div class="brand"><span class="brand-mark" aria-hidden="true">声</span>こえさがし</div>
-    <span class="season" id="season"></span>
-  </div>
-  <div class="hero">
-    <p class="eyebrow">ANIME VOICE CAST</p>
-    <h1>好きな声優から、<br>作品に出会おう。</h1>
-    <p class="lead">今期アニメの出演声優と作品をかんたん検索。</p>
-  </div>
-  <label class="search-wrap" for="q">
-    <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-    <input id="q" type="search" placeholder="声優名・ひらがなで検索" autocomplete="off" enterkeyhint="search">
-  </label>
-</header>
-<main>
-  <section id="s1"><div class="list-head"><h2 class="section-title">出演声優</h2><div class="hint" id="hint"></div></div><div id="list"></div></section>
-  <section id="s2" hidden></section>
-</main>
-<footer>※本ページのリンクにはアフィリエイトを含みます。配信状況は各サービスでご確認ください。</footer>
+<div class="wrap">
+ <section id="s1">
+  <div class="top"><span class="live"><i></i>放送中</span><h1>いま放送中のアニメから<br>声優をさがす</h1><p id="sub">&nbsp;</p><p id="scope"></p></div>
+  <div class="sbar"><label class="sbox">
+   <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+   <input id="q" type="search" placeholder="今期の声優を名前・ひらがなで検索" autocomplete="off" enterkeyhint="search" aria-label="声優を検索">
+   <button id="clr" type="button" hidden aria-label="入力を消す">✕</button></label></div>
+  <div class="cnt" id="cnt"></div>
+  <div id="list"></div>
+ </section>
+ <section id="s2" hidden></section>
+ <div class="pr">本ページのリンクにはアフィリエイトを含みます。配信状況は各サービスでご確認ください。</div>
+</div>
 <script>
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-// 全角半角・カタカナ/ひらがな・空白や中黒を正規化
 const norm=s=>s.normalize('NFKC').toLowerCase().replace(/[\u30a1-\u30f6]/g,c=>String.fromCharCode(c.charCodeAt(0)-96)).replace(/[\s・･]/g,'');
+// サービスごとのブランド色（c:背景 t:文字）。未登録はアクセント色
+const BR={'Amazon Prime Video':{c:'#0a7bc4'},'Netflix':{c:'#e50914'},'U-NEXT':{c:'#1d1d1f'},'dアニメストア':{c:'#ef4b39'},'Hulu':{c:'#1ce783',t:'#04200f'},'ABEMA':{c:'#34d96b',t:'#06210f'},'DMM TV':{c:'#1e3a8a'},'アニメ放題':{c:'#f08300'},'アニメタイムズ':{c:'#7c3aed'}};
+const hue=id=>{let n=0;for(const ch of id)n=(n*31+ch.charCodeAt(0))%360;return n};
 let D,A=[];
 
 fetch('data.json').then(r=>r.json()).then(d=>{
-  D=d;A=d.voice_actors.map(a=>({...a,k:norm(a.name+a.reading)}));
-  $('#season').textContent=d.season.replace('-',' ');
+  D=d;A=d.voice_actors.map(a=>({...a,k:norm(a.name+a.reading),h:hue(a.actor_id)}));
+  const [y,s]=d.season.split('-'),M={winter:['冬','1〜3月'],spring:['春','4〜6月'],summer:['夏','7〜9月'],autumn:['秋','10〜12月'],fall:['秋','10〜12月']}[s]||[s,''];
+  const dt=new Date(d.updated_at).toLocaleDateString('ja-JP',{timeZone:'Asia/Tokyo',month:'numeric',day:'numeric'});
+  $('#sub').textContent=`${y}年 ${M[0]}アニメ（${M[1]}期）`;
+  $('#scope').textContent=`今期に放送・配信中の作品だけが対象です。過去作や来期作は含みません。${Object.keys(d.works).length}作品・${A.length}名を収録（${dt}更新）`;
   route();
-}).catch(()=>{$('#list').textContent='data.json を読み込めませんでした。ローカル確認時は簡易サーバー経由で開いてください。'});
+}).catch(()=>{$('#list').innerHTML='<div class="empty"><b>データを読み込めませんでした</b>data.json を同じ場所に置き、サーバー経由で開いてください。</div>'});
 
 function list(){
-  const q=norm($('#q').value),r=q?A.filter(a=>a.k.includes(q)):A;
-  $('#hint').textContent=q?`${r.length}名が見つかりました`:`全${A.length}名`;
-  $('#list').innerHTML=r.length?r.map(a=>`<button class="item" data-id="${esc(a.actor_id)}"><span class="avatar" aria-hidden="true">${esc(a.name.slice(0,1))}</span><span class="item-copy"><b>${esc(a.name)}</b><span>${esc(a.reading)}</span></span><span class="count">${a.roles.length}作品</span></button>`).join(''):'<div class="empty">該当する声優が見つかりませんでした。<br>ひらがなでもお試しください。</div>';
+  const v=$('#q').value,q=norm(v),r=q?A.filter(a=>a.k.includes(q)):A;
+  $('#clr').hidden=!v;
+  $('#cnt').textContent=q?(r.length?`${r.length}名が見つかりました。タップして選んでください`:''):'今期出演中の声優（あいうえお順）';
+  $('#list').innerHTML=r.length?r.map(a=>`<button class="row" data-id="${esc(a.actor_id)}" style="--h:${a.h}"><span class="av">${esc([...a.name][0])}</span><span class="nm"><b>${esc(a.name)}</b><span>${esc(a.reading)}</span></span><span class="ct">${a.roles.length}作品</span><i class="ch"></i></button>`).join(''):`<div class="empty"><b>「${esc(v)}」は今期の作品に見つかりません</b>過去作・来期作は対象外です。名前の一部やひらがなでも探せます。</div>`;
 }
+function ph(cls,key,text,src,alt){return `<div class="ph ${cls}" style="--h:${hue(key)}">${esc([...text][0])}${src?`<img src="${esc(src)}" alt="${esc(alt)}" loading="lazy" referrerpolicy="no-referrer">`:''}</div>`}
 function detail(a){
-  $('#s2').innerHTML=`<button class="back" id="bk">← 声優一覧にもどる</button>
-  <div class="who"><h2>${esc(a.name)}</h2><span>${esc(a.reading)}</span></div>
-  <h3 class="detail-label">出演作品 <span class="hint">${a.roles.length}作品</span></h3>`+
-  a.roles.map(r=>{const w=D.works[r.work_id];return `<div class="work"><h3>${esc(w.title)}</h3><p><span class="role">役名：${esc(r.character_name)}</span></p>`+
-    (w.vod_links.length?w.vod_links.map(v=>`<a class="vod" href="${esc(v.url)}" target="_blank" rel="sponsored noopener">${esc(v.provider)}で見る</a>`).join(''):'<div class="none">配信情報は準備中です</div>')+'</div>'}).join('');
-  $('#bk').onclick=()=>history.back();
+  const bars=Array.from({length:28},(_,i)=>`<i style="--i:${i};--b:${12+Math.round(Math.abs(Math.sin(i*1.7+a.h))*52)}px"></i>`).join('');
+  $('#s2').style.setProperty('--h',a.h);
+  $('#s2').innerHTML=`<div class="hero"><button class="back" id="bk" aria-label="検索にもどる"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <h2>${esc(a.name)}</h2><small>${esc(a.reading)}</small><em>今期 ${a.roles.length}作品に出演中</em><div class="wave" aria-hidden="true">${bars}</div></div>
+  <div class="works"><h3>今期の出演作品と、見られるサービス</h3>`+a.roles.map(r=>{const w=D.works[r.work_id];
+   return `<div class="work">${ph('thumb',r.work_id,w.title,w.thumbnail,w.title)}${w.credit?`<div class="cr">${esc(w.credit)}</div>`:''}<h4>${esc(w.title)}</h4>
+   <div class="cast">${ph('chara',r.character_id,r.character_name,r.image,r.character_name)}<div><small>${esc(a.name)}が演じる役</small><b>${esc(r.character_name)}</b></div></div>${(r.official_url||w.official_url)?`<a class="off" href="${esc(r.official_url||w.official_url)}" target="_blank" rel="noopener">公式サイトでキャラクターを見る</a>`:''}`+
+   (w.vod_links.length?`<div class="vods">`+w.vod_links.map(v=>{const b=BR[v.provider]||{};return `<a class="vod" style="${b.c?`--c:${b.c};`:''}${b.t?`--t:${b.t}`:''}" href="${esc(v.url)}" target="_blank" rel="sponsored noopener">${esc(v.provider)}で見る</a>`}).join('')+`</div>`:'<div class="soon">配信情報は準備中です</div>')+'</div>'}).join('')+'</div>';
+  $('#bk').onclick=()=>history.length>1?history.back():(location.hash='');
 }
 function route(){
-  const id=location.hash.slice(1),a=A.find(x=>x.actor_id===id);
+  const a=A.find(x=>x.actor_id===location.hash.slice(1));
   $('#s1').hidden=!!a;$('#s2').hidden=!a;
   if(a){detail(a);scrollTo(0,0)}else list();
 }
 $('#q').addEventListener('input',list);
-$('#list').addEventListener('click',e=>{const b=e.target.closest('.item');if(b){$('#q').blur();location.hash=b.dataset.id}});
+$('#clr').onclick=()=>{$('#q').value='';list();$('#q').focus()};
+$('#list').addEventListener('click',e=>{const b=e.target.closest('.row');if(b){$('#q').blur();location.hash=b.dataset.id}});
 addEventListener('hashchange',route);
+// 画像の読み込み失敗時は<img>を外し、下のプレースホルダーを見せる
+addEventListener('error',e=>{if(e.target.tagName==='IMG')e.target.remove()},true);
 </script>
 </body>
 </html>
