@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f8f7f2">
-<title>CAST NOW｜2026年秋アニメの声優検索</title>
+<title>ANIME CAST NOW｜2026年秋アニメの声優検索</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 
 /* ---- 検索画面 ---- */
 .top{text-align:center;padding:calc(env(safe-area-inset-top) + 34px) 0 18px}
-.brand{display:flex;align-items:center;justify-content:center;gap:1px;color:var(--tx);font-family:Arial,sans-serif;font-size:clamp(34px,8vw,48px);font-weight:900;line-height:1;letter-spacing:.015em}
+.brand{display:flex;align-items:center;justify-content:center;gap:1px;color:var(--tx);font-family:Arial,sans-serif;font-size:clamp(24px,8vw,48px);font-weight:900;line-height:1;letter-spacing:.015em}
 .brand svg{width:.78em;height:.92em;flex:none;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 .tagline{margin:4px 0 28px!important;color:var(--tx)!important;font-size:14px!important;font-weight:700;letter-spacing:.12em}
 .top h1{margin:0;text-align:left;font-size:20px;line-height:1.4;font-weight:900;letter-spacing:.01em}
@@ -86,7 +86,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 <body>
 <div class="wrap">
  <section id="s1">
-  <div class="top"><div class="brand" aria-label="CAST NOW"><span>CAST N</span><svg viewBox="0 0 24 30" aria-hidden="true"><rect x="8" y="2" width="8" height="16" rx="4"/><path d="M4 13v1a8 8 0 0 0 16 0v-1M12 22v5m-4 0h8"/></svg><span>W</span></div><p class="tagline">声優、いまここに</p><h1 id="sub">2026年 秋アニメ</h1></div>
+  <div class="top"><div class="brand" aria-label="ANIME CAST NOW"><span>ANIME CAST N</span><svg viewBox="0 0 24 30" aria-hidden="true"><rect x="8" y="2" width="8" height="16" rx="4"/><path d="M4 13v1a8 8 0 0 0 16 0v-1M12 22v5m-4 0h8"/></svg><span>W</span></div><p class="tagline">あの声優、今期なにに出てる？</p><h1 id="sub">2026年 秋アニメ</h1></div>
   <div class="sbar"><label class="sbox">
    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
    <input id="q" type="search" placeholder="今期の声優を名前・ひらがなで検索" autocomplete="off" enterkeyhint="search" aria-label="声優を検索">
@@ -125,7 +125,7 @@ function ph(cls,key,text,src,alt){return `<div class="ph ${cls}" style="--h:${hu
 function detail(a){
   const bars=Array.from({length:28},(_,i)=>`<i style="--i:${i};--b:${8+Math.round(Math.abs(Math.sin(i*1.7+a.h))*32)}px"></i>`).join('');
   $('#s2').style.setProperty('--h',a.h);
-  $('#s2').innerHTML=`<div class="hero"><div class="detail-bar"><button class="back" id="bk" aria-label="検索にもどる"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><span class="detail-brand">CAST NOW</span></div>
+  $('#s2').innerHTML=`<div class="hero"><div class="detail-bar"><button class="back" id="bk" aria-label="検索にもどる"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><span class="detail-brand">ANIME CAST NOW</span></div>
   <h2>${esc(a.name)}</h2><small>${esc(a.reading)}</small><em>今期 ${a.roles.length}作品に出演中</em><div class="wave" aria-hidden="true">${bars}</div></div>
   <div class="works"><h3>今期の出演作品と、見られるサービス</h3>`+a.roles.map(r=>{const w=D.works[r.work_id];
    return `<div class="work">${ph('thumb',r.work_id,w.title,w.thumbnail,w.title)}${w.credit?`<div class="cr">${esc(w.credit)}</div>`:''}<h4>${esc(w.title)}</h4>
