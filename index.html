@@ -22,7 +22,9 @@ button{font:inherit;color:inherit;cursor:pointer}
 .brand{display:flex;align-items:center;justify-content:center;gap:1px;color:var(--tx);font-family:Arial,sans-serif;font-size:clamp(24px,8vw,48px);font-weight:900;line-height:1;letter-spacing:.015em}
 .brand svg{width:.78em;height:.92em;flex:none;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 .tagline{margin:4px 0 28px!important;color:var(--tx)!important;font-size:14px!important;font-weight:700;letter-spacing:.12em}
-.top h1{margin:0;text-align:left;font-size:20px;line-height:1.4;font-weight:900;letter-spacing:.01em}
+.season-info{display:flex;align-items:center;justify-content:center;gap:10px;width:max-content;margin:8px auto 0;padding:10px 18px;border-radius:999px;background:var(--ac)}
+.season-label{color:rgba(255,255,255,.82);font-size:12px;font-weight:700;line-height:1.4;letter-spacing:.04em}
+.top h1{margin:0;text-align:left;color:#fff;font-size:18px;line-height:1.4;font-weight:900;letter-spacing:.01em;display:flex;align-items:center;transform:translateY(-1px)}
 .top p{margin:0;color:var(--sub);font-size:13px}
 .sbar{position:sticky;top:0;z-index:4;padding:8px 0 12px;background:linear-gradient(var(--bg) 75%,transparent)}
 .sbox{display:flex;align-items:center;gap:10px;background:var(--sf);border-radius:999px;padding:0 8px 0 16px;box-shadow:0 2px 8px rgba(35,42,53,.04);border:1.5px solid var(--ln);transition:border-color .15s}
@@ -39,6 +41,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .av{flex:none;width:42px;height:42px;border-radius:11px;display:grid;place-items:center;overflow:hidden;background:hsl(var(--h) 38% 89%)}
 .av svg{width:100%;height:100%}
 .nm{flex:1;min-width:0}.nm b{display:block;overflow:hidden;font-size:15px;font-weight:700;line-height:1.35;text-overflow:ellipsis;white-space:nowrap}
+.role-count{flex:none;color:var(--sub);font-size:11px;font-weight:500;white-space:nowrap}
 .row .ch{flex:none;width:8px;height:8px;border-right:1.7px solid var(--sub);border-top:1.7px solid var(--sub);transform:rotate(45deg);opacity:.75}
 .empty{grid-column:1/-1;padding:40px 20px;text-align:center;color:var(--sub)}.empty b{display:block;font-size:17px;color:var(--tx);margin-bottom:4px}
 
@@ -70,7 +73,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .pr{padding:24px 4px 30px;font-size:11px;color:var(--sub);text-align:center}
 .live{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:900;color:#fff;background:var(--ac);border-radius:999px;padding:5px 14px 5px 11px;margin-bottom:12px}
 .live i{width:8px;height:8px;border-radius:50%;background:#fff;animation:pulse 1.6s infinite}@keyframes pulse{50%{opacity:.25}}
-#sub{font-size:17px;font-weight:900;color:var(--tx);margin-top:10px}#scope{margin-top:4px}
+#sub{font-size:18px;font-weight:900;color:#fff;margin:0;line-height:1.4}#scope{margin-top:4px}
 .ph{position:relative;overflow:hidden;display:grid;place-items:center;color:var(--tx);font-weight:900;background:hsl(var(--h) 24% 88%)}
 .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .thumb{aspect-ratio:16/9;border-radius:16px;margin-bottom:14px;font-size:44px}
@@ -79,14 +82,15 @@ button{font:inherit;color:inherit;cursor:pointer}
 .chara{flex:none;width:80px;height:80px;border-radius:24px;font-size:32px}
 .cast small{display:block;font-size:12px;color:var(--sub)}.cast b{display:block;font-size:19px;line-height:1.35;font-weight:900}
 .off{display:flex;align-items:center;justify-content:center;gap:6px;min-height:48px;margin:0 0 12px;border-radius:13px;border:1px solid var(--ln);color:var(--tx);text-decoration:none;font-size:14px;font-weight:700}.off:after{content:"↗";color:var(--sub)}.off:active{background:var(--bg)}
-@media(max-width:400px){.wrap{padding:0 16px}.top{padding-top:calc(env(safe-area-inset-top) + 24px)}#list{grid-template-columns:1fr}.row{min-height:60px}.top h1{font-size:18px}.tagline{margin-bottom:22px!important}}
+@media(max-width:540px){.wrap{padding:0 16px}#list{grid-template-columns:1fr}.row{min-height:60px}}
+@media(max-width:400px){.top{padding-top:calc(env(safe-area-inset-top) + 24px)}.tagline{margin-bottom:22px!important}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 <div class="wrap">
  <section id="s1">
-  <div class="top"><div class="brand" aria-label="ANIME CAST NOW"><span>ANIME CAST N</span><svg viewBox="0 0 24 30" aria-hidden="true"><rect x="8" y="2" width="8" height="16" rx="4"/><path d="M4 13v1a8 8 0 0 0 16 0v-1M12 22v5m-4 0h8"/></svg><span>W</span></div><p class="tagline">あの声優、今期なにに出てる？</p><h1 id="sub">2026年 秋アニメ</h1></div>
+  <div class="top"><div class="brand" aria-label="ANIME CAST NOW"><span>ANIME CAST N</span><svg viewBox="0 0 24 30" aria-hidden="true"><rect x="8" y="2" width="8" height="16" rx="4"/><path d="M4 13v1a8 8 0 0 0 16 0v-1M12 22v5m-4 0h8"/></svg><span>W</span></div><p class="tagline">あの声優、今期なにに出てる？</p><div class="season-info"><span class="season-label">検索対象シーズン</span><h1 id="sub">2026年 秋アニメ</h1></div></div>
   <div class="sbar"><label class="sbox">
    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
    <input id="q" type="search" placeholder="今期の声優を名前・ひらがなで検索" autocomplete="off" enterkeyhint="search" aria-label="声優を検索">
@@ -104,22 +108,22 @@ const norm=s=>s.normalize('NFKC').toLowerCase().replace(/[\u30a1-\u30f6]/g,c=>St
 // サービスごとのブランド色（c:背景 t:文字）。未登録はアクセント色
 const BR={'Amazon Prime Video':{c:'#0a7bc4'},'Netflix':{c:'#e50914'},'U-NEXT':{c:'#1d1d1f'},'dアニメストア':{c:'#ef4b39'},'Hulu':{c:'#1ce783',t:'#04200f'},'ABEMA':{c:'#34d96b',t:'#06210f'},'DMM TV':{c:'#1e3a8a'},'アニメ放題':{c:'#f08300'},'アニメタイムズ':{c:'#7c3aed'}};
 const hue=id=>{let n=0;for(const ch of id)n=(n*31+ch.charCodeAt(0))%360;return n};
-let D,A=[];
+let D,A=[],WORK_COUNT=0;
 
 fetch('data.json').then(r=>r.json()).then(d=>{
-  D=d;A=d.voice_actors.map(a=>({...a,k:norm(a.name+a.reading),h:hue(a.actor_id)}));
+  D=d;A=d.voice_actors.map(a=>({...a,k:norm(a.name+a.reading),h:hue(a.actor_id)}));WORK_COUNT=Object.keys(d.works).length;
   const [y,s]=d.season.split('-'),M={winter:['冬','1〜3月'],spring:['春','4〜6月'],summer:['夏','7〜9月'],autumn:['秋','10〜12月'],fall:['秋','10〜12月']}[s]||[s,''];
   const dt=new Date(d.updated_at).toLocaleDateString('ja-JP',{timeZone:'Asia/Tokyo',month:'numeric',day:'numeric'});
   $('#sub').textContent=`${y}年 ${M[0]}アニメ`;
-  $('#cnt').textContent=`今期放送中の声優（あいうえお順）・${A.length}名`;
+  $('#cnt').textContent=`今季出演中の声優（あいうえお順）・${A.length}名／${WORK_COUNT}作品`;
   route();
 }).catch(()=>{$('#list').innerHTML='<div class="empty"><b>データを読み込めませんでした</b>data.json を同じ場所に置き、サーバー経由で開いてください。</div>'});
 
 function list(){
   const v=$('#q').value,q=norm(v),r=q?A.filter(a=>a.k.includes(q)):A;
   $('#clr').hidden=!v;
-  $('#cnt').textContent=q?(r.length?`${r.length}名が見つかりました`:'検索結果はありません'):`今期放送中の声優（あいうえお順）・${A.length}名`;
-  $('#list').innerHTML=r.length?r.map(a=>`<button class="row" data-id="${esc(a.actor_id)}" style="--h:${a.h}"><span class="av" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M5 48c1-10 8-15 19-15s18 5 19 15" fill="hsl(var(--h) 31% 52%)"/><path d="M12 20c0-9 5-14 12-14s12 5 12 14v5H12z" fill="hsl(var(--h) 27% 43%)"/><ellipse cx="24" cy="23" rx="9" ry="11" fill="#f1cdb7"/><path d="M15 19c1-8 5-12 10-12 4 0 8 3 9 9-5 0-8-2-10-5-2 4-5 6-9 8" fill="hsl(var(--h) 27% 43%)"/><circle cx="21" cy="23" r=".8" fill="#514b4a"/><circle cx="27" cy="23" r=".8" fill="#514b4a"/><path d="M22 28q2 2 4 0" fill="none" stroke="#b77974" stroke-width=".8" stroke-linecap="round"/></svg></span><span class="nm"><b>${esc(a.name)}</b></span><i class="ch" aria-hidden="true"></i></button>`).join(''):`<div class="empty"><b>「${esc(v)}」は今期の作品に見つかりません</b>過去作・来期作は対象外です。名前の一部やひらがなでも探せます。</div>`;
+  $('#cnt').textContent=q?(r.length?`${r.length}名が見つかりました／検索対象${WORK_COUNT}作品`:`検索結果はありません／検索対象${WORK_COUNT}作品`):`今季出演中の声優（あいうえお順）・${A.length}名／${WORK_COUNT}作品`;
+  $('#list').innerHTML=r.length?r.map(a=>`<button class="row" data-id="${esc(a.actor_id)}" style="--h:${a.h}"><span class="av" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M5 48c1-10 8-15 19-15s18 5 19 15" fill="hsl(var(--h) 31% 52%)"/><path d="M12 20c0-9 5-14 12-14s12 5 12 14v5H12z" fill="hsl(var(--h) 27% 43%)"/><ellipse cx="24" cy="23" rx="9" ry="11" fill="#f1cdb7"/><path d="M15 19c1-8 5-12 10-12 4 0 8 3 9 9-5 0-8-2-10-5-2 4-5 6-9 8" fill="hsl(var(--h) 27% 43%)"/><circle cx="21" cy="23" r=".8" fill="#514b4a"/><circle cx="27" cy="23" r=".8" fill="#514b4a"/><path d="M22 28q2 2 4 0" fill="none" stroke="#b77974" stroke-width=".8" stroke-linecap="round"/></svg></span><span class="nm"><b>${esc(a.name)}</b></span><span class="role-count">${a.roles.length}件出演</span><i class="ch" aria-hidden="true"></i></button>`).join(''):`<div class="empty"><b>「${esc(v)}」は今期の作品に見つかりません</b>過去作・来期作は対象外です。名前の一部やひらがなでも探せます。</div>`;
 }
 function ph(cls,key,text,src,alt){return `<div class="ph ${cls}" style="--h:${hue(key)}">${esc([...text][0])}${src?`<img src="${esc(src)}" alt="${esc(alt)}" loading="lazy" referrerpolicy="no-referrer">`:''}</div>`}
 function detail(a){
