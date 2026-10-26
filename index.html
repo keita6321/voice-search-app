@@ -34,6 +34,11 @@ button{font:inherit;color:inherit;cursor:pointer}
 #q::placeholder{color:#99968f;font-weight:400}
 #q::-webkit-search-cancel-button{display:none}
 #clr{width:34px;height:34px;border:0;border-radius:50%;background:var(--bg);font-size:16px;line-height:1;color:var(--sub)}
+.vod-filters{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
+.vod-filter{min-height:40px;padding:6px 15px;border:1px solid var(--ac);border-radius:999px;background:transparent;color:var(--ac);font-size:14px;font-weight:700;line-height:1.2;white-space:nowrap}
+.vod-filter[aria-pressed="true"]{background:var(--ac);color:#fff}
+.vod-filter:active{transform:scale(.97)}
+.filter-status{margin:0 0 6px;color:var(--tx);font-size:12px;font-weight:700}
 .cnt{padding:3px 4px 10px;font-size:12px;color:var(--sub);font-weight:500}
 #list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .row{display:flex;align-items:center;gap:10px;min-width:0;min-height:62px;padding:7px 12px;border:0;border-radius:13px;background:var(--sf);text-align:left;box-shadow:0 2px 6px rgba(35,42,53,.12);transition:transform .12s,box-shadow .12s}
@@ -41,6 +46,11 @@ button{font:inherit;color:inherit;cursor:pointer}
 .av{flex:none;width:42px;height:42px;border-radius:11px;display:grid;place-items:center;overflow:hidden;background:hsl(var(--h) 38% 89%)}
 .av svg{width:100%;height:100%}
 .nm{flex:1;min-width:0}.nm b{display:block;overflow:hidden;font-size:15px;font-weight:700;line-height:1.35;text-overflow:ellipsis;white-space:nowrap}
+.service-marks{display:flex;flex:none;align-items:center;gap:3px}
+.service-mark{display:grid;width:22px;height:22px;place-items:center;overflow:hidden;border-radius:6px;background:var(--service-color);color:var(--service-text,#fff);font:900 12px/1 Arial,sans-serif}
+.service-mark.prime{font-size:7px;letter-spacing:-.06em}
+.service-mark.danime{font-size:13px}
+.service-more{color:var(--sub);font-size:10px;white-space:nowrap}
 .role-count{flex:none;color:var(--sub);font-size:11px;font-weight:500;white-space:nowrap}
 .row .ch{flex:none;width:8px;height:8px;border-right:1.7px solid var(--sub);border-top:1.7px solid var(--sub);transform:rotate(45deg);opacity:.75}
 .empty{grid-column:1/-1;padding:40px 20px;text-align:center;color:var(--sub)}.empty b{display:block;font-size:17px;color:var(--tx);margin-bottom:4px}
@@ -97,6 +107,8 @@ body.modal-open{overflow:hidden}
    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
    <input id="q" type="search" placeholder="今期の声優を名前・ひらがなで検索" autocomplete="off" enterkeyhint="search" aria-label="声優を検索">
    <button id="clr" type="button" hidden aria-label="入力を消す">✕</button></label></div>
+  <div class="vod-filters" id="vod-filters" role="group" aria-label="配信サービスで絞り込み"></div>
+  <div class="filter-status" id="filter-status" aria-live="polite">フィルター：すべての配信</div>
   <div class="cnt" id="cnt">今期放送中の声優（あいうえお順）</div>
   <div id="list"></div>
  </section>
@@ -109,11 +121,19 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 const norm=s=>s.normalize('NFKC').toLowerCase().replace(/[\u30a1-\u30f6]/g,c=>String.fromCharCode(c.charCodeAt(0)-96)).replace(/[\s・･]/g,'');
 // サービスごとのブランド色（c:背景 t:文字）。未登録はアクセント色
 const BR={'Amazon Prime Video':{c:'#0a7bc4'},'Netflix':{c:'#e50914'},'U-NEXT':{c:'#1d1d1f'},'dアニメストア':{c:'#ef4b39'},'Hulu':{c:'#1ce783',t:'#04200f'},'ABEMA':{c:'#34d96b',t:'#06210f'},'DMM TV':{c:'#1e3a8a'},'アニメ放題':{c:'#f08300'},'アニメタイムズ':{c:'#7c3aed'}};
+const SERVICE_ORDER=['Amazon Prime Video','U-NEXT','DMM TV','Hulu','Netflix'];
+const SERVICE_LABEL={'Amazon Prime Video':'Prime Video'};
+const SERVICE_MARK={'Amazon Prime Video':'▶','Netflix':'N','dアニメストア':'d','U-NEXT':'U','Hulu':'h','ABEMA':'A','DMM TV':'D','アニメ放題':'放','アニメタイムズ':'AT'};
 const hue=id=>{let n=0;for(const ch of id)n=(n*31+ch.charCodeAt(0))%360;return n};
-let D,A=[],WORK_COUNT=0;
+const serviceLabel=name=>SERVICE_LABEL[name]||name;
+let D,A=[],WORK_COUNT=0,SERVICES=[],selectedService='',SERVICE_WORK_COUNTS={};
 
 fetch('data.json').then(r=>r.json()).then(d=>{
-  D=d;A=d.voice_actors.map(a=>({...a,k:norm(a.name+a.reading),h:hue(a.actor_id)}));WORK_COUNT=Object.keys(d.works).length;
+  D=d;WORK_COUNT=Object.keys(d.works).length;
+  SERVICES=SERVICE_ORDER.filter(s=>Object.values(d.works).some(w=>w.vod_links.some(v=>v.provider===s)));
+  SERVICE_WORK_COUNTS=Object.fromEntries(SERVICES.map(s=>[s,Object.values(d.works).filter(w=>w.vod_links.some(v=>v.provider===s)).length]));
+  A=d.voice_actors.map(a=>({...a,k:norm(a.name+a.reading),h:hue(a.actor_id),services:[...new Set(a.roles.flatMap(r=>d.works[r.work_id].vod_links.map(v=>v.provider)))]}));
+  renderVodFilters();
   const [y,s]=d.season.split('-'),M={winter:['冬','1〜3月'],spring:['春','4〜6月'],summer:['夏','7〜9月'],autumn:['秋','10〜12月'],fall:['秋','10〜12月']}[s]||[s,''];
   const dt=new Date(d.updated_at).toLocaleDateString('ja-JP',{timeZone:'Asia/Tokyo',month:'numeric',day:'numeric'});
   $('#sub').textContent=`${y}年 ${M[0]}アニメ`;
@@ -122,10 +142,15 @@ fetch('data.json').then(r=>r.json()).then(d=>{
 }).catch(()=>{$('#list').innerHTML='<div class="empty"><b>データを読み込めませんでした</b>data.json を同じ場所に置き、サーバー経由で開いてください。</div>'});
 
 function list(){
-  const v=$('#q').value,q=norm(v),r=q?A.filter(a=>a.k.includes(q)):A;
+  const v=$('#q').value,q=norm(v),r=A.filter(a=>(!selectedService||a.services.includes(selectedService))&&(!q||a.k.includes(q)));
   $('#clr').hidden=!v;
-  $('#cnt').textContent=q?(r.length?`${r.length}名が見つかりました／検索対象${WORK_COUNT}作品`:`検索結果はありません／検索対象${WORK_COUNT}作品`):`今季出演中の声優（あいうえお順）・${A.length}名／${WORK_COUNT}作品`;
-  $('#list').innerHTML=r.length?r.map(a=>`<button class="row" data-id="${esc(a.actor_id)}" style="--h:${a.h}"><span class="av" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M5 48c1-10 8-15 19-15s18 5 19 15" fill="hsl(var(--h) 31% 52%)"/><path d="M12 20c0-9 5-14 12-14s12 5 12 14v5H12z" fill="hsl(var(--h) 27% 43%)"/><ellipse cx="24" cy="23" rx="9" ry="11" fill="#f1cdb7"/><path d="M15 19c1-8 5-12 10-12 4 0 8 3 9 9-5 0-8-2-10-5-2 4-5 6-9 8" fill="hsl(var(--h) 27% 43%)"/><circle cx="21" cy="23" r=".8" fill="#514b4a"/><circle cx="27" cy="23" r=".8" fill="#514b4a"/><path d="M22 28q2 2 4 0" fill="none" stroke="#b77974" stroke-width=".8" stroke-linecap="round"/></svg></span><span class="nm"><b>${esc(a.name)}</b></span><span class="role-count">${a.roles.length}件出演</span><i class="ch" aria-hidden="true"></i></button>`).join(''):`<div class="empty"><b>「${esc(v)}」は今期の作品に見つかりません</b>過去作・来期作は対象外です。名前の一部やひらがなでも探せます。</div>`;
+  const workCount=selectedService?SERVICE_WORK_COUNTS[selectedService]:WORK_COUNT;
+  $('#filter-status').textContent=`フィルター：${selectedService?serviceLabel(selectedService):'すべての配信'}`;
+  $('#cnt').textContent=q?(r.length?`${r.length}名が見つかりました／${selectedService?serviceLabel(selectedService)+'配信':'検索対象'}${workCount}作品`:`検索結果はありません／${selectedService?serviceLabel(selectedService)+'配信':'検索対象'}${workCount}作品`):selectedService?`${serviceLabel(selectedService)}で配信中の声優（あいうえお順）・${r.length}名／${workCount}作品`:`今季出演中の声優（あいうえお順）・${r.length}名／${WORK_COUNT}作品`;
+  $('#list').innerHTML=r.length?r.map(a=>`<button class="row" data-id="${esc(a.actor_id)}" style="--h:${a.h}"><span class="av" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M5 48c1-10 8-15 19-15s18 5 19 15" fill="hsl(var(--h) 31% 52%)"/><path d="M12 20c0-9 5-14 12-14s12 5 12 14v5H12z" fill="hsl(var(--h) 27% 43%)"/><ellipse cx="24" cy="23" rx="9" ry="11" fill="#f1cdb7"/><path d="M15 19c1-8 5-12 10-12 4 0 8 3 9 9-5 0-8-2-10-5-2 4-5 6-9 8" fill="hsl(var(--h) 27% 43%)"/><circle cx="21" cy="23" r=".8" fill="#514b4a"/><circle cx="27" cy="23" r=".8" fill="#514b4a"/><path d="M22 28q2 2 4 0" fill="none" stroke="#b77974" stroke-width=".8" stroke-linecap="round"/></svg></span><span class="nm"><b>${esc(a.name)}</b></span><span class="service-marks" aria-label="${a.services.map(serviceLabel).join('、')}で配信">${a.services.slice(0,3).map(s=>{const b=BR[s]||{};return `<span class="service-mark ${s==='Amazon Prime Video'?'prime':s==='dアニメストア'?'danime':''}" style="--service-color:${b.c||'var(--ac)'};--service-text:${b.t||'#fff'}" title="${esc(serviceLabel(s))}" aria-hidden="true">${esc(SERVICE_MARK[s]||serviceLabel(s)[0])}</span>`}).join('')}${a.services.length>3?`<span class="service-more">+${a.services.length-3}</span>`:''}</span><span class="role-count">${a.roles.length}件出演</span><i class="ch" aria-hidden="true"></i></button>`).join(''):`<div class="empty"><b>${q?(selectedService?`${serviceLabel(selectedService)}で配信中の作品に「${esc(v)}」は見つかりません`:`「${esc(v)}」は今期の作品に見つかりません`):'このサービスで配信中の作品に出演する声優はいません'}</b>${q?(selectedService?'名前の一部やひらがなで検索できます。':'過去作・来期作は対象外です。名前の一部やひらがなでも探せます。'):''}</div>`;
+}
+function renderVodFilters(){
+  $('#vod-filters').innerHTML=`<button class="vod-filter" type="button" data-service="" aria-pressed="true">すべての配信</button>`+SERVICES.map(s=>`<button class="vod-filter" type="button" data-service="${esc(s)}" aria-pressed="false">${esc(serviceLabel(s))}</button>`).join('');
 }
 function ph(cls,key,text,src,alt){return `<div class="ph ${cls}" style="--h:${hue(key)}">${esc([...text][0])}${src?`<img src="${esc(src)}" alt="${esc(alt)}" loading="lazy" referrerpolicy="no-referrer">`:''}</div>`}
 function avatar(key){
@@ -152,6 +177,7 @@ function route(){
 }
 $('#q').addEventListener('input',list);
 $('#clr').onclick=()=>{$('#q').value='';list();$('#q').focus()};
+$('#vod-filters').addEventListener('click',e=>{const b=e.target.closest('.vod-filter');if(b){selectedService=b.dataset.service;$('#vod-filters').querySelectorAll('.vod-filter').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));list()}});
 $('#list').addEventListener('click',e=>{const b=e.target.closest('.row');if(b){$('#q').blur();location.hash=b.dataset.id}});
 $('#s2').addEventListener('click',e=>{if(e.target===$('#s2'))closeDetail()});
 addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#s2').hidden)closeDetail()});
