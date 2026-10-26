@@ -5,8 +5,9 @@
        python3 coverage_report.py [--refresh]
 出力:  画面に10行ほどの要約 / cache/ に取得結果（2回目以降はキャッシュを使う）/ coverage_missing.csv に声優情報が無い作品の一覧
 """
-import argparse, csv, difflib, json, os, re, sys, time, unicodedata
+import argparse, csv, difflib, json, os, re, sys, time
 from datetime import date, timedelta
+from data_normalization import canonical_title, load_title_aliases, title_key
 
 SEASON, YEAR, AL_SEASON = "2026-autumn", 2026, "FALL"
 UA = {"User-Agent": "anime-va-search/1.0 (personal project)"}
@@ -99,25 +100,29 @@ def fetch_denfami():
     return out
 
 # ---- 統合 ----
-nt = lambda s: re.sub(r"[\W_]+", "", unicodedata.normalize("NFKC", s).lower())
-
-def merge(sources):
+def merge(sources, title_aliases=None):
+    title_aliases = load_title_aliases() if title_aliases is None else title_aliases
     works = []
     def find(w):
+        key = title_key(canonical_title(w["title"], title_aliases))
         for x in works:
-            if (w["mal"] and x["mal"] == w["mal"]) or (w["tid"] and x["tid"] == w["tid"]) or x["nt"] == nt(w["title"]):
+            if (w["mal"] and x["mal"] == w["mal"]) or (w["tid"] and x["tid"] == w["tid"]) or x["nt"] == key:
                 return x
-        m = difflib.get_close_matches(nt(w["title"]), [x["nt"] for x in works], n=1, cutoff=0.86)
+        m = difflib.get_close_matches(key, [x["nt"] for x in works], n=1, cutoff=0.86)
         return next((x for x in works if m and x["nt"] == m[0]), None)
     for src, items in sources.items():
         for w in items:
             x = find(w)
             if not x:
-                x = {"title": w["title"], "nt": nt(w["title"]), "mal": None, "tid": None, "casts": {}, "src": set()}
+                title = canonical_title(w["title"], title_aliases)
+                x = {"title": title, "nt": title_key(title), "mal": None, "tid": None, "casts": {}, "src": set()}
                 works.append(x)
             x["mal"] = x["mal"] or w["mal"]; x["tid"] = x["tid"] or w["tid"]
-            x["official"] = x.get("official") or w.get("official"); x["vods"] = x.get("vods") or w.get("vods")
-            x["src"].add(src); x["casts"][src] = w["cast"]
+            x["official"] = x.get("official") or w.get("official")
+            x["vods"] = list(dict.fromkeys([*(x.get("vods") or []), *(w.get("vods") or [])]))
+            x["src"].add(src)
+            casts = x["casts"].setdefault(src, [])
+            casts.extend(c for c in w["cast"] if c not in casts)
     return works
 
 def main():

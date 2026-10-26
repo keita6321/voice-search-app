@@ -7,6 +7,7 @@
 import csv, hashlib, json, os, re, unicodedata
 from datetime import datetime, timezone
 import coverage_report as cr, crawl
+from data_normalization import is_supported_actor_name, load_title_aliases
 
 SEASON, MAX_ROLES = cr.SEASON, 24
 
@@ -27,7 +28,7 @@ def pick_cast(w, kana):
     for s in ("denfami", "annict", "anilist"):
         for c in w["casts"].get(s, []):
             role, name = (c[0] or "").strip(), re.sub(r"\s+", "", c[1] or "")
-            if not name:
+            if not name or not is_supported_actor_name(name):
                 continue
             if len(c) > 2 and c[2]:
                 kana.setdefault(name, hira(c[2]))
@@ -41,7 +42,7 @@ def main():
     spec = {"annict": (cr.fetch_annict, "official"), "anilist": (cr.fetch_anilist, "cast"),
             "syoboi": (cr.fetch_syoboi, "cast"), "denfami": (cr.fetch_denfami, "official")}
     src = {k: cr.cached(k, f, stale(k, key)) for k, (f, key) in spec.items()}
-    works = cr.merge(src)
+    works = cr.merge(src, load_title_aliases())
 
     reading = {}
     if os.path.exists("readings.csv"):

@@ -11,6 +11,7 @@
 import argparse, csv, hashlib, json, os, re, sys, time
 from datetime import date, datetime, timezone
 from bs4 import BeautifulSoup
+from data_normalization import is_supported_actor_name, load_title_aliases, merge_work_variants
 
 SEASON = "2026-autumn"
 BASE = "https://news.denfaminicogamer.jp/kikakuthetower/261001g"
@@ -56,7 +57,7 @@ def parse_page(html, max_roles):
                 continue
             role, name = ln.strip().split("：", 1)
             name = re.sub(r"\s+", "", re.sub(r"[（(].*?[）)]", "", name))
-            if role.strip() and name:
+            if role.strip() and is_supported_actor_name(name):
                 cast.append([role.strip(), name])
         if not cast:
             print(f"  キャスト無しのため除外: {m.group(1)}"); continue
@@ -88,6 +89,7 @@ def main():
     titles = {w["title"] for w in works}
     if os.path.exists("manual_works.json"):
         works += [w for w in json.load(open("manual_works.json", encoding="utf-8")) if w["title"] not in titles]
+    works = merge_work_variants(works, load_title_aliases())
 
     reading = {}
     if os.path.exists("readings.csv"):
@@ -101,15 +103,23 @@ def main():
 
     out_works, actors = {}, {}
     for w in works:
+        cast = [(role, name) for role, name in w["cast"] if is_supported_actor_name(name)]
+        if not cast:
+            continue
         wid = w.get("id") or "w" + hashlib.md5(w["title"].encode()).hexdigest()[:8]
         out_works[wid] = {"title": w["title"], "thumbnail": img("works", wid), "credit": None, "official_url": w.get("official_url"),
                           "vod_links": [{"provider": p, "url": PROV[p]} for p in w["vods"] if p in PROV]}
-        for n, (role, name) in enumerate(w["cast"], 1):
+        cast_by_name = {}
+        for role, name in cast:
+            roles = cast_by_name.setdefault(name, [])
+            if role not in roles:
+                roles.append(role)
+        for n, (name, roles) in enumerate(cast_by_name.items(), 1):
             if name not in reading:
                 todo[name] = auto(name)
             cid = f"{wid}-{n}"
             act = actors.setdefault(name, {"name": name, "reading": reading.get(name) or todo[name], "roles": []})
-            act["roles"].append({"work_id": wid, "character_id": cid, "character_name": role, "image": img("characters", cid)})
+            act["roles"].append({"work_id": wid, "character_id": cid, "character_name": "／".join(roles), "image": img("characters", cid)})
     va = sorted(actors.values(), key=lambda x: x["reading"])
     va = [{"actor_id": f"va{i:04d}", **x} for i, x in enumerate(va, 1)]
     json.dump({"season": SEASON, "updated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
