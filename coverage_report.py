@@ -78,7 +78,7 @@ def extract_annict_vods(html):
     return [provider for provider in _ANNICT_VOD_ORDER if provider in providers]
 
 
-def extract_annict_work_metadata(html, page_url):
+def extract_official_thumbnail(html, page_url):
     from bs4 import BeautifulSoup
     from urllib.parse import urljoin, urlsplit
 
@@ -87,7 +87,7 @@ def extract_annict_work_metadata(html, page_url):
     thumbnail = urljoin(page_url, image["content"]) if image else None
     if thumbnail and urlsplit(thumbnail).scheme != "https":
         thumbnail = None
-    return {"vods": extract_annict_vods(html), "thumbnail": thumbnail}
+    return thumbnail
 
 
 def annict_work_number(work_id):
@@ -109,14 +109,27 @@ def fetch_annict():
     if not token:
         raise RuntimeError("環境変数 ANNICT_TOKEN が未設定")
     import requests
+    from discover_vod_candidates import OfficialPageFetcher
+
     session = requests.Session()
     session.headers.update(UA)
+    official_pages = OfficialPageFetcher()
 
-    def fetch_work_metadata(work_id):
+    def fetch_work_vods(work_id):
         url = f"https://annict.com/works/{annict_work_number(work_id)}"
         response = session.get(url, timeout=30)
         response.raise_for_status()
-        return extract_annict_work_metadata(response.text, url)
+        return extract_annict_vods(response.text)
+
+    def fetch_official_thumbnail(official_url, title):
+        if not official_url:
+            return None
+        try:
+            html, final_url = official_pages.get(official_url)
+            return extract_official_thumbnail(html, final_url)
+        except (requests.RequestException, PermissionError, ValueError) as exc:
+            print(f"  [thumbnail] 公式サイトから取得できませんでした ({title}): {exc}", file=sys.stderr)
+            return None
 
     q = """query($s:[String!],$a:String){searchWorks(seasons:$s,first:30,after:$a,orderBy:{field:WATCHERS_COUNT,direction:DESC}){
       pageInfo{hasNextPage endCursor}
@@ -127,10 +140,12 @@ def fetch_annict():
                  {"Authorization": f"Bearer {token}"})["searchWorks"]
         for w in d["nodes"]:
             cast = [[(c["character"] or {}).get("name", ""), (c["person"] or {}).get("name") or c["name"], (c["person"] or {}).get("nameKana") or ""] for c in w["casts"]["nodes"]]
-            metadata = fetch_work_metadata(w["id"])
+            vods = fetch_work_vods(w["id"])
+            thumbnail = fetch_official_thumbnail(w["officialSiteUrl"], w["title"])
             out.append({"annict_id": w["id"], "title": w["title"], "mal": w["malAnimeId"],
                         "tid": w["syobocalTid"], "official": w["officialSiteUrl"],
-                        **metadata, "cast": [c for c in cast if c[1]]})
+                        "vods": vods, "thumbnail": thumbnail, "thumbnail_source": "official_site",
+                        "cast": [c for c in cast if c[1]]})
             time.sleep(1)
         if not d["pageInfo"]["hasNextPage"]:
             return out

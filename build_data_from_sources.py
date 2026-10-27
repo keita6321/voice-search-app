@@ -20,6 +20,7 @@ def stale_annict_cache():
         records = json.load(f)
     return not records or any(
         not {"annict_id", "vods", "thumbnail", "cast"} <= record.keys()
+        or record.get("thumbnail_source") != "official_site"
         for record in records
     )
 
