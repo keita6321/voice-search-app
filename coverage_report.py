@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Annict(軸) + AniList + しょぼいカレンダー + 電ファミ記事 を取得し、網羅率だけを報告する。data.json は作らない。
-準備:  pip install requests beautifulsoup4     ※ crawl.py と同じフォルダに置く
+"""Annict(軸) + AniList + しょぼいカレンダーを取得し、網羅率だけを報告する。data.json は作らない。
+準備:  pip install requests beautifulsoup4
 実行:  export ANNICT_TOKEN='（Annictの個人用アクセストークン）'   # 環境変数で渡す。コードやGitに書かない
        python3 coverage_report.py [--refresh]
 出力:  画面に10行ほどの要約 / cache/ に取得結果（2回目以降はキャッシュを使う）/ coverage_missing.csv に声優情報が無い作品の一覧
 """
 import argparse, csv, difflib, json, os, re, sys, time
+import base64, binascii
 from datetime import date, timedelta
 from data_normalization import canonical_title, load_title_aliases, title_key
 
@@ -42,20 +43,95 @@ def vals(x):
     return list(x.values()) if isinstance(x, dict) else (x or [])
 
 # ---- Annict（軸）----
+_ANNICT_VOD_HOSTS = {
+    "amazon.co.jp": "Amazon Prime Video",
+    "video.unext.jp": "U-NEXT",
+    "animestore.docomo.ne.jp": "dアニメストア",
+    "animehodai.jp": "アニメ放題",
+    "abema.tv": "ABEMA",
+    "netflix.com": "Netflix",
+    "animetimes.com": "アニメタイムズ",
+    "tv.dmm.com": "DMM TV",
+    "hulu.jp": "Hulu",
+}
+_ANNICT_VOD_ORDER = [
+    "Amazon Prime Video", "U-NEXT", "dアニメストア", "アニメ放題",
+    "ABEMA", "Netflix", "アニメタイムズ", "DMM TV", "Hulu",
+]
+
+
+def extract_annict_vods(html):
+    from bs4 import BeautifulSoup
+    from urllib.parse import urlsplit
+
+    soup = BeautifulSoup(html, "html.parser")
+    providers = set()
+    for anchor in soup.select("a[href]"):
+        host = (urlsplit(anchor["href"]).hostname or "").lower()
+        provider = next(
+            (name for domain, name in _ANNICT_VOD_HOSTS.items()
+             if host == domain or host.endswith("." + domain)),
+            None,
+        )
+        if provider:
+            providers.add(provider)
+    return [provider for provider in _ANNICT_VOD_ORDER if provider in providers]
+
+
+def extract_annict_work_metadata(html, page_url):
+    from bs4 import BeautifulSoup
+    from urllib.parse import urljoin, urlsplit
+
+    soup = BeautifulSoup(html, "html.parser")
+    image = soup.select_one('meta[property="og:image"][content]')
+    thumbnail = urljoin(page_url, image["content"]) if image else None
+    if thumbnail and urlsplit(thumbnail).scheme != "https":
+        thumbnail = None
+    return {"vods": extract_annict_vods(html), "thumbnail": thumbnail}
+
+
+def annict_work_number(work_id):
+    value = str(work_id)
+    if value.isdecimal():
+        return value
+    try:
+        decoded = base64.b64decode(value, validate=True).decode("utf-8")
+    except (binascii.Error, UnicodeDecodeError, ValueError):
+        raise ValueError(f"Invalid Annict work ID: {work_id!r}") from None
+    match = re.fullmatch(r"Work-(\d+)", decoded)
+    if not match:
+        raise ValueError(f"Invalid Annict work ID: {work_id!r}")
+    return match.group(1)
+
+
 def fetch_annict():
     token = os.environ.get("ANNICT_TOKEN")
     if not token:
         raise RuntimeError("環境変数 ANNICT_TOKEN が未設定")
+    import requests
+    session = requests.Session()
+    session.headers.update(UA)
+
+    def fetch_work_metadata(work_id):
+        url = f"https://annict.com/works/{annict_work_number(work_id)}"
+        response = session.get(url, timeout=30)
+        response.raise_for_status()
+        return extract_annict_work_metadata(response.text, url)
+
     q = """query($s:[String!],$a:String){searchWorks(seasons:$s,first:30,after:$a,orderBy:{field:WATCHERS_COUNT,direction:DESC}){
       pageInfo{hasNextPage endCursor}
-      nodes{title malAnimeId syobocalTid officialSiteUrl casts(first:40){nodes{name person{name nameKana} character{name}}}}}}"""
+      nodes{id title malAnimeId syobocalTid officialSiteUrl casts(first:40){nodes{name person{name nameKana} character{name}}}}}}"""
     out, after = [], None
     while True:
         d = post("https://api.annict.com/graphql", {"query": q, "variables": {"s": [SEASON], "a": after}},
                  {"Authorization": f"Bearer {token}"})["searchWorks"]
         for w in d["nodes"]:
             cast = [[(c["character"] or {}).get("name", ""), (c["person"] or {}).get("name") or c["name"], (c["person"] or {}).get("nameKana") or ""] for c in w["casts"]["nodes"]]
-            out.append({"title": w["title"], "mal": w["malAnimeId"], "tid": w["syobocalTid"], "official": w["officialSiteUrl"], "cast": [c for c in cast if c[1]]})
+            metadata = fetch_work_metadata(w["id"])
+            out.append({"annict_id": w["id"], "title": w["title"], "mal": w["malAnimeId"],
+                        "tid": w["syobocalTid"], "official": w["officialSiteUrl"],
+                        **metadata, "cast": [c for c in cast if c[1]]})
+            time.sleep(1)
         if not d["pageInfo"]["hasNextPage"]:
             return out
         after = d["pageInfo"]["endCursor"]; time.sleep(1)
@@ -89,16 +165,6 @@ def fetch_syoboi():
         time.sleep(1)
     return out
 
-# ---- 電ファミ記事（crawl.py を再利用）----
-def fetch_denfami():
-    import crawl
-    out = []
-    for i in crawl.PAGES:
-        for w in crawl.parse_page(crawl.get(crawl.BASE if i == 1 else f"{crawl.BASE}/{i}"), 99):
-            out.append({"title": w["title"], "mal": None, "tid": None, "official": w["official_url"], "vods": w["vods"], "cast": w["cast"]})
-        time.sleep(2)
-    return out
-
 # ---- 統合 ----
 def merge(sources, title_aliases=None):
     title_aliases = load_title_aliases() if title_aliases is None else title_aliases
@@ -119,6 +185,7 @@ def merge(sources, title_aliases=None):
                 works.append(x)
             x["mal"] = x["mal"] or w["mal"]; x["tid"] = x["tid"] or w["tid"]
             x["official"] = x.get("official") or w.get("official")
+            x["thumbnail"] = x.get("thumbnail") or w.get("thumbnail")
             x["vods"] = list(dict.fromkeys([*(x.get("vods") or []), *(w.get("vods") or [])]))
             x["src"].add(src)
             casts = x["casts"].setdefault(src, [])
@@ -127,7 +194,7 @@ def merge(sources, title_aliases=None):
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--refresh", action="store_true"); a = ap.parse_args()
-    fetchers = {"annict": fetch_annict, "anilist": fetch_anilist, "syoboi": fetch_syoboi, "denfami": fetch_denfami}
+    fetchers = {"annict": fetch_annict, "anilist": fetch_anilist, "syoboi": fetch_syoboi}
     src = {k: cached(k, f, a.refresh) for k, f in fetchers.items()}
     works = merge(src)
     has = lambda w: any(w["casts"].values())
@@ -138,7 +205,7 @@ def main():
     print(f"■ 統合後の作品数: {n}")
     print(f"■ 声優情報あり: {ok} ({pct(ok, n)})　なし: {n - ok} ({pct(n - ok, n)})")
     print(f"■ うち放送確認済み(しょぼいカレンダー): {len(air)}作品 / 声優なし {sum(not has(w) for w in air)} ({pct(sum(not has(w) for w in air), len(air))})")
-    for k in ("annict", "anilist", "denfami"):
+    for k in ("annict", "anilist"):
         only = sum(1 for w in works if w["casts"].get(k) and not any(v for s, v in w["casts"].items() if s != k))
         print(f"■ {k}だけが声優情報を持つ作品: {only}")
     with open("coverage_missing.csv", "w", encoding="utf-8", newline="") as f:

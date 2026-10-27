@@ -72,6 +72,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .modal-scroll>h3{margin:0 2px 9px;font-size:13px;font-weight:900}
 .work-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .work{min-width:0;padding:13px;border:1px solid #ebe9e3;border-radius:13px;background:var(--sf);box-shadow:0 2px 6px rgba(35,42,53,.06)}
+.work-thumb{display:block;width:100%;height:132px;margin:0 0 9px;border-radius:9px;object-fit:contain;background:linear-gradient(135deg,#f3f1ec,#eae7e0)}
 .work h4{display:-webkit-box;overflow:hidden;margin:0 0 3px;font-size:15px;line-height:1.3;font-weight:900;-webkit-box-orient:vertical;-webkit-line-clamp:2}
 .cr{overflow:hidden;margin:0 0 3px;color:var(--sub);font-size:10px;text-overflow:ellipsis;white-space:nowrap}
 .castline{overflow:hidden;margin:0 0 7px;color:var(--sub);font-size:11px;line-height:1.35;text-overflow:ellipsis;white-space:nowrap}
@@ -121,10 +122,15 @@ const serviceLabel=name=>SERVICE_LABEL[name]||name;
 let D,A=[],WORK_COUNT=0,SERVICES=[],selectedService='',SERVICE_WORK_COUNTS={};
 
 fetch('data.json').then(r=>r.json()).then(d=>{
-  D=d;WORK_COUNT=Object.keys(d.works).length;
-  SERVICES=SERVICE_ORDER.filter(s=>Object.values(d.works).some(w=>w.vod_links.some(v=>v.provider===s)));
-  SERVICE_WORK_COUNTS=Object.fromEntries(SERVICES.map(s=>[s,Object.values(d.works).filter(w=>w.vod_links.some(v=>v.provider===s)).length]));
-  A=d.voice_actors.map(a=>({...a,k:norm(a.name+a.reading),services:[...new Set(a.roles.flatMap(r=>d.works[r.work_id].vod_links.map(v=>v.provider)))]}));
+  D=d;
+  const vodWorks=Object.entries(d.works).filter(([,w])=>w.vod_links?.length);
+  const vodWorkIds=new Set(vodWorks.map(([id])=>id));
+  WORK_COUNT=vodWorks.length;
+  SERVICES=SERVICE_ORDER.filter(s=>vodWorks.some(([,w])=>w.vod_links.some(v=>v.provider===s)));
+  SERVICE_WORK_COUNTS=Object.fromEntries(SERVICES.map(s=>[s,vodWorks.filter(([,w])=>w.vod_links.some(v=>v.provider===s)).length]));
+  A=d.voice_actors.map(a=>({...a,roles:a.roles.filter(r=>vodWorkIds.has(r.work_id))}))
+    .filter(a=>a.roles.length)
+    .map(a=>({...a,k:norm(a.name+a.reading),services:[...new Set(a.roles.flatMap(r=>d.works[r.work_id].vod_links.map(v=>v.provider)))]}));
   renderVodFilters();
   const [y,s]=d.season.split('-'),M={winter:['冬','1〜3月'],spring:['春','4〜6月'],summer:['夏','7〜9月'],autumn:['秋','10〜12月'],fall:['秋','10〜12月']}[s]||[s,''];
   const dt=new Date(d.updated_at).toLocaleDateString('ja-JP',{timeZone:'Asia/Tokyo',month:'numeric',day:'numeric'});
@@ -149,10 +155,10 @@ function detail(a){
   $('#s2').innerHTML=`<div class="dialog" role="dialog" aria-modal="true" aria-labelledby="detail-name" tabindex="-1">
   <header class="detail-head"><div class="detail-bar"><button class="back" id="bk" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>声優一覧へ戻る</span></button><span class="detail-brand">ANIME CAST NOW</span><span aria-hidden="true"></span></div>
   <div class="profile"><div class="profile-copy"><h2 id="detail-name">${esc(a.name)}</h2><small>${esc(a.reading)}</small><em>今季 ${a.roles.length}作品に出演中</em></div></div></header>
-  <div class="modal-scroll"><h3>今季の出演作品</h3><div class="work-grid">`+a.roles.map(r=>{const w=D.works[r.work_id];
-   return `<article class="work"><h4>${esc(w.title)}</h4>${w.credit?`<div class="cr">${esc(w.credit)}</div>`:''}
+  <div class="modal-scroll"><h3>今季の出演作品</h3><div class="work-grid">`+a.roles.filter(r=>D.works[r.work_id]?.vod_links?.length).map(r=>{const w=D.works[r.work_id];
+   return `<article class="work">${w.thumbnail?`<img class="work-thumb" src="${esc(w.thumbnail)}" alt="${esc(w.title)}の画像" loading="lazy" decoding="async" referrerpolicy="no-referrer">`:''}<h4>${esc(w.title)}</h4>${w.credit?`<div class="cr">${esc(w.credit)}</div>`:''}
    <div class="castline"><b>${esc(r.character_name)}</b> ／ ${esc(a.name)}</div>`+
-   (w.vod_links.length?`<div class="vods">`+w.vod_links.map(v=>`<a class="vod" href="${esc(v.url)}" target="_blank" rel="sponsored noopener">${esc(v.provider)}で見る</a>`).join('')+`</div>`:'<div class="soon">配信情報は準備中です</div>')+
+   `<div class="vods">`+w.vod_links.map(v=>`<a class="vod" href="${esc(v.url)}" target="_blank" rel="sponsored noopener">${esc(v.provider)}で見る</a>`).join('')+`</div>`+
    ((r.official_url||w.official_url)?`<a class="off" href="${esc(r.official_url||w.official_url)}" target="_blank" rel="noopener">公式サイト</a>`:'')+'</article>'}).join('')+`</div></div></div>`;
   $('#bk').onclick=closeDetail;
   $('#s2').querySelector('.dialog').focus();
