@@ -46,6 +46,7 @@ def vals(x):
 _ANNICT_VOD_HOSTS = {
     "amazon.co.jp": "Amazon Prime Video",
     "video.unext.jp": "U-NEXT",
+    "disneyplus.com": "Disney+",
     "animestore.docomo.ne.jp": "dアニメストア",
     "animehodai.jp": "アニメ放題",
     "abema.tv": "ABEMA",
@@ -55,7 +56,7 @@ _ANNICT_VOD_HOSTS = {
     "hulu.jp": "Hulu",
 }
 _ANNICT_VOD_ORDER = [
-    "Amazon Prime Video", "U-NEXT", "dアニメストア", "アニメ放題",
+    "Amazon Prime Video", "U-NEXT", "Disney+", "dアニメストア", "アニメ放題",
     "ABEMA", "Netflix", "アニメタイムズ", "DMM TV", "Hulu",
 ]
 

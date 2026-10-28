@@ -7,7 +7,7 @@
 import argparse, csv, hashlib, json, os, re, tempfile, unicodedata
 from datetime import datetime, timezone
 import coverage_report as cr
-from data_normalization import is_supported_actor_name, load_title_aliases, write_vod_audit
+from data_normalization import apply_vod_overrides, is_supported_actor_name, load_title_aliases, write_vod_audit
 from vod_providers import VOD_PROVIDERS
 
 SEASON, MAX_ROLES = cr.SEASON, 24
@@ -51,6 +51,7 @@ def main():
     if not annict:
         raise RuntimeError("Annict から作品データを取得できなかったため、既存の data.json は変更していません")
     works = cr.merge({"annict": annict}, load_title_aliases())
+    apply_vod_overrides(works, VOD_PROVIDERS)
 
     reading = {}
     if os.path.exists("readings.csv"):

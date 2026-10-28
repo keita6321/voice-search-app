@@ -27,6 +27,7 @@ USER_AGENT = "voice-search-app-vod-discovery/1.0"
 PROVIDER_HOSTS = {
     "ABEMA": ("abema.tv",),
     "U-NEXT": ("video.unext.jp",),
+    "Disney+": ("disneyplus.com",),
 }
 CANDIDATE_FIELDS = [
     "title", "provider", "method", "match_type", "matched_title", "confidence",
@@ -70,6 +71,8 @@ def provider_for_url(url):
         return "ABEMA" if path.startswith("/video/title/") else None
     if host == "video.unext.jp" and path.startswith("/title/"):
         return "U-NEXT"
+    if any(host == domain or host.endswith("." + domain) for domain in PROVIDER_HOSTS["Disney+"]):
+        return "Disney+"
     return None
 
 

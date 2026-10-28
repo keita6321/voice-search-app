@@ -40,9 +40,10 @@ button{font:inherit;color:inherit;cursor:pointer}
 .vod-filter:active{transform:scale(.97)}
 .brand-mark{display:grid;flex:none;min-width:22px;height:22px;padding:0 4px;place-items:center;border-radius:6px;background:var(--brand-color);color:var(--brand-text,#fff);font:900 11px/1 Arial,sans-serif;letter-spacing:-.04em}
 .brand-mark.prime{font-size:8px;letter-spacing:-.08em}
+.brand-mark.unext{font-size:7px;letter-spacing:-.08em}
 .brand-mark.danime{font-size:12px}
-.brand-mark.abema{background:#000;color:#fff}
-.vod-filter[aria-pressed="true"] .brand-mark:not(.abema){background:rgba(255,255,255,.2);color:inherit}
+.brand-mark.abema{background:#000;color:#fff;font-size:7px;letter-spacing:-.08em}
+.vod-filter[aria-pressed="true"] .brand-mark:not(.abema):not(.unext){background:rgba(255,255,255,.2);color:inherit}
 .filter-status{margin:0 0 6px;color:var(--tx);font-size:12px;font-weight:700}
 .cnt{padding:3px 4px 10px;font-size:12px;color:var(--sub);font-weight:500}
 #list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
@@ -52,8 +53,9 @@ button{font:inherit;color:inherit;cursor:pointer}
 .service-marks{display:flex;flex:none;align-items:center;gap:3px}
 .service-mark{display:grid;min-width:22px;height:22px;padding:0 4px;place-items:center;overflow:hidden;border-radius:6px;background:var(--brand-color);color:var(--brand-text,#fff);font:900 11px/1 Arial,sans-serif;letter-spacing:-.04em}
 .service-mark.prime{font-size:8px;letter-spacing:-.08em}
+.service-mark.unext{font-size:7px;letter-spacing:-.08em}
 .service-mark.danime{font-size:12px}
-.service-mark.abema{background:#000;color:#fff}
+.service-mark.abema{background:#000;color:#fff;font-size:7px;letter-spacing:-.08em}
 .service-more{color:var(--sub);font-size:10px;white-space:nowrap}
 .role-count{flex:none;color:var(--sub);font-size:11px;font-weight:500;white-space:nowrap}
 .row .ch{flex:none;width:8px;height:8px;border-right:1.7px solid var(--sub);border-top:1.7px solid var(--sub);transform:rotate(45deg);opacity:.75}
@@ -92,8 +94,9 @@ button{font:inherit;color:inherit;cursor:pointer}
 .vod:hover{filter:brightness(.97)}
 .vod-wordmark{display:grid;flex:none;min-width:28px;height:26px;padding:0 5px;place-items:center;border-radius:6px;background:var(--brand-color);color:var(--brand-text,#fff);font:900 10px/1 Arial,sans-serif;letter-spacing:-.04em}
 .vod-wordmark.prime{font-size:8px;letter-spacing:-.08em}
+.vod-wordmark.unext{font-size:7px;letter-spacing:-.08em}
 .vod-wordmark.danime{font-size:12px}
-.vod-wordmark.abema{background:#000;color:#fff}
+.vod-wordmark.abema{background:#000;color:#fff;font-size:7px;letter-spacing:-.08em}
 .soon{padding:8px 5px;border-radius:9px;background:var(--bg);color:var(--sub);font-size:11px;text-align:center}
 .off{display:block;margin-top:6px;color:var(--sub);font-size:10px;text-align:center;text-decoration:none}
 .off:after{content:" ↗"}
@@ -130,16 +133,17 @@ const norm=s=>s.normalize('NFKC').toLowerCase().replace(/[\u30a1-\u30f6]/g,c=>St
 // サービスごとのブランド色（c:背景 t:文字）。未登録はアクセント色
 const SERVICE_BRAND={
  'Amazon Prime Video':{mark:'prime',color:'#00a8e0',text:'#fff',bg:'#effaff',border:'#b8e9f8',fg:'#075b78',className:'prime'},
- 'U-NEXT':{mark:'U-NEXT',color:'#151515',text:'#fff',bg:'#f3f3f3',border:'#d2d2d2',fg:'#171717'},
+ 'U-NEXT':{mark:'U-NEXT',color:'#17356f',text:'#fff',bg:'#f1f5ff',border:'#bdccef',fg:'#17356f',className:'unext'},
+ 'Disney+':{mark:'D+',color:'#102b70',text:'#fff',bg:'#f1f5ff',border:'#bdccef',fg:'#17356f',className:'disney'},
  'dアニメストア':{mark:'d',color:'#ed6c36',text:'#fff',bg:'#fff5ef',border:'#f5c5a7',fg:'#9c3e17',className:'danime'},
  'Hulu':{mark:'hulu',color:'#1ce783',text:'#06200f',bg:'#effff6',border:'#a2e8c1',fg:'#087a45'},
- 'ABEMA':{mark:'A',color:'#000',text:'#fff',bg:'#f0f8ff',border:'#b5dbfb',fg:'#1767a8',className:'abema'},
+ 'ABEMA':{mark:'ABEMA',color:'#000',text:'#fff',bg:'#f0f8ff',border:'#b5dbfb',fg:'#1767a8',className:'abema'},
  'DMM TV':{mark:'DMM',color:'#171717',text:'#fff',bg:'#f4f4f4',border:'#d0d0d0',fg:'#171717'},
  'Netflix':{mark:'N',color:'#e50914',text:'#fff',bg:'#fff2f2',border:'#f0b8bb',fg:'#b20710'},
  'アニメ放題':{mark:'放',color:'#ed7900',text:'#fff',bg:'#fff7ed',border:'#f2d0a6',fg:'#a14c00'},
  'アニメタイムズ':{mark:'AT',color:'#542c82',text:'#fff',bg:'#f7f2fc',border:'#d7c6e8',fg:'#542c82'}
 };
-const SERVICE_ORDER=['Amazon Prime Video','U-NEXT','dアニメストア','Hulu','ABEMA','DMM TV','Netflix','アニメ放題','アニメタイムズ'];
+const SERVICE_ORDER=['Amazon Prime Video','U-NEXT','Disney+','dアニメストア','Hulu','ABEMA','DMM TV','Netflix','アニメ放題','アニメタイムズ'];
 const SERVICE_LABEL={'Amazon Prime Video':'Prime Video'};
 const serviceLabel=name=>SERVICE_LABEL[name]||name;
 let D,A=[],WORK_COUNT=0,SERVICES=[],selectedService='',SERVICE_WORK_COUNTS={};
