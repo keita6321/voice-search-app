@@ -1,5 +1,5 @@
 VOD_PROVIDERS = {
-    "Amazon Prime Video": "https://www.amazon.co.jp/primevideo",
+    "Amazon Prime Video": "https://t.afi-b.com/visit.php?a=915733P-N511670x&p=K998634n",
     "U-NEXT": "https://video.unext.jp",
     "Disney+": "https://www.disneyplus.com/ja-jp",
     "dアニメストア": "https://animestore.docomo.ne.jp",
