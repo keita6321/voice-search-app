@@ -90,6 +90,8 @@ button{font:inherit;color:inherit;cursor:pointer}
 .profile h2{margin:0;font-size:25px;line-height:1.2;font-weight:900;letter-spacing:-.02em;overflow-wrap:anywhere}
 .profile small{display:block;margin-top:2px;color:var(--sub);font-size:12px;line-height:1.3}
 .profile em{display:inline-block;margin-top:5px;padding:3px 9px;border-radius:999px;background:#eeeaf3;color:var(--ac);font-size:11px;font-style:normal;font-weight:700;line-height:1.3}
+.share-x{display:inline-flex;align-items:center;justify-content:center;min-height:44px;margin-top:8px;padding:0 14px;border:1px solid var(--ac);border-radius:999px;background:var(--ac);color:#fff;font-size:12px;font-weight:700;text-decoration:none}
+.share-x:hover{filter:brightness(.95)}
 .modal-scroll{min-height:0;overflow:auto;overscroll-behavior:contain;padding:12px 16px 20px}
 .modal-scroll>h3{margin:0 2px 9px;font-size:13px;font-weight:900}
 .work-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
@@ -238,12 +240,16 @@ function closeDetail(){
 function detail(a){
   $('#s2').innerHTML=`<div class="dialog" role="dialog" aria-modal="true" aria-labelledby="detail-name" tabindex="-1">
   <header class="detail-head"><div class="detail-bar"><button class="back" id="bk" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>声優一覧へ戻る</span></button><span class="detail-brand">ANIME CAST NOW</span><span aria-hidden="true"></span></div>
-  <div class="profile"><div class="profile-copy"><h2 id="detail-name">${esc(a.name)}</h2><small>${esc(a.reading)}</small><em>今季 ${a.roles.length}作品に出演中</em></div></div></header>
+  <div class="profile"><div class="profile-copy"><h2 id="detail-name">${esc(a.name)}</h2><small>${esc(a.reading)}</small><em>今季 ${a.roles.length}作品に出演中</em><a class="share-x" id="share-x" target="_blank" rel="noopener noreferrer" aria-label="${esc(a.name)}さんの出演情報をXでシェア">Xでシェア</a></div></div></header>
   <div class="modal-scroll"><h3>今季の出演作品</h3><div class="work-grid">`+a.roles.filter(r=>D.works[r.work_id]?.vod_links?.length).map(r=>{const w=D.works[r.work_id];
    return `<article class="work"><div class="work-main"><div class="work-intro">${w.thumbnail?`<img class="work-thumb" src="${esc(w.thumbnail)}" alt="${esc(w.title)}の画像" loading="lazy" decoding="async" referrerpolicy="no-referrer">`:''}<div class="work-copy"><h4>${esc(w.title)}</h4>${w.credit?`<div class="cr">${esc(w.credit)}</div>`:''}
    <div class="castline"><b>${esc(r.character_name)}</b> ／ ${esc(a.name)}</div><div class="vods">`+w.vod_links.map(v=>{const b=SERVICE_BRAND[v.provider]||{mark:serviceLabel(v.provider)[0],color:'#62517f',text:'#fff',bg:'#f5f2fa',border:'#d8d0e4',fg:'#62517f'};return `<a class="vod ${b.className||''}" href="${esc(v.url)}" target="_blank" rel="sponsored noopener" style="--brand-color:${b.color};--brand-text:${b.text};--brand-bg:${b.bg};--brand-border:${b.border};--brand-fg:${b.fg}"><span class="vod-wordmark ${b.className||''}">${esc(b.mark)}</span><span>${esc(serviceLabel(v.provider))}で見る</span></a>`}).join('')+`</div></div></div></div>`+
    ((r.official_url||w.official_url)?`<a class="off" href="${esc(r.official_url||w.official_url)}" target="_blank" rel="noopener">公式サイト</a>`:'')+'</article>'}).join('')+`</div></div></div>`;
   $('#bk').onclick=closeDetail;
+  const hashtag=a.name.replace(/[^\p{L}\p{N}_]/gu,'')||'声優';
+  const post=`#${hashtag} さんは今期${a.roles.length}作品に出演！ 配信はここでチェック →`;
+  const shareUrl=`https://anime-cast-now.vercel.app${actorPagePath(a.actor_id)}?ref=share_x`;
+  $('#share-x').href=`https://x.com/intent/post?text=${encodeURIComponent(post)}&url=${encodeURIComponent(shareUrl)}&hashtags=ANIMECASTNOW`;
   $('#s2').querySelector('.dialog').focus();
 }
 function route(){
