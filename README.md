@@ -18,5 +18,5 @@ Install dependencies with `python -m pip install -r requirements.txt` and `pytho
 
 After replacing `data.json` for a new anime season, use Node.js 18 or later and run `npm run build:pages`. Commit the generated `va/` pages and `sitemap.xml` together with the updated data. The generator keeps `robots.txt` pointed at the sitemap.
 
-TODO: add the shared 1200×630 OGP image at `assets/ogp-default.png`.
+The shared 1200×630 OGP image is `assets/ogp-default.png` and is used by every voice actor page.
 voice-search-app
