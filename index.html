@@ -148,7 +148,7 @@ const SERVICE_LABEL={'Amazon Prime Video':'Prime Video'};
 const serviceLabel=name=>SERVICE_LABEL[name]||name;
 let D,A=[],WORK_COUNT=0,SERVICES=[],selectedService='',SERVICE_WORK_COUNTS={};
 
-fetch('data.json').then(r=>r.json()).then(d=>{
+fetch('/data.json').then(r=>r.json()).then(d=>{
   D=d;
   const vodWorks=Object.entries(d.works).filter(([,w])=>w.vod_links?.length);
   const vodWorkIds=new Set(vodWorks.map(([id])=>id));
