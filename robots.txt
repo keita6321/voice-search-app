@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://anime-cast-now.vercel.app/sitemap.xml
