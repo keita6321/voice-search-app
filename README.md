@@ -13,4 +13,10 @@ The data build uses VOD providers extracted from Annict work pages and curated e
 `build_data_from_sources.py` rebuilds `data.json` from Annict source data and curated entries in `vod_overrides.csv`. It uses a valid `cache/annict.json` by default; caches from versions that used Annict-hosted thumbnails are treated as stale and refreshed automatically. Pass `--refresh` to fetch fresh Annict API data and work pages, including supported streaming links and HTTPS `og:image` thumbnail URLs from each work's official site. The page renders available thumbnails in each work card; images are not copied into the repository. A failed refresh leaves the existing `data.json` intact. Set `ANNICT_TOKEN` in the process environment for `--refresh`; do not put it in source files or commit it.
 
 Install dependencies with `python -m pip install -r requirements.txt` and `python -m playwright install chromium`. Run `python discover_vod_candidates.py` to look for ABEMA and U-NEXT title links on official work sites and configured lineup pages. Register official lineup pages in `vod_lineup_sources.csv` with the current `season` value from `data.json`; the crawler observes each page's `robots.txt` and request delay, and uses Chromium when a lineup is JavaScript-rendered. Review all rows in `vod_candidates.csv`, set `decision` to `approve` or `reject`, then run `python discover_vod_candidates.py --apply-approved` to add approved links to `vod_overrides.csv`. Fuzzy lineup matches are suggestions and must be checked before approval. Candidate URLs keep tracking parameters out.
+
+## Static voice actor pages
+
+After replacing `data.json` for a new anime season, use Node.js 18 or later and run `npm run build:pages`. Commit the generated `va/` pages and `sitemap.xml` together with the updated data. The generator keeps `robots.txt` pointed at the sitemap.
+
+TODO: add the shared 1200×630 OGP image at `assets/ogp-default.png`.
 voice-search-app
