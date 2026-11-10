@@ -208,7 +208,37 @@ function list(){
 function renderVodFilters(){
   $('#vod-filters').innerHTML=`<button class="vod-filter" type="button" data-service="" aria-pressed="true"><span class="brand-mark">ALL</span>すべての配信</button>`+SERVICES.map(s=>{const b=SERVICE_BRAND[s]||{mark:serviceLabel(s)[0],color:'#62517f'};return `<button class="vod-filter" type="button" data-service="${esc(s)}" aria-pressed="false" style="--brand-color:${b.color};--brand-text:${b.text||'#fff'};--brand-border:${b.border||'#deddd7'}"><span class="brand-mark ${b.className||''}">${esc(b.mark)}</span>${esc(serviceLabel(s))}</button>`}).join('');
 }
-function closeDetail(){if(history.length>1)history.back();else location.hash=''}
+function actorPageId(actorId){
+  return actorId.startsWith('va')?actorId.slice(2):'';
+}
+function actorPagePath(actorId){
+  const pageId=actorPageId(actorId);
+  return pageId?`/va/${pageId}/`:'/';
+}
+function actorFromLocation(){
+  const match=/^\/va\/([^/]+)\/?$/.exec(location.pathname);
+  let actorId=match?`va${match[1]}`:'';
+  if(!actorId&&location.pathname==='/'&&location.hash.startsWith('#va'))actorId=location.hash.slice(1);
+  if(!actorId&&window.__INITIAL_VA__)actorId=window.__INITIAL_VA__;
+  const actor=A.find(x=>x.actor_id===actorId);
+  if(actor&&location.pathname==='/'&&location.hash.startsWith('#va')){
+    history.replaceState(null,'',`${actorPagePath(actor.actor_id)}${location.search}`);
+  }else if(actor&&match&&!location.pathname.endsWith('/')){
+    history.replaceState(history.state,'',`${actorPagePath(actor.actor_id)}${location.search}`);
+  }else if(actor&&window.__INITIAL_VA__&&location.pathname!==actorPagePath(actor.actor_id)){
+    history.replaceState(history.state,'',`${actorPagePath(actor.actor_id)}${location.search}`);
+  }
+  return actor;
+}
+function openDetail(actorId){
+  if(!A.some(x=>x.actor_id===actorId))return;
+  history.pushState({vaModal:true},'',actorPagePath(actorId));
+  route();
+}
+function closeDetail(){
+  if(history.state?.vaModal)history.back();
+  else{history.replaceState(null,'','/');route()}
+}
 function detail(a){
   $('#s2').innerHTML=`<div class="dialog" role="dialog" aria-modal="true" aria-labelledby="detail-name" tabindex="-1">
   <header class="detail-head"><div class="detail-bar"><button class="back" id="bk" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>声優一覧へ戻る</span></button><span class="detail-brand">ANIME CAST NOW</span><span aria-hidden="true"></span></div>
@@ -221,16 +251,19 @@ function detail(a){
   $('#s2').querySelector('.dialog').focus();
 }
 function route(){
-  const a=A.find(x=>x.actor_id===location.hash.slice(1));
+  const a=actorFromLocation();
+  window.__INITIAL_VA__=null;
+  const seo=$('#seo-content');if(seo)seo.hidden=true;
   $('#s1').hidden=false;$('#s2').hidden=!a;document.body.classList.toggle('modal-open',!!a);
   if(a)detail(a);else list();
 }
 $('#q').addEventListener('input',list);
 $('#clr').onclick=()=>{$('#q').value='';list();$('#q').focus()};
 $('#vod-filters').addEventListener('click',e=>{const b=e.target.closest('.vod-filter');if(b){selectedService=b.dataset.service;$('#vod-filters').querySelectorAll('.vod-filter').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));list()}});
-$('#list').addEventListener('click',e=>{const b=e.target.closest('.row');if(b){$('#q').blur();location.hash=b.dataset.id}});
+$('#list').addEventListener('click',e=>{const b=e.target.closest('.row');if(b){$('#q').blur();openDetail(b.dataset.id)}});
 $('#s2').addEventListener('click',e=>{if(e.target===$('#s2'))closeDetail()});
 addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#s2').hidden)closeDetail()});
+addEventListener('popstate',route);
 addEventListener('hashchange',route);
 // 画像の読み込み失敗時は<img>を外し、下のプレースホルダーを見せる
 addEventListener('error',e=>{if(e.target.tagName==='IMG')e.target.remove()},true);
