@@ -76,6 +76,8 @@ button{font:inherit;color:inherit;cursor:pointer}
 .profile h2{margin:0;font-size:25px;line-height:1.2;font-weight:900;letter-spacing:-.02em;overflow-wrap:anywhere}
 .profile small{display:block;margin-top:2px;color:var(--sub);font-size:12px;line-height:1.3}
 .profile em{display:inline-block;margin-top:5px;padding:3px 9px;border-radius:999px;background:#eeeaf3;color:var(--ac);font-size:11px;font-style:normal;font-weight:700;line-height:1.3}
+.share-x{display:inline-flex;align-items:center;justify-content:center;min-height:44px;margin-top:8px;padding:0 14px;border:1px solid var(--ac);border-radius:999px;background:var(--ac);color:#fff;font-size:12px;font-weight:700;text-decoration:none}
+.share-x:hover{filter:brightness(.95)}
 .modal-scroll{min-height:0;overflow:auto;overscroll-behavior:contain;padding:12px 16px 20px}
 .modal-scroll>h3{margin:0 2px 9px;font-size:13px;font-weight:900}
 .work-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
@@ -102,6 +104,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .off:after{content:" ↗"}
 .modal-empty{grid-column:1/-1;padding:24px;text-align:center;color:var(--sub)}
 body.modal-open{overflow:hidden}
+.seo-content{padding-top:24px;padding-bottom:24px}
 .pr{padding:24px 4px 30px;font-size:11px;color:var(--sub);text-align:center}
 #sub{font-size:18px;font-weight:900;color:#fff;margin:0;line-height:1.4}#scope{margin-top:4px}
 @media(max-width:540px){.wrap{padding:0 16px}#list{grid-template-columns:1fr}.row{min-height:60px}.role-count{font-size:12px}#s2{padding:12px}.dialog{width:100%;max-height:94dvh;border-radius:16px}.detail-head{padding:10px 13px 12px}.modal-scroll{padding:10px 11px 16px}.work-grid{grid-template-columns:1fr;gap:8px}.work{padding:10px}.work-main{gap:8px}.work-intro{gap:8px}.work-thumb{width:42%}.work h4{font-size:13px}.castline{font-size:10px}.vod{font-size:9px;min-height:40px}}
@@ -148,7 +151,7 @@ const SERVICE_LABEL={'Amazon Prime Video':'Prime Video'};
 const serviceLabel=name=>SERVICE_LABEL[name]||name;
 let D,A=[],WORK_COUNT=0,SERVICES=[],selectedService='',SERVICE_WORK_COUNTS={};
 
-fetch('data.json').then(r=>r.json()).then(d=>{
+fetch('/data.json').then(r=>r.json()).then(d=>{
   D=d;
   const vodWorks=Object.entries(d.works).filter(([,w])=>w.vod_links?.length);
   const vodWorkIds=new Set(vodWorks.map(([id])=>id));
@@ -178,29 +181,66 @@ function list(){
 function renderVodFilters(){
   $('#vod-filters').innerHTML=`<button class="vod-filter" type="button" data-service="" aria-pressed="true"><span class="brand-mark">ALL</span>すべての配信</button>`+SERVICES.map(s=>{const b=SERVICE_BRAND[s]||{mark:serviceLabel(s)[0],color:'#62517f'};return `<button class="vod-filter" type="button" data-service="${esc(s)}" aria-pressed="false" style="--brand-color:${b.color};--brand-text:${b.text||'#fff'};--brand-border:${b.border||'#deddd7'}"><span class="brand-mark ${b.className||''}">${esc(b.mark)}</span>${esc(serviceLabel(s))}</button>`}).join('');
 }
-function closeDetail(){if(history.length>1)history.back();else location.hash=''}
+function actorPageId(actorId){
+  return actorId.startsWith('va')?actorId.slice(2):'';
+}
+function actorPagePath(actorId){
+  const pageId=actorPageId(actorId);
+  return pageId?`/va/${pageId}/`:'/';
+}
+function actorFromLocation(){
+  const match=/^\/va\/([^/]+)\/?$/.exec(location.pathname);
+  let actorId=match?`va${match[1]}`:'';
+  if(!actorId&&location.pathname==='/'&&location.hash.startsWith('#va'))actorId=location.hash.slice(1);
+  if(!actorId&&window.__INITIAL_VA__)actorId=window.__INITIAL_VA__;
+  const actor=A.find(x=>x.actor_id===actorId);
+  if(actor&&location.pathname==='/'&&location.hash.startsWith('#va')){
+    history.replaceState(null,'',`${actorPagePath(actor.actor_id)}${location.search}`);
+  }else if(actor&&match&&!location.pathname.endsWith('/')){
+    history.replaceState(history.state,'',`${actorPagePath(actor.actor_id)}${location.search}`);
+  }else if(actor&&window.__INITIAL_VA__&&location.pathname!==actorPagePath(actor.actor_id)){
+    history.replaceState(history.state,'',`${actorPagePath(actor.actor_id)}${location.search}`);
+  }
+  return actor;
+}
+function openDetail(actorId){
+  if(!A.some(x=>x.actor_id===actorId))return;
+  history.pushState({vaModal:true},'',actorPagePath(actorId));
+  route();
+}
+function closeDetail(){
+  if(history.state?.vaModal)history.back();
+  else{history.replaceState(null,'','/');route()}
+}
 function detail(a){
   $('#s2').innerHTML=`<div class="dialog" role="dialog" aria-modal="true" aria-labelledby="detail-name" tabindex="-1">
   <header class="detail-head"><div class="detail-bar"><button class="back" id="bk" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>声優一覧へ戻る</span></button><span class="detail-brand">ANIME CAST NOW</span><span aria-hidden="true"></span></div>
-  <div class="profile"><div class="profile-copy"><h2 id="detail-name">${esc(a.name)}</h2><small>${esc(a.reading)}</small><em>今季 ${a.roles.length}作品に出演中</em></div></div></header>
+  <div class="profile"><div class="profile-copy"><h2 id="detail-name">${esc(a.name)}</h2><small>${esc(a.reading)}</small><em>今季 ${a.roles.length}作品に出演中</em><a class="share-x" id="share-x" target="_blank" rel="noopener noreferrer" aria-label="${esc(a.name)}さんの出演情報をXでシェア">Xでシェア</a></div></div></header>
   <div class="modal-scroll"><h3>今季の出演作品</h3><div class="work-grid">`+a.roles.filter(r=>D.works[r.work_id]?.vod_links?.length).map(r=>{const w=D.works[r.work_id];
    return `<article class="work"><div class="work-main"><div class="work-intro">${w.thumbnail?`<img class="work-thumb" src="${esc(w.thumbnail)}" alt="${esc(w.title)}の画像" loading="lazy" decoding="async" referrerpolicy="no-referrer">`:''}<div class="work-copy"><h4>${esc(w.title)}</h4>${w.credit?`<div class="cr">${esc(w.credit)}</div>`:''}
    <div class="castline"><b>${esc(r.character_name)}</b> ／ ${esc(a.name)}</div><div class="vods">`+w.vod_links.map(v=>{const b=SERVICE_BRAND[v.provider]||{mark:serviceLabel(v.provider)[0],color:'#62517f',text:'#fff',bg:'#f5f2fa',border:'#d8d0e4',fg:'#62517f'};return `<a class="vod ${b.className||''}" href="${esc(v.url)}" target="_blank" rel="sponsored noopener" style="--brand-color:${b.color};--brand-text:${b.text};--brand-bg:${b.bg};--brand-border:${b.border};--brand-fg:${b.fg}"><span class="vod-wordmark ${b.className||''}">${esc(b.mark)}</span><span>${esc(serviceLabel(v.provider))}で見る</span></a>`}).join('')+`</div></div></div></div>`+
    ((r.official_url||w.official_url)?`<a class="off" href="${esc(r.official_url||w.official_url)}" target="_blank" rel="noopener">公式サイト</a>`:'')+'</article>'}).join('')+`</div></div></div>`;
   $('#bk').onclick=closeDetail;
+  const hashtag=a.name.replace(/[^\p{L}\p{N}_]/gu,'')||'声優';
+  const post=`#${hashtag} さんは今期${a.roles.length}作品に出演！ 配信はここでチェック →`;
+  const shareUrl=`https://anime-cast-now.vercel.app${actorPagePath(a.actor_id)}?ref=share_x`;
+  $('#share-x').href=`https://x.com/intent/post?text=${encodeURIComponent(post)}&url=${encodeURIComponent(shareUrl)}&hashtags=ANIMECASTNOW`;
   $('#s2').querySelector('.dialog').focus();
 }
 function route(){
-  const a=A.find(x=>x.actor_id===location.hash.slice(1));
+  const a=actorFromLocation();
+  window.__INITIAL_VA__=null;
+  const seo=$('#seo-content');if(seo)seo.hidden=true;
   $('#s1').hidden=false;$('#s2').hidden=!a;document.body.classList.toggle('modal-open',!!a);
   if(a)detail(a);else list();
 }
 $('#q').addEventListener('input',list);
 $('#clr').onclick=()=>{$('#q').value='';list();$('#q').focus()};
 $('#vod-filters').addEventListener('click',e=>{const b=e.target.closest('.vod-filter');if(b){selectedService=b.dataset.service;$('#vod-filters').querySelectorAll('.vod-filter').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));list()}});
-$('#list').addEventListener('click',e=>{const b=e.target.closest('.row');if(b){$('#q').blur();location.hash=b.dataset.id}});
+$('#list').addEventListener('click',e=>{const b=e.target.closest('.row');if(b){$('#q').blur();openDetail(b.dataset.id)}});
 $('#s2').addEventListener('click',e=>{if(e.target===$('#s2'))closeDetail()});
 addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#s2').hidden)closeDetail()});
+addEventListener('popstate',route);
 addEventListener('hashchange',route);
 // 画像の読み込み失敗時は<img>を外し、下のプレースホルダーを見せる
 addEventListener('error',e=>{if(e.target.tagName==='IMG')e.target.remove()},true);
