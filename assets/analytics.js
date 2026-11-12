@@ -1,5 +1,5 @@
 (() => {
-  const GA_MEASUREMENT_ID = 'G-XXXXXXXXXX';
+  const GA_MEASUREMENT_ID = 'G-C8Z2Y9L8EP';
   const PROD_HOSTNAMES = ['anime-cast-now.vercel.app'];
   const OPT_OUT_KEY = 'acn_ga_off';
   const query = new URLSearchParams(location.search);
