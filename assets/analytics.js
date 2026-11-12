@@ -4,6 +4,7 @@
   const OPT_OUT_KEY = 'acn_ga_off';
   const query = new URLSearchParams(location.search);
   const debugMode = query.get('ga_debug') === '1';
+  const measurementIdConfigured = /^G-[A-Z0-9]{6,12}$/.test(GA_MEASUREMENT_ID) && GA_MEASUREMENT_ID !== 'G-XXXXXXXXXX';
 
   if (query.get('ga_optout') === '1' || query.get('ga_optout') === '0') {
     try {
@@ -22,7 +23,7 @@
   }
 
   const isProduction = PROD_HOSTNAMES.includes(location.hostname);
-  const enabled = !optedOut && (isProduction || debugMode);
+  const enabled = !optedOut && measurementIdConfigured && (isProduction || debugMode);
   const pending = window.__acnAnalyticsQueue || [];
   let lastPageLocation = '';
 
@@ -138,6 +139,8 @@
 
   if (optedOut) {
     console.info('[analytics:dev] GA4 disabled for this browser by its opt-out preference.');
+  } else if (!measurementIdConfigured) {
+    console.info('[analytics:dev] Set GA_MEASUREMENT_ID in assets/analytics.js to enable GA4.');
   } else if (!isProduction && !debugMode) {
     console.info('[analytics:dev] GA4 disabled outside production. Add ?ga_debug=1 to enable DebugView events.');
   }
