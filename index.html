@@ -145,6 +145,12 @@ body.modal-open{overflow:hidden}
  <div class="pr">本ページのリンクにはアフィリエイトを含みます。配信状況は各サービスでご確認ください。</div>
 </div>
 <script>
+window.__acnAnalyticsQueue = window.__acnAnalyticsQueue || [];
+window.acnTrack = window.acnTrack || ((...args) => window.__acnAnalyticsQueue.push({type:'event',args}));
+window.acnPageView = window.acnPageView || (() => window.__acnAnalyticsQueue.push({type:'page_view'}));
+</script>
+<script defer src="/assets/analytics.js"></script>
+<script>
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const norm=s=>s.normalize('NFKC').toLowerCase().replace(/[\u30a1-\u30f6]/g,c=>String.fromCharCode(c.charCodeAt(0)-96)).replace(/[\s・･]/g,'');
@@ -183,7 +189,7 @@ fetch('/data.json').then(r=>r.json()).then(d=>{
   $('#sub').textContent=`${y}年 ${M[0]}アニメ`;
   $('#cnt').textContent=`今季出演中の声優（あいうえお順）・${A.length}名／${WORK_COUNT}作品`;
   route();
-}).catch(()=>{$('#list').innerHTML='<div class="empty"><b>データを読み込めませんでした</b>data.json を同じ場所に置き、サーバー経由で開いてください。</div>'});
+}).catch(()=>{$('#list').innerHTML='<div class="empty"><b>データを読み込めませんでした</b>data.json を同じ場所に置き、サーバー経由で開いてください。</div>';window.acnPageView()});
 
 function list(){
   const v=$('#q').value,q=norm(v),r=A.filter(a=>(!selectedService||a.services.includes(selectedService))&&(!q||a.k.includes(q)));
@@ -248,6 +254,7 @@ function route(){
   const seo=$('#seo-content');if(seo)seo.hidden=true;
   $('#s1').hidden=false;$('#s2').hidden=!a;document.body.classList.toggle('modal-open',!!a);
   if(a)detail(a);else list();
+  window.acnPageView();
 }
 $('#q').addEventListener('input',list);
 $('#clr').onclick=()=>{$('#q').value='';list();$('#q').focus()};
