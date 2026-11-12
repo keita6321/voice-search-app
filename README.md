@@ -19,4 +19,23 @@ Install dependencies with `python -m pip install -r requirements.txt` and `pytho
 After replacing `data.json` for a new anime season, use Node.js 18 or later and run `npm run build:pages`. Commit the generated `va/` pages and `sitemap.xml` together with the updated data. The generator keeps `robots.txt` pointed at the sitemap.
 
 The shared 1200×630 OGP image is `assets/ogp-default.png` and is used by every voice actor page.
+
+## GA4 analytics
+
+Set the GA4 measurement ID in the `GA_MEASUREMENT_ID` constant at the top of `assets/analytics.js`. Replace the `G-XXXXXXXXXX` placeholder with the ID from the GA4 web data stream before enabling production measurement. `PROD_HOSTNAMES` lists the hostnames allowed to send production events; add a production custom domain there if one is introduced.
+
+Append `?ga_debug=1` to a page URL to enable GA4 DebugView events from localhost or a Vercel preview. Append `?ga_optout=1` to disable analytics in the current browser; `?ga_optout=0` removes that preference. Opt-out is stored in local storage.
+
+Tracked events:
+
+| Event | Parameters |
+| --- | --- |
+| `page_view` | `page_location`, `page_path`, `page_title` |
+| `va_open` | `va_id`, `va_name`, `works_count` |
+| `vod_click` | `vod_provider`, `work_id`, `work_title`, `va_id`, `va_name`, `link_host`, `position`, `page_type` |
+| `official_site_click` | `work_id`, `work_title`, `va_id` |
+| `share_x_click` | `va_id`, `va_name` |
+| `copy_link_click` | `va_id` (if a copy-link button is added) |
+| `vod_filter_change` | `filter_value` |
+| `search` | `search_term`, `results_count` (sent after 800 ms without input) |
 voice-search-app

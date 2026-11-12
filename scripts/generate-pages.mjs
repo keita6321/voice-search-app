@@ -195,7 +195,7 @@ for (const { actor, roles, pageId } of actors) {
 }
 
 const sitemapDate = new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Tokyo' });
-const sitemapUrls = [`${origin}/`, ...actors.map(({ pageId }) => `${origin}/va/${pageId}/`)];
+const sitemapUrls = [`${origin}/`, `${origin}/privacy/`, ...actors.map(({ pageId }) => `${origin}/va/${pageId}/`)];
 const sitemap = [
   '<?xml version="1.0" encoding="UTF-8"?>',
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
