@@ -161,6 +161,7 @@ window.acnPageView = window.acnPageView || (() => window.__acnAnalyticsQueue.pus
 <script>window.__INITIAL_VA__ = "va0032";</script>
 <script>
 const $=s=>document.querySelector(s);
+const HOME_TITLE=document.title;
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const norm=s=>s.normalize('NFKC').toLowerCase().replace(/[\u30a1-\u30f6]/g,c=>String.fromCharCode(c.charCodeAt(0)-96)).replace(/[\s・･]/g,'');
 // サービスごとのブランド色（c:背景 t:文字）。未登録はアクセント色
@@ -262,6 +263,7 @@ function route(){
   const a=actorFromLocation();
   window.__INITIAL_VA__=null;
   const seo=$('#seo-content');if(seo)seo.hidden=true;
+  document.title=a?`${a.name}さんの今期出演作｜ANIME CAST NOW`:HOME_TITLE;
   $('#s1').hidden=false;$('#s2').hidden=!a;document.body.classList.toggle('modal-open',!!a);
   if(a)detail(a);else list();
   window.acnPageView();
