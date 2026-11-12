@@ -119,7 +119,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .modal-empty{grid-column:1/-1;padding:24px;text-align:center;color:var(--sub)}
 body.modal-open{overflow:hidden}
 .seo-content{padding-top:24px;padding-bottom:24px}
-.pr{padding:24px 4px 30px;font-size:11px;color:var(--sub);text-align:center}
+.pr{padding:24px 4px 30px;font-size:11px;color:var(--sub);text-align:center}.pr a{margin-left:8px;color:inherit}
 #sub{font-size:18px;font-weight:900;color:#fff;margin:0;line-height:1.4}#scope{margin-top:4px}
 @media(max-width:540px){.wrap{padding:0 16px}#list{grid-template-columns:1fr}.row{min-height:60px}.role-count{font-size:12px}#s2{padding:12px}.dialog{width:100%;max-height:94dvh;border-radius:16px}.detail-head{padding:10px 13px 12px}.modal-scroll{padding:10px 11px 16px}.work-grid{grid-template-columns:1fr;gap:8px}.work{padding:10px}.work-main{gap:8px}.work-intro{gap:8px}.work-thumb{width:42%}.work h4{font-size:13px}.castline{font-size:10px}.vod{font-size:9px;min-height:40px}}
 @media(max-width:360px){#s2{padding:0}.dialog{height:100dvh;max-height:100dvh;border:0;border-radius:0}.work{padding:8px}.work-main{gap:7px}.work h4{font-size:12px}.vods{gap:4px}.vod{font-size:9px;min-height:36px}}
@@ -149,8 +149,14 @@ body.modal-open{overflow:hidden}
   <div id="list"></div>
  </section>
  <section id="s2" hidden></section>
- <div class="pr">本ページのリンクにはアフィリエイトを含みます。配信状況は各サービスでご確認ください。</div>
+ <div class="pr">本ページのリンクにはアフィリエイトを含みます。配信状況は各サービスでご確認ください。<a href="/privacy/">プライバシーポリシー</a></div>
 </div>
+<script>
+window.__acnAnalyticsQueue = window.__acnAnalyticsQueue || [];
+window.acnTrack = window.acnTrack || ((...args) => window.__acnAnalyticsQueue.push({type:'event',args}));
+window.acnPageView = window.acnPageView || (() => window.__acnAnalyticsQueue.push({type:'page_view'}));
+</script>
+<script defer src="/assets/analytics.js"></script>
 <script>window.__INITIAL_VA__ = "va0476";</script>
 <script>
 const $=s=>document.querySelector(s);
@@ -191,7 +197,7 @@ fetch('/data.json').then(r=>r.json()).then(d=>{
   $('#sub').textContent=`${y}年 ${M[0]}アニメ`;
   $('#cnt').textContent=`今季出演中の声優（あいうえお順）・${A.length}名／${WORK_COUNT}作品`;
   route();
-}).catch(()=>{$('#list').innerHTML='<div class="empty"><b>データを読み込めませんでした</b>data.json を同じ場所に置き、サーバー経由で開いてください。</div>'});
+}).catch(()=>{$('#list').innerHTML='<div class="empty"><b>データを読み込めませんでした</b>data.json を同じ場所に置き、サーバー経由で開いてください。</div>';window.acnPageView()});
 
 function list(){
   const v=$('#q').value,q=norm(v),r=A.filter(a=>(!selectedService||a.services.includes(selectedService))&&(!q||a.k.includes(q)));
@@ -227,7 +233,8 @@ function actorFromLocation(){
   return actor;
 }
 function openDetail(actorId){
-  if(!A.some(x=>x.actor_id===actorId))return;
+  const actor=A.find(x=>x.actor_id===actorId);if(!actor)return;
+  window.acnTrack('va_open',{va_id:actor.actor_id,va_name:actor.name,works_count:actor.roles.length});
   history.pushState({vaModal:true},'',actorPagePath(actorId));
   route();
 }
@@ -238,11 +245,11 @@ function closeDetail(){
 function detail(a){
   $('#s2').innerHTML=`<div class="dialog" role="dialog" aria-modal="true" aria-labelledby="detail-name" tabindex="-1">
   <header class="detail-head"><div class="detail-bar"><button class="back" id="bk" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>声優一覧へ戻る</span></button><span class="detail-brand">ANIME CAST NOW</span><span aria-hidden="true"></span></div>
-  <div class="profile"><div class="profile-copy"><h2 id="detail-name">${esc(a.name)}</h2><small>${esc(a.reading)}</small><em>今季 ${a.roles.length}作品に出演中</em><a class="share-x" id="share-x" target="_blank" rel="noopener noreferrer" aria-label="${esc(a.name)}さんの出演情報をXでシェア">Xでシェア</a></div></div></header>
+  <div class="profile"><div class="profile-copy"><h2 id="detail-name">${esc(a.name)}</h2><small>${esc(a.reading)}</small><em>今季 ${a.roles.length}作品に出演中</em><a class="share-x" id="share-x" data-ga-event="share_x_click" data-ga-va-id="${esc(a.actor_id)}" data-ga-va-name="${esc(a.name)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(a.name)}さんの出演情報をXでシェア">Xでシェア</a></div></div></header>
   <div class="modal-scroll"><h3>今季の出演作品</h3><div class="work-grid">`+a.roles.filter(r=>D.works[r.work_id]?.vod_links?.length).map(r=>{const w=D.works[r.work_id];
    return `<article class="work"><div class="work-main"><div class="work-intro">${w.thumbnail?`<img class="work-thumb" src="${esc(w.thumbnail)}" alt="${esc(w.title)}の画像" loading="lazy" decoding="async" referrerpolicy="no-referrer">`:''}<div class="work-copy"><h4>${esc(w.title)}</h4>${w.credit?`<div class="cr">${esc(w.credit)}</div>`:''}
-   <div class="castline"><b>${esc(r.character_name)}</b> ／ ${esc(a.name)}</div><div class="vods">`+w.vod_links.map(v=>{const b=SERVICE_BRAND[v.provider]||{mark:serviceLabel(v.provider)[0],color:'#62517f',text:'#fff',bg:'#f5f2fa',border:'#d8d0e4',fg:'#62517f'};return `<a class="vod ${b.className||''}" href="${esc(v.url)}" target="_blank" rel="sponsored noopener" style="--brand-color:${b.color};--brand-text:${b.text};--brand-bg:${b.bg};--brand-border:${b.border};--brand-fg:${b.fg}"><span class="vod-wordmark ${b.className||''}">${esc(b.mark)}</span><span>${esc(serviceLabel(v.provider))}で見る</span></a>`}).join('')+`</div></div></div></div>`+
-   ((r.official_url||w.official_url)?`<a class="off" href="${esc(r.official_url||w.official_url)}" target="_blank" rel="noopener">公式サイト</a>`:'')+'</article>'}).join('')+`</div></div></div>`;
+   <div class="castline"><b>${esc(r.character_name)}</b> ／ ${esc(a.name)}</div><div class="vods">`+w.vod_links.map((v,index)=>{const b=SERVICE_BRAND[v.provider]||{mark:serviceLabel(v.provider)[0],color:'#62517f',text:'#fff',bg:'#f5f2fa',border:'#d8d0e4',fg:'#62517f'};return `<a class="vod ${b.className||''}" href="${esc(v.url)}" data-ga-event="vod_click" data-ga-provider="${esc(v.provider)}" data-ga-work-id="${esc(r.work_id)}" data-ga-work-title="${esc(w.title)}" data-ga-va-id="${esc(a.actor_id)}" data-ga-va-name="${esc(a.name)}" data-ga-position="${index+1}" data-ga-page-type="${location.pathname.startsWith('/va/')?'va_detail':'home'}" target="_blank" rel="sponsored noopener" style="--brand-color:${b.color};--brand-text:${b.text};--brand-bg:${b.bg};--brand-border:${b.border};--brand-fg:${b.fg}"><span class="vod-wordmark ${b.className||''}">${esc(b.mark)}</span><span>${esc(serviceLabel(v.provider))}で見る</span></a>`}).join('')+`</div></div></div></div>`+
+   ((r.official_url||w.official_url)?`<a class="off" href="${esc(r.official_url||w.official_url)}" data-ga-event="official_site_click" data-ga-work-id="${esc(r.work_id)}" data-ga-work-title="${esc(w.title)}" data-ga-va-id="${esc(a.actor_id)}" target="_blank" rel="noopener">公式サイト</a>`:'')+'</article>'}).join('')+`</div></div></div>`;
   $('#bk').onclick=closeDetail;
   const hashtag=a.name.replace(/[^\p{L}\p{N}_]/gu,'')||'声優';
   const post=`#${hashtag} さんは今期${a.roles.length}作品に出演！ 配信はここでチェック →`;
@@ -256,10 +263,11 @@ function route(){
   const seo=$('#seo-content');if(seo)seo.hidden=true;
   $('#s1').hidden=false;$('#s2').hidden=!a;document.body.classList.toggle('modal-open',!!a);
   if(a)detail(a);else list();
+  window.acnPageView();
 }
 $('#q').addEventListener('input',list);
 $('#clr').onclick=()=>{$('#q').value='';list();$('#q').focus()};
-$('#vod-filters').addEventListener('click',e=>{const b=e.target.closest('.vod-filter');if(b){selectedService=b.dataset.service;$('#vod-filters').querySelectorAll('.vod-filter').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));list()}});
+$('#vod-filters').addEventListener('click',e=>{const b=e.target.closest('.vod-filter');if(b){const previousService=selectedService;selectedService=b.dataset.service;$('#vod-filters').querySelectorAll('.vod-filter').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));list();if(selectedService!==previousService)window.acnTrack('vod_filter_change',{filter_value:selectedService||'all'})}});
 $('#list').addEventListener('click',e=>{const b=e.target.closest('.row');if(b){$('#q').blur();openDetail(b.dataset.id)}});
 $('#s2').addEventListener('click',e=>{if(e.target===$('#s2'))closeDetail()});
 addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#s2').hidden)closeDetail()});
