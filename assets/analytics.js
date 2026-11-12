@@ -81,6 +81,61 @@
     else if (item.type === 'event') track(...item.args);
   }
 
+  function clickParams(element, eventName) {
+    const data = element.dataset;
+    if (eventName === 'vod_click') {
+      let linkHost = '';
+      try {
+        linkHost = new URL(element.href, location.href).hostname;
+      } catch {
+        return null;
+      }
+      return {
+        vod_provider: data.gaProvider,
+        work_id: data.gaWorkId,
+        work_title: data.gaWorkTitle,
+        va_id: data.gaVaId,
+        va_name: data.gaVaName,
+        link_host: linkHost,
+        position: Number(data.gaPosition),
+        page_type: data.gaPageType,
+      };
+    }
+    if (eventName === 'official_site_click') {
+      return { work_id: data.gaWorkId, work_title: data.gaWorkTitle, va_id: data.gaVaId };
+    }
+    if (eventName === 'share_x_click') return { va_id: data.gaVaId, va_name: data.gaVaName };
+    if (eventName === 'copy_link_click') return { va_id: data.gaVaId };
+    return null;
+  }
+
+  document.addEventListener('click', event => {
+    const target = event.target instanceof Element ? event.target.closest('[data-ga-event]') : null;
+    if (!target) return;
+    const eventName = target.dataset.gaEvent;
+    const params = clickParams(target, eventName);
+    if (params) track(eventName, params);
+  });
+
+  const search = document.querySelector('#q');
+  if (search) {
+    let searchTimer;
+    let lastSearchTerm = '';
+    search.addEventListener('input', () => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => {
+        const searchTerm = search.value.trim();
+        const normalizedTerm = searchTerm.normalize('NFKC').toLowerCase();
+        if (!normalizedTerm || normalizedTerm === lastSearchTerm) return;
+        lastSearchTerm = normalizedTerm;
+        track('search', {
+          search_term: searchTerm,
+          results_count: document.querySelectorAll('#list .row').length,
+        });
+      }, 800);
+    });
+  }
+
   if (optedOut) {
     console.info('[analytics:dev] GA4 disabled for this browser by its opt-out preference.');
   } else if (!isProduction && !debugMode) {
