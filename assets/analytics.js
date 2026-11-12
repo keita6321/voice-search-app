@@ -6,6 +6,7 @@
   const debugMode = query.get('ga_debug') === '1';
   const measurementIdConfigured = /^G-[A-Z0-9]{6,12}$/.test(GA_MEASUREMENT_ID) && GA_MEASUREMENT_ID !== 'G-XXXXXXXXXX';
 
+  let optedOut = query.get('ga_optout') === '1';
   if (query.get('ga_optout') === '1' || query.get('ga_optout') === '0') {
     try {
       if (query.get('ga_optout') === '1') localStorage.setItem(OPT_OUT_KEY, '1');
@@ -15,9 +16,8 @@
     }
   }
 
-  let optedOut = false;
   try {
-    optedOut = localStorage.getItem(OPT_OUT_KEY) === '1';
+    optedOut = localStorage.getItem(OPT_OUT_KEY) === '1' || optedOut;
   } catch (error) {
     console.warn('[analytics:dev] Unable to read the opt-out preference.', error);
   }
