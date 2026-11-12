@@ -142,17 +142,18 @@ function makePage(template, actor, roles, works, pageId, label) {
     `<script type="application/ld+json">${breadcrumb}</script>`,
   ].join('\n');
   const initialVa = `<script>window.__INITIAL_VA__ = ${JSON.stringify(actor.actor_id)};</script>\n`;
+  const metadataMarker = /<!-- SOCIAL_METADATA_START -->[\s\S]*?<!-- SOCIAL_METADATA_END -->/;
   const headMarker = `</title>`;
   const bodyMarker = '<body>\n<div class="wrap">';
   const scriptMarker = '<script>\nconst $=';
 
-  if (!template.includes(headMarker) || !template.includes(bodyMarker) || !template.includes(scriptMarker)) {
+  if (!template.includes(headMarker) || !metadataMarker.test(template) || !template.includes(bodyMarker) || !template.includes(scriptMarker)) {
     throw new Error('index.html is missing a required page-generation marker.');
   }
 
   return template
     .replace(/<title>[\s\S]*?<\/title>/, `<title>${escapeHtml(title)}</title>`)
-    .replace(headMarker, `${headMarker}\n${metadata}`)
+    .replace(metadataMarker, metadata)
     .replace(bodyMarker, `<body>\n${makeStaticContent(actor, roles, works)}<div class="wrap">`)
     .replace(scriptMarker, `${initialVa}${scriptMarker}`);
 }
