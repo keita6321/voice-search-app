@@ -19,6 +19,7 @@
 //   --history <path>     紹介済み声優の記録（既定: ./scripts/.post-history.json）
 //   --no-history         記録を読み書きしない（毎回同じ顔ぶれになる）
 //   --inspect            data.json の読み取り結果だけ表示して終了
+//   --verify-pages       声優紹介先の個別ページが存在するか確認
 //   --seed <n>           文面パターンの乱数シード（既定: 日付から）
 import fs from 'node:fs';
 import path from 'node:path';
@@ -51,6 +52,7 @@ const CFG = {
   out: opt.out || 'posts-out',
   history: opt['no-history'] ? null : (opt.history || 'scripts/.post-history.json'),
   inspect: !!opt.inspect,
+  verifyPages: !!opt['verify-pages'],
 };
 
 // ───────── data.json の読み取り（スキーマ違いに強い版） ─────────
@@ -143,7 +145,13 @@ function normalize(data) {
 
 // ───────── ユーティリティ ─────────
 // URL用ID：generate-pages.mjs と同じ変換（先頭の "va" を除く）
-const idToPath = (id) => String(id).replace(/^va/i, '');
+const idToPath = (id) => {
+  const actorId = String(id);
+  if (!actorId.startsWith('va') || !/^[a-zA-Z0-9_-]+$/.test(actorId.slice(2))) {
+    throw new Error(`Invalid voice actor ID: ${actorId}`);
+  }
+  return actorId.slice(2);
+};
 // Xの文字数（日本語は1文字=2、URLは23）
 function weightedLength(text) {
   const t = text.replace(/https?:\/\/\S+/g, 'x'.repeat(23));
@@ -264,7 +272,7 @@ for (let d = 0; d < CFG.days; d++) {
   const date = new Date(startDate); date.setDate(date.getDate() + d);
   for (let s = 0; s < CFG.perDay; s++) {
     const v = pool[cursor++]; if (!v) break;
-    rows.push({ date: ymd(date), time: CFG.times[s] || '21:30', type: '声優紹介', va: `${v.name}(${v.id})`, text: buildIntro(v, rnd) });
+    rows.push({ date: ymd(date), time: CFG.times[s] || '21:30', type: '声優紹介', va: `${v.name}(${v.id})`, vaName: v.name, vaId: String(v.id), text: buildIntro(v, rnd) });
     history.used.push(String(v.id));
   }
   // 週1回の枠（ranking-day から7日ごと）：ランキング → データ小ネタ → ランキング(6〜10番目) → 開発ログ（手動）
@@ -279,12 +287,28 @@ for (let d = 0; d < CFG.days; d++) {
     if (slot.text) rows.push({ date: ymd(date), time: extraTime, type: slot.type, va: '', text: slot.text });
   }
 }
+if (CFG.verifyPages) {
+  const pageDirectory = path.resolve('va');
+  if (!fs.existsSync(pageDirectory) || !fs.statSync(pageDirectory).isDirectory()) {
+    console.warn('⚠ 個別ページが見つかりません。先に `npm run build:pages` を実行してください。');
+  }
+  for (const row of rows) {
+    if (!row.vaId) continue;
+    const pageId = idToPath(row.vaId);
+    const expectedPath = path.posix.join('va', pageId, 'index.html');
+    row.pageMissing = !fs.existsSync(path.join(pageDirectory, pageId, 'index.html'));
+    if (row.pageMissing) {
+      console.warn(`⚠ ${row.vaName}（${row.vaId}）: 個別ページが見つかりません（${expectedPath}）`);
+    }
+  }
+}
 rows.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
 rows.forEach((r) => { r.len = weightedLength(r.text); });
 
 fs.mkdirSync(CFG.out, { recursive: true });
 const esc = (s) => `"${String(s).replace(/"/g, '""')}"`;
-const csv = '\uFEFF' + ['日付,時刻,種類,声優,本文,文字数(上限280)', ...rows.map((r) => [r.date, r.time, r.type, r.va, r.text, r.len].map(esc).join(','))].join('\r\n');
+const csvHeader = ['日付,時刻,種類,声優,本文,文字数(上限280)', ...(CFG.verifyPages ? ['ページなし'] : [])].join(',');
+const csv = '\uFEFF' + [csvHeader, ...rows.map((r) => [...[r.date, r.time, r.type, r.va, r.text, r.len], ...(CFG.verifyPages ? [r.pageMissing ? 'ページなし' : ''] : [])].map(esc).join(','))].join('\r\n');
 fs.writeFileSync(path.join(CFG.out, 'posts.csv'), csv);
 const md = rows.map((r) => `### ${r.date} ${r.time}｜${r.type}${r.va ? `｜${r.va}` : ''}（${r.len}/280）\n\n\`\`\`\n${r.text}\n\`\`\`\n`).join('\n');
 fs.writeFileSync(path.join(CFG.out, 'posts.md'), `# 投稿下書き（${rows[0]?.date} 〜）\n\n※投稿前に、URLを貼ってカードが出るか確認してください。\n\n${md}`);
@@ -292,7 +316,7 @@ fs.writeFileSync(path.join(CFG.out, 'posts.md'), `# 投稿下書き（${rows[0]?
 
 // ───────── 貼り付け補助ページ（posts-helper.html） ─────────
 const fnv = (str) => { let h = 0x811c9dc5; for (const ch of str) { h ^= ch.codePointAt(0); h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(36); };
-const helperRows = rows.map((r) => ({ ...r, id: fnv(`${r.date}|${r.time}|${r.text}`) }));
+const helperRows = rows.map((r) => ({ ...r, ...(CFG.verifyPages ? { pageMissing: !!r.pageMissing } : {}), id: fnv(`${r.date}|${r.time}|${r.text}`) }));
 const helperHtml = `<!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>投稿の予約｜貼り付け補助</title>
@@ -313,6 +337,7 @@ pre{white-space:pre-wrap;word-break:break-word;font:inherit;margin:0 0 10px;padd
 .btns{display:flex;gap:8px;flex-wrap:wrap}
 button,a.btn{font:inherit;font-weight:700;border:1.5px solid var(--accent);color:var(--accent);background:transparent;border-radius:999px;padding:7px 16px;cursor:pointer;text-decoration:none;min-height:40px;display:inline-flex;align-items:center}
 button.primary{background:var(--accent);color:#fff}button.donebtn.on{border-color:var(--ok);background:var(--ok);color:#fff}
+.page-warning{margin:0 0 10px;color:#d64545;font-weight:800}
 </style></head><body>
 <header>
   <h1>投稿の予約｜貼り付け補助</h1>
@@ -345,6 +370,7 @@ function render() {
     const len = document.createElement('span'); len.className = 'len' + (r.len > 280 ? ' over' : ''); len.textContent = r.len + '/280';
     meta.append(when, tag, len);
     const pre = document.createElement('pre'); pre.textContent = r.text;
+    if (r.pageMissing) { const warning = document.createElement('p'); warning.className = 'page-warning'; warning.textContent = '個別ページが見つかりません'; el.append(warning); }
     const btns = document.createElement('div'); btns.className = 'btns';
     const c = document.createElement('button'); c.className = 'primary'; c.textContent = 'コピー'; c.onclick = () => copy(r.text, c);
     const x = document.createElement('a'); x.className = 'btn'; x.target = '_blank'; x.rel = 'noopener';
