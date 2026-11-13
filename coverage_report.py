@@ -134,13 +134,15 @@ def fetch_annict():
 
     q = """query($s:[String!],$a:String){searchWorks(seasons:$s,first:30,after:$a,orderBy:{field:WATCHERS_COUNT,direction:DESC}){
       pageInfo{hasNextPage endCursor}
-      nodes{id title malAnimeId syobocalTid officialSiteUrl casts(first:40){nodes{name person{name nameKana} character{name}}}}}}"""
+      nodes{id title malAnimeId syobocalTid officialSiteUrl casts(first:40){nodes{name person{annictId name nameKana} character{name}}}}}}"""
     out, after = [], None
     while True:
         d = post("https://api.annict.com/graphql", {"query": q, "variables": {"s": [SEASON], "a": after}},
                  {"Authorization": f"Bearer {token}"})["searchWorks"]
         for w in d["nodes"]:
-            cast = [[(c["character"] or {}).get("name", ""), (c["person"] or {}).get("name") or c["name"], (c["person"] or {}).get("nameKana") or ""] for c in w["casts"]["nodes"]]
+            # [役名, 声優名, 読み, Annictの人物ID]。人物IDは声優IDの台帳（actor_registry.py）での照合に使う
+            cast = [[(c["character"] or {}).get("name", ""), (c["person"] or {}).get("name") or c["name"],
+                     (c["person"] or {}).get("nameKana") or "", (c["person"] or {}).get("annictId")] for c in w["casts"]["nodes"]]
             vods = fetch_work_vods(w["id"])
             thumbnail = fetch_official_thumbnail(w["officialSiteUrl"], w["title"])
             out.append({"annict_id": w["id"], "title": w["title"], "mal": w["malAnimeId"],

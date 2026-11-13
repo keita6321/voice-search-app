@@ -14,6 +14,47 @@ The data build uses VOD providers extracted from Annict work pages and curated e
 
 Install dependencies with `python -m pip install -r requirements.txt` and `python -m playwright install chromium`. Run `python discover_vod_candidates.py` to look for ABEMA and U-NEXT title links on official work sites and configured lineup pages. Register official lineup pages in `vod_lineup_sources.csv` with the current `season` value from `data.json`; the crawler observes each page's `robots.txt` and request delay, and uses Chromium when a lineup is JavaScript-rendered. Review all rows in `vod_candidates.csv`, set `decision` to `approve` or `reject`, then run `python discover_vod_candidates.py --apply-approved` to add approved links to `vod_overrides.csv`. Fuzzy lineup matches are suggestions and must be checked before approval. Candidate URLs keep tracking parameters out.
 
+## 声優IDの台帳（URLの固定）
+
+声優ページのURL（`/va/<id>/`）は、クールをまたいでも同じ人を指すよう、`data/registry/people.json`の台帳でIDを管理します。`build_data_from_sources.py`は、並び順で連番を振り直さず、台帳からIDを割り当てます。一度振ったIDは、再利用も削除もしません。
+
+照合の順番は次のとおりです。
+
+1. `data/registry/overrides.json`の`match`と`new`（人が決めた結果。最優先）
+2. Annictの人物ID（`annict_person_ids`）
+3. 名前（または`aliases`）
+4. 読みだけが別名の人と一致した場合は、改名や表記ゆれの可能性があるため、要確認として止まります
+5. どれにも一致しない人は、既存の最大番号の続きで新規採番します
+
+今期に出演がない人は`status: "inactive"`になります。ページは削除せず、「今期の出演作はありません」と表示し、`noindex`を付けてサイトマップから外します。再び出演すると、同じIDのまま`active`に戻ります。
+
+### クール更新時の手順
+
+1. `python3 build_data_from_sources.py --refresh`
+2. 要確認がある場合は、`data/registry/review.json`の内容を見て、`overrides.json`に結果を書き、もう一度実行します。
+3. `reports/registry-<season>.md`で、新規採番、名前の変更、今期出演なしの人数を確認します。
+4. `npm run build:pages`を実行し、`data.json`、`data/registry/`、`va/`、`sitemap.xml`をコミットします。
+
+`overrides.json`の書き方は次のとおりです。キーは`annict:<Annictの人物ID>`または`name:<声優名>`です。
+
+```json
+{
+  "match": { "name:會沢紗彌": "va0001" },
+  "new": ["name:同名の別人"],
+  "merge": { "va0600": "va0001" }
+}
+```
+
+- `match`: 指定したIDの人と同一人物として扱います（改名、表記ゆれ）。
+- `new`: 別人として新しいIDを振ります（同名の別人、読みが同じ別人）。
+- `merge`: 同一人物に2つのIDが振られていた場合に、左のIDを右のIDに統合します。左のIDのページは、右のページへの転送ページになります。
+
+今回の声優数が、前回の`active`の人数の半分未満になった場合は、取得の失敗を疑って止まります。問題がないことを確認した場合のみ、`--force-registry`を付けて実行してください。止まったときは、`data.json`と台帳のどちらも変更されません。
+
+Annictの人物IDは、`--refresh`で取得したデータから記録されます。古いキャッシュには人物IDが入っていないため、その場合は名前で照合されます。
+
+台帳を一から作り直す場合（通常は不要）は、`python3 actor_registry.py bootstrap`で、現在の`data.json`のIDをそのまま登録します。テストは`python3 -m unittest discover -s tests -t .`で実行できます。
+
 ## Static voice actor pages
 
 After replacing `data.json` for a new anime season, use Node.js 18 or later and run `npm run build:pages`. Commit the generated `va/` pages and `sitemap.xml` together with the updated data. The generator keeps `robots.txt` pointed at the sitemap.

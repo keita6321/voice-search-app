@@ -1,1 +1,5 @@
 posts-out/
+reports/
+__pycache__/
+data/registry/review.json
+cache/
