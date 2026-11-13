@@ -25,6 +25,16 @@ Install dependencies with `python -m pip install -r requirements.txt` and `pytho
 
 その後、`python3 build_data_from_sources.py`で`data.json`を作り直し、`npm run build:pages`を実行してコミットします。
 
+## 取得の対象（シーズン・継続作品・キャストの補完）
+
+`build_data_from_sources.py`は、次のルールで今期の作品を集めます。
+
+- **今期の作品**：Annictで今期（例：`2026-autumn`）に登録された作品
+- **前クールから続く作品**：前クールに登録された作品のうち、本放送の最新の放送日が今期の開始日の7日前以降のもの（2クール目の作品など）。判定の結果は`reports/carryover-<season>.md`に出ます。放送日がAnnictに登録されていない配信のみの作品などは、`season_carryover.csv`（列：`season,title,include`）で手動で含める（`yes`）か外す（`no`）ことができます。
+- **キャストの補完**：Annictにキャストが未登録の作品は、AniListのキャストで補います。作品の選定はAnnictが軸のままです。
+
+シーズンは`--season`で指定できます（例：`python3 build_data_from_sources.py --refresh --season 2027-winter`）。キャッシュはシーズンごとに`cache/annict-<season>.json`、`cache/anilist-<season>.json`に保存されます。
+
 ## 声優IDの台帳（URLの固定）
 
 声優ページのURL（`/va/<id>/`）は、クールをまたいでも同じ人を指すよう、`data/registry/people.json`の台帳でIDを管理します。`build_data_from_sources.py`は、並び順で連番を振り直さず、台帳からIDを割り当てます。一度振ったIDは、再利用も削除もしません。
