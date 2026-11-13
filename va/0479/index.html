@@ -48,6 +48,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 #q::placeholder{color:#99968f;font-weight:400}
 #q::-webkit-search-cancel-button{display:none}
 #clr{width:34px;height:34px;border:0;border-radius:50%;background:var(--bg);font-size:16px;line-height:1;color:var(--sub)}
+.feature-links{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 2px}.feature-links a{padding:5px 12px;border:1px solid #d8d0e4;border-radius:999px;background:#fff;color:#4b3d6b;font-size:12px;font-weight:700;text-decoration:none}.feature-links a::after{content:" →"}
 .vod-filters{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
 .vod-filter{display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:6px 12px;border:1px solid var(--ac);border-radius:999px;background:var(--sf);color:var(--tx);font-size:13px;font-weight:700;line-height:1.2;white-space:nowrap;box-shadow:0 1px 3px rgba(35,42,53,.05)}
 .vod-filter[aria-pressed="true"]{border-color:var(--ac);background:var(--ac);color:#fff}
@@ -130,6 +131,7 @@ body.modal-open{overflow:hidden}
    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
    <input id="q" type="search" placeholder="今期の声優を名前・ひらがなで検索" autocomplete="off" enterkeyhint="search" aria-label="声優を検索">
    <button id="clr" type="button" hidden aria-label="入力を消す">✕</button></label></div>
+  <nav class="feature-links" aria-label="特集"><a href="/ranking/">今期の出演本数ランキング</a><a href="/vod/">配信サービス別の作品数</a></nav>
   <div class="vod-filters" id="vod-filters" role="group" aria-label="配信サービスで絞り込み"></div>
   <div class="filter-status" id="filter-status" aria-live="polite">フィルター：すべての配信</div>
   <div class="cnt" id="cnt">今期放送中の声優（あいうえお順）</div>
