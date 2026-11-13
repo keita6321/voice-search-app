@@ -1,6 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "build:pages": "node scripts/generate-pages.mjs"
+    "build:pages": "node scripts/generate-pages.mjs",
+    "posts": "node scripts/generate-posts.mjs",
+    "posts:inspect": "node scripts/generate-posts.mjs --inspect"
   }
 }

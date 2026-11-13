@@ -20,6 +20,35 @@ After replacing `data.json` for a new anime season, use Node.js 18 or later and 
 
 The shared 1200×630 OGP image is `assets/ogp-default.png` and is used by every voice actor page.
 
+## X投稿の下書き生成
+
+クール中は4週間ごとに`data.json`を更新した後、次の手順で下書きを作成します。
+
+1. `npm run build:pages`
+2. `npm run posts -- --start <開始日> --verify-pages --campaign <クール名>`（例：`2026autumn`）
+3. `posts-out/posts-helper.html`を開き、投稿内容と個別ページの確認結果を確認します。
+4. PCブラウザーのX公式予約画面に本文を貼り付けて予約し、補助ページで「予約済みにする」を押します。
+
+主なオプションは次のとおりです。
+
+| オプション | 説明 |
+| --- | --- |
+| `--days <n>` | 作成する日数（既定：28日） |
+| `--per-day <1\|2>` | 1日の声優紹介数（既定：1件） |
+| `--start <YYYY-MM-DD>` | 開始日（既定：明日） |
+| `--mode <popular\|random>` | 声優の選び方（既定：出演本数順） |
+| `--ranking-day <n>` | 週1投稿枠の起点日（1始まり）。7日ごとにランキング→データ小ネタ→ランキング6〜10番目→開発ログの順で切り替わります（既定：3、`0`で無効） |
+| `--season-tag <tag>` | 季節ハッシュタグ（既定：`秋アニメ`） |
+| `--campaign <name>` | UTMキャンペーン名（既定：`x_posts`。クールごとに変更） |
+| `--link-style <utm\|ref>` | リンク計測形式（既定：UTM。`ref`では`?ref=x`形式） |
+| `--no-history` | 紹介済み声優の記録を読み書きしない |
+| `--inspect` | 実データの読み取り結果だけを表示して終了 |
+| `--verify-pages` | 各声優ページの存在を確認し、欠落を警告してCSVと補助ページに表示 |
+
+28日間では週1回の投稿枠が4週で一巡します。投稿URLのUTMは`utm_source=x&utm_medium=social&utm_campaign=<campaign>&utm_content=<声優ID/ranking/stats/devlog>`形式です。`utm_content`は声優紹介では声優ID、ランキングでは`ranking`、データ小ネタでは`stats`、開発ログでは`devlog`になります。クールが変わるたびに`--campaign`を変更してください。
+
+X APIは利用しません。URL付き投稿のAPI利用費用を避け、無課金の運用として公式予約画面に手動で貼り付けます。補助ページの「予約済み」状態はブラウザーのローカルストレージに保存されます。投稿本文が変わった行は別の行として扱われ、予約済み状態がリセットされます。`posts-out/`は生成物のためGit管理対象外です。一方、紹介済み記録の`scripts/.post-history.json`はコミットして共有します。
+
 ## GA4 analytics
 
 Set the GA4 measurement ID in the `GA_MEASUREMENT_ID` constant at the top of `assets/analytics.js`. Replace the `G-XXXXXXXXXX` placeholder with the ID from the GA4 web data stream before enabling production measurement. `PROD_HOSTNAMES` lists the hostnames allowed to send production events; add a production custom domain there if one is introduced.
