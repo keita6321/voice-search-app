@@ -11,6 +11,76 @@ from datetime import date, timedelta
 from data_normalization import canonical_title, load_title_aliases, title_key
 
 SEASON, YEAR, AL_SEASON = "2026-autumn", 2026, "FALL"
+SEASON_START_MONTH = {"winter": 1, "spring": 4, "summer": 7, "autumn": 10}
+ANILIST_SEASON = {"winter": "WINTER", "spring": "SPRING", "summer": "SUMMER", "autumn": "FALL"}
+SEASON_ORDER = ["winter", "spring", "summer", "autumn"]
+# 前クールから続いている作品とみなす基準：本放送の最新の放送日が、今期の開始日のこの日数前以降
+CARRYOVER_GRACE_DAYS = 7
+CARRYOVER_PATH = "season_carryover.csv"
+
+
+def parse_season(season):
+    m = re.fullmatch(r"(\d{4})-(winter|spring|summer|autumn)", season or "")
+    if not m:
+        raise ValueError(f"シーズンの形式が不正です（例: 2026-autumn）: {season!r}")
+    return int(m.group(1)), m.group(2)
+
+
+def previous_season(season):
+    year, name = parse_season(season)
+    i = SEASON_ORDER.index(name)
+    return f"{year - 1}-autumn" if i == 0 else f"{year}-{SEASON_ORDER[i - 1]}"
+
+
+def season_start(season):
+    year, name = parse_season(season)
+    return date(year, SEASON_START_MONTH[name], 1)
+
+
+def set_season(season):
+    """取得対象のシーズンを切り替える（例: 2027-winter）。"""
+    global SEASON, YEAR, AL_SEASON
+    year, name = parse_season(season)
+    SEASON, YEAR, AL_SEASON = season, year, ANILIST_SEASON[name]
+
+
+def load_carryover_overrides(path=CARRYOVER_PATH):
+    """season_carryover.csv: 前クールからの継続作品を手で含める／外す（列: season,title,include）。"""
+    include, exclude = set(), set()
+    if not os.path.exists(path):
+        return include, exclude
+    with open(path, encoding="utf-8") as f:
+        for row in csv.DictReader(f):
+            if (row.get("season") or "").strip() != SEASON:
+                continue
+            title = (row.get("title") or "").strip()
+            flag = (row.get("include") or "").strip().lower()
+            if title and flag in ("yes", "true", "1"):
+                include.add(title)
+            elif title and flag in ("no", "false", "0"):
+                exclude.add(title)
+    return include, exclude
+
+
+def carryover_decision(node, season, include=frozenset(), exclude=frozenset()):
+    """Annictの作品が今期の対象かを判定する。戻り値: (対象か, 理由, 最新の本放送日)"""
+    work_season = None
+    if node.get("seasonYear") and node.get("seasonName"):
+        work_season = f"{node['seasonYear']}-{str(node['seasonName']).lower()}"
+    programs = [p for p in ((node.get("programs") or {}).get("nodes") or []) if not p.get("rebroadcast")]
+    latest = max((p["startedAt"][:10] for p in programs if p.get("startedAt")), default=None)
+    title = node.get("title", "")
+    if title in exclude:
+        return False, "手動で除外（season_carryover.csv）", latest
+    if work_season == season or work_season is None:
+        return True, "今期の作品", latest
+    if title in include:
+        return True, "手動で追加（season_carryover.csv）", latest
+    threshold = (season_start(season) - timedelta(days=CARRYOVER_GRACE_DAYS)).isoformat()
+    if latest and latest >= threshold:
+        return True, "前クールから放送継続", latest
+    return False, "前クールで放送終了（または放送日が未登録）", latest
+
 UA = {"User-Agent": "anime-va-search/1.0 (personal project)"}
 os.makedirs("cache", exist_ok=True)
 
@@ -132,14 +202,22 @@ def fetch_annict():
             print(f"  [thumbnail] 公式サイトから取得できませんでした ({title}): {exc}", file=sys.stderr)
             return None
 
+    # 今期に加えて前クールの作品も取り、前クールのものは「今期も放送が続いている作品」だけを残す
     q = """query($s:[String!],$a:String){searchWorks(seasons:$s,first:30,after:$a,orderBy:{field:WATCHERS_COUNT,direction:DESC}){
       pageInfo{hasNextPage endCursor}
-      nodes{id title malAnimeId syobocalTid officialSiteUrl casts(first:40){nodes{name person{annictId name nameKana} character{name}}}}}}"""
-    out, after = [], None
+      nodes{id title malAnimeId syobocalTid officialSiteUrl seasonName seasonYear
+        programs(first:5,orderBy:{field:STARTED_AT,direction:DESC}){nodes{startedAt rebroadcast}}
+        casts(first:40){nodes{name person{annictId name nameKana} character{name}}}}}}"""
+    include, exclude = load_carryover_overrides()
+    out, after, decisions = [], None, []
     while True:
-        d = post("https://api.annict.com/graphql", {"query": q, "variables": {"s": [SEASON], "a": after}},
+        d = post("https://api.annict.com/graphql", {"query": q, "variables": {"s": [SEASON, previous_season(SEASON)], "a": after}},
                  {"Authorization": f"Bearer {token}"})["searchWorks"]
         for w in d["nodes"]:
+            keep, reason, latest = carryover_decision(w, SEASON, include, exclude)
+            decisions.append((w["title"], keep, reason, latest))
+            if not keep:
+                continue
             # [役名, 声優名, 読み, Annictの人物ID]。人物IDは声優IDの台帳（actor_registry.py）での照合に使う
             cast = [[(c["character"] or {}).get("name", ""), (c["person"] or {}).get("name") or c["name"],
                      (c["person"] or {}).get("nameKana") or "", (c["person"] or {}).get("annictId")] for c in w["casts"]["nodes"]]
@@ -151,8 +229,22 @@ def fetch_annict():
                         "cast": [c for c in cast if c[1]]})
             time.sleep(1)
         if not d["pageInfo"]["hasNextPage"]:
+            write_carryover_report(decisions)
             return out
         after = d["pageInfo"]["endCursor"]; time.sleep(1)
+
+
+def write_carryover_report(decisions):
+    """前クールの作品をどう判定したかを reports/ に残す（人が確認して season_carryover.csv で直せるように）。"""
+    os.makedirs("reports", exist_ok=True)
+    prev = [d for d in decisions if d[2] != "今期の作品"]
+    lines = [f"# 前クールからの継続作品の判定（{SEASON}）", "",
+             f"前クール（{previous_season(SEASON)}）の作品のうち、今期の対象にしたもの・外したものです。",
+             "間違いは season_carryover.csv（列: season,title,include）で直せます。", "",
+             "| 作品 | 判定 | 理由 | 最新の本放送日 |", "| --- | --- | --- | --- |"]
+    lines += [f"| {t} | {'対象' if k else '対象外'} | {r} | {l or '-'} |" for t, k, r, l in sorted(prev, key=lambda d: (not d[1], d[0]))]
+    with open(os.path.join("reports", f"carryover-{SEASON}.md"), "w", encoding="utf-8") as f:
+        f.write("\n".join(lines) + "\n")
 
 # ---- AniList（補完）----
 def fetch_anilist():
@@ -211,9 +303,11 @@ def merge(sources, title_aliases=None):
     return works
 
 def main():
-    ap = argparse.ArgumentParser(); ap.add_argument("--refresh", action="store_true"); a = ap.parse_args()
+    ap = argparse.ArgumentParser(); ap.add_argument("--refresh", action="store_true")
+    ap.add_argument("--season", default=SEASON, help="例: 2027-winter"); a = ap.parse_args()
+    set_season(a.season)
     fetchers = {"annict": fetch_annict, "anilist": fetch_anilist, "syoboi": fetch_syoboi}
-    src = {k: cached(k, f, a.refresh) for k, f in fetchers.items()}
+    src = {k: cached(f"{k}-{SEASON}" if k != "syoboi" else k, f, a.refresh) for k, f in fetchers.items()}
     works = merge(src)
     has = lambda w: any(w["casts"].values())
     n, ok = len(works), sum(map(has, works))
