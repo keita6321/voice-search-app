@@ -6,6 +6,7 @@
   ・読み: readings.csv > Annictの読み仮名 > pykakasi（あれば）の順。不明な名前は readings_todo.csv に出力"""
 import argparse, csv, hashlib, json, os, re, tempfile, unicodedata
 from datetime import datetime, timezone
+import actor_registry as ar
 import coverage_report as cr
 from data_normalization import apply_vod_overrides, is_supported_actor_name, load_title_aliases, write_vod_audit
 from vod_providers import VOD_PROVIDERS
@@ -28,7 +29,7 @@ def hira(s):
     s = unicodedata.normalize("NFKC", s)
     return re.sub(r"\s+", "", "".join(chr(ord(c) - 96) if "ァ" <= c <= "ヶ" else c for c in s))
 
-def pick_cast(w, kana):
+def pick_cast(w, kana, person_ids=None):
     """Annict のキャストを採用し、同一声優の別役を「／」で連結する。"""
     roles = {}
     for c in w["casts"].get("annict", []):
@@ -37,6 +38,8 @@ def pick_cast(w, kana):
             continue
         if len(c) > 2 and c[2]:
             kana.setdefault(name, hira(c[2]))
+        if person_ids is not None and len(c) > 3 and c[3] is not None:
+            person_ids.setdefault(name, int(c[3]))
         if name not in roles:
             roles[name] = [role]
         elif role and role not in roles[name]:
@@ -46,6 +49,8 @@ def pick_cast(w, kana):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--refresh", action="store_true", help="Fetch fresh data from Annict instead of using a valid cache")
+    parser.add_argument("--force-registry", action="store_true",
+                        help="声優数が前回の半分未満でも、声優IDの台帳を更新して続行する（取得失敗でないことを確認した場合のみ）")
     args = parser.parse_args()
     annict = cr.cached("annict", cr.fetch_annict, args.refresh or stale_annict_cache())
     if not annict:
@@ -61,10 +66,10 @@ def main():
         kks = pykakasi.kakasi(); auto = lambda n: "".join(x["hira"] for x in kks.convert(n))
     except ImportError:
         auto = lambda n: ""
-    kana, todo = {}, {}
+    kana, todo, person_ids = {}, {}, {}
     out_works, actors, missing, vod_audit = {}, {}, [], []
     for w in works:
-        cast = pick_cast(w, kana)
+        cast = pick_cast(w, kana, person_ids)
         if not cast:
             missing.append(w); continue
         wid = "w" + hashlib.md5(w["nt"].encode()).hexdigest()[:8]
@@ -80,8 +85,24 @@ def main():
             cid = f"{wid}-{n}"
             a = actors.setdefault(name, {"name": name, "reading": r or name, "roles": []})
             a["roles"].append({"work_id": wid, "character_id": cid, "character_name": role, "image": cr_img("characters", cid)})
-    va = sorted(actors.values(), key=lambda a: a["reading"])
-    va = [{"actor_id": f"va{i:04d}", **a} for i, a in enumerate(va, 1)]
+    # 声優IDは台帳（data/registry/people.json）から割り当てる。並び順で振り直さない
+    registry = ar.load_json(ar.PEOPLE_PATH, None)
+    if registry is None:
+        raise RuntimeError(f"{ar.PEOPLE_PATH} がありません。初回は python3 actor_registry.py bootstrap を実行してください")
+    overrides = ar.load_json(ar.OVERRIDES_PATH, ar.empty_overrides())
+    try:
+        ids, registry_report = ar.assign(
+            registry,
+            [{"name": a["name"], "reading": a["reading"], "annict_person_id": person_ids.get(a["name"])} for a in actors.values()],
+            SEASON, overrides, force=args.force_registry)
+    except ar.RegistryError as exc:
+        if exc.review:
+            ar.write_json(ar.REVIEW_PATH, {"season": SEASON, "items": exc.review})
+        raise RuntimeError(f"声優IDの台帳: {exc}。data.json と台帳は変更していません") from None
+    if os.path.exists(ar.REVIEW_PATH):
+        os.remove(ar.REVIEW_PATH)
+    va = sorted(actors.values(), key=lambda a: (a["reading"], ids[a["name"]]))
+    va = [{"actor_id": ids[a["name"]], **a} for a in va]
     data = {"season": SEASON, "updated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
             "works": out_works, "voice_actors": va}
     fd, temp_path = tempfile.mkstemp(prefix="data.", suffix=".json", dir=".")
@@ -93,12 +114,18 @@ def main():
         if os.path.exists(temp_path):
             os.remove(temp_path)
         raise
+    ar.write_json(ar.PEOPLE_PATH, registry)
+    os.makedirs("reports", exist_ok=True)
+    with open(os.path.join("reports", f"registry-{SEASON}.md"), "w", encoding="utf-8") as f:
+        f.write(ar.format_report(registry_report, SEASON))
     csv.writer(open("readings_todo.csv", "w", encoding="utf-8", newline="")).writerows([["name", "reading(自動)"], *sorted(todo.items())])
     csv.writer(open("coverage_missing.csv", "w", encoding="utf-8", newline="")).writerows([["title", "sources"], *[[w["title"], "+".join(sorted(w["src"]))] for w in missing]])
     write_vod_audit(vod_audit)
     novod = sum(1 for x in out_works.values() if not x["vod_links"])
     print(f"data.json: {len(out_works)}作品 / {len(va)}名（声優情報なしで除外 {len(missing)}作品）")
     print(f"配信先なし {novod}作品 / 公式サイトなし {sum(1 for x in out_works.values() if not x['official_url'])}作品 / 読み未登録 {len(todo)}名 → readings_todo.csv / vod_audit.csv")
+    print(f"声優ID台帳: 新規 {len(registry_report['new'])}名 / 名前変更 {len(registry_report['renamed'])}名 / "
+          f"今期出演なし {len(registry_report['inactivated'])}名 → reports/registry-{SEASON}.md")
 
 def cr_img(kind, key):
     for ext in ("webp", "jpg", "png"):

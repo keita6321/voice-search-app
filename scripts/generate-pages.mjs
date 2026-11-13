@@ -158,6 +158,75 @@ function makePage(template, actor, roles, works, pageId, label) {
     .replace(scriptMarker, `${initialVa}${scriptMarker}`);
 }
 
+// 台帳にいるが、今期の配信ありの出演作がない人のページ。URLを維持するため404にはしない。
+// 中身が薄いので noindex にして、サイトマップには載せない。
+function makeNoWorksPage(template, person, pageId, label, isCurrent, season) {
+  const pageUrl = `${origin}/va/${pageId}/`;
+  const title = `${person.name}さん｜ANIME CAST NOW`;
+  const lastSeen = person.last_seen && person.last_seen !== season ? seasonLabelOrNull(person.last_seen) : null;
+  const message = isCurrent
+    ? `${label}の出演作は、配信先を確認中です。`
+    : `${label}の出演作はありません。${lastSeen ? `（最後に出演を確認したのは${lastSeen}）` : ''}`;
+  const description = `${person.name}さんの出演作をANIME CAST NOWで確認できます。${message}`;
+  const metadata = [
+    '<meta name="robots" content="noindex">',
+    `<meta name="description" content="${escapeHtml(description)}">`,
+    `<link rel="canonical" href="${pageUrl}">`,
+    `<meta property="og:title" content="${escapeHtml(title)}">`,
+    `<meta property="og:description" content="${escapeHtml(description)}">`,
+    '<meta property="og:type" content="website">',
+    `<meta property="og:url" content="${pageUrl}">`,
+    '<meta property="og:site_name" content="ANIME CAST NOW">',
+    `<meta property="og:image" content="${ogImage}">`,
+    '<meta property="og:locale" content="ja_JP">',
+    '<meta name="twitter:card" content="summary_large_image">',
+    `<meta name="twitter:title" content="${escapeHtml(title)}">`,
+    `<meta name="twitter:description" content="${escapeHtml(description)}">`,
+    `<meta name="twitter:image" content="${ogImage}">`,
+  ].join('\n');
+  const content = `<main class="wrap seo-content" id="seo-content">
+  <h1>${escapeHtml(person.name)}</h1>
+  ${person.kana ? `<p>読み：${escapeHtml(person.kana)}</p>\n  ` : ''}<p>${escapeHtml(message)}</p>
+  <p>ほかの声優は、下の一覧から検索できます。</p>
+</main>
+`;
+  return template
+    .replace(/<title>[\s\S]*?<\/title>/, `<title>${escapeHtml(title)}</title>`)
+    .replace(/<!-- SOCIAL_METADATA_START -->[\s\S]*?<!-- SOCIAL_METADATA_END -->/, metadata)
+    .replace('<body>\n<div class="wrap">', `<body>\n${content}<div class="wrap">`);
+}
+
+// 統合（merged）された旧IDのページ。統合先のページへ転送する。
+function makeRedirectPage(person, targetPageId) {
+  const target = `/va/${targetPageId}/`;
+  return `<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<title>${escapeHtml(person.name)}さん｜ANIME CAST NOW</title>
+<meta name="robots" content="noindex">
+<link rel="canonical" href="${origin}${target}">
+<meta http-equiv="refresh" content="0; url=${target}">
+<script>location.replace(${JSON.stringify(target)} + location.search);</script>
+</head><body><p><a href="${target}">${escapeHtml(person.name)}さんのページへ移動します</a></p></body></html>
+`;
+}
+
+function seasonLabelOrNull(season) {
+  try {
+    return seasonLabel(season);
+  } catch {
+    return null;
+  }
+}
+
+async function readRegistry() {
+  try {
+    return JSON.parse(await readFile(path.join(root, 'data', 'registry', 'people.json'), 'utf8'));
+  } catch (error) {
+    if (error.code === 'ENOENT') return null;
+    throw error;
+  }
+}
+
 async function ensureRobotsSitemap() {
   const robotsPath = path.join(root, 'robots.txt');
   let robots = '';
@@ -194,6 +263,33 @@ for (const { actor, roles, pageId } of actors) {
   await writeFile(path.join(directory, 'index.html'), makePage(template, actor, roles, data.works, pageId, label));
 }
 
+// 台帳（data/registry/people.json）にいる全員のURLを維持する
+const registry = await readRegistry();
+let noWorksCount = 0;
+let redirectCount = 0;
+if (registry) {
+  const currentIds = new Set(data.voice_actors.map(actor => actor.actor_id));
+  for (const actor of data.voice_actors) {
+    if (!registry.people[actor.actor_id]) {
+      throw new Error(`data.json の ${actor.actor_id}（${actor.name}）が台帳にありません。build_data_from_sources.py で data.json を作り直してください`);
+    }
+  }
+  const pageIds = new Set(actors.map(({ pageId }) => pageId));
+  for (const [actorId, person] of Object.entries(registry.people)) {
+    const pageId = toPageId(actorId);
+    if (pageIds.has(pageId)) continue;
+    const directory = path.join(root, 'va', pageId);
+    await mkdir(directory, { recursive: true });
+    if (person.status === 'merged' && person.redirect_to) {
+      await writeFile(path.join(directory, 'index.html'), makeRedirectPage(person, toPageId(person.redirect_to)));
+      redirectCount += 1;
+    } else {
+      await writeFile(path.join(directory, 'index.html'), makeNoWorksPage(template, person, pageId, label, currentIds.has(actorId), data.season));
+      noWorksCount += 1;
+    }
+  }
+}
+
 const sitemapDate = new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Tokyo' });
 const sitemapUrls = [`${origin}/`, `${origin}/privacy/`, ...actors.map(({ pageId }) => `${origin}/va/${pageId}/`)];
 const sitemap = [
@@ -212,3 +308,6 @@ const sitemap = [
 await writeFile(path.join(root, 'sitemap.xml'), sitemap);
 await ensureRobotsSitemap();
 console.log(`Generated ${actors.length} voice actor pages and sitemap.xml.`);
+if (registry) {
+  console.log(`Kept ${noWorksCount} pages without current works (noindex) and ${redirectCount} redirect pages from the ID registry.`);
+}
