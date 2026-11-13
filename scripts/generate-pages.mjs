@@ -1,7 +1,7 @@
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { rankingPage, vodPage } from './articles.mjs';
+import { rankingPage, vodPage, workPages, workIndexPage } from './articles.mjs';
 
 if (Number(process.versions.node.split('.')[0]) < 18) {
   throw new Error('Node.js 18 or later is required.');
@@ -302,14 +302,21 @@ for (const work of Object.values(data.works)) {
   }
 }
 const aboutHtml = await readFile(path.join(root, 'about', 'index.html'), 'utf8');
-const articleContext = { data, seasonLabel: label, origin, ogImage, aboutHtml, partnerLinks };
-for (const [dir, html] of [['ranking', rankingPage(articleContext)], ['vod', vodPage(articleContext)]]) {
+const articleContext = { data, seasonLabel: label, origin, ogImage, aboutHtml, partnerLinks, partnerServices };
+for (const [dir, html] of [['ranking', rankingPage(articleContext)], ['vod', vodPage(articleContext)], ['work', workIndexPage(articleContext)]]) {
   await mkdir(path.join(root, dir), { recursive: true });
   await writeFile(path.join(root, dir, 'index.html'), html);
 }
+// 作品ページ（/work/<作品ID>/）。今期のデータにない作品のディレクトリは消さずに残す
+const works = workPages(articleContext);
+for (const { id, html } of works) {
+  await mkdir(path.join(root, 'work', id), { recursive: true });
+  await writeFile(path.join(root, 'work', id, 'index.html'), html);
+}
+const indexedWorkUrls = works.filter(w => w.indexed).map(w => `${origin}/work/${w.id}/`);
 
 const sitemapDate = new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Tokyo' });
-const sitemapUrls = [`${origin}/`, `${origin}/ranking/`, `${origin}/vod/`, `${origin}/about/`, `${origin}/privacy/`, ...actors.map(({ pageId }) => `${origin}/va/${pageId}/`)];
+const sitemapUrls = [`${origin}/`, `${origin}/ranking/`, `${origin}/vod/`, `${origin}/work/`, ...indexedWorkUrls, `${origin}/about/`, `${origin}/privacy/`, ...actors.map(({ pageId }) => `${origin}/va/${pageId}/`)];
 const sitemap = [
   '<?xml version="1.0" encoding="UTF-8"?>',
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
@@ -325,7 +332,7 @@ const sitemap = [
 
 await writeFile(path.join(root, 'sitemap.xml'), sitemap);
 await ensureRobotsSitemap();
-console.log(`Generated ${actors.length} voice actor pages and sitemap.xml.`);
+console.log(`Generated ${actors.length} voice actor pages, ${works.length} work pages (${indexedWorkUrls.length} indexed) and sitemap.xml.`);
 if (registry) {
   console.log(`Kept ${noWorksCount} pages without current works (noindex) and ${redirectCount} redirect pages from the ID registry.`);
 }

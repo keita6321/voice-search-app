@@ -48,6 +48,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 #q::placeholder{color:#99968f;font-weight:400}
 #q::-webkit-search-cancel-button{display:none}
 #clr{width:34px;height:34px;border:0;border-radius:50%;background:var(--bg);font-size:16px;line-height:1;color:var(--sub)}
+.work-link{color:inherit;text-decoration:none}.work-link:hover{text-decoration:underline}
 .feature-links{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 2px}.feature-links a{padding:5px 12px;border:1px solid #d8d0e4;border-radius:999px;background:#fff;color:#4b3d6b;font-size:12px;font-weight:700;text-decoration:none}.feature-links a::after{content:" →"}
 .vod-filters{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
 .vod-filter{display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:6px 12px;border:1px solid var(--ac);border-radius:999px;background:var(--sf);color:var(--tx);font-size:13px;font-weight:700;line-height:1.2;white-space:nowrap;box-shadow:0 1px 3px rgba(35,42,53,.05)}
@@ -137,7 +138,7 @@ body.modal-open{overflow:hidden}
    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
    <input id="q" type="search" placeholder="今期の声優を名前・ひらがなで検索" autocomplete="off" enterkeyhint="search" aria-label="声優を検索">
    <button id="clr" type="button" hidden aria-label="入力を消す">✕</button></label></div>
-  <nav class="feature-links" aria-label="特集"><a href="/ranking/">今期の出演本数ランキング</a><a href="/vod/">配信サービス別の作品数</a></nav>
+  <nav class="feature-links" aria-label="特集"><a href="/ranking/">今期の出演本数ランキング</a><a href="/vod/">配信サービス別の作品数</a><a href="/work/">作品一覧（配信はどこ？）</a></nav>
   <div class="vod-filters" id="vod-filters" role="group" aria-label="配信サービスで絞り込み"></div>
   <div class="filter-status" id="filter-status" aria-live="polite">フィルター：すべての配信</div>
   <div class="cnt" id="cnt">今期放送中の声優（あいうえお順）</div>
@@ -240,7 +241,7 @@ function detail(a){
   <header class="detail-head"><div class="detail-bar"><button class="back" id="bk" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>声優一覧へ戻る</span></button><span class="detail-brand">ANIME CAST NOW</span><span aria-hidden="true"></span></div>
   <div class="profile"><div class="profile-copy"><h2 id="detail-name">${esc(a.name)}</h2><small>${esc(a.reading)}</small><em>今季 ${a.roles.length}作品に出演中</em><a class="share-x" id="share-x" data-ga-event="share_x_click" data-ga-va-id="${esc(a.actor_id)}" data-ga-va-name="${esc(a.name)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(a.name)}さんの出演情報をXでシェア">Xでシェア</a></div></div></header>
   <div class="modal-scroll"><h3>今季の出演作品</h3><div class="work-grid">`+a.roles.filter(r=>D.works[r.work_id]?.vod_links?.length).map(r=>{const w=D.works[r.work_id];
-   return `<article class="work"><div class="work-main"><div class="work-intro">${w.thumbnail?`<img class="work-thumb" src="${esc(w.thumbnail)}" alt="${esc(w.title)}の画像" loading="lazy" decoding="async" referrerpolicy="no-referrer">`:''}<div class="work-copy"><h4>${esc(w.title)}</h4>${w.credit?`<div class="cr">${esc(w.credit)}</div>`:''}
+   return `<article class="work"><div class="work-main"><div class="work-intro">${w.thumbnail?`<img class="work-thumb" src="${esc(w.thumbnail)}" alt="${esc(w.title)}の画像" loading="lazy" decoding="async" referrerpolicy="no-referrer">`:''}<div class="work-copy"><h4><a class="work-link" href="/work/${esc(r.work_id)}/">${esc(w.title)}</a></h4>${w.credit?`<div class="cr">${esc(w.credit)}</div>`:''}
    <div class="castline"><b>${esc(r.character_name)}</b> ／ ${esc(a.name)}</div><div class="vods">`+vodLinksHtml(w,r,a)+`</div></div></div></div>`+
    ((r.official_url||w.official_url)?`<a class="off" href="${esc(r.official_url||w.official_url)}" data-ga-event="official_site_click" data-ga-work-id="${esc(r.work_id)}" data-ga-work-title="${esc(w.title)}" data-ga-va-id="${esc(a.actor_id)}" target="_blank" rel="noopener">公式サイト</a>`:'')+'</article>'}).join('')+`</div></div></div>`;
   $('#bk').onclick=closeDetail;
