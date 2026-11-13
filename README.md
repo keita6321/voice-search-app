@@ -14,6 +14,17 @@ The data build uses VOD providers extracted from Annict work pages and curated e
 
 Install dependencies with `python -m pip install -r requirements.txt` and `python -m playwright install chromium`. Run `python discover_vod_candidates.py` to look for ABEMA and U-NEXT title links on official work sites and configured lineup pages. Register official lineup pages in `vod_lineup_sources.csv` with the current `season` value from `data.json`; the crawler observes each page's `robots.txt` and request delay, and uses Chromium when a lineup is JavaScript-rendered. Review all rows in `vod_candidates.csv`, set `decision` to `approve` or `reject`, then run `python discover_vod_candidates.py --apply-approved` to add approved links to `vod_overrides.csv`. Fuzzy lineup matches are suggestions and must be checked before approval. Candidate URLs keep tracking parameters out.
 
+## 提携済みVODの管理
+
+詳細画面の「〇〇で見る」ボタンは、アフィリエイト提携済みのサービスだけに表示します。提携していないサービスは、「ほかの配信」として文字だけで案内し、リンクは張りません。
+
+新しくVODと提携できたら、次の2か所を更新します。
+
+1. `vod_providers.py`の、そのサービスのURLを、ASPのアフィリエイトリンクに差し替える
+2. `index.html`の`PARTNER_SERVICES`に、サービス名（`vod_providers.py`のキーと同じ表記）を追加する
+
+その後、`python3 build_data_from_sources.py`で`data.json`を作り直し、`npm run build:pages`を実行してコミットします。
+
 ## 声優IDの台帳（URLの固定）
 
 声優ページのURL（`/va/<id>/`）は、クールをまたいでも同じ人を指すよう、`data/registry/people.json`の台帳でIDを管理します。`build_data_from_sources.py`は、並び順で連番を振り直さず、台帳からIDを割り当てます。一度振ったIDは、再利用も削除もしません。
