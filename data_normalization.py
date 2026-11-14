@@ -1,4 +1,5 @@
 import csv
+import sys
 import re
 import unicodedata
 from datetime import date
@@ -72,6 +73,7 @@ def apply_vod_overrides(works, provider_urls, path=_VOD_OVERRIDES_PATH):
     aliases = load_title_aliases()
     works_by_title = {title_key(work["title"]): work for work in works}
     seen = set()
+    unmatched = []
 
     with open(path, encoding="utf-8-sig", newline="") as f:
         reader = csv.DictReader(f)
@@ -103,7 +105,9 @@ def apply_vod_overrides(works, provider_urls, path=_VOD_OVERRIDES_PATH):
             key = title_key(canonical_title(title, aliases))
             work = works_by_title.get(key)
             if work is None:
-                raise ValueError(f"{path}:{line} title {title!r} does not match a generated work")
+                # 今期の対象から外れた作品や、Annict側で改題された作品。止めずに警告だけ出す
+                unmatched.append((line, title))
+                continue
             override_key = (key, provider)
             if override_key in seen:
                 raise ValueError(f"{path}:{line} duplicates provider {provider!r} for {title!r}")
@@ -111,6 +115,11 @@ def apply_vod_overrides(works, provider_urls, path=_VOD_OVERRIDES_PATH):
             vods = work.setdefault("vods", [])
             if provider not in vods:
                 vods.append(provider)
+
+    for line, title in unmatched:
+        print(f"  [vod_overrides] {path}:{line} の作品「{title}」は今回の取得結果にありません（今期の対象外か、改題の可能性）。この行は使われません",
+              file=sys.stderr)
+    return unmatched
 
 
 def write_vod_audit(rows, path=_VOD_AUDIT_PATH):
