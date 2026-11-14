@@ -45,6 +45,7 @@ jobs:
         env:
           ANNICT_TOKEN: ${{ secrets.ANNICT_TOKEN }}
         run: |
+          set -o pipefail
           if [ -z "$ANNICT_TOKEN" ]; then echo "::error::シークレット ANNICT_TOKEN が未設定です"; exit 1; fi
           args="--refresh"
           if [ -n "${{ inputs.season }}" ]; then args="$args --season ${{ inputs.season }}"; fi
@@ -52,6 +53,7 @@ jobs:
           python3 build_data_from_sources.py $args 2>&1 | tee reports-build.log
 
       - name: テスト
+        if: success()
         run: python3 -m unittest discover -s tests -t .
 
       - name: ページを作り直す
@@ -71,14 +73,15 @@ jobs:
             vod_audit.csv
           if-no-files-found: ignore
 
-      - name: 確認用のブランチに上げる
+      - name: 確認用のブランチに上げる（失敗時もログとレポートを残す）
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
           branch="data/refresh-$(date -u +%Y%m%d-%H%M)"
           git checkout -b "$branch"
-          git add -A -- . ':!reports-build.log'
-          if git diff --cached --quiet; then echo "変更なし"; exit 0; fi
-          git commit -m "データ更新（${{ inputs.season || 'default' }}）"
+          git add -A
+          for f in reports reports-build.log data/registry/review.json; do [ -e "$f" ] && git add -f "$f"; done; true
+          git commit -m "データ更新（${{ inputs.season || 'default' }}、${{ job.status }}）" || { echo "変更なし"; exit 0; }
           git push origin "$branch"
           echo "### 確認用ブランチ: \`$branch\`" >> "$GITHUB_STEP_SUMMARY"
