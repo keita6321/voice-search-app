@@ -69,6 +69,12 @@ jobs:
           echo "auto_apply=$auto" >> "$GITHUB_OUTPUT"
           cat "$GITHUB_OUTPUT"
 
+      - name: 公式サイトから配信先を補う
+        # 各作品の公式サイト（トップと配信情報ページ）だけを見る。失敗しても更新は続ける
+        continue-on-error: true
+        run: |
+          python3 discover_vod_candidates.py --auto 2>&1 | tee reports-discovery.log
+
       - name: データを取り直す（Annict / AniList）
         env:
           ANNICT_TOKEN: ${{ secrets.ANNICT_TOKEN }}
@@ -137,7 +143,7 @@ jobs:
           branch="data/refresh-$(date -u +%Y%m%d-%H%M)"
           git checkout -b "$branch"
           git add -A
-          for f in reports reports-build.log data/registry/review.json; do [ -e "$f" ] && git add -f "$f"; done; true
+          for f in reports reports-build.log reports-discovery.log data/registry/review.json; do [ -e "$f" ] && git add -f "$f"; done; true
           git commit -m "データ更新のレポート（${{ steps.season.outputs.current }}、${{ job.status }}）" || { echo "変更なし"; exit 0; }
           git push origin "$branch"
           echo "### 確認用ブランチ: \`$branch\`" >> "$GITHUB_STEP_SUMMARY"
