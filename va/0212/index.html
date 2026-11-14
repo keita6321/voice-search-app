@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f8f7f2">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="ANIME CAST NOW">
 <title>白砂沙帆さんの今期出演作｜ANIME CAST NOW</title>
 <meta name="description" content="白砂沙帆さんが2026年秋アニメで出演する1作品（探偵はもう、死んでいる。Season2）と、配信中のVODをまとめて確認。">
 <link rel="canonical" href="https://animecastnow.com/va/0212/">
@@ -113,6 +117,13 @@ button{font:inherit;color:inherit;cursor:pointer}
 .profile-copy{min-width:0}
 .profile h2{margin:0;font-size:25px;line-height:1.2;font-weight:900;letter-spacing:-.02em;overflow-wrap:anywhere}
 .profile small{display:block;margin-top:2px;color:var(--sub);font-size:12px;line-height:1.3}
+.share-native{display:inline-flex;align-items:center;justify-content:center;min-height:44px;margin:8px 0 0 6px;padding:0 14px;border:1px solid var(--ac);border-radius:999px;background:#fff;color:var(--ac);font-size:12px;font-weight:700;cursor:pointer}.share-native[hidden]{display:none}
+.dialog .detail-head{transition:padding .15s}
+.dialog.compact .profile small,.dialog.compact .profile em,.dialog.compact .share-x,.dialog.compact .share-native{display:none}
+.dialog.compact .profile{margin-top:4px}.dialog.compact .profile h2{font-size:18px}
+@media(max-width:540px){#list:not(.filtered) .service-text{display:none}#list .role-count{color:var(--ac);font-weight:800}
+.profile em{display:table!important}.profile .share-x,.profile .share-native{min-height:36px!important;padding:0 13px!important;font-size:12px!important}.profile .share-native{margin-left:6px}
+.feature-links{flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;scrollbar-width:none;padding-bottom:4px;margin-left:-2px;margin-right:-16px;padding-right:16px}.feature-links::-webkit-scrollbar{display:none}}
 .profile em{display:inline-block;margin-top:5px;padding:3px 9px;border-radius:999px;background:#eeeaf3;color:var(--ac);font-size:11px;font-style:normal;font-weight:700;line-height:1.3}
 .share-x{display:inline-flex;align-items:center;justify-content:center;min-height:44px;margin-top:8px;padding:0 14px;border:1px solid var(--ac);border-radius:999px;background:var(--ac);color:#fff;font-size:12px;font-weight:700;text-decoration:none}
 .share-x:hover{filter:brightness(.95)}
@@ -164,8 +175,8 @@ body.modal-open{overflow:hidden}
 .seo-content{padding-top:24px;padding-bottom:24px}
 .pr{padding:24px 4px 30px;font-size:11px;color:var(--sub);text-align:center}.pr a{margin-left:8px;color:inherit}
 #sub{font-size:18px;font-weight:900;color:#fff;margin:0;line-height:1.4}.hero-sub #sub{font-size:12px;color:var(--ac);line-height:1.6}#scope{margin-top:4px}
-@media(max-width:540px){.wrap{padding:0 16px}#list{grid-template-columns:1fr}.row{min-height:60px}.role-count{font-size:12px}#s2{padding:12px}.dialog{width:100%;max-height:94dvh;border-radius:16px}.detail-head{padding:10px 13px 12px}.modal-scroll{padding:10px 11px 16px}.work-grid{grid-template-columns:1fr;gap:8px}.work{padding:10px}.work-main{gap:8px}.work-intro{gap:8px}.work-thumb{width:42%}.work h4{font-size:13px}.castline{font-size:10px}.vod{font-size:9px;min-height:40px}}
-@media(max-width:360px){#s2{padding:0}.dialog{height:100dvh;max-height:100dvh;border:0;border-radius:0}.work{padding:8px}.work-main{gap:7px}.work h4{font-size:12px}.vods{gap:4px}.vod{font-size:9px;min-height:36px}}
+@media(max-width:540px){.wrap{padding:0 16px}#list{grid-template-columns:1fr}.row{min-height:60px}.role-count{font-size:12px}#s2{padding:12px}.dialog{width:100%;max-height:94dvh;border-radius:16px}.detail-head{padding:10px 13px 12px}.modal-scroll{padding:10px 11px 16px}.work-grid{grid-template-columns:1fr;gap:8px}.work{padding:10px}.work-main{gap:8px}.work-intro{gap:8px}.work-thumb{width:42%}.work h4{font-size:13px}.castline{font-size:10px}.vod{font-size:12px;min-height:44px}}
+@media(max-width:360px){#s2{padding:0}.dialog{height:100dvh;max-height:100dvh;border:0;border-radius:0}.work{padding:8px}.work-main{gap:7px}.work h4{font-size:12px}.vods{gap:4px}.vod{font-size:12px;min-height:44px}}
 @media(max-width:400px){.top{padding-top:calc(env(safe-area-inset-top) + 24px)}.tagline{margin-bottom:22px!important}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -380,6 +391,7 @@ function nextList(v,q){
 }
 function list(){
   if(VIEW==='next'&&N){const v=$('#q').value;$('#clr').hidden=!v;return nextList(v,norm(v))}
+  $('#list').classList.toggle('filtered',!!selectedService);
   const v=$('#q').value,q=norm(v),r=A.filter(a=>(a.roles.length||q)&&(!selectedService||a.services.includes(selectedService))&&(!q||a.k.includes(q)));
   $('#clr').hidden=!v;
   const workCount=selectedService?SERVICE_WORK_COUNTS[selectedService]:WORK_COUNT;
@@ -425,7 +437,7 @@ function closeDetail(){
 function detail(a){
   $('#s2').innerHTML=`<div class="dialog" role="dialog" aria-modal="true" aria-labelledby="detail-name" tabindex="-1">
   <header class="detail-head"><div class="detail-bar"><button class="back" id="bk" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>声優一覧へ戻る</span></button><span class="detail-brand">ANIME CAST NOW</span><span aria-hidden="true"></span></div>
-  <div class="profile"><div class="profile-copy"><h2 id="detail-name">${esc(a.name)}</h2><small>${esc(a.reading)}</small><em>${a.roles.length?`今季 ${a.roles.length}作品に出演中`:`来期 ${a.next.length}作品に出演予定`}${a.roles.length&&a.next?.length?`<span class="em-next">・来期 ${a.next.length}作品</span>`:''}</em><a class="share-x" id="share-x" data-ga-event="share_x_click" data-ga-va-id="${esc(a.actor_id)}" data-ga-va-name="${esc(a.name)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(a.name)}さんの出演情報をXでシェア">Xでシェア</a></div></div></header>
+  <div class="profile"><div class="profile-copy"><h2 id="detail-name">${esc(a.name)}</h2><small>${esc(a.reading)}</small><em>${a.roles.length?`今季 ${a.roles.length}作品に出演中`:`来期 ${a.next.length}作品に出演予定`}${a.roles.length&&a.next?.length?`<span class="em-next">・来期 ${a.next.length}作品</span>`:''}</em><a class="share-x" id="share-x" data-ga-event="share_x_click" data-ga-va-id="${esc(a.actor_id)}" data-ga-va-name="${esc(a.name)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(a.name)}さんの出演情報をXでシェア">Xでシェア</a><button type="button" class="share-native" id="share-native" hidden data-ga-event="share_native_click" data-ga-va-id="${esc(a.actor_id)}" data-ga-va-name="${esc(a.name)}">LINEなどで送る</button></div></div></header>
   <div class="modal-scroll"><p class="pr-note">当ページのリンクには広告が含まれています。</p>${a.roles.length?bestVodHtml(a)+'<h3>今季の出演作品</h3>':''}<div class="work-grid">`+a.roles.filter(r=>D.works[r.work_id]?.vod_links?.length).map(r=>{const w=D.works[r.work_id];
    return `<article class="work"><div class="work-main"><div class="work-intro">${w.thumbnail?`<img class="work-thumb" src="${esc(w.thumbnail)}" alt="${esc(w.title)}の画像" loading="lazy" decoding="async" referrerpolicy="no-referrer">`:''}<div class="work-copy"><h4><a class="work-link" href="/work/${esc(r.work_id)}/">${esc(w.title)}</a></h4>${w.credit?`<div class="cr">${esc(w.credit)}</div>`:''}
    <div class="castline"><b>${esc(r.character_name)}</b> ／ ${esc(a.name)}</div><div class="vods">`+vodLinksHtml(w,r,a)+`</div></div></div></div>`+
@@ -437,6 +449,12 @@ function detail(a){
   const post=a.roles.length?`#${hashtag} さんは今期${a.roles.length}作品に出演！ 配信はここでチェック →`:`#${hashtag} さんは${NEXT_LABEL}で${a.next.length}作品に出演予定！ 放送日はここでチェック →`;
   const shareUrl=`https://animecastnow.com${actorPagePath(a.actor_id)}?ref=share_x`;
   $('#share-x').href=`https://x.com/intent/post?text=${encodeURIComponent(post)}&url=${encodeURIComponent(shareUrl)}&hashtags=ANIMECASTNOW`;
+  // スマホの共有メニュー（LINE・インスタ・コピーなど）。使えない端末ではボタンを出さない
+  const native=$('#share-native');
+  if(native&&navigator.share){native.hidden=false;native.onclick=()=>navigator.share({title:`${a.name}さんの出演作｜ANIME CAST NOW`,text:post.replace(/^#/,''),url:`https://animecastnow.com${actorPagePath(a.actor_id)}?ref=share_native`}).catch(()=>{})}
+  // スクロールしたら上の名前の部分を細くして、出演作を広く見せる
+  const sc=$('#s2').querySelector('.modal-scroll'),dlg=$('#s2').querySelector('.dialog');
+  if(sc&&dlg)sc.addEventListener('scroll',()=>dlg.classList.toggle('compact',sc.scrollTop>60),{passive:true});
   $('#s2').querySelector('.dialog').focus();
 }
 // 来期の出演予定（data-next.json がある場合だけ）

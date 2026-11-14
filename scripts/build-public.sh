@@ -6,7 +6,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 rm -rf dist
 mkdir -p dist
-for f in index.html data.json data-next.json featured.json robots.txt sitemap.xml google*.html _headers _redirects; do
+for f in index.html data.json data-next.json featured.json manifest.webmanifest robots.txt sitemap.xml google*.html _headers _redirects; do
   [ -e "$f" ] && cp "$f" dist/
 done
 for d in assets va work next ranking vod about privacy; do
