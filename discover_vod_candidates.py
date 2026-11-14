@@ -467,11 +467,25 @@ def load_override_keys(aliases):
         return {(title_key(canonical_title(row["title"], aliases)), row["provider"]) for row in csv.DictReader(f) if row.get("title")}
 
 
+# 公式ではない出典（配信情報のまとめサイトなど）。公式サイトで同じ配信先が見つかったら、出典を公式のリンクに差し替える
+UNOFFICIAL_SOURCE_HOSTS = {"animedia-khaki.vercel.app"}
+OVERRIDE_FIELDS = ["title", "provider", "source_url", "checked_at"]
+
+
+def is_unofficial(url):
+    return (urlsplit(url or "").hostname or "") in UNOFFICIAL_SOURCE_HOSTS
+
+
 def auto_discover(data, fetcher, aliases, today=None, report_dir=ROOT / "reports"):
-    """公式サイトにリンクがある配信サービスのうち、まだ載っていないものを vod_overrides.csv に追加する。"""
+    """公式サイトにリンクがある配信サービスのうち、まだ載っていないものを vod_overrides.csv に追加する。
+    すでにある行でも、出典が公式ではないもの（まとめサイトなど）は、公式サイトで見つかれば出典を差し替える。"""
     today = today or date.today().isoformat()
-    known = load_override_keys(aliases)
-    added, errors, scanned = [], [], 0
+    rows = []
+    if OVERRIDES_PATH.exists():
+        with OVERRIDES_PATH.open(encoding="utf-8-sig", newline="") as f:
+            rows = [row for row in csv.DictReader(f) if row.get("title")]
+    by_key = {(title_key(canonical_title(row["title"], aliases)), row["provider"]): row for row in rows}
+    added, verified, errors, scanned = [], [], [], 0
     for work in data["works"].values():
         if not work.get("official_url"):
             continue
@@ -484,24 +498,39 @@ def auto_discover(data, fetcher, aliases, today=None, report_dir=ROOT / "reports
             continue
         scanned += 1
         for provider, (link, evidence) in found.items():
-            if provider in have or (key, provider) in known:
+            row = by_key.get((key, provider))
+            if row is not None:
+                if is_unofficial(row.get("source_url")):
+                    row["source_url"], row["checked_at"] = link, today
+                    verified.append({"title": row["title"], "provider": provider, "source_url": link, "evidence": evidence})
                 continue
-            added.append({"title": work["title"], "provider": provider, "source_url": link, "checked_at": today, "evidence": evidence})
-            known.add((key, provider))
-    if added:
-        with OVERRIDES_PATH.open("a", encoding="utf-8", newline="") as f:
-            writer = csv.DictWriter(f, fieldnames=["title", "provider", "source_url", "checked_at"], extrasaction="ignore")
-            writer.writerows(added)
+            if provider in have:
+                continue
+            row = {"title": work["title"], "provider": provider, "source_url": link, "checked_at": today}
+            rows.append(row)
+            by_key[(key, provider)] = row
+            added.append({**row, "evidence": evidence})
+    if added or verified:
+        with OVERRIDES_PATH.open("w", encoding="utf-8", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=OVERRIDE_FIELDS, extrasaction="ignore")
+            writer.writeheader()
+            writer.writerows(rows)
+    unverified = [row for row in rows if is_unofficial(row.get("source_url"))]
     report_dir.mkdir(exist_ok=True)
     lines = [f"# 公式サイトから見つけた配信先（{data['season']}、{today}）", "",
-             f"公式サイトを確認した作品：{scanned}作品／取得できなかった作品：{len(errors)}作品／追加：{len(added)}件", "",
-             "追加した配信先は vod_overrides.csv に入っています。間違いがあれば、その行を消してください。", "",
-             "| 作品 | 配信サービス | 配信ページ | 見つけた公式ページ |", "| --- | --- | --- | --- |"]
+             f"公式サイトを確認した作品：{scanned}作品／取得できなかった作品：{len(errors)}作品／追加：{len(added)}件／公式で裏付けが取れた既存の行：{len(verified)}件", "",
+             f"まとめサイトが出典のまま、公式でまだ裏付けが取れていない行：{len(unverified)}件（下に一覧）", "",
+             "追加・差し替えした内容は vod_overrides.csv に入っています。間違いがあれば、その行を消してください。", "",
+             "## 追加した配信先", "", "| 作品 | 配信サービス | 配信ページ | 見つけた公式ページ |", "| --- | --- | --- | --- |"]
     lines += [f"| {a['title']} | {a['provider']} | {a['source_url']} | {a['evidence']} |" for a in added]
+    lines += ["", "## 公式で裏付けが取れた既存の行", "", "| 作品 | 配信サービス | 配信ページ | 見つけた公式ページ |", "| --- | --- | --- | --- |"]
+    lines += [f"| {v['title']} | {v['provider']} | {v['source_url']} | {v['evidence']} |" for v in verified]
+    lines += ["", "## まだ裏付けが取れていない行（出典がまとめサイト）", ""]
+    lines += [f"- {row['title']} / {row['provider']}" for row in unverified]
     if errors:
         lines += ["", "## 取得できなかった公式サイト", ""] + [f"- {title}: {error}" for title, error in errors]
     (report_dir / f"vod-discovery-{data['season']}.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
-    return added, errors
+    return added, errors, verified, unverified
 
 
 def main():
@@ -512,8 +541,9 @@ def main():
     if args.auto:
         with DATA_PATH.open(encoding="utf-8") as f:
             data = json.load(f)
-        added, errors = auto_discover(data, OfficialPageFetcher(), load_title_aliases())
-        print(f"公式サイトから配信先を追加: {len(added)}件（取得できなかった公式サイト {len(errors)}件）→ reports/vod-discovery-{data['season']}.md")
+        added, errors, verified, unverified = auto_discover(data, OfficialPageFetcher(), load_title_aliases())
+        print(f"公式サイトから配信先を追加: {len(added)}件、公式で裏付け: {len(verified)}件、未確認のまま: {len(unverified)}件"
+              f"（取得できなかった公式サイト {len(errors)}件）→ reports/vod-discovery-{data['season']}.md")
         for row in added:
             print(f"  + {row['title']} / {row['provider']}")
         return
