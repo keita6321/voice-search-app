@@ -63,6 +63,10 @@ button{font:inherit;color:inherit;cursor:pointer}
 .feature-rib b{font-size:15px}.feature-rib span:last-child{white-space:nowrap}
 .feature-h{display:flex;justify-content:space-between;align-items:baseline;margin:16px 2px 8px;font-size:15px;font-weight:900;color:#1d2a44}
 .feature-h a{font-size:12px;color:var(--ac);font-weight:700}
+.feature-wrap{position:relative}
+.feature-nav{display:none}
+@media(hover:hover) and (pointer:fine){.feature-nav{display:flex;align-items:center;justify-content:center;position:absolute;top:calc(50% - 28px);z-index:2;width:40px;height:40px;border:0;border-radius:50%;background:rgba(255,255,255,.95);box-shadow:0 2px 10px rgba(29,42,68,.25);color:#1d2a44;font-size:24px;line-height:1;cursor:pointer}
+.feature-nav.prev{left:-8px}.feature-nav.next{right:-8px}.feature-nav[hidden]{display:none}.feature-nav:hover{background:#F5C542}}
 .feature-car{display:flex;align-items:flex-start;gap:10px;overflow-x:auto;padding:2px 2px 10px;scroll-snap-type:x mandatory;scrollbar-width:none}.feature-car::-webkit-scrollbar{display:none}
 .feature-card{flex:0 0 min(78%,300px);scroll-snap-align:start;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 2px 10px rgba(29,42,68,.08);text-decoration:none;color:#1d2a44}
 .feature-img{display:block;aspect-ratio:1200/630;overflow:hidden;background:#ece8f3}.feature-img img{display:block;width:100%;height:100%;object-fit:cover}
@@ -296,9 +300,16 @@ function renderFeature(f){
     if(days>0)h+=`<a class="feature-rib" href="/next/"><span>${esc(NEXT_LABEL)}まで <b>あと${days}日</b></span><span>放送日一覧 →</span></a>`;
   }
   if(f?.works?.length){
-    h+=`<div class="feature-h">今期の注目作品<a href="/work/">作品一覧 →</a></div><div class="feature-car">`+f.works.map((w,i)=>`<a class="feature-card" href="/work/${esc(w.id)}/" data-ga-event="feature_click" data-ga-work-id="${esc(w.id)}" data-ga-work-title="${esc(w.title)}" data-ga-position="${i+1}" data-ga-page-type="home_feature"><span class="feature-img"><img src="${esc(w.thumbnail)}" alt="${esc(w.title)}のキービジュアル" loading="${i<2?'eager':'lazy'}" decoding="async" referrerpolicy="no-referrer" onerror="this.style.visibility='hidden'"></span><div><p>${esc(w.catch)}</p><strong>${esc(w.title)}</strong>${w.partner?`<span class="feature-chip">${esc(serviceLabel(w.partner))}で配信中</span>`:''}</div></a>`).join('')+`</div>`;
+    h+=`<div class="feature-h">今期の注目作品<a href="/work/">作品一覧 →</a></div><div class="feature-wrap"><button type="button" class="feature-nav prev" data-dir="-1" aria-label="前の作品">‹</button><button type="button" class="feature-nav next" data-dir="1" aria-label="次の作品">›</button><div class="feature-car" id="feature-car">`+f.works.map((w,i)=>`<a class="feature-card" href="/work/${esc(w.id)}/" data-ga-event="feature_click" data-ga-work-id="${esc(w.id)}" data-ga-work-title="${esc(w.title)}" data-ga-position="${i+1}" data-ga-page-type="home_feature"><span class="feature-img"><img src="${esc(w.thumbnail)}" alt="${esc(w.title)}のキービジュアル" loading="${i<2?'eager':'lazy'}" decoding="async" referrerpolicy="no-referrer" onerror="this.style.visibility='hidden'"></span><div><p>${esc(w.catch)}</p><strong>${esc(w.title)}</strong>${w.partner?`<span class="feature-chip">${esc(serviceLabel(w.partner))}で配信中</span>`:''}</div></a>`).join('')+`</div></div>`;
   }
-  el.innerHTML=h;el.hidden=!h||!!$('#q').value.trim();
+  el.innerHTML=h;
+  const car=$('#feature-car');
+  if(car){
+    // マウスで送れるように、PCでは左右の矢印を出す。端まで来た側の矢印は消す
+    const update=()=>{el.querySelector('.prev').hidden=car.scrollLeft<8;el.querySelector('.next').hidden=car.scrollLeft+car.clientWidth>=car.scrollWidth-8};
+    el.querySelectorAll('.feature-nav').forEach(b=>b.onclick=()=>car.scrollBy({left:Number(b.dataset.dir)*(car.querySelector('.feature-card')?.offsetWidth+10||300),behavior:'smooth'}));
+    car.addEventListener('scroll',update,{passive:true});update();
+  }el.hidden=!h||!!$('#q').value.trim();
 }
 Promise.all([fetch('/data.json').then(r=>r.json()),nextData]).then(([d,n])=>{
   D=d;
