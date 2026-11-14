@@ -1,8 +1,8 @@
 {
   "redirects": [
     {
-      "source": "/:path*",
-      "destination": "https://animecastnow.com/:path*",
+      "source": "/(.*)",
+      "destination": "https://animecastnow.com/$1",
       "statusCode": 301
     }
   ]
