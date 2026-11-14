@@ -20,6 +20,8 @@ CARRYOVER_MIN_DAYS_INTO_SEASON = 28
 CARRYOVER_PATH = "season_carryover.csv"
 # 来期の先行取得では、前クールからの継続作品は含めない（それは今期の作品なので）
 INCLUDE_CARRYOVER = True
+# 取得しない作品の種類（Annictの media）。来期の先行取得では劇場版を外す
+EXCLUDE_MEDIA = set()
 
 
 def parse_season(season):
@@ -228,7 +230,7 @@ def fetch_annict():
     # 今期に加えて前クールの作品も取り、前クールのものは「今期も放送が続いている作品」だけを残す
     q = """query($s:[String!],$a:String){searchWorks(seasons:$s,first:30,after:$a,orderBy:{field:WATCHERS_COUNT,direction:DESC}){
       pageInfo{hasNextPage endCursor}
-      nodes{id title malAnimeId syobocalTid officialSiteUrl seasonName seasonYear
+      nodes{id title media malAnimeId syobocalTid officialSiteUrl seasonName seasonYear
         programs(first:5,orderBy:{field:STARTED_AT,direction:DESC}){nodes{startedAt rebroadcast}}
         firstPrograms: programs(first:3,orderBy:{field:STARTED_AT,direction:ASC}){nodes{startedAt rebroadcast}}
         casts(first:40){nodes{name person{annictId name nameKana} character{name}}}}}}"""
@@ -239,6 +241,9 @@ def fetch_annict():
         d = post("https://api.annict.com/graphql", {"query": q, "variables": {"s": seasons, "a": after}},
                  {"Authorization": f"Bearer {token}"})["searchWorks"]
         for w in d["nodes"]:
+            if w.get("media") in EXCLUDE_MEDIA:
+                decisions.append((w["title"], False, f"対象外の種類（{w['media']}）", None))
+                continue
             keep, reason, latest = carryover_decision(w, SEASON, include, exclude)
             decisions.append((w["title"], keep, reason, latest))
             if not keep:

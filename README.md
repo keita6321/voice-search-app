@@ -46,7 +46,7 @@ npm run build:pages
 
 GitHub Actionsの「データ更新」では、`next_season`に来期（例：`2027-winter`）を入れると、今期の更新のあとに続けて作ります。
 
-- **対象**：Annictで来期に登録された作品のうち、キャストがある作品（前クールからの継続作品は含めません）
+- **対象**：Annictで来期に登録された作品のうち、キャストがある作品（前クールからの継続作品と劇場版は含めません）
 - **放送開始日**：Annictの最初の本放送の日付（`start_date`）。未登録なら「放送日未定」と表示します
 - **声優ID**：今期と同じ台帳を使います。新しい人は`status: "upcoming"`で採番し、今期の出演状態（`active`/`inactive`）は変えません。`upcoming`の人は、そのシーズンが来るまで`inactive`になりません
 - **補助ファイル**：`reports/`にシーズン名付きで出します（`reports/coverage_missing-2027-winter.csv`など）。今期の`readings_todo.csv`などは上書きしません

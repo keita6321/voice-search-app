@@ -91,6 +91,7 @@ def main():
     aux = (lambda name: os.path.join("reports", f"{name.rsplit('.', 1)[0]}-{season}.csv")) if preview else (lambda name: name)
     if preview:
         cr.INCLUDE_CARRYOVER = False
+        cr.EXCLUDE_MEDIA = {"MOVIE"}
         os.makedirs("reports", exist_ok=True)
     annict_cache = f"annict-{season}"
     annict = cr.cached(annict_cache, cr.fetch_annict, args.refresh or stale_annict_cache(f"cache/{annict_cache}.json"))
