@@ -1,0 +1,12 @@
+// Cloudflare Workers（静的アセット）の設定。dist/ は scripts/build-public.sh が作る。
+// Cloudflareのビルド設定: ビルドコマンド「bash scripts/build-public.sh」、デプロイコマンド「npx wrangler deploy」
+{
+  "name": "animecastnow",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./dist",
+    // /va/0001/ → va/0001/index.html（今のURLのまま）
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}
