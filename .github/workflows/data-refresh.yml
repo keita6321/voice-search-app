@@ -1,0 +1,84 @@
+# Annict から今期のデータを取り直し、ページを作り直して、確認用のブランチに上げる。
+# 実行: GitHub の Actions タブ →「データ更新」→ Run workflow（または gh workflow run data-refresh.yml）
+# 必要なシークレット: ANNICT_TOKEN（Settings → Secrets and variables → Actions）
+name: データ更新
+
+on:
+  workflow_dispatch:
+    inputs:
+      season:
+        description: "取得するシーズン（例: 2026-autumn）。空欄なら coverage_report.py の既定"
+        required: false
+        default: ""
+      force_registry:
+        description: "声優数が前回の半分未満でも続行する（取得失敗でないことを確認した場合のみ）"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: 依存パッケージを入れる
+        run: |
+          pip install -r requirements.txt pykakasi
+
+      - name: データを取り直す（Annict / AniList）
+        env:
+          ANNICT_TOKEN: ${{ secrets.ANNICT_TOKEN }}
+        run: |
+          if [ -z "$ANNICT_TOKEN" ]; then echo "::error::シークレット ANNICT_TOKEN が未設定です"; exit 1; fi
+          args="--refresh"
+          if [ -n "${{ inputs.season }}" ]; then args="$args --season ${{ inputs.season }}"; fi
+          if [ "${{ inputs.force_registry }}" = "true" ]; then args="$args --force-registry"; fi
+          python3 build_data_from_sources.py $args 2>&1 | tee reports-build.log
+
+      - name: テスト
+        run: python3 -m unittest discover -s tests -t .
+
+      - name: ページを作り直す
+        run: npm run build:pages
+
+      - name: レポートを保存する
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: data-refresh-reports
+          path: |
+            reports/
+            reports-build.log
+            data/registry/review.json
+            coverage_missing.csv
+            readings_todo.csv
+            vod_audit.csv
+          if-no-files-found: ignore
+
+      - name: 確認用のブランチに上げる
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
+          branch="data/refresh-$(date -u +%Y%m%d-%H%M)"
+          git checkout -b "$branch"
+          git add -A -- . ':!reports-build.log'
+          if git diff --cached --quiet; then echo "変更なし"; exit 0; fi
+          git commit -m "データ更新（${{ inputs.season || 'default' }}）"
+          git push origin "$branch"
+          echo "### 確認用ブランチ: \`$branch\`" >> "$GITHUB_STEP_SUMMARY"
