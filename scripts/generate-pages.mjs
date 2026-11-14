@@ -8,7 +8,7 @@ if (Number(process.versions.node.split('.')[0]) < 18) {
 }
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const origin = 'https://anime-cast-now.vercel.app';
+const origin = 'https://animecastnow.com';
 const sitemapUrl = `${origin}/sitemap.xml`;
 const ogImage = `${origin}/assets/ogp-default.png`;
 const seasonNames = {
