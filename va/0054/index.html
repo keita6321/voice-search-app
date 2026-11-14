@@ -110,8 +110,14 @@ button{font:inherit;color:inherit;cursor:pointer}
 .best-vod{margin:0 0 16px;padding:12px 14px;border-radius:14px;background:#f5f2fa;border:1px solid #e3dcef}
 .best-lead{margin:0;font-size:13px;line-height:1.6}.best-lead b{color:var(--ac)}
 .best-rest{margin:4px 0 0;color:var(--sub);font-size:11px}
-.best-cta{display:inline-flex;margin-top:9px;background:#fff;font-weight:800}
+.best-cta{display:inline-flex;margin-top:9px;padding:10px 16px;background:var(--ac);border-color:var(--ac);color:#fff;font-size:13px;font-weight:800}
 .best-note{margin:6px 0 0;color:var(--sub);font-size:10px;line-height:1.5}
+.end-cta{margin:20px 0 6px;padding:14px;border-radius:14px;background:#f5f2fa;border:1px solid #e3dcef}.end-cta>p:first-child{margin:0;font-size:13px;line-height:1.6}.end-cta b{color:var(--ac)}
+.cta-bar{display:none}
+@media(max-width:760px){.cta-bar{display:flex;flex:none;align-items:center;gap:10px;padding:9px 12px calc(9px + env(safe-area-inset-bottom));border-top:1px solid #e3dcef;background:rgba(255,255,255,.97);box-shadow:0 -6px 18px rgba(40,30,70,.10)}
+.cta-bar p{flex:1;min-width:0;margin:0;font-size:11px;line-height:1.4;color:var(--ink,#2b2540)}.cta-bar b{color:var(--ac)}
+.cta-bar-btn{flex:none;padding:9px 13px;border-radius:999px;background:var(--ac);color:#fff;font-size:12px;font-weight:800;text-decoration:none}
+.cta-bar-close{flex:none;width:30px;height:30px;border:0;background:none;color:var(--sub);font-size:17px;cursor:pointer}}
 .next-h{margin:22px 2px 9px !important}
 .next-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .next-work{min-width:0;padding:11px 13px;border:1px dashed #cfc6dc;border-radius:13px;background:#fbfaf7}
@@ -184,7 +190,33 @@ const SERVICE_LABEL={'Amazon Prime Video':'Prime Video'};
 // 提携できたら、vod_providers.py のURLをアフィリエイトリンクに差し替え、ここに追加する。
 const PARTNER_SERVICES=new Set(['Amazon Prime Video']);
 // 提携サービスの無料体験など（各社公式で条件を確認してから書く。確認日も入れる）。scripts/articles.mjs の PARTNER_NOTES と同じ内容にする
-const PARTNER_NOTES={'Amazon Prime Video':'Amazonプライム会員の初回30日間無料体験あり（2026年11月時点。条件は公式サイトで確認してください）'};
+const PARTNER_OFFERS={'Amazon Prime Video':{cta:'30日間無料で試す',note:'※Amazonプライム会員の初回のみ。無料期間が終わると月額600円（2026年11月時点。条件は公式サイトで確認してください）'}};
+const PARTNER_NOTES=Object.fromEntries(Object.entries(PARTNER_OFFERS).map(([k,v])=>[k,v.note]));
+const ctaText=p=>PARTNER_OFFERS[p]?`${serviceLabel(p)}を${PARTNER_OFFERS[p].cta}`:`${serviceLabel(p)}で見る`;
+// この声優の今期の出演作を、提携サービスで何作品見られるか（いちばん多い提携サービス）
+function partnerFor(a){
+  const roles=a.roles.filter(r=>D.works[r.work_id]?.vod_links?.length);
+  const counts=new Map();
+  for(const r of roles)for(const v of D.works[r.work_id].vod_links)if(PARTNER_SERVICES.has(v.provider)){
+    const c=counts.get(v.provider)||{provider:v.provider,count:0,link:v};c.count++;counts.set(v.provider,c);}
+  return [...counts.values()].sort((x,y)=>y.count-x.count)[0]||null;
+}
+function partnerLinkHtml(a,p,suffix,cls){
+  const pageType=(location.pathname.startsWith('/va/')?'va_detail':'home')+suffix;
+  return `<a class="${cls}" href="${esc(p.link.url)}" data-ga-event="vod_click" data-ga-provider="${esc(p.provider)}" data-ga-va-id="${esc(a.actor_id)}" data-ga-va-name="${esc(a.name)}" data-ga-position="0" data-ga-page-type="${pageType}" target="_blank" rel="sponsored noopener">`;
+}
+// 出演作の一覧を読み終えたところに置く、まとめのボタン
+function endCtaHtml(a){
+  const p=partnerFor(a);if(!p)return '';
+  return `<section class="end-cta"><p>${esc(a.name)}さんの今期の出演作のうち、<b>${p.count}作品</b>は${esc(serviceLabel(p.provider))}で見られます。</p>${partnerLinkHtml(a,p,'_end','vod best-cta end-btn')}<span>${esc(ctaText(p.provider))}</span></a>${PARTNER_NOTES[p.provider]?`<p class="best-note">${esc(PARTNER_NOTES[p.provider])}</p>`:''}</section>`;
+}
+// スマホで、詳細を開いているあいだ画面下に出すバー（閉じたらその日は出さない）
+const BAR_KEY='acn_bar_closed';
+function barClosedToday(){try{return localStorage.getItem(BAR_KEY)===new Date().toDateString()}catch{return false}}
+function stickyBarHtml(a){
+  const p=partnerFor(a);if(!p||barClosedToday())return '';
+  return `<div class="cta-bar" id="cta-bar"><p><b>${esc(a.name)}さんの出演作${p.count}作品</b><br>${esc(serviceLabel(p.provider))}で見られます</p>${partnerLinkHtml(a,p,'_bar','cta-bar-btn')}${esc(PARTNER_OFFERS[p.provider]?.cta||'見る')}</a><button type="button" class="cta-bar-close" id="cta-bar-close" aria-label="閉じる">×</button></div>`;
+}
 // この声優の今期の出演作を、いちばん多く見られる配信サービス
 function bestVodHtml(a){
   const roles=a.roles.filter(r=>D.works[r.work_id]?.vod_links?.length);
@@ -200,7 +232,7 @@ function bestVodHtml(a){
   const rest=ranked.slice(1,4).map(([p,k])=>`${esc(serviceLabel(p))}（${k}作品）`).join('、');
   return `<section class="best-vod" aria-label="出演作をまとめて見られる配信サービス"><p class="best-lead">今期の出演作${roles.length}作品のうち、<b>${esc(serviceLabel(top))}</b>なら<b>${n}作品</b>を見られます。</p>`+
     (rest?`<p class="best-rest">ほかに：${rest}</p>`:'')+
-    (link?`<a class="vod best-cta" href="${esc(link.url)}" data-ga-event="vod_click" data-ga-provider="${esc(partner[0])}" data-ga-va-id="${esc(a.actor_id)}" data-ga-va-name="${esc(a.name)}" data-ga-position="0" data-ga-page-type="${pageType}_best" target="_blank" rel="sponsored noopener"><span>${esc(serviceLabel(partner[0]))}で${partner[1]}作品を見る</span></a>`+
+    (link?`<a class="vod best-cta" href="${esc(link.url)}" data-ga-event="vod_click" data-ga-provider="${esc(partner[0])}" data-ga-va-id="${esc(a.actor_id)}" data-ga-va-name="${esc(a.name)}" data-ga-position="0" data-ga-page-type="${pageType}_best" target="_blank" rel="sponsored noopener"><span>${esc(ctaText(partner[0]))}</span></a>`+
       (PARTNER_NOTES[partner[0]]?`<p class="best-note">${esc(PARTNER_NOTES[partner[0]])}</p>`:''):'')+
     `</section>`;
 }
@@ -208,7 +240,7 @@ const serviceLabel=name=>SERVICE_LABEL[name]||name;
 function vodLinksHtml(w,r,a){
   const partners=w.vod_links.filter(v=>PARTNER_SERVICES.has(v.provider)),others=w.vod_links.filter(v=>!PARTNER_SERVICES.has(v.provider));
   const pageType=location.pathname.startsWith('/va/')?'va_detail':'home';
-  return partners.map((v,index)=>`<a class="vod" href="${esc(v.url)}" data-ga-event="vod_click" data-ga-provider="${esc(v.provider)}" data-ga-work-id="${esc(r.work_id)}" data-ga-work-title="${esc(w.title)}" data-ga-va-id="${esc(a.actor_id)}" data-ga-va-name="${esc(a.name)}" data-ga-position="${index+1}" data-ga-page-type="${pageType}" target="_blank" rel="sponsored noopener"><span>${esc(serviceLabel(v.provider))}で見る</span><i class="vod-go" aria-hidden="true">↗</i></a>`).join('')
+  return partners.map((v,index)=>`<a class="vod" href="${esc(v.url)}" data-ga-event="vod_click" data-ga-provider="${esc(v.provider)}" data-ga-work-id="${esc(r.work_id)}" data-ga-work-title="${esc(w.title)}" data-ga-va-id="${esc(a.actor_id)}" data-ga-va-name="${esc(a.name)}" data-ga-position="${index+1}" data-ga-page-type="${pageType}" target="_blank" rel="sponsored noopener"><span>${esc(ctaText(v.provider))}</span><i class="vod-go" aria-hidden="true">↗</i></a>`).join('')
     +(others.length?`<p class="vod-others"><span>${partners.length?'ほかの配信':'配信'}</span>${esc(others.map(v=>serviceLabel(v.provider)).join('・'))}</p>`:'');
 }
 let D,A=[],N=null,NEXT_LABEL='',CURRENT_COUNT=0,WORK_COUNT=0,SERVICES=[],selectedService='',SERVICE_WORK_COUNTS={};
@@ -304,8 +336,10 @@ function detail(a){
   <div class="modal-scroll"><p class="pr-note">当ページのリンクには広告が含まれています。</p>${a.roles.length?bestVodHtml(a)+'<h3>今季の出演作品</h3>':''}<div class="work-grid">`+a.roles.filter(r=>D.works[r.work_id]?.vod_links?.length).map(r=>{const w=D.works[r.work_id];
    return `<article class="work"><div class="work-main"><div class="work-intro">${w.thumbnail?`<img class="work-thumb" src="${esc(w.thumbnail)}" alt="${esc(w.title)}の画像" loading="lazy" decoding="async" referrerpolicy="no-referrer">`:''}<div class="work-copy"><h4><a class="work-link" href="/work/${esc(r.work_id)}/">${esc(w.title)}</a></h4>${w.credit?`<div class="cr">${esc(w.credit)}</div>`:''}
    <div class="castline"><b>${esc(r.character_name)}</b> ／ ${esc(a.name)}</div><div class="vods">`+vodLinksHtml(w,r,a)+`</div></div></div></div>`+
-   ((r.official_url||w.official_url)?`<a class="off" href="${esc(r.official_url||w.official_url)}" data-ga-event="official_site_click" data-ga-work-id="${esc(r.work_id)}" data-ga-work-title="${esc(w.title)}" data-ga-va-id="${esc(a.actor_id)}" target="_blank" rel="noopener">公式サイト</a>`:'')+'</article>'}).join('')+`</div>${nextHtml(a)}</div></div>`;
+   ((r.official_url||w.official_url)?`<a class="off" href="${esc(r.official_url||w.official_url)}" data-ga-event="official_site_click" data-ga-work-id="${esc(r.work_id)}" data-ga-work-title="${esc(w.title)}" data-ga-va-id="${esc(a.actor_id)}" target="_blank" rel="noopener">公式サイト</a>`:'')+'</article>'}).join('')+`</div>${a.roles.length?endCtaHtml(a):''}${nextHtml(a)}</div>${a.roles.length?stickyBarHtml(a):''}</div>`;
   $('#bk').onclick=closeDetail;
+  const barClose=$('#cta-bar-close');
+  if(barClose)barClose.onclick=()=>{try{localStorage.setItem(BAR_KEY,new Date().toDateString())}catch{}$('#cta-bar').remove()};
   const hashtag=a.name.replace(/[^\p{L}\p{N}_]/gu,'')||'声優';
   const post=a.roles.length?`#${hashtag} さんは今期${a.roles.length}作品に出演！ 配信はここでチェック →`:`#${hashtag} さんは${NEXT_LABEL}で${a.next.length}作品に出演予定！ 放送日はここでチェック →`;
   const shareUrl=`https://animecastnow.com${actorPagePath(a.actor_id)}?ref=share_x`;

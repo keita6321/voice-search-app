@@ -36,6 +36,7 @@ td.num{white-space:nowrap;font-weight:700;text-align:right}
 details{margin:6px 0 0}summary{cursor:pointer;color:#62517f;font-size:14px}
 .cta{display:inline-block;margin-top:6px;padding:6px 14px;border:1px solid #d8d0e4;border-radius:999px;background:#f5f2fa;color:#4b3d6b;font-size:14px;font-weight:700;text-decoration:none}
 h3{margin:20px 0 6px;font-size:16px}
+.end-cta{margin:28px 0 8px;padding:14px 16px;border-radius:14px;background:#f5f2fa;border:1px solid #e3dcef}.end-cta p{margin:0 0 8px}.end-cta p:first-child{font-weight:700;font-size:15px}
 .related{margin-top:40px;padding-top:16px;border-top:1px solid #e3dfd2}
 .date{white-space:nowrap;font-weight:700}
 .countdown{display:inline-block;margin-left:4px;padding:0 7px;border-radius:999px;background:#f5f2fa;color:#62517f;font-size:12px;font-weight:700;white-space:nowrap}
@@ -196,7 +197,7 @@ export function vodPage(ctx) {
     const titles = ids.map(id => ({ id, title: data.works[id].title })).sort((a, b) => a.title.localeCompare(b.title, 'ja'));
     const partner = partnerLinks[provider];
     const cta = partner
-      ? `<a class="cta" href="${esc(partner)}" target="_blank" rel="sponsored noopener" data-ga-event="vod_click" data-ga-provider="${esc(provider)}" data-ga-page-type="vod_article" data-ga-position="${rank}">${esc(label(provider))}をチェック ↗</a>`
+      ? `<a class="cta" href="${esc(partner)}" target="_blank" rel="sponsored noopener" data-ga-event="vod_click" data-ga-provider="${esc(provider)}" data-ga-page-type="vod_article" data-ga-position="${rank}">${esc(ctaText(provider))} ↗</a>`
       : '';
     return `<tr><td class="rank">${rank}位</td><td><strong>${esc(label(provider))}</strong><span class="bar"><i style="width:${Math.round((ids.length / max) * 100)}%"></i></span>
 <details><summary>配信作品を見る（${ids.length}作品）</summary><div class="works">${titles.map(t => `<a href="/work/${esc(t.id)}/">${esc(t.title)}</a>`).join('、')}</div></details>${cta}</td><td class="num">${ids.length}作品<br><span class="note">${Math.round((ids.length / withVod.length) * 100)}%</span></td></tr>`;
@@ -250,9 +251,11 @@ function castOf(data) {
 }
 
 // 提携サービスの無料体験など。index.html の PARTNER_NOTES と同じ内容にする
-const PARTNER_NOTES = {
-  'Amazon Prime Video': 'Amazonプライム会員の初回30日間無料体験あり（2026年11月時点。条件は公式サイトで確認してください）',
+const PARTNER_OFFERS = {
+  'Amazon Prime Video': { cta: '30日間無料で試す', note: '※Amazonプライム会員の初回のみ。無料期間が終わると月額600円（2026年11月時点。条件は公式サイトで確認してください）' },
 };
+const PARTNER_NOTES = Object.fromEntries(Object.entries(PARTNER_OFFERS).map(([k, v]) => [k, v.note]));
+const ctaText = provider => (PARTNER_OFFERS[provider] ? `${label(provider)}を${PARTNER_OFFERS[provider].cta}` : `${label(provider)}で見る`);
 
 // 手書きの作品紹介（data/work_notes.json）
 function notesSection(note, title) {
@@ -302,7 +305,9 @@ export function workPages(ctx) {
       ? `「${esc(work.title)}」は、${esc(names.join('、'))}で配信されています（${esc(asOf)}時点）。`
       : `「${esc(work.title)}」の配信サービスは、まだ確認できていません（${esc(asOf)}時点）。配信が決まり次第、このページに追加します。`;
     const buttons = partners.map((v, index) =>
-      `<a class="cta" href="${esc(v.url)}" target="_blank" rel="sponsored noopener" data-ga-event="vod_click" data-ga-provider="${esc(v.provider)}" data-ga-work-id="${esc(id)}" data-ga-work-title="${esc(work.title)}" data-ga-page-type="work" data-ga-position="${index + 1}">${esc(label(v.provider))}で見る ↗</a>`).join(' ');
+      `<a class="cta" href="${esc(v.url)}" target="_blank" rel="sponsored noopener" data-ga-event="vod_click" data-ga-provider="${esc(v.provider)}" data-ga-work-id="${esc(id)}" data-ga-work-title="${esc(work.title)}" data-ga-page-type="work" data-ga-position="${index + 1}">${esc(ctaText(v.provider))} ↗</a>`).join(' ');
+    const endButtons = partners.map((v, index) =>
+      `<a class="cta" href="${esc(v.url)}" target="_blank" rel="sponsored noopener" data-ga-event="vod_click" data-ga-provider="${esc(v.provider)}" data-ga-work-id="${esc(id)}" data-ga-work-title="${esc(work.title)}" data-ga-page-type="work_end" data-ga-position="${index + 1}">${esc(ctaText(v.provider))} ↗</a>`).join(' ');
     const notesFor = partners.map(v => PARTNER_NOTES[v.provider]).filter(Boolean);
     const vodSection = vods.length
       ? `<h2>配信しているサービス</h2>
@@ -334,6 +339,9 @@ ${related.length ? `<h2>この作品の声優が、今期ほかに出ている�
 ${relatedList}
 </ul>` : ''}
 ${work.official_url ? `<p><a href="${esc(work.official_url)}" target="_blank" rel="noopener" data-ga-event="official_site_click" data-ga-work-id="${esc(id)}" data-ga-work-title="${esc(work.title)}">公式サイト ↗</a></p>` : ''}
+${endButtons ? `<div class="end-cta"><p>「${esc(work.title)}」を見るなら</p>
+<p>${endButtons}</p>
+${notesFor.map(note => `<p class="note">${esc(note)}</p>`).join('\n')}</div>` : ''}
 <h2>このページについて</h2>
 <p class="note">作品とキャストはアニメ作品データベース「Annict」のAPI、配信先はAnnictの作品情報・公式サイト・配信サービスの公式ラインナップなどをもとにしています（最終更新：${esc(asOf)}）。配信状況は変わることがあります。</p>`;
     const description = vods.length
