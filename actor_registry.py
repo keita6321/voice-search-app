@@ -109,12 +109,26 @@ def _apply_merges(people, merges):
         s["status"], s["redirect_to"] = "merged", dst
 
 
-def assign(registry, actors, season, overrides=None, force=False):
+_SEASON_ORDER = {"winter": 0, "spring": 1, "summer": 2, "autumn": 3}
+
+
+def _season_key(season):
+    """'2027-winter' → (2027, 0)。不正な値は最小として扱う。"""
+    try:
+        year, name = str(season).split("-", 1)
+        return (int(year), _SEASON_ORDER[name])
+    except (ValueError, KeyError):
+        return (0, -1)
+
+
+def assign(registry, actors, season, overrides=None, force=False, preview=False):
     """今期の声優に台帳のIDを割り当て、台帳を更新する。
 
     actors: [{"name": str, "reading": str, "annict_person_id": int|None}, ...]
     戻り値: (name → actor_id の辞書, レポート)
     要確認や品質ゲートの違反があれば RegistryError（台帳は変更しない）。
+    preview=True（来期の先行取得）のときは、既存の人の状態（active/inactive・last_seen）を変えず、
+    新しい人だけ status="upcoming" で採番する。品質ゲートも適用しない。
     """
     overrides = {**empty_overrides(), **(overrides or {})}
     people = json.loads(json.dumps(registry.get("people", {})))  # 失敗時に元の台帳を汚さないためのコピー
@@ -200,10 +214,12 @@ def assign(registry, actors, season, overrides=None, force=False):
             p["kana"] = reading
         if pid is not None and pid not in p.setdefault("annict_person_ids", []):
             p["annict_person_ids"].append(pid)
+        report["matched"] += 1
+        if preview:
+            continue
         if p.get("status") != "active":
             report["reactivated"].append((actor_id, name))
         p["status"], p["last_seen"], p["redirect_to"] = "active", season, None
-        report["matched"] += 1
 
     if review:
         raise RegistryError(f"要確認が {len(review)} 件あります（{REVIEW_PATH} を確認してください）", review)
@@ -214,14 +230,22 @@ def assign(registry, actors, season, overrides=None, force=False):
         pid = a.get("annict_person_id")
         people[actor_id] = {"name": a["name"], "kana": reading, "aliases": [],
                             "annict_person_ids": [pid] if pid is not None else [],
-                            "first_seen": season, "last_seen": season, "status": "active", "redirect_to": None}
+                            "first_seen": season, "last_seen": season,
+                            "status": "upcoming" if preview else "active", "redirect_to": None}
         assigned[a["name"]] = actor_id
         report["new"].append((actor_id, a["name"]))
+
+    if preview:
+        registry["people"] = dict(sorted(people.items(), key=lambda kv: _id_number(kv[0])))
+        registry.setdefault("version", 1)
+        return assigned, report
 
     seen_ids = set(assigned.values())
     previous_active = sum(1 for p in registry.get("people", {}).values() if p.get("status") == "active")
     for actor_id, p in people.items():
-        if p.get("status") == "active" and actor_id not in seen_ids:
+        # 来期の先行取得で採番した人（upcoming）は、そのシーズンが来るまで inactive にしない
+        upcoming_later = p.get("status") == "upcoming" and _season_key(p.get("first_seen")) > _season_key(season)
+        if p.get("status") in ("active", "upcoming") and not upcoming_later and actor_id not in seen_ids:
             p["status"] = "inactive"
             report["inactivated"].append((actor_id, p["name"]))
 

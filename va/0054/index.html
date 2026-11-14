@@ -105,6 +105,15 @@ button{font:inherit;color:inherit;cursor:pointer}
 .soon{padding:8px 5px;border-radius:9px;background:var(--bg);color:var(--sub);font-size:11px;text-align:center}
 .off{display:block;margin-top:6px;color:var(--sub);font-size:10px;text-align:center;text-decoration:none}
 .off:after{content:" ↗"}
+.em-next{color:var(--sub);font-weight:700}
+.next-h{margin:22px 2px 9px !important}
+.next-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.next-work{min-width:0;padding:11px 13px;border:1px dashed #cfc6dc;border-radius:13px;background:#fbfaf7}
+.next-work h4{margin:0 0 3px;font-size:14px;line-height:1.35;font-weight:900}
+.next-date{margin:0 0 4px;color:var(--ac);font-size:11px;font-weight:800}.next-date.tbd{color:var(--sub)}
+.next-off{color:var(--sub);font-size:10px;text-decoration:none}.next-off:after{content:" ↗"}
+.next-note{margin:10px 2px 0;color:var(--sub);font-size:11px}.next-note a{color:var(--ac);font-weight:700}
+@media(max-width:540px){.next-list{grid-template-columns:1fr}}
 .modal-empty{grid-column:1/-1;padding:24px;text-align:center;color:var(--sub)}
 body.modal-open{overflow:hidden}
 .seo-content{padding-top:24px;padding-bottom:24px}
@@ -136,7 +145,7 @@ body.modal-open{overflow:hidden}
    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
    <input id="q" type="search" placeholder="今期の声優を名前・ひらがなで検索" autocomplete="off" enterkeyhint="search" aria-label="声優を検索">
    <button id="clr" type="button" hidden aria-label="入力を消す">✕</button></label></div>
-  <nav class="feature-links" aria-label="特集"><span>特集</span><a href="/ranking/">今期の出演本数ランキング</a><a href="/vod/">配信サービス別の作品数</a><a href="/work/">作品一覧（配信はどこ？）</a></nav>
+  <nav class="feature-links" aria-label="特集"><span>特集</span><a href="/ranking/">今期の出演本数ランキング</a><a href="/vod/">配信サービス別の作品数</a><a href="/work/">作品一覧（配信はどこ？）</a><a href="/next/" id="next-link" hidden>来期アニメの放送日</a></nav>
   <div class="vod-filters" id="vod-filters" role="group" aria-label="配信サービスで絞り込み"></div>
   <div class="filter-status" id="filter-status" aria-live="polite">フィルター：すべての配信</div>
   <div class="cnt" id="cnt">今期放送中の声優（あいうえお順）</div>
@@ -170,10 +179,20 @@ function vodLinksHtml(w,r,a){
   return partners.map((v,index)=>`<a class="vod" href="${esc(v.url)}" data-ga-event="vod_click" data-ga-provider="${esc(v.provider)}" data-ga-work-id="${esc(r.work_id)}" data-ga-work-title="${esc(w.title)}" data-ga-va-id="${esc(a.actor_id)}" data-ga-va-name="${esc(a.name)}" data-ga-position="${index+1}" data-ga-page-type="${pageType}" target="_blank" rel="sponsored noopener"><span>${esc(serviceLabel(v.provider))}で見る</span><i class="vod-go" aria-hidden="true">↗</i></a>`).join('')
     +(others.length?`<p class="vod-others"><span>${partners.length?'ほかの配信':'配信'}</span>${esc(others.map(v=>serviceLabel(v.provider)).join('・'))}</p>`:'');
 }
-let D,A=[],WORK_COUNT=0,SERVICES=[],selectedService='',SERVICE_WORK_COUNTS={};
+let D,A=[],N=null,NEXT_LABEL='',CURRENT_COUNT=0,WORK_COUNT=0,SERVICES=[],selectedService='',SERVICE_WORK_COUNTS={};
+const SEASON_NAMES={winter:'冬',spring:'春',summer:'夏',autumn:'秋',fall:'秋'};
+const seasonText=season=>{const [y,s]=season.split('-');return `${y}年${SEASON_NAMES[s]||s}アニメ`};
+// 来期の先行データ（data-next.json）。なくても今期の表示はそのまま動く
+const nextData=fetch('/data-next.json').then(r=>r.ok?r.json():null).catch(()=>null);
+const WD=['日','月','火','水','木','金','土'];
+function startText(date){
+  const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(date||'');if(!m)return '放送日未定';
+  return `${+m[2]}月${+m[3]}日（${WD[new Date(Date.UTC(+m[1],m[2]-1,+m[3])).getUTCDay()]}）放送開始`;
+}
 
-fetch('/data.json').then(r=>r.json()).then(d=>{
+Promise.all([fetch('/data.json').then(r=>r.json()),nextData]).then(([d,n])=>{
   D=d;
+  if(n&&n.season!==d.season){N=n;NEXT_LABEL=seasonText(n.season);$('#next-link').hidden=false;$('#next-link').textContent=`${NEXT_LABEL}の放送日`}
   const vodWorks=Object.entries(d.works).filter(([,w])=>w.vod_links?.length);
   const vodWorkIds=new Set(vodWorks.map(([id])=>id));
   WORK_COUNT=vodWorks.length;
@@ -183,21 +202,33 @@ fetch('/data.json').then(r=>r.json()).then(d=>{
   A=d.voice_actors.map(a=>({...a,roles:a.roles.filter(r=>vodWorkIds.has(r.work_id))}))
     .filter(a=>a.roles.length)
     .map(a=>({...a,k:norm(a.name+a.reading),services:[...new Set(a.roles.flatMap(r=>d.works[r.work_id].vod_links.map(v=>v.provider)))]}));
+  CURRENT_COUNT=A.length;
+  if(N){
+    // 今期と同じタイトルの作品（同じID）は今期側で表示するので除く
+    const nextIds=new Set(Object.keys(N.works).filter(id=>!d.works[id]));
+    const byId=new Map(A.map(a=>[a.actor_id,a]));
+    for(const v of N.voice_actors){
+      const next=v.roles.filter(r=>nextIds.has(r.work_id));if(!next.length)continue;
+      const a=byId.get(v.actor_id);
+      if(a)a.next=next;
+      else A.push({...v,roles:[],services:[],next,k:norm(v.name+v.reading)});
+    }
+  }
   renderVodFilters();
   const [y,s]=d.season.split('-'),M={winter:['冬','1〜3月'],spring:['春','4〜6月'],summer:['夏','7〜9月'],autumn:['秋','10〜12月'],fall:['秋','10〜12月']}[s]||[s,''];
   const dt=new Date(d.updated_at).toLocaleDateString('ja-JP',{timeZone:'Asia/Tokyo',month:'numeric',day:'numeric'});
   $('#sub').textContent=`${y}年 ${M[0]}アニメ`;
-  $('#cnt').textContent=`今季出演中の声優（あいうえお順）・${A.length}名／${WORK_COUNT}作品`;
+  $('#cnt').textContent=`今季出演中の声優（あいうえお順）・${CURRENT_COUNT}名／${WORK_COUNT}作品`;
   route();
 }).catch(()=>{$('#list').innerHTML='<div class="empty"><b>データを読み込めませんでした</b>data.json を同じ場所に置き、サーバー経由で開いてください。</div>';window.acnPageView()});
 
 function list(){
-  const v=$('#q').value,q=norm(v),r=A.filter(a=>(!selectedService||a.services.includes(selectedService))&&(!q||a.k.includes(q)));
+  const v=$('#q').value,q=norm(v),r=A.filter(a=>(a.roles.length||q)&&(!selectedService||a.services.includes(selectedService))&&(!q||a.k.includes(q)));
   $('#clr').hidden=!v;
   const workCount=selectedService?SERVICE_WORK_COUNTS[selectedService]:WORK_COUNT;
   $('#filter-status').textContent=`フィルター：${selectedService?serviceLabel(selectedService):'すべての配信'}`;
   $('#cnt').textContent=q?(r.length?`${r.length}名が見つかりました／${selectedService?serviceLabel(selectedService)+'配信':'検索対象'}${workCount}作品`:`検索結果はありません／${selectedService?serviceLabel(selectedService)+'配信':'検索対象'}${workCount}作品`):selectedService?`${serviceLabel(selectedService)}で配信中の声優（あいうえお順）・${r.length}名／${workCount}作品`:`今季出演中の声優（あいうえお順）・${r.length}名／${WORK_COUNT}作品`;
-  $('#list').innerHTML=r.length?r.map(a=>`<button class="row" data-id="${esc(a.actor_id)}"><span class="nm"><b>${esc(a.name)}</b></span><span class="service-text" aria-label="${esc(a.services.map(serviceLabel).join('、'))}で配信">${esc(a.services.slice(0,2).map(serviceLabel).join('・'))}${a.services.length>2?`<span class="service-more"> ほか${a.services.length-2}</span>`:''}</span><span class="role-count">${a.roles.length}件出演</span><i class="ch" aria-hidden="true"></i></button>`).join(''):`<div class="empty"><b>${q?(selectedService?`${serviceLabel(selectedService)}で配信中の作品に「${esc(v)}」は見つかりません`:`「${esc(v)}」は今期の作品に見つかりません`):'このサービスで配信中の作品に出演する声優はいません'}</b>${q?(selectedService?'名前の一部やひらがなで検索できます。':'過去作・来期作は対象外です。名前の一部やひらがなでも探せます。'):''}</div>`;
+  $('#list').innerHTML=r.length?r.map(a=>`<button class="row" data-id="${esc(a.actor_id)}"><span class="nm"><b>${esc(a.name)}</b></span><span class="service-text" aria-label="${esc(a.services.map(serviceLabel).join('、'))}で配信">${esc(a.services.slice(0,2).map(serviceLabel).join('・'))}${a.services.length>2?`<span class="service-more"> ほか${a.services.length-2}</span>`:''}</span><span class="role-count">${a.roles.length?`${a.roles.length}件出演`:`来期 ${a.next.length}作品`}</span><i class="ch" aria-hidden="true"></i></button>`).join(''):`<div class="empty"><b>${q?(selectedService?`${serviceLabel(selectedService)}で配信中の作品に「${esc(v)}」は見つかりません`:`「${esc(v)}」は今期の作品に見つかりません`):'このサービスで配信中の作品に出演する声優はいません'}</b>${q?(selectedService?'名前の一部やひらがなで検索できます。':(N?'過去作は対象外です。':'過去作・来期作は対象外です。')+'名前の一部やひらがなでも探せます。'):''}</div>`;
 }
 function renderVodFilters(){
   $('#vod-filters').innerHTML=`<button class="vod-filter" type="button" data-service="" aria-pressed="true">すべての配信</button>`+SERVICES.map(s=>`<button class="vod-filter" type="button" data-service="${esc(s)}" aria-pressed="false">${esc(serviceLabel(s))}</button>`).join('');
@@ -237,23 +268,32 @@ function closeDetail(){
 function detail(a){
   $('#s2').innerHTML=`<div class="dialog" role="dialog" aria-modal="true" aria-labelledby="detail-name" tabindex="-1">
   <header class="detail-head"><div class="detail-bar"><button class="back" id="bk" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>声優一覧へ戻る</span></button><span class="detail-brand">ANIME CAST NOW</span><span aria-hidden="true"></span></div>
-  <div class="profile"><div class="profile-copy"><h2 id="detail-name">${esc(a.name)}</h2><small>${esc(a.reading)}</small><em>今季 ${a.roles.length}作品に出演中</em><a class="share-x" id="share-x" data-ga-event="share_x_click" data-ga-va-id="${esc(a.actor_id)}" data-ga-va-name="${esc(a.name)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(a.name)}さんの出演情報をXでシェア">Xでシェア</a></div></div></header>
-  <div class="modal-scroll"><h3>今季の出演作品</h3><div class="work-grid">`+a.roles.filter(r=>D.works[r.work_id]?.vod_links?.length).map(r=>{const w=D.works[r.work_id];
+  <div class="profile"><div class="profile-copy"><h2 id="detail-name">${esc(a.name)}</h2><small>${esc(a.reading)}</small><em>${a.roles.length?`今季 ${a.roles.length}作品に出演中`:`来期 ${a.next.length}作品に出演予定`}${a.roles.length&&a.next?.length?`<span class="em-next">・来期 ${a.next.length}作品</span>`:''}</em><a class="share-x" id="share-x" data-ga-event="share_x_click" data-ga-va-id="${esc(a.actor_id)}" data-ga-va-name="${esc(a.name)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(a.name)}さんの出演情報をXでシェア">Xでシェア</a></div></div></header>
+  <div class="modal-scroll">${a.roles.length?'<h3>今季の出演作品</h3>':''}<div class="work-grid">`+a.roles.filter(r=>D.works[r.work_id]?.vod_links?.length).map(r=>{const w=D.works[r.work_id];
    return `<article class="work"><div class="work-main"><div class="work-intro">${w.thumbnail?`<img class="work-thumb" src="${esc(w.thumbnail)}" alt="${esc(w.title)}の画像" loading="lazy" decoding="async" referrerpolicy="no-referrer">`:''}<div class="work-copy"><h4><a class="work-link" href="/work/${esc(r.work_id)}/">${esc(w.title)}</a></h4>${w.credit?`<div class="cr">${esc(w.credit)}</div>`:''}
    <div class="castline"><b>${esc(r.character_name)}</b> ／ ${esc(a.name)}</div><div class="vods">`+vodLinksHtml(w,r,a)+`</div></div></div></div>`+
-   ((r.official_url||w.official_url)?`<a class="off" href="${esc(r.official_url||w.official_url)}" data-ga-event="official_site_click" data-ga-work-id="${esc(r.work_id)}" data-ga-work-title="${esc(w.title)}" data-ga-va-id="${esc(a.actor_id)}" target="_blank" rel="noopener">公式サイト</a>`:'')+'</article>'}).join('')+`</div></div></div>`;
+   ((r.official_url||w.official_url)?`<a class="off" href="${esc(r.official_url||w.official_url)}" data-ga-event="official_site_click" data-ga-work-id="${esc(r.work_id)}" data-ga-work-title="${esc(w.title)}" data-ga-va-id="${esc(a.actor_id)}" target="_blank" rel="noopener">公式サイト</a>`:'')+'</article>'}).join('')+`</div>${nextHtml(a)}</div></div>`;
   $('#bk').onclick=closeDetail;
   const hashtag=a.name.replace(/[^\p{L}\p{N}_]/gu,'')||'声優';
-  const post=`#${hashtag} さんは今期${a.roles.length}作品に出演！ 配信はここでチェック →`;
+  const post=a.roles.length?`#${hashtag} さんは今期${a.roles.length}作品に出演！ 配信はここでチェック →`:`#${hashtag} さんは${NEXT_LABEL}で${a.next.length}作品に出演予定！ 放送日はここでチェック →`;
   const shareUrl=`https://anime-cast-now.vercel.app${actorPagePath(a.actor_id)}?ref=share_x`;
   $('#share-x').href=`https://x.com/intent/post?text=${encodeURIComponent(post)}&url=${encodeURIComponent(shareUrl)}&hashtags=ANIMECASTNOW`;
   $('#s2').querySelector('.dialog').focus();
+}
+// 来期の出演予定（data-next.json がある場合だけ）
+function nextHtml(a){
+  if(!a.next?.length)return '';
+  const items=[...a.next].sort((x,y)=>(N.works[x.work_id].start_date||'9999').localeCompare(N.works[y.work_id].start_date||'9999'));
+  return `<h3 class="next-h">来期の出演予定（${esc(NEXT_LABEL)}）</h3><div class="next-list">`+items.map(r=>{const w=N.works[r.work_id];
+    return `<article class="next-work"><p class="next-date${w.start_date?'':' tbd'}">${esc(startText(w.start_date))}</p><h4><a class="work-link" href="/work/${esc(r.work_id)}/">${esc(w.title)}</a></h4><div class="castline"><b>${esc(r.character_name)}</b> ／ ${esc(a.name)}</div>`+
+    (w.official_url?`<a class="next-off" href="${esc(w.official_url)}" data-ga-event="official_site_click" data-ga-work-id="${esc(r.work_id)}" data-ga-work-title="${esc(w.title)}" data-ga-va-id="${esc(a.actor_id)}" target="_blank" rel="noopener">公式サイト</a>`:'')+'</article>'}).join('')+
+    `</div><p class="next-note">配信サービスは発表待ちです。<a href="/next/">${esc(NEXT_LABEL)}の放送日一覧</a></p>`;
 }
 function route(){
   const a=actorFromLocation();
   window.__INITIAL_VA__=null;
   const seo=$('#seo-content');if(seo)seo.hidden=true;
-  document.title=a?`${a.name}さんの今期出演作｜ANIME CAST NOW`:HOME_TITLE;
+  document.title=a?(a.roles.length?`${a.name}さんの今期出演作｜ANIME CAST NOW`:`${a.name}さんの来期出演作（${NEXT_LABEL}）｜ANIME CAST NOW`):HOME_TITLE;
   $('#s1').hidden=false;$('#s2').hidden=!a;document.body.classList.toggle('modal-open',!!a);
   if(a)detail(a);else list();
   window.acnPageView();

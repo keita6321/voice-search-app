@@ -35,6 +35,31 @@ Install dependencies with `python -m pip install -r requirements.txt` and `pytho
 
 シーズンは`--season`で指定できます（例：`python3 build_data_from_sources.py --refresh --season 2027-winter`）。キャッシュはシーズンごとに`cache/annict-<season>.json`、`cache/anilist-<season>.json`に保存されます。
 
+## 来期の先行取得（data-next.json）
+
+来期の作品は、キャストが発表された時点で先に載せます。今期の`data.json`とは別に`data-next.json`を作ります。
+
+```
+python3 build_data_from_sources.py --refresh --preview --season 2027-winter
+npm run build:pages
+```
+
+GitHub Actionsの「データ更新」では、`next_season`に来期（例：`2027-winter`）を入れると、今期の更新のあとに続けて作ります。
+
+- **対象**：Annictで来期に登録された作品のうち、キャストがある作品（前クールからの継続作品は含めません）
+- **放送開始日**：Annictの最初の本放送の日付（`start_date`）。未登録なら「放送日未定」と表示します
+- **声優ID**：今期と同じ台帳を使います。新しい人は`status: "upcoming"`で採番し、今期の出演状態（`active`/`inactive`）は変えません。`upcoming`の人は、そのシーズンが来るまで`inactive`になりません
+- **補助ファイル**：`reports/`にシーズン名付きで出します（`reports/coverage_missing-2027-winter.csv`など）。今期の`readings_todo.csv`などは上書きしません
+
+表示は次のとおりです。
+
+- **声優の詳細**：「来期の出演予定」として、放送開始日の順に表示します。今期の出演がない人は、検索したときだけ一覧に出ます
+- **声優ページ**：来期の出演予定だけの人も、検索エンジンに載せるページにします
+- **作品ページ**：`/work/<id>/`に「放送日とキャスト」のページを作ります。キャストがあれば、配信先が未定でも検索エンジンに載せます
+- **来期の一覧**：`/next/`に放送開始日の順で並べ、放送までの日数を表示します
+
+クールが切り替わったら、来期のシーズンで通常の更新（`--preview`なし）を行い、`data-next.json`を削除するか、次の来期で作り直します。`data-next.json`のシーズンが`data.json`と同じ場合は使われません。
+
 ## 声優IDの台帳（URLの固定）
 
 声優ページのURL（`/va/<id>/`）は、クールをまたいでも同じ人を指すよう、`data/registry/people.json`の台帳でIDを管理します。`build_data_from_sources.py`は、並び順で連番を振り直さず、台帳からIDを割り当てます。一度振ったIDは、再利用も削除もしません。
