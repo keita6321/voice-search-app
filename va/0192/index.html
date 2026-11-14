@@ -36,6 +36,14 @@ button{font:inherit;color:inherit;cursor:pointer}
 .brand{display:flex;align-items:center;justify-content:center;gap:1px;color:var(--tx);font-family:Arial,sans-serif;font-size:clamp(24px,8vw,48px);font-weight:900;line-height:1;letter-spacing:.015em}
 .brand svg{width:.78em;height:.92em;flex:none;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 .tagline{margin:4px 0 28px!important;color:var(--tx)!important;font-size:14px!important;font-weight:700;letter-spacing:.12em}
+.top{text-align:left}.top .brand{justify-content:center}
+.top h1.hero-h{display:block;transform:none;margin:22px 0 6px;font-size:clamp(24px,6.6vw,34px);line-height:1.3;font-weight:900;color:#1d2a44;letter-spacing:.01em}.hero-h em{font-style:normal;color:var(--ac)}
+.hero-sub{margin:0;font-size:12px;color:var(--sub);font-weight:700}.hero-sub b{display:inline-block;margin-right:6px;padding:1px 9px;border-radius:999px;background:#ece6f5;color:var(--ac);font-size:12px}
+.hero-chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:10px 2px 2px}.hero-chips>span{font-size:11px;color:var(--sub);font-weight:700;margin-right:2px}
+.hero-chips button{padding:6px 11px;border-radius:999px;background:#fff;border:1px solid #ddd5ea;color:#1d2a44;font-size:12px;font-weight:700;cursor:pointer}.hero-chips em{font-style:normal;margin-left:4px;color:var(--ac);font-size:10px}
+.filter-toggle{display:flex;align-items:center;justify-content:space-between;width:100%;margin:6px 0 8px;padding:10px 14px;border:1px solid #ddd5ea;border-radius:12px;background:#fff;color:#1d2a44;font-size:13px;font-weight:800;cursor:pointer}
+.filter-toggle small{color:var(--sub);font-weight:700;font-size:12px}.filter-toggle small::after{content:" ▾"}.filter-toggle[aria-expanded="true"] small::after{content:" ▴"}
+.vod-filters[hidden]{display:none!important}
 .season-info{display:flex;align-items:center;justify-content:center;gap:10px;width:max-content;margin:8px auto 0;padding:10px 18px;border-radius:999px;background:var(--ac)}
 .season-label{color:rgba(255,255,255,.82);font-size:12px;font-weight:700;line-height:1.4;letter-spacing:.04em}
 .top h1{margin:0;text-align:left;color:#fff;font-size:18px;line-height:1.4;font-weight:900;letter-spacing:.01em;display:flex;align-items:center;transform:translateY(-1px)}
@@ -43,6 +51,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .sbar{position:sticky;top:0;z-index:4;padding:8px 0 12px;background:linear-gradient(var(--bg) 75%,transparent)}
 .sbox{display:flex;align-items:center;gap:10px;background:var(--sf);border-radius:999px;padding:0 8px 0 16px;box-shadow:0 2px 8px rgba(35,42,53,.04);border:1.5px solid var(--ln);transition:border-color .15s}
 .sbox:focus-within{border-color:var(--ac)}
+.sbox{min-height:56px;border:2.5px solid var(--ac)!important;box-shadow:0 6px 18px rgba(98,81,127,.16)!important}.sbox input{font-size:16px}.sbox svg{stroke:var(--ac)!important}
 .sbox svg{flex:none;width:22px;height:22px;stroke:var(--sub);fill:none;stroke-width:2.4;stroke-linecap:round}
 #q{flex:1;min-width:0;border:0;background:none;color:var(--tx);font:inherit;font-size:15px;font-weight:500;padding:13px 0;outline:none}
 #q::placeholder{color:#99968f;font-weight:400}
@@ -50,8 +59,8 @@ button{font:inherit;color:inherit;cursor:pointer}
 #clr{width:34px;height:34px;border:0;border-radius:50%;background:var(--bg);font-size:16px;line-height:1;color:var(--sub)}
 .work-link{color:inherit;text-decoration:none}.work-link:hover{text-decoration:underline}
 .feature{margin:14px 0 4px}
-.feature-rib{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 14px;border-radius:12px;background:#F5C542;color:#1d2a44;text-decoration:none;font-size:13px;font-weight:800}
-.feature-rib b{font-size:18px}.feature-rib span:last-child{white-space:nowrap}
+.feature-rib{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 13px;border-radius:12px;background:#F5C542;color:#1d2a44;text-decoration:none;font-size:12px;font-weight:800}
+.feature-rib b{font-size:15px}.feature-rib span:last-child{white-space:nowrap}
 .feature-h{display:flex;justify-content:space-between;align-items:baseline;margin:16px 2px 8px;font-size:15px;font-weight:900;color:#1d2a44}
 .feature-h a{font-size:12px;color:var(--ac);font-weight:700}
 .feature-car{display:flex;align-items:flex-start;gap:10px;overflow-x:auto;padding:2px 2px 10px;scroll-snap-type:x mandatory;scrollbar-width:none}.feature-car::-webkit-scrollbar{display:none}
@@ -144,7 +153,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 body.modal-open{overflow:hidden}
 .seo-content{padding-top:24px;padding-bottom:24px}
 .pr{padding:24px 4px 30px;font-size:11px;color:var(--sub);text-align:center}.pr a{margin-left:8px;color:inherit}
-#sub{font-size:18px;font-weight:900;color:#fff;margin:0;line-height:1.4}#scope{margin-top:4px}
+#sub{font-size:18px;font-weight:900;color:#fff;margin:0;line-height:1.4}.hero-sub #sub{font-size:12px;color:var(--ac);line-height:1.6}#scope{margin-top:4px}
 @media(max-width:540px){.wrap{padding:0 16px}#list{grid-template-columns:1fr}.row{min-height:60px}.role-count{font-size:12px}#s2{padding:12px}.dialog{width:100%;max-height:94dvh;border-radius:16px}.detail-head{padding:10px 13px 12px}.modal-scroll{padding:10px 11px 16px}.work-grid{grid-template-columns:1fr;gap:8px}.work{padding:10px}.work-main{gap:8px}.work-intro{gap:8px}.work-thumb{width:42%}.work h4{font-size:13px}.castline{font-size:10px}.vod{font-size:9px;min-height:40px}}
 @media(max-width:360px){#s2{padding:0}.dialog{height:100dvh;max-height:100dvh;border:0;border-radius:0}.work{padding:8px}.work-main{gap:7px}.work h4{font-size:12px}.vods{gap:4px}.vod{font-size:9px;min-height:36px}}
 @media(max-width:400px){.top{padding-top:calc(env(safe-area-inset-top) + 24px)}.tagline{margin-bottom:22px!important}}
@@ -160,15 +169,16 @@ body.modal-open{overflow:hidden}
 </main>
 <div class="wrap">
  <section id="s1">
-  <div class="top"><div class="brand" aria-label="ANIME CAST NOW"><span>ANIME CAST N</span><svg viewBox="0 0 24 30" aria-hidden="true"><rect x="8" y="2" width="8" height="16" rx="4"/><path d="M4 13v1a8 8 0 0 0 16 0v-1M12 22v5m-4 0h8"/></svg><span>W</span></div><p class="tagline">あの声優、今期なにに出てる？</p><div class="season-info"><span class="season-label">検索対象シーズン</span><h1 id="sub">2026年 秋アニメ</h1></div></div>
+  <div class="top"><div class="brand" aria-label="ANIME CAST NOW"><span>ANIME CAST N</span><svg viewBox="0 0 24 30" aria-hidden="true"><rect x="8" y="2" width="8" height="16" rx="4"/><path d="M4 13v1a8 8 0 0 0 16 0v-1M12 22v5m-4 0h8"/></svg><span>W</span></div><h1 class="hero-h"><em>推しの声優</em>、<br>今期なにに出てる？</h1><p class="hero-sub"><b id="sub">2026年 秋アニメ</b><span id="hero-count"></span></p></div>
   <div class="sbar"><label class="sbox">
    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
    <input id="q" type="search" placeholder="今期の声優を名前・ひらがなで検索" autocomplete="off" enterkeyhint="search" aria-label="声優を検索">
    <button id="clr" type="button" hidden aria-label="入力を消す">✕</button></label></div>
+  <div class="hero-chips" id="hero-chips" hidden></div>
   <section class="feature" id="feature" hidden aria-label="注目"></section>
   <nav class="feature-links" aria-label="特集"><span>特集</span><a href="/ranking/">今期の出演本数ランキング</a><a href="/vod/">配信サービス別の作品数</a><a href="/work/">作品一覧（配信はどこ？）</a><a href="/next/" id="next-link" hidden>来期アニメの放送日</a></nav>
-  <div class="vod-filters" id="vod-filters" role="group" aria-label="配信サービスで絞り込み"></div>
-  <div class="filter-status" id="filter-status" aria-live="polite">フィルター：すべての配信</div>
+  <button class="filter-toggle" id="filter-toggle" type="button" aria-expanded="false" aria-controls="vod-filters">配信サービスで絞り込む<small id="filter-status" aria-live="polite">すべての配信</small></button>
+  <div class="vod-filters" id="vod-filters" role="group" aria-label="配信サービスで絞り込み" hidden></div>
   <div class="cnt" id="cnt">今期放送中の声優（あいうえお順）</div>
   <div id="list"></div>
  </section>
@@ -260,6 +270,14 @@ function startText(date){
 // トップの注目枠（来期までの日数の帯＋注目作品のカルーセル）。featured.json は scripts/generate-pages.mjs が作る
 const featuredData=fetch('/featured.json').then(r=>r.ok?r.json():null).catch(()=>null);
 const SEASON_START_MONTH={winter:0,spring:3,summer:6,autumn:9,fall:9};
+// 注目の声優：今期の配信ありの出演作が多い順（アクセス数ではない。GA4の数字が貯まったら「よく見られている声優」に切り替える）
+function renderHeroChips(){
+  const top=A.filter(a=>a.roles.length).map(a=>[a,new Set(a.roles.map(r=>r.work_id)).size]).sort((x,y)=>y[1]-x[1]||x[0].reading.localeCompare(y[0].reading,'ja')).slice(0,6);
+  if(!top.length)return;
+  $('#q').placeholder=`推しの声優を検索（例：${top[0][0].name}）`;
+  $('#hero-chips').innerHTML=`<span>注目の声優</span>`+top.map(([a,n])=>`<button type="button" data-id="${esc(a.actor_id)}">${esc(a.name)}<em>${n}作品</em></button>`).join('');
+  $('#hero-chips').hidden=!!$('#q').value.trim();
+}
 function renderFeature(f){
   const el=$('#feature');if(!el)return;
   let h='';
@@ -302,6 +320,8 @@ Promise.all([fetch('/data.json').then(r=>r.json()),nextData]).then(([d,n])=>{
   const [y,s]=d.season.split('-'),M={winter:['冬','1〜3月'],spring:['春','4〜6月'],summer:['夏','7〜9月'],autumn:['秋','10〜12月'],fall:['秋','10〜12月']}[s]||[s,''];
   const dt=new Date(d.updated_at).toLocaleDateString('ja-JP',{timeZone:'Asia/Tokyo',month:'numeric',day:'numeric'});
   $('#sub').textContent=`${y}年 ${M[0]}アニメ`;
+  $('#hero-count').textContent=`${CURRENT_COUNT}名・${WORK_COUNT}作品の出演作と配信先`;
+  renderHeroChips();
   $('#cnt').textContent=`今季出演中の声優（あいうえお順）・${CURRENT_COUNT}名／${WORK_COUNT}作品`;
   route();
 }).catch(()=>{$('#list').innerHTML='<div class="empty"><b>データを読み込めませんでした</b>data.json を同じ場所に置き、サーバー経由で開いてください。</div>';window.acnPageView()});
@@ -310,7 +330,7 @@ function list(){
   const v=$('#q').value,q=norm(v),r=A.filter(a=>(a.roles.length||q)&&(!selectedService||a.services.includes(selectedService))&&(!q||a.k.includes(q)));
   $('#clr').hidden=!v;
   const workCount=selectedService?SERVICE_WORK_COUNTS[selectedService]:WORK_COUNT;
-  $('#filter-status').textContent=`フィルター：${selectedService?serviceLabel(selectedService):'すべての配信'}`;
+  $('#filter-status').textContent=selectedService?serviceLabel(selectedService):'すべての配信';
   $('#cnt').textContent=q?(r.length?`${r.length}名が見つかりました／${selectedService?serviceLabel(selectedService)+'配信':'検索対象'}${workCount}作品`:`検索結果はありません／${selectedService?serviceLabel(selectedService)+'配信':'検索対象'}${workCount}作品`):selectedService?`${serviceLabel(selectedService)}で配信中の声優（あいうえお順）・${r.length}名／${workCount}作品`:`今季出演中の声優（あいうえお順）・${r.length}名／${WORK_COUNT}作品`;
   $('#list').innerHTML=r.length?r.map(a=>`<button class="row" data-id="${esc(a.actor_id)}"><span class="nm"><b>${esc(a.name)}</b></span><span class="service-text" aria-label="${esc(a.services.map(serviceLabel).join('、'))}で配信">${esc(a.services.slice(0,2).map(serviceLabel).join('・'))}${a.services.length>2?`<span class="service-more"> ほか${a.services.length-2}</span>`:''}</span><span class="role-count">${a.roles.length?`${a.roles.length}件出演`:`来期 ${a.next.length}作品`}</span><i class="ch" aria-hidden="true"></i></button>`).join(''):`<div class="empty"><b>${q?(selectedService?`${serviceLabel(selectedService)}で配信中の作品に「${esc(v)}」は見つかりません`:`「${esc(v)}」は今期の作品に見つかりません`):'このサービスで配信中の作品に出演する声優はいません'}</b>${q?(selectedService?'名前の一部やひらがなで検索できます。':(N?'過去作は対象外です。':'過去作・来期作は対象外です。')+'名前の一部やひらがなでも探せます。'):''}</div>`;
 }
@@ -386,9 +406,11 @@ function route(){
 }
 $('#q').addEventListener('input',list);
 // 検索中は注目枠をしまって、検索結果を上に出す
-$('#q').addEventListener('input',()=>{const el=$('#feature');if(el&&el.innerHTML)el.hidden=!!$('#q').value.trim()});
+$('#q').addEventListener('input',()=>{const searching=!!$('#q').value.trim();for(const el of [$('#feature'),$('#hero-chips')])if(el&&el.innerHTML)el.hidden=searching});
 $('#clr').onclick=()=>{$('#q').value='';list();$('#q').focus()};
 $('#vod-filters').addEventListener('click',e=>{const b=e.target.closest('.vod-filter');if(b){const previousService=selectedService;selectedService=b.dataset.service;$('#vod-filters').querySelectorAll('.vod-filter').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));list();if(selectedService!==previousService)window.acnTrack('vod_filter_change',{filter_value:selectedService||'all'})}});
+$('#filter-toggle').addEventListener('click',()=>{const open=$('#vod-filters').hidden;$('#vod-filters').hidden=!open;$('#filter-toggle').setAttribute('aria-expanded',String(open))});
+$('#hero-chips').addEventListener('click',e=>{const b=e.target.closest('[data-id]');if(b)openDetail(b.dataset.id)});
 $('#list').addEventListener('click',e=>{const b=e.target.closest('.row');if(b){$('#q').blur();openDetail(b.dataset.id)}});
 $('#s2').addEventListener('click',e=>{if(e.target===$('#s2'))closeDetail()});
 addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#s2').hidden)closeDetail()});
