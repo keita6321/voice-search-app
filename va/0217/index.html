@@ -49,6 +49,20 @@ button{font:inherit;color:inherit;cursor:pointer}
 #q::-webkit-search-cancel-button{display:none}
 #clr{width:34px;height:34px;border:0;border-radius:50%;background:var(--bg);font-size:16px;line-height:1;color:var(--sub)}
 .work-link{color:inherit;text-decoration:none}.work-link:hover{text-decoration:underline}
+.feature{margin:14px 0 4px}
+.feature-rib{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 14px;border-radius:12px;background:#F5C542;color:#1d2a44;text-decoration:none;font-size:13px;font-weight:800}
+.feature-rib b{font-size:18px}.feature-rib span:last-child{white-space:nowrap}
+.feature-h{display:flex;justify-content:space-between;align-items:baseline;margin:16px 2px 8px;font-size:15px;font-weight:900;color:#1d2a44}
+.feature-h a{font-size:12px;color:var(--ac);font-weight:700}
+.feature-car{display:flex;align-items:flex-start;gap:10px;overflow-x:auto;padding:2px 2px 10px;scroll-snap-type:x mandatory;scrollbar-width:none}.feature-car::-webkit-scrollbar{display:none}
+.feature-card{flex:0 0 min(78%,300px);scroll-snap-align:start;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 2px 10px rgba(29,42,68,.08);text-decoration:none;color:#1d2a44}
+.feature-img{display:block;aspect-ratio:1200/630;overflow:hidden;background:#ece8f3}.feature-img img{display:block;width:100%;height:100%;object-fit:cover}
+.feature-card div{padding:9px 11px 11px}
+.feature-card p{margin:0 0 3px;font-size:14px;font-weight:900;line-height:1.4}
+.feature-card strong{display:block;font-size:11px;font-weight:700;color:var(--sub);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.feature-card p{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.8em}
+.feature-chip{display:inline-block;margin-top:6px;padding:2px 8px;border-radius:999px;background:#F5C542;color:#1d2a44;font-size:10px;font-weight:800}
+@media(min-width:761px){.feature-card{flex-basis:300px}}
 .feature-links{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;margin:12px 2px 12px;font-size:13px;line-height:1.6}.feature-links>span{color:var(--sub);font-size:11px;font-weight:700}.feature-links a{color:var(--ac);font-weight:700;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}.feature-links a:hover{text-decoration-thickness:2px}.feature-links a::after{content:" ›";text-decoration:none;display:inline-block;margin-left:2px}
 .vod-filters{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
 .vod-filter{display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:6px 12px;border:1px solid var(--ac);border-radius:999px;background:var(--sf);color:var(--tx);font-size:13px;font-weight:700;line-height:1.2;white-space:nowrap;box-shadow:0 1px 3px rgba(35,42,53,.05)}
@@ -168,6 +182,7 @@ body.modal-open{overflow:hidden}
    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
    <input id="q" type="search" placeholder="今期の声優を名前・ひらがなで検索" autocomplete="off" enterkeyhint="search" aria-label="声優を検索">
    <button id="clr" type="button" hidden aria-label="入力を消す">✕</button></label></div>
+  <section class="feature" id="feature" hidden aria-label="注目"></section>
   <nav class="feature-links" aria-label="特集"><span>特集</span><a href="/ranking/">今期の出演本数ランキング</a><a href="/vod/">配信サービス別の作品数</a><a href="/work/">作品一覧（配信はどこ？）</a><a href="/next/" id="next-link" hidden>来期アニメの放送日</a></nav>
   <div class="vod-filters" id="vod-filters" role="group" aria-label="配信サービスで絞り込み"></div>
   <div class="filter-status" id="filter-status" aria-live="polite">フィルター：すべての配信</div>
@@ -260,6 +275,22 @@ function startText(date){
   return `${+m[2]}月${+m[3]}日（${WD[new Date(Date.UTC(+m[1],m[2]-1,+m[3])).getUTCDay()]}）放送開始`;
 }
 
+// トップの注目枠（来期までの日数の帯＋注目作品のカルーセル）。featured.json は scripts/generate-pages.mjs が作る
+const featuredData=fetch('/featured.json').then(r=>r.ok?r.json():null).catch(()=>null);
+const SEASON_START_MONTH={winter:0,spring:3,summer:6,autumn:9,fall:9};
+function renderFeature(f){
+  const el=$('#feature');if(!el)return;
+  let h='';
+  if(N){
+    const [y,s]=N.season.split('-');const start=Date.parse(`${y}-${String(SEASON_START_MONTH[s]+1).padStart(2,'0')}-01T00:00:00+09:00`);
+    const days=Math.ceil((start-Date.now())/864e5);
+    if(days>0)h+=`<a class="feature-rib" href="/next/"><span>${esc(NEXT_LABEL)}まで <b>あと${days}日</b></span><span>放送日一覧 →</span></a>`;
+  }
+  if(f?.works?.length){
+    h+=`<div class="feature-h">今期の注目作品<a href="/work/">作品一覧 →</a></div><div class="feature-car">`+f.works.map((w,i)=>`<a class="feature-card" href="/work/${esc(w.id)}/" data-ga-event="feature_click" data-ga-work-id="${esc(w.id)}" data-ga-work-title="${esc(w.title)}" data-ga-position="${i+1}" data-ga-page-type="home_feature"><span class="feature-img"><img src="${esc(w.thumbnail)}" alt="${esc(w.title)}のキービジュアル" loading="${i<2?'eager':'lazy'}" decoding="async" referrerpolicy="no-referrer" onerror="this.style.visibility='hidden'"></span><div><p>${esc(w.catch)}</p><strong>${esc(w.title)}</strong>${w.partner?`<span class="feature-chip">${esc(serviceLabel(w.partner))}で配信中</span>`:''}</div></a>`).join('')+`</div>`;
+  }
+  el.innerHTML=h;el.hidden=!h||!!$('#q').value.trim();
+}
 Promise.all([fetch('/data.json').then(r=>r.json()),nextData]).then(([d,n])=>{
   D=d;
   if(n&&n.season!==d.season){N=n;NEXT_LABEL=seasonText(n.season);$('#next-link').hidden=false;$('#next-link').textContent=`${NEXT_LABEL}の放送日`}
@@ -273,6 +304,7 @@ Promise.all([fetch('/data.json').then(r=>r.json()),nextData]).then(([d,n])=>{
     .filter(a=>a.roles.length)
     .map(a=>({...a,k:norm(a.name+a.reading),services:[...new Set(a.roles.flatMap(r=>d.works[r.work_id].vod_links.map(v=>v.provider)))]}));
   CURRENT_COUNT=A.length;
+  featuredData.then(renderFeature);
   if(N){
     // 今期と同じタイトルの作品（同じID）は今期側で表示するので除く
     const nextIds=new Set(Object.keys(N.works).filter(id=>!d.works[id]));
@@ -371,6 +403,8 @@ function route(){
   window.acnPageView();
 }
 $('#q').addEventListener('input',list);
+// 検索中は注目枠をしまって、検索結果を上に出す
+$('#q').addEventListener('input',()=>{const el=$('#feature');if(el&&el.innerHTML)el.hidden=!!$('#q').value.trim()});
 $('#clr').onclick=()=>{$('#q').value='';list();$('#q').focus()};
 $('#vod-filters').addEventListener('click',e=>{const b=e.target.closest('.vod-filter');if(b){const previousService=selectedService;selectedService=b.dataset.service;$('#vod-filters').querySelectorAll('.vod-filter').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));list();if(selectedService!==previousService)window.acnTrack('vod_filter_change',{filter_value:selectedService||'all'})}});
 $('#list').addEventListener('click',e=>{const b=e.target.closest('.row');if(b){$('#q').blur();openDetail(b.dataset.id)}});
