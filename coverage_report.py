@@ -96,19 +96,40 @@ def cached(name, fn, refresh):
     json.dump(data, open(p, "w", encoding="utf-8"), ensure_ascii=False)
     return data
 
+HTTP_RETRIES = 4
+
+
+def _request_with_retry(send):
+    """接続切れ・タイムアウト・5xx・429のときは、間隔を空けて再試行する。"""
+    import requests
+    for attempt in range(HTTP_RETRIES + 1):
+        try:
+            r = send()
+            if r.status_code == 429 or r.status_code >= 500:
+                if attempt == HTTP_RETRIES:
+                    r.raise_for_status()
+                time.sleep(65 if r.status_code == 429 else 5 * (attempt + 1))
+                continue
+            r.raise_for_status()
+            return r
+        except (requests.ConnectionError, requests.Timeout) as exc:
+            if attempt == HTTP_RETRIES:
+                raise
+            print(f"  [retry] {exc.__class__.__name__}: {attempt + 1}回目の再試行", file=sys.stderr)
+            time.sleep(5 * (attempt + 1))
+
+
 def post(url, payload, headers=None):
     import requests
-    r = requests.post(url, json=payload, headers={**UA, **(headers or {})}, timeout=60)
-    if r.status_code == 429:
-        time.sleep(65); r = requests.post(url, json=payload, headers={**UA, **(headers or {})}, timeout=60)
-    r.raise_for_status(); j = r.json()
+    r = _request_with_retry(lambda: requests.post(url, json=payload, headers={**UA, **(headers or {})}, timeout=60))
+    j = r.json()
     if j.get("errors"):
         raise RuntimeError(json.dumps(j["errors"], ensure_ascii=False)[:400])
     return j["data"]
 
 def getj(url, params):
     import requests
-    r = requests.get(url, params=params, headers=UA, timeout=60); r.raise_for_status(); return r.json()
+    return _request_with_retry(lambda: requests.get(url, params=params, headers=UA, timeout=60)).json()
 
 def vals(x):
     return list(x.values()) if isinstance(x, dict) else (x or [])

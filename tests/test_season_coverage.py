@@ -124,3 +124,24 @@ class AniListMatchTest(unittest.TestCase):
         self.assertEqual(found["作品A"]["how"], "mal")
         self.assertEqual(found["作品B 第2期"]["how"], "search")
         self.assertNotIn("作品C", found)
+
+
+class RetryTest(unittest.TestCase):
+    def test_connection_error_is_retried(self):
+        import requests
+        attempts = []
+        class Ok:
+            status_code = 200
+            def raise_for_status(self): pass
+        def send():
+            attempts.append(1)
+            if len(attempts) < 3:
+                raise requests.ConnectionError("Remote end closed connection")
+            return Ok()
+        original_sleep = cr.time.sleep
+        cr.time.sleep = lambda s: None
+        try:
+            self.assertIsInstance(cr._request_with_retry(send), Ok)
+        finally:
+            cr.time.sleep = original_sleep
+        self.assertEqual(len(attempts), 3)
