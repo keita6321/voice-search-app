@@ -4,3 +4,4 @@ __pycache__/
 data/registry/review.json
 cache/
 dist/
+reports-build.log
