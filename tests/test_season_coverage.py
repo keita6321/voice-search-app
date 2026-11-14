@@ -68,3 +68,21 @@ class CastFallbackTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class VodOverridesTest(unittest.TestCase):
+    def test_unmatched_title_warns_instead_of_failing(self):
+        import os, tempfile
+        from data_normalization import apply_vod_overrides
+        with tempfile.NamedTemporaryFile("w", suffix=".csv", delete=False, encoding="utf-8") as f:
+            f.write("title,provider,source_url,checked_at\n")
+            f.write("今期にない作品,Hulu,https://example.com/a,2026-10-28\n")
+            f.write("テスト作品,Hulu,https://example.com/b,2026-10-28\n")
+            path = f.name
+        try:
+            works = [{"title": "テスト作品"}]
+            unmatched = apply_vod_overrides(works, {"Hulu": "https://www.hulu.jp"}, path)
+            self.assertEqual(works[0]["vods"], ["Hulu"])
+            self.assertEqual([t for _, t in unmatched], ["今期にない作品"])
+        finally:
+            os.remove(path)
