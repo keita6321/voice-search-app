@@ -262,8 +262,17 @@ def fetch_annict():
 def first_broadcast(node):
     """本放送の最初の放送日（YYYY-MM-DD）。Annictに放送予定が未登録ならNone。"""
     programs = [p for p in ((node.get("firstPrograms") or {}).get("nodes") or []) if not p.get("rebroadcast") and p.get("startedAt")]
-    first = min((p["startedAt"] for p in programs), default=None)
-    return first[:10] if first else None
+    first = min((p["startedAt"] for p in programs), key=_jst, default=None)
+    return _jst(first).strftime("%Y-%m-%d") if first else None
+
+
+def _jst(value):
+    """Annictの日時（ISO 8601）を日本時間に。深夜放送の日付が、UTCで前日にずれないように。"""
+    from datetime import datetime, timezone, timedelta as td
+    dt = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt.astimezone(timezone(td(hours=9)))
 
 
 def write_carryover_report(decisions):
@@ -281,17 +290,26 @@ def write_carryover_report(decisions):
 # ---- AniList（補完）----
 def fetch_anilist():
     q = """query($p:Int){Page(page:$p,perPage:25){pageInfo{hasNextPage}
-      media(season:%s,seasonYear:%d,type:ANIME){idMal title{native romaji}
+      media(season:%s,seasonYear:%d,type:ANIME){idMal title{native romaji} startDate{year month day}
         characters(sort:[ROLE,RELEVANCE],perPage:20){edges{node{name{native full}} voiceActors(language:JAPANESE){name{native full}}}}}}}""" % (AL_SEASON, YEAR)
     out, p = [], 1
     while True:
         d = post("https://graphql.anilist.co", {"query": q, "variables": {"p": p}})["Page"]
         for m in d["media"]:
             cast = anilist_cast(m)
-            out.append({"title": m["title"]["native"] or m["title"]["romaji"], "mal": mal_id(m["idMal"]), "tid": None, "cast": cast})
+            out.append({"title": m["title"]["native"] or m["title"]["romaji"], "mal": mal_id(m["idMal"]), "tid": None, "cast": cast,
+                        "start": anilist_date(m.get("startDate"))})
         if not d["pageInfo"]["hasNextPage"]:
             return out
         p += 1; time.sleep(3)
+
+def anilist_date(value):
+    """AniListの startDate を 'YYYY-MM-DD' に。日まで決まっていなければ None。"""
+    value = value or {}
+    if not all(value.get(k) for k in ("year", "month", "day")):
+        return None
+    return f"{value['year']:04d}-{value['month']:02d}-{value['day']:02d}"
+
 
 def mal_id(value):
     """MyAnimeListのID。Annictは文字列、AniListは数値で返すので、数値にそろえて比べる。"""
@@ -330,12 +348,18 @@ def lookup_anilist_cast(works):
     戻り値: {作品名: {"cast": [...], "how": "mal"|"search", "anilist_title": ...}}"""
     by_mal = """query($id:Int){Media(idMal:$id,type:ANIME){%s}}""" % ANILIST_MEDIA_FIELDS
     by_search = """query($q:String){Page(perPage:5){media(search:$q,type:ANIME){%s}}}""" % ANILIST_MEDIA_FIELDS
+    import requests
     found = {}
     for w in works:
         try:
             media, how = None, None
             if w.get("mal"):
-                media, how = post("https://graphql.anilist.co", {"query": by_mal, "variables": {"id": w["mal"]}}).get("Media"), "mal"
+                try:
+                    media, how = post("https://graphql.anilist.co", {"query": by_mal, "variables": {"id": w["mal"]}}).get("Media"), "mal"
+                except requests.HTTPError as exc:
+                    # AniListに無いMALのIDは 404 になる。そのときは作品名の検索に進む
+                    if exc.response is None or exc.response.status_code != 404:
+                        raise
             if not media or not anilist_cast(media):
                 candidates = post("https://graphql.anilist.co", {"query": by_search, "variables": {"q": w["title"]}})["Page"]["media"]
                 best = max(candidates, key=lambda m: title_similarity(w["title"], m["title"]["native"] or ""), default=None)

@@ -145,3 +145,26 @@ class RetryTest(unittest.TestCase):
         finally:
             cr.time.sleep = original_sleep
         self.assertEqual(len(attempts), 3)
+
+
+class AnilistDateTest(unittest.TestCase):
+    def test_full_date(self):
+        self.assertEqual(cr.anilist_date({"year": 2027, "month": 1, "day": 8}), "2027-01-08")
+
+    def test_partial_date_is_none(self):
+        self.assertIsNone(cr.anilist_date({"year": 2027, "month": 1, "day": None}))
+        self.assertIsNone(cr.anilist_date(None))
+
+
+class FirstBroadcastTest(unittest.TestCase):
+    def test_skips_rebroadcast_and_takes_earliest(self):
+        node = {"firstPrograms": {"nodes": [{"startedAt": "2027-01-05T15:00:00Z", "rebroadcast": True},
+                                             {"startedAt": "2027-01-08T14:30:00Z", "rebroadcast": False},
+                                             {"startedAt": "2027-01-09T14:30:00Z", "rebroadcast": False}]}}
+        self.assertEqual(cr.first_broadcast(node), "2027-01-08")
+        self.assertIsNone(cr.first_broadcast({"firstPrograms": {"nodes": []}}))
+        self.assertIsNone(cr.first_broadcast({}))
+
+    def test_uses_japan_date_for_late_night(self):
+        node = {"firstPrograms": {"nodes": [{"startedAt": "2027-01-08T15:30:00Z", "rebroadcast": False}]}}
+        self.assertEqual(cr.first_broadcast(node), "2027-01-09")
