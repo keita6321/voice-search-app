@@ -1,19 +1,27 @@
-# Annict から今期のデータを取り直し、ページを作り直して、確認用のブランチに上げる。
-# 実行: GitHub の Actions タブ →「データ更新」→ Run workflow（または gh workflow run data-refresh.yml）
+# Annict から今期と来期のデータを取り直し、ページを作り直す。
+# - 定期実行（毎週月曜 5:17 JST）: 今期と来期を取り直し、安全チェックを通れば main に反映（＝本番公開）する
+# - 手動実行: GitHub の Actions タブ →「データ更新」→ Run workflow
+# どちらの場合も、レポートとログは確認用のブランチ（data/refresh-日時）に残す。
 # 必要なシークレット: ANNICT_TOKEN（Settings → Secrets and variables → Actions）
 name: データ更新
 
 on:
+  schedule:
+    - cron: "17 20 * * 0" # 毎週日曜 20:17 UTC ＝ 月曜 5:17 JST
   workflow_dispatch:
     inputs:
       season:
-        description: "取得するシーズン（例: 2026-autumn）。空欄なら coverage_report.py の既定"
+        description: "今期のシーズン（例: 2026-autumn）。空欄なら今日の日付から決める"
         required: false
         default: ""
       next_season:
-        description: "来期の先行取得（例: 2027-winter）。指定すると今期の更新のあとに data-next.json も作る"
+        description: "来期の先行取得（例: 2027-winter）。空欄なら今期の次のシーズン、none で取得しない"
         required: false
         default: ""
+      auto_apply:
+        description: "安全チェックを通れば main に反映する（本番公開）"
+        type: boolean
+        default: false
       force_registry:
         description: "声優数が前回の半分未満でも続行する（取得失敗でないことを確認した場合のみ）"
         type: boolean
@@ -29,7 +37,7 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
 
@@ -45,41 +53,81 @@ jobs:
         run: |
           pip install -r requirements.txt pykakasi
 
+      - name: シーズンを決める
+        id: season
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          from datetime import datetime, timedelta, timezone
+          import coverage_report as cr
+          current = "${{ inputs.season }}" or cr.season_of(datetime.now(timezone(timedelta(hours=9))).date())
+          requested = "${{ inputs.next_season }}"
+          upcoming = "" if requested == "none" else (requested or cr.next_season(current))
+          print(f"current={current}")
+          print(f"next={upcoming}")
+          PY
+          auto="${{ github.event_name == 'schedule' || inputs.auto_apply }}"
+          echo "auto_apply=$auto" >> "$GITHUB_OUTPUT"
+          cat "$GITHUB_OUTPUT"
+
       - name: データを取り直す（Annict / AniList）
         env:
           ANNICT_TOKEN: ${{ secrets.ANNICT_TOKEN }}
+          CURRENT: ${{ steps.season.outputs.current }}
+          NEXT: ${{ steps.season.outputs.next }}
         run: |
           set -o pipefail
           if [ -z "$ANNICT_TOKEN" ]; then echo "::error::シークレット ANNICT_TOKEN が未設定です"; exit 1; fi
-          args="--refresh"
-          if [ -n "${{ inputs.season }}" ]; then args="$args --season ${{ inputs.season }}"; fi
+          args="--refresh --season $CURRENT"
           if [ "${{ inputs.force_registry }}" = "true" ]; then args="$args --force-registry"; fi
           python3 build_data_from_sources.py $args 2>&1 | tee reports-build.log
-          if [ -n "${{ inputs.next_season }}" ]; then
-            echo "===== 来期の先行取得: ${{ inputs.next_season }} =====" | tee -a reports-build.log
-            python3 build_data_from_sources.py --refresh --preview --season ${{ inputs.next_season }} 2>&1 | tee -a reports-build.log
+          if [ -n "$NEXT" ]; then
+            echo "===== 来期の先行取得: $NEXT =====" | tee -a reports-build.log
+            python3 build_data_from_sources.py --refresh --preview --season "$NEXT" 2>&1 | tee -a reports-build.log
           fi
 
       - name: テスト
-        if: success()
         run: python3 -m unittest discover -s tests -t .
 
       - name: ページを作り直す
         run: npm run build:pages
 
-      - name: レポートを保存する
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: data-refresh-reports
-          path: |
-            reports/
-            reports-build.log
-            data/registry/review.json
-            coverage_missing.csv
-            readings_todo.csv
-            vod_audit.csv
-          if-no-files-found: ignore
+      - name: 安全チェック（作品数・声優数が大きく減っていないか）
+        id: check
+        if: steps.season.outputs.auto_apply == 'true'
+        run: |
+          python3 - <<'PY'
+          import json, subprocess, sys
+          def load(path, ref=None):
+              try:
+                  text = subprocess.check_output(["git", "show", f"HEAD:{path}"], text=True) if ref else open(path, encoding="utf-8").read()
+                  return json.loads(text)
+              except Exception:
+                  return None
+          problems = []
+          for path in ["data.json", "data-next.json"]:
+              old, new = load(path, "HEAD"), load(path)
+              if not old or not new or old.get("season") != new.get("season"):
+                  continue  # 初回やシーズンの切り替えは比べない
+              for key in ["works", "voice_actors"]:
+                  before, after = len(old[key]), len(new[key])
+                  print(f"{path} {key}: {before} → {after}")
+                  if after < before * 0.7:
+                      problems.append(f"{path} の {key} が {before} → {after} に減っています")
+          if problems:
+              print("::error::" + " / ".join(problems) + "。取得の失敗を疑って、本番には反映しません")
+              sys.exit(1)
+          PY
+
+      - name: 本番に反映する（main に push）
+        if: steps.season.outputs.auto_apply == 'true' && steps.check.outcome == 'success'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then echo "変更なし"; exit 0; fi
+          git commit -m "データ更新（${{ steps.season.outputs.current }}${{ steps.season.outputs.next && format('＋来期 {0}', steps.season.outputs.next) || '' }}）"
+          git push origin HEAD:main
+          echo "### 本番に反映しました" >> "$GITHUB_STEP_SUMMARY"
 
       - name: 確認用のブランチに上げる（失敗時もログとレポートを残す）
         if: always()
@@ -90,6 +138,9 @@ jobs:
           git checkout -b "$branch"
           git add -A
           for f in reports reports-build.log data/registry/review.json; do [ -e "$f" ] && git add -f "$f"; done; true
-          git commit -m "データ更新（${{ inputs.season || 'default' }}${{ inputs.next_season && format('＋来期 {0}', inputs.next_season) || '' }}、${{ job.status }}）" || { echo "変更なし"; exit 0; }
+          git commit -m "データ更新のレポート（${{ steps.season.outputs.current }}、${{ job.status }}）" || { echo "変更なし"; exit 0; }
           git push origin "$branch"
           echo "### 確認用ブランチ: \`$branch\`" >> "$GITHUB_STEP_SUMMARY"
+          # 確認用ブランチは新しい10本だけ残す
+          git ls-remote --heads origin 'data/refresh-*' | awk '{print $2}' | sed 's#refs/heads/##' | sort -r | tail -n +11 \
+            | xargs -r -n 20 git push origin --delete || true

@@ -168,3 +168,14 @@ class FirstBroadcastTest(unittest.TestCase):
     def test_uses_japan_date_for_late_night(self):
         node = {"firstPrograms": {"nodes": [{"startedAt": "2027-01-08T15:30:00Z", "rebroadcast": False}]}}
         self.assertEqual(cr.first_broadcast(node), "2027-01-09")
+
+
+class NextSeasonTest(unittest.TestCase):
+    def test_next_season(self):
+        self.assertEqual(cr.next_season("2026-autumn"), "2027-winter")
+        self.assertEqual(cr.next_season("2027-winter"), "2027-spring")
+
+    def test_season_of(self):
+        self.assertEqual(cr.season_of(date(2026, 11, 16)), "2026-autumn")
+        self.assertEqual(cr.season_of(date(2027, 1, 1)), "2027-winter")
+        self.assertEqual(cr.season_of(date(2027, 6, 30)), "2027-spring")

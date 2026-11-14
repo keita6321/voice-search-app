@@ -37,6 +37,17 @@ def previous_season(season):
     return f"{year - 1}-autumn" if i == 0 else f"{year}-{SEASON_ORDER[i - 1]}"
 
 
+def next_season(season):
+    year, name = parse_season(season)
+    i = SEASON_ORDER.index(name)
+    return f"{year + 1}-winter" if i == len(SEASON_ORDER) - 1 else f"{year}-{SEASON_ORDER[i + 1]}"
+
+
+def season_of(day):
+    """日付が属するシーズン（1〜3月=winter、4〜6月=spring、7〜9月=summer、10〜12月=autumn）。"""
+    return f"{day.year}-{SEASON_ORDER[(day.month - 1) // 3]}"
+
+
 def season_start(season):
     year, name = parse_season(season)
     return date(year, SEASON_START_MONTH[name], 1)
