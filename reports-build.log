@@ -1,0 +1,23 @@
+  [thumbnail] 公式サイトから取得できませんでした (きみが死ぬまで恋をしたい): Cross-host redirect refused: https://kimishinu-anime.com/
+  [thumbnail] 公式サイトから取得できませんでした (青春ブタ野郎はディアフレンドの夢を見ない): robots.txt returned HTTP 403: https://ao-buta.com/robots.txt
+  [thumbnail] 公式サイトから取得できませんでした (乙女怪獣キャラメリゼ): robots.txt returned HTTP 403: https://otomekaiju.com/robots.txt
+  [thumbnail] 公式サイトから取得できませんでした (BLEACH 千年血戦篇-禍進譚-): robots.txt returned HTTP 403: https://bleach-anime.com/robots.txt
+  [thumbnail] 公式サイトから取得できませんでした (スティール・ボール・ラン ジョジョの奇妙な冒険 2nd & 3rd STAGE): robots.txt returned HTTP 403: https://jojo-portal-anime.com/robots.txt
+  [thumbnail] 公式サイトから取得できませんでした (鬼の花嫁): robots.txt returned HTTP 403: https://onihana-anime.com/robots.txt
+  [thumbnail] 公式サイトから取得できませんでした (バーテックスフォース): robots.txt returned HTTP 403: https://vertexforce.jp/robots.txt
+  [thumbnail] 公式サイトから取得できませんでした (楽園追放 心のレゾナンス): robots.txt returned HTTP 403: https://rakuen-tsuiho-r.com/robots.txt
+  [thumbnail] 公式サイトから取得できませんでした (ドラゴンボール超 ビルス): robots.txt returned HTTP 403: https://dragonball-super.com/robots.txt
+  [thumbnail] 公式サイトから取得できませんでした (帰還者の魔法は特別です 第二期): robots.txt returned HTTP 403: https://returners-magic.com/robots.txt
+  [thumbnail] 公式サイトから取得できませんでした (花ざかりの君たちへ 第2期): robots.txt returned HTTP 403: https://hanakimi-anime.com/robots.txt
+  [thumbnail] 公式サイトから取得できませんでした (朱色の仮面): robots.txt returned HTTP 403: https://the-vermilion-mask.com/robots.txt
+  [thumbnail] 公式サイトから取得できませんでした (劇場版 前橋ウィッチーズ ～魔女見習いのエモエモリーズ～): Cross-host robots.txt redirect refused: https://maebashi-witches.com/robots.txt
+  [thumbnail] 公式サイトから取得できませんでした (Fate/Grand Order 藤丸立香はわからない Season4): robots.txt returned HTTP 403: https://anime.fate-go.jp/robots.txt
+  [thumbnail] 公式サイトから取得できませんでした (風を継ぐもの -はじまり-): robots.txt returned HTTP 403: https://kaze-tsugu.com/robots.txt
+  [thumbnail] 公式サイトから取得できませんでした (『魔法少女そらな☆マギカ ～Our Fates, Our Futures～』 プロモーションアニメ): robots.txt returned HTTP 403: https://madoka-exedra.com/robots.txt
+  [thumbnail] 公式サイトから取得できませんでした (BLEACH 千年血戦篇 クライマックスセレクション): robots.txt returned HTTP 403: https://bleach-anime.com/robots.txt
+  [thumbnail] 公式サイトから取得できませんでした (シルバニアファミリー フレアのカラフル・エブリデイ): robots.txt returned HTTP 403: https://www.sylvanianfamilies.com/robots.txt
+  [vod_overrides] /home/runner/work/voice-search-app/voice-search-app/vod_overrides.csv:208 の作品「ディズニー ツイステッドワンダーランド エピソード オブ サバナクロー」は今回の取得結果にありません（今期の対象外か、改題の可能性）。この行は使われません
+data.json: 175作品 / 782名（声優情報なしで除外 69作品）
+配信先なし 22作品 / 公式サイトなし 0作品 / 読み未登録 544名 → readings_todo.csv / vod_audit.csv
+キャストをAniListで補った作品: 3作品 / 前クールからの継続作品の判定 → reports/carryover-2026-autumn.md
+声優ID台帳: 新規 220名 / 名前変更 0名 / 今期出演なし 1名 → reports/registry-2026-autumn.md
