@@ -210,8 +210,7 @@ def fetch_annict():
 
     def fetch_work_vods(work_id):
         url = f"https://annict.com/works/{annict_work_number(work_id)}"
-        response = session.get(url, timeout=30)
-        response.raise_for_status()
+        response = _request_with_retry(lambda: session.get(url, timeout=30))
         return extract_annict_vods(response.text)
 
     def fetch_official_thumbnail(official_url, title):
