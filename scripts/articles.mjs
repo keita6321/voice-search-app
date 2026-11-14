@@ -35,6 +35,7 @@ td.num{white-space:nowrap;font-weight:700;text-align:right}
 .bar i{display:block;height:100%;border-radius:4px;background:#62517f}
 details{margin:6px 0 0}summary{cursor:pointer;color:#62517f;font-size:14px}
 .cta{display:inline-block;margin-top:6px;padding:6px 14px;border:1px solid #d8d0e4;border-radius:999px;background:#f5f2fa;color:#4b3d6b;font-size:14px;font-weight:700;text-decoration:none}
+h3{margin:20px 0 6px;font-size:16px}
 .related{margin-top:40px;padding-top:16px;border-top:1px solid #e3dfd2}
 .date{white-space:nowrap;font-weight:700}
 .countdown{display:inline-block;margin-left:4px;padding:0 7px;border-radius:999px;background:#f5f2fa;color:#62517f;font-size:12px;font-weight:700;white-space:nowrap}
@@ -248,8 +249,28 @@ function castOf(data) {
   return byWork;
 }
 
+// 手書きの作品紹介（data/work_notes.json）
+function notesSection(note, title) {
+  if (!note) return '';
+  const hosts = (note.sources ?? []).map(url => {
+    try { return `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(new URL(url).hostname)}</a>`; } catch { return ''; }
+  }).filter(Boolean);
+  return `<h2>「${esc(title)}」はどんな作品？</h2>
+<p>${esc(note.intro)}</p>
+${note.broadcast ? `<p class="note">${esc(note.broadcast)}</p>` : ''}
+${note.points?.length ? `<h3>見どころ</h3>
+<ul>
+${note.points.map(point => `<li>${esc(point)}</li>`).join('\n')}
+</ul>` : ''}
+${note.before ? `<h3>前作は見ておくべき？</h3>
+<p>${esc(note.before)}</p>` : ''}
+${note.staff ? `<p class="note">${esc(note.staff)}</p>` : ''}
+${hosts.length ? `<p class="note">参考：${hosts.join('、')}</p>` : ''}`;
+}
+
 export function workPages(ctx) {
   const { data, seasonLabel, partnerServices } = ctx;
+  const notes = ctx.notes ?? {};
   const byWork = castOf(data);
   const asOf = data.updated_at.slice(0, 10);
   return Object.entries(data.works).map(([id, work]) => {
@@ -291,6 +312,7 @@ ${others.length ? `<p>${partners.length ? 'ほかの配信' : '配信'}：${esc(
     const body = `<h1>「${esc(work.title)}」の配信はどこ？</h1>
 <p class="lead">${lead}</p>
 ${vodSection}
+${notesSection(notes[work.title], work.title)}
 <h2>キャスト</h2>
 <p class="note">名前を押すと、その声優の今期の出演作と配信先をまとめて見られます。右端は今期の出演作品数です。</p>
 <table>

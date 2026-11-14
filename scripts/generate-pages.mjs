@@ -354,7 +354,13 @@ for (const work of Object.values(data.works)) {
   }
 }
 const aboutHtml = await readFile(path.join(root, 'about', 'index.html'), 'utf8');
-const articleContext = { data, seasonLabel: label, seasonLabelOf: seasonLabel, origin, ogImage, aboutHtml, partnerLinks, partnerServices };
+let notes = {};
+try {
+  notes = JSON.parse(await readFile(path.join(root, 'data', 'work_notes.json'), 'utf8'));
+} catch (error) {
+  if (error.code !== 'ENOENT') throw error;
+}
+const articleContext = { data, notes, seasonLabel: label, seasonLabelOf: seasonLabel, origin, ogImage, aboutHtml, partnerLinks, partnerServices };
 for (const [dir, html] of [['ranking', rankingPage(articleContext)], ['vod', vodPage(articleContext)], ['work', workIndexPage(articleContext)], ['next', nextIndexPage(articleContext, next)]]) {
   await mkdir(path.join(root, dir), { recursive: true });
   await writeFile(path.join(root, dir, 'index.html'), html);
