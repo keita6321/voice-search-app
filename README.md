@@ -35,6 +35,10 @@ Install dependencies with `python -m pip install -r requirements.txt` and `pytho
 
 シーズンは`--season`で指定できます（例：`python3 build_data_from_sources.py --refresh --season 2027-winter`）。キャッシュはシーズンごとに`cache/annict-<season>.json`、`cache/anilist-<season>.json`に保存されます。
 
+## 作品紹介（手書き）
+
+`data/work_notes.json`に書いた作品は、作品ページ（`/work/<id>/`）に「どんな作品？」の欄が出ます。キーは`data.json`の作品名と完全に一致させます。項目は`intro`（紹介文）、`points`（見どころ）、`before`（前作は見ておくべき？、続編のみ）、`broadcast`（放送枠）、`staff`（主なスタッフ）、`sources`（確認に使った資料のURL）です。放送前・放送中の作品なので、結末に触れるネタバレは書きません。
+
 ## 来期の先行取得（data-next.json）
 
 来期の作品は、キャストが発表された時点で先に載せます。今期の`data.json`とは別に`data-next.json`を作ります。
