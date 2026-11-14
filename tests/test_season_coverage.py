@@ -46,8 +46,11 @@ class CarryoverTest(unittest.TestCase):
         self.assertFalse(self.decide(node("再放送のみ", 2026, "SUMMER",
                                           [("2026-10-20T15:00:00Z", True), ("2026-09-20T15:00:00Z", False)]))[0])
 
-    def test_grace_period_before_season_start(self):
-        self.assertTrue(self.decide(node("9月末から続く", 2026, "SUMMER", [("2026-09-26T15:00:00Z", False)]))[0])
+    def test_finale_spilling_into_new_season_is_dropped(self):
+        self.assertFalse(self.decide(node("最終回が10月上旬", 2026, "SUMMER", [("2026-10-07T15:00:00Z", False)]))[0])
+
+    def test_four_weeks_into_season_counts_as_continuing(self):
+        self.assertTrue(self.decide(node("10月末以降も放送", 2026, "SUMMER", [("2026-10-29T15:00:00Z", False)]))[0])
 
     def test_manual_include_and_exclude(self):
         no_programs = node("配信のみ", 2026, "SUMMER", [])

@@ -14,8 +14,9 @@ SEASON, YEAR, AL_SEASON = "2026-autumn", 2026, "FALL"
 SEASON_START_MONTH = {"winter": 1, "spring": 4, "summer": 7, "autumn": 10}
 ANILIST_SEASON = {"winter": "WINTER", "spring": "SPRING", "summer": "SUMMER", "autumn": "FALL"}
 SEASON_ORDER = ["winter", "spring", "summer", "autumn"]
-# 前クールから続いている作品とみなす基準：本放送の最新の放送日が、今期の開始日のこの日数前以降
-CARRYOVER_GRACE_DAYS = 7
+# 前クールから続いている作品とみなす基準：本放送の最新の放送日が、今期の開始日からこの日数以降
+# （前クールの最終回が今期の頭にずれ込んだだけの作品を外すため）
+CARRYOVER_MIN_DAYS_INTO_SEASON = 28
 CARRYOVER_PATH = "season_carryover.csv"
 
 
@@ -76,7 +77,7 @@ def carryover_decision(node, season, include=frozenset(), exclude=frozenset()):
         return True, "今期の作品", latest
     if title in include:
         return True, "手動で追加（season_carryover.csv）", latest
-    threshold = (season_start(season) - timedelta(days=CARRYOVER_GRACE_DAYS)).isoformat()
+    threshold = (season_start(season) + timedelta(days=CARRYOVER_MIN_DAYS_INTO_SEASON)).isoformat()
     if latest and latest >= threshold:
         return True, "前クールから放送継続", latest
     return False, "前クールで放送終了（または放送日が未登録）", latest

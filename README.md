@@ -30,7 +30,7 @@ Install dependencies with `python -m pip install -r requirements.txt` and `pytho
 `build_data_from_sources.py`は、次のルールで今期の作品を集めます。
 
 - **今期の作品**：Annictで今期（例：`2026-autumn`）に登録された作品
-- **前クールから続く作品**：前クールに登録された作品のうち、本放送の最新の放送日が今期の開始日の7日前以降のもの（2クール目の作品など）。判定の結果は`reports/carryover-<season>.md`に出ます。放送日がAnnictに登録されていない配信のみの作品などは、`season_carryover.csv`（列：`season,title,include`）で手動で含める（`yes`）か外す（`no`）ことができます。
+- **前クールから続く作品**：前クールに登録された作品のうち、本放送の最新の放送日が今期の開始から4週間以降のもの（2クール目の作品など。前クールの最終回が今期の頭にずれ込んだだけの作品は外す）。判定の結果は`reports/carryover-<season>.md`に出ます。放送日がAnnictに登録されていない配信のみの作品などは、`season_carryover.csv`（列：`season,title,include`）で手動で含める（`yes`）か外す（`no`）ことができます。
 - **キャストの補完**：Annictにキャストが未登録の作品は、AniListのキャストで補います。作品の選定はAnnictが軸のままです。
 
 シーズンは`--season`で指定できます（例：`python3 build_data_from_sources.py --refresh --season 2027-winter`）。キャッシュはシーズンごとに`cache/annict-<season>.json`、`cache/anilist-<season>.json`に保存されます。
