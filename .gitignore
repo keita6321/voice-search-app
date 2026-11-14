@@ -3,3 +3,4 @@ reports/
 __pycache__/
 data/registry/review.json
 cache/
+dist/
