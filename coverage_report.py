@@ -224,7 +224,7 @@ def fetch_annict():
                      (c["person"] or {}).get("nameKana") or "", (c["person"] or {}).get("annictId")] for c in w["casts"]["nodes"]]
             vods = fetch_work_vods(w["id"])
             thumbnail = fetch_official_thumbnail(w["officialSiteUrl"], w["title"])
-            out.append({"annict_id": w["id"], "title": w["title"], "mal": w["malAnimeId"],
+            out.append({"annict_id": w["id"], "title": w["title"], "mal": mal_id(w["malAnimeId"]),
                         "tid": w["syobocalTid"], "official": w["officialSiteUrl"],
                         "vods": vods, "thumbnail": thumbnail, "thumbnail_source": "official_site",
                         "cast": [c for c in cast if c[1]]})
@@ -256,12 +256,72 @@ def fetch_anilist():
     while True:
         d = post("https://graphql.anilist.co", {"query": q, "variables": {"p": p}})["Page"]
         for m in d["media"]:
-            cast = [[e["node"]["name"]["native"] or e["node"]["name"]["full"], v["name"]["native"] or v["name"]["full"]]
-                    for e in m["characters"]["edges"] for v in e["voiceActors"]]
-            out.append({"title": m["title"]["native"] or m["title"]["romaji"], "mal": m["idMal"], "tid": None, "cast": cast})
+            cast = anilist_cast(m)
+            out.append({"title": m["title"]["native"] or m["title"]["romaji"], "mal": mal_id(m["idMal"]), "tid": None, "cast": cast})
         if not d["pageInfo"]["hasNextPage"]:
             return out
         p += 1; time.sleep(3)
+
+def mal_id(value):
+    """MyAnimeListのID。Annictは文字列、AniListは数値で返すので、数値にそろえて比べる。"""
+    try:
+        return int(value) if value not in (None, "") else None
+    except (TypeError, ValueError):
+        return None
+
+
+ANILIST_MEDIA_FIELDS = """id idMal title{native romaji} startDate{year}
+  characters(sort:[ROLE,RELEVANCE],perPage:25){edges{node{name{native full}} voiceActors(language:JAPANESE){name{native full}}}}"""
+
+
+def anilist_cast(media):
+    """[役名, 声優名]。声優名は日本語表記（native）があるものだけ使う（ローマ字の名前で別人扱いにならないように）。"""
+    return [[e["node"]["name"]["native"] or e["node"]["name"]["full"], v["name"]["native"]]
+            for e in ((media.get("characters") or {}).get("edges") or []) for v in (e.get("voiceActors") or [])
+            if (v.get("name") or {}).get("native")]
+
+
+def title_similarity(a, b):
+    ka, kb = title_key(a), title_key(b)
+    if not ka or not kb:
+        return 0.0
+    if ka in kb or kb in ka:
+        return 1.0
+    return difflib.SequenceMatcher(None, ka, kb).ratio()
+
+
+ANILIST_SEARCH_MIN_SIMILARITY = 0.6
+
+
+def lookup_anilist_cast(works):
+    """キャストが未登録の作品だけを、AniListに1作品ずつ問い合わせる。
+    MALのIDがあればIDで、なければ作品名で検索し、作品名が十分近く、放送年が今期の前後1年のものだけ採用する。
+    戻り値: {作品名: {"cast": [...], "how": "mal"|"search", "anilist_title": ...}}"""
+    by_mal = """query($id:Int){Media(idMal:$id,type:ANIME){%s}}""" % ANILIST_MEDIA_FIELDS
+    by_search = """query($q:String){Page(perPage:5){media(search:$q,type:ANIME){%s}}}""" % ANILIST_MEDIA_FIELDS
+    found = {}
+    for w in works:
+        try:
+            media, how = None, None
+            if w.get("mal"):
+                media, how = post("https://graphql.anilist.co", {"query": by_mal, "variables": {"id": w["mal"]}}).get("Media"), "mal"
+            if not media or not anilist_cast(media):
+                candidates = post("https://graphql.anilist.co", {"query": by_search, "variables": {"q": w["title"]}})["Page"]["media"]
+                best = max(candidates, key=lambda m: title_similarity(w["title"], m["title"]["native"] or ""), default=None)
+                year = ((best or {}).get("startDate") or {}).get("year")
+                if (best and anilist_cast(best)
+                        and title_similarity(w["title"], best["title"]["native"] or "") >= ANILIST_SEARCH_MIN_SIMILARITY
+                        and (year is None or abs(year - YEAR) <= 1)):
+                    media, how = best, "search"
+                else:
+                    media = None
+            if media and anilist_cast(media):
+                found[w["title"]] = {"cast": anilist_cast(media), "how": how,
+                                     "anilist_title": media["title"]["native"] or media["title"]["romaji"]}
+        except Exception as exc:
+            print(f"  [anilist] {w['title']}: 取得失敗 ({exc})", file=sys.stderr)
+        time.sleep(2.1)  # AniListの制限（毎分30回程度）に合わせる
+    return found
 
 # ---- しょぼいカレンダー（放送中の判定。キャストは持たない）----
 def fetch_syoboi():
@@ -283,7 +343,7 @@ def merge(sources, title_aliases=None):
     def find(w):
         key = title_key(canonical_title(w["title"], title_aliases))
         for x in works:
-            if (w["mal"] and x["mal"] == w["mal"]) or (w["tid"] and x["tid"] == w["tid"]) or x["nt"] == key:
+            if (mal_id(w["mal"]) and mal_id(x["mal"]) == mal_id(w["mal"])) or (w["tid"] and x["tid"] == w["tid"]) or x["nt"] == key:
                 return x
         m = difflib.get_close_matches(key, [x["nt"] for x in works], n=1, cutoff=0.86)
         return next((x for x in works if m and x["nt"] == m[0]), None)

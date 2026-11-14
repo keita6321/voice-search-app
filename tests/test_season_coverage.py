@@ -89,3 +89,38 @@ class VodOverridesTest(unittest.TestCase):
             self.assertEqual([t for _, t in unmatched], ["今期にない作品"])
         finally:
             os.remove(path)
+
+
+class AniListMatchTest(unittest.TestCase):
+    def test_mal_ids_match_across_string_and_int(self):
+        works = cr.merge({"annict": [{"title": "ゴールデンカムイ 暴走列車編", "mal": "59000", "tid": None, "cast": []}],
+                          "anilist": [{"title": "ゴールデンカムイ 最終章", "mal": 59000, "tid": None, "cast": [["杉元佐一", "小林親弘"]]}]}, {})
+        self.assertEqual(len(works), 1)
+        self.assertEqual(works[0]["casts"]["anilist"], [["杉元佐一", "小林親弘"]])
+
+    def test_anilist_cast_skips_romaji_only_names(self):
+        media = {"characters": {"edges": [
+            {"node": {"name": {"native": "杉元佐一", "full": "Saichi Sugimoto"}}, "voiceActors": [{"name": {"native": "小林親弘", "full": "Chikahiro Kobayashi"}}]},
+            {"node": {"name": {"native": None, "full": "Someone"}}, "voiceActors": [{"name": {"native": None, "full": "Romaji Only"}}]}]}}
+        self.assertEqual(cr.anilist_cast(media), [["杉元佐一", "小林親弘"]])
+
+    def test_lookup_uses_mal_then_guarded_search(self):
+        calls = []
+        def fake_post(url, payload, headers=None):
+            calls.append(payload["variables"])
+            edge = {"node": {"name": {"native": "役", "full": "x"}}, "voiceActors": [{"name": {"native": "声優 太郎", "full": "x"}}]}
+            if "id" in payload["variables"]:
+                return {"Media": {"title": {"native": "作品A", "romaji": "a"}, "startDate": {"year": 2026}, "characters": {"edges": [edge]}}}
+            q = payload["variables"]["q"]
+            if q == "作品B 第2期":
+                return {"Page": {"media": [{"title": {"native": "作品B 第2期", "romaji": "b"}, "startDate": {"year": 2026}, "characters": {"edges": [edge]}}]}}
+            return {"Page": {"media": [{"title": {"native": "まったく別の作品", "romaji": "c"}, "startDate": {"year": 2026}, "characters": {"edges": [edge]}}]}}
+        original_post, original_sleep = cr.post, cr.time.sleep
+        cr.post, cr.time.sleep = fake_post, lambda s: None
+        try:
+            found = cr.lookup_anilist_cast([{"title": "作品A", "mal": 1}, {"title": "作品B 第2期", "mal": None}, {"title": "作品C", "mal": None}])
+        finally:
+            cr.post, cr.time.sleep = original_post, original_sleep
+        self.assertEqual(found["作品A"]["how"], "mal")
+        self.assertEqual(found["作品B 第2期"]["how"], "search")
+        self.assertNotIn("作品C", found)
