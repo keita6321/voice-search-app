@@ -36,6 +36,7 @@ td.num{white-space:nowrap;font-weight:700;text-align:right}
 details{margin:6px 0 0}summary{cursor:pointer;color:#62517f;font-size:14px}
 .cta{display:inline-block;margin-top:6px;padding:6px 14px;border:1px solid #d8d0e4;border-radius:999px;background:#f5f2fa;color:#4b3d6b;font-size:14px;font-weight:700;text-decoration:none}
 h3{margin:20px 0 6px;font-size:16px}
+table.compare tr.partner td{background:#f5f2fa}.pr{font-size:10px;color:#62517f}.cta.wide{display:block;text-align:center;margin:2px 0 4px;padding:10px 14px;background:#62517f;border-color:#62517f;color:#fff;font-weight:800}
 .end-cta{margin:28px 0 8px;padding:14px 16px;border-radius:14px;background:#f5f2fa;border:1px solid #e3dcef}.end-cta p{margin:0 0 8px}.end-cta p:first-child{font-weight:700;font-size:15px}
 .related{margin-top:40px;padding-top:16px;border-top:1px solid #e3dfd2}
 .date{white-space:nowrap;font-weight:700}
@@ -177,6 +178,38 @@ function coverage(worksWithVod) {
   return { steps, total };
 }
 
+// 各サービスの料金と無料体験（公式のヘルプ・案内ページで確認した値だけ。確認できない項目は null）。確認日と出典も残す
+const VOD_PLANS_CHECKED = '2026年11月';
+const VOD_PLANS = {
+  'Amazon Prime Video': { price: '600円', trial: '初回30日間', source: 'https://selectra.jp/streaming/amazon-prime' },
+  'dアニメストア': { price: '660円', trial: '初回31日間※', source: 'https://animestore.docomo.ne.jp/animestore/CF/help_qa_charge' },
+  'U-NEXT': { price: '2,189円', trial: '31日間', source: 'https://help.unext.jp/guide/detail/types-of-service-plan' },
+  'DMM TV': { price: '550円', trial: '初回あり※', source: 'https://support.dmm.com/premium/article/47489' },
+};
+
+function compareTable(providers, partnerLinks) {
+  const rows = providers.map(([provider, ids]) => {
+    const plan = VOD_PLANS[provider];
+    const partner = partnerLinks[provider];
+    const cell = value => (value ? esc(value) : '<span class="note">—</span>');
+    const row = `<tr${partner ? ' class="partner"' : ''}><td><strong>${esc(label(provider))}</strong>${partner ? '<br><span class="pr">PR</span>' : ''}</td><td class="num">${ids.length}作品</td><td>${cell(plan?.price)}</td><td>${cell(plan?.trial)}</td></tr>`;
+    const cta = partner
+      ? `<tr class="partner"><td colspan="4"><a class="cta wide" href="${esc(partner)}" target="_blank" rel="sponsored noopener" data-ga-event="vod_click" data-ga-provider="${esc(provider)}" data-ga-page-type="vod_compare" data-ga-position="0">${esc(ctaText(provider))} ↗</a>${PARTNER_NOTES[provider] ? `<br><span class="note">${esc(PARTNER_NOTES[provider])}</span>` : ''}</td></tr>`
+      : '';
+    return row + cta;
+  }).join('\n');
+  const sources = Object.entries(VOD_PLANS).map(([provider, plan]) => `<a href="${esc(plan.source)}" target="_blank" rel="noopener">${esc(label(provider))}</a>`).join('、');
+  return `<h2>今期アニメを多く見られる配信サービス</h2>
+<p>今期の作品数と、月額料金・無料体験をまとめました。月額は税込で、ブラウザから登録した場合の料金です（アプリから登録すると高くなるサービスがあります）。</p>
+<table class="compare">
+<thead><tr><th>サービス</th><th>今期の作品</th><th>月額</th><th>無料体験</th></tr></thead>
+<tbody>
+${rows}
+</tbody>
+</table>
+<p class="note">料金と無料体験は${VOD_PLANS_CHECKED}時点で各社の案内を確認したものです（${sources}）。「—」は、こちらでまだ確認できていない項目です（各社の公式サイトで確認してください）。dアニメストアの31日間はキャンペーン中の期間で、通常は7日間です。DMM TVの無料期間は登録ページに表示されます。無料期間が終わると自動で有料になります。リンクは提携しているサービスだけに付けています。</p>`;
+}
+
 export function vodPage(ctx) {
   const { data, seasonLabel, partnerLinks } = ctx;
   const works = Object.entries(data.works);
@@ -213,6 +246,8 @@ export function vodPage(ctx) {
   const description = `${seasonLabel}のテレビアニメが、どの動画配信サービスで何作品見られるかを集計しました。${leader ? `最も多いのは${label(leader[0])}（${leader[1].length}作品）。` : ''}少ないサービス数でどこまでカバーできるかも紹介します。`;
   const body = `<h1>${esc(title)}</h1>
 <p class="lead">今期のアニメをまとめて見るなら、どの配信サービスがよいのか。ANIME CAST NOW に掲載している${esc(seasonLabel)}のテレビアニメのうち、配信先が確認できた${withVod.length}作品について、サービスごとの作品数を集計しました。</p>
+
+${compareTable(providers, partnerLinks)}
 
 <h2>サービス別の配信作品数</h2>
 <p class="note">割合は、配信先が確認できた${withVod.length}作品に対する比率です。見放題・レンタルの区別や、配信開始日は各サービスでご確認ください。</p>
