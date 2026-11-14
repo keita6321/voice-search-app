@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Discover ABEMA/U-NEXT links from official anime sites and configured lineups."""
+"""Discover VOD links from official anime sites and configured lineups.
+
+--auto: 週1回の自動更新用。各作品の公式サイト（トップと、配信・放送情報らしいページを最大2つ）だけを見て、
+配信サービスの作品ページへのリンクがあれば vod_overrides.csv に追加する（VODサイト自体はクロールしない）。
+"""
 import argparse
 import csv
 import difflib
@@ -28,6 +32,11 @@ PROVIDER_HOSTS = {
     "ABEMA": ("abema.tv",),
     "U-NEXT": ("video.unext.jp",),
     "Disney+": ("disneyplus.com",),
+    "Amazon Prime Video": ("amazon.co.jp", "primevideo.com"),
+    "dアニメストア": ("animestore.docomo.ne.jp",),
+    "DMM TV": ("tv.dmm.com",),
+    "Hulu": ("hulu.jp",),
+    "Netflix": ("netflix.com",),
 }
 CANDIDATE_FIELDS = [
     "title", "provider", "method", "match_type", "matched_title", "confidence",
@@ -72,8 +81,25 @@ def provider_for_url(url):
     if host == "video.unext.jp" and path.startswith("/title/"):
         return "U-NEXT"
     if any(host == domain or host.endswith("." + domain) for domain in PROVIDER_HOSTS["Disney+"]):
-        return "Disney+"
+        return "Disney+" if re.search(r"/(series|movies|browse)/", path) else None
+    query = parts.query.lower()
+    # Amazonは配信ページ（/gp/video/）だけ。/dp/ はBlu-rayなどの商品ページのことが多いので拾わない
+    if host in ("amazon.co.jp", "www.amazon.co.jp") and path.startswith("/gp/video/"):
+        return "Amazon Prime Video"
+    if host.endswith("primevideo.com") and "/detail/" in path:
+        return "Amazon Prime Video"
+    if host == "animestore.docomo.ne.jp" and "workid=" in query:
+        return "dアニメストア"
+    if host == "tv.dmm.com" and path.startswith("/vod/") and "season=" in query:
+        return "DMM TV"
+    if host in ("hulu.jp", "www.hulu.jp") and re.fullmatch(r"/(watch/)?[\w-]{4,}/?", path) and path.strip("/") not in HULU_NON_TITLES:
+        return "Hulu"
+    if host in ("netflix.com", "www.netflix.com") and re.search(r"/title/\d+", path):
+        return "Netflix"
     return None
+
+
+HULU_NON_TITLES = {"login", "signup", "help", "search", "store", "account", "static", "tvshows", "movies", "features", "watch"}
 
 
 class OfficialPageFetcher:
@@ -394,10 +420,103 @@ def apply_approved_candidates():
     print(f"追加 {len(approved)}件 / 既存と同一のためスキップ {sum(1 for r in candidates if (r.get('decision') or '').strip().lower() == 'approve') - len(approved)}件 / 却下 {len(rejected)}件")
 
 
+# 公式サイトで、配信・放送情報が載っていそうなページ
+INFO_PAGE_PATTERN = re.compile(r"onair|on-air|on_air|broadcast|stream|haishin|vod|配信|放送", re.I)
+MAX_INFO_PAGES = 2
+
+
+def info_pages(html, page_url):
+    """公式サイトのトップから、同じホストの「配信・放送情報」らしいページを探す。"""
+    soup = BeautifulSoup(html, "html.parser")
+    host = urlsplit(page_url).hostname
+    found = []
+    for anchor in soup.select("a[href]"):
+        target = clean_url(urljoin(page_url, anchor["href"]))
+        if not target or urlsplit(target).hostname != host or target.rstrip("/") == page_url.rstrip("/"):
+            continue
+        text = anchor.get_text(" ", strip=True)
+        if INFO_PAGE_PATTERN.search(urlsplit(target).path) or INFO_PAGE_PATTERN.search(text):
+            if target not in found:
+                found.append(target)
+        if len(found) >= MAX_INFO_PAGES:
+            break
+    return found
+
+
+def scan_official_site(work, fetcher):
+    """公式サイトのトップと配信情報ページから、配信サービスの作品ページへのリンクを集める。
+    戻り値: {provider: (配信ページのURL, 見つけた公式ページのURL)}"""
+    html, final_url = fetcher.get(work["official_url"])
+    pages = [(html, final_url)]
+    for url in info_pages(html, final_url):
+        try:
+            pages.append(fetcher.get(url))
+        except (requests.RequestException, PermissionError, ValueError):
+            continue
+    found = {}
+    for page_html, page_url in pages:
+        for provider, link, _ in provider_links(page_html, page_url):
+            found.setdefault(provider, (link, page_url))
+    return found
+
+
+def load_override_keys(aliases):
+    if not OVERRIDES_PATH.exists():
+        return set()
+    with OVERRIDES_PATH.open(encoding="utf-8-sig", newline="") as f:
+        return {(title_key(canonical_title(row["title"], aliases)), row["provider"]) for row in csv.DictReader(f) if row.get("title")}
+
+
+def auto_discover(data, fetcher, aliases, today=None, report_dir=ROOT / "reports"):
+    """公式サイトにリンクがある配信サービスのうち、まだ載っていないものを vod_overrides.csv に追加する。"""
+    today = today or date.today().isoformat()
+    known = load_override_keys(aliases)
+    added, errors, scanned = [], [], 0
+    for work in data["works"].values():
+        if not work.get("official_url"):
+            continue
+        have = {link["provider"] for link in work.get("vod_links", [])}
+        key = title_key(canonical_title(work["title"], aliases))
+        try:
+            found = scan_official_site(work, fetcher)
+        except (requests.RequestException, PermissionError, ValueError) as exc:
+            errors.append((work["title"], str(exc)[:120]))
+            continue
+        scanned += 1
+        for provider, (link, evidence) in found.items():
+            if provider in have or (key, provider) in known:
+                continue
+            added.append({"title": work["title"], "provider": provider, "source_url": link, "checked_at": today, "evidence": evidence})
+            known.add((key, provider))
+    if added:
+        with OVERRIDES_PATH.open("a", encoding="utf-8", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=["title", "provider", "source_url", "checked_at"], extrasaction="ignore")
+            writer.writerows(added)
+    report_dir.mkdir(exist_ok=True)
+    lines = [f"# 公式サイトから見つけた配信先（{data['season']}、{today}）", "",
+             f"公式サイトを確認した作品：{scanned}作品／取得できなかった作品：{len(errors)}作品／追加：{len(added)}件", "",
+             "追加した配信先は vod_overrides.csv に入っています。間違いがあれば、その行を消してください。", "",
+             "| 作品 | 配信サービス | 配信ページ | 見つけた公式ページ |", "| --- | --- | --- | --- |"]
+    lines += [f"| {a['title']} | {a['provider']} | {a['source_url']} | {a['evidence']} |" for a in added]
+    if errors:
+        lines += ["", "## 取得できなかった公式サイト", ""] + [f"- {title}: {error}" for title, error in errors]
+    (report_dir / f"vod-discovery-{data['season']}.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return added, errors
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--apply-approved", action="store_true", help="Import approved rows from vod_candidates.csv")
+    parser.add_argument("--auto", action="store_true", help="公式サイトだけを見て、見つかった配信先を vod_overrides.csv に直接追加する（週1回の自動更新用）")
     args = parser.parse_args()
+    if args.auto:
+        with DATA_PATH.open(encoding="utf-8") as f:
+            data = json.load(f)
+        added, errors = auto_discover(data, OfficialPageFetcher(), load_title_aliases())
+        print(f"公式サイトから配信先を追加: {len(added)}件（取得できなかった公式サイト {len(errors)}件）→ reports/vod-discovery-{data['season']}.md")
+        for row in added:
+            print(f"  + {row['title']} / {row['provider']}")
+        return
     if args.apply_approved:
         apply_approved_candidates()
         return

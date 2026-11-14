@@ -5,3 +5,4 @@ data/registry/review.json
 cache/
 dist/
 reports-build.log
+reports-discovery.log

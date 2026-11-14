@@ -50,6 +50,8 @@ npm run build:pages
 
 GitHub Actionsの「データ更新」は、**毎週月曜5:17（日本時間）に自動で実行**されます。今期（今日の日付から決まるシーズン）と来期（その次のシーズン）を取り直し、安全チェックを通れば`main`に反映して、そのまま本番に公開します。安全チェックでは、作品数か声優数が前回の7割未満に減っていたら、取得の失敗とみなして反映を止めます。声優IDの台帳の要確認や品質ゲートで止まった場合も、反映しません。レポートとログは、毎回`data/refresh-<日時>`ブランチに残ります（新しい10本だけ保存）。
 
+毎週の更新では、データを取り直す前に、`discover_vod_candidates.py --auto`で各作品の公式サイト（トップと、配信・放送情報らしいページを最大2つ）を見て、配信サービスの作品ページへのリンクがあれば`vod_overrides.csv`に追加します。対象はABEMA、U-NEXT、Disney+、Prime Video（`/gp/video/`のページだけ。Blu-rayなどの商品ページは拾いません）、dアニメストア、DMM TV、Hulu、Netflixです。VODサイト自体やまとめサイトはクロールしません。`robots.txt`と間隔は守ります。追加した内容は`reports/vod-discovery-<season>.md`に出ます。間違いがあれば、`vod_overrides.csv`のその行を消してください。
+
 手動で実行する場合は、`season`と`next_season`を空欄にすると、自動実行と同じシーズンになります（`next_season`を`none`にすると、来期は取得しません）。`auto_apply`をオンにすると、自動実行と同じように本番に反映します。
 
 クールが切り替わった最初の実行（1月・4月・7月・10月の第1月曜）は、今期の声優が入れ替わります。来期だった作品が今期になるため、前回より声優数が大きく減ると、品質ゲートで止まることがあります。その場合は、レポートを確認してから、`force_registry`と`auto_apply`をオンにして手動で実行してください。
@@ -139,6 +141,7 @@ The shared 1200×630 OGP image is `assets/ogp-default.png` and is used by every 
 | `--no-history` | 紹介済み声優の記録を読み書きしない |
 | `--inspect` | 実データの読み取り結果だけを表示して終了 |
 | `--verify-pages` | 各声優ページの存在を確認し、欠落を警告してCSVと補助ページに表示 |
+| `--reply-link` | 本文にリンクを貼らず、返信（リプ欄）用のリンク文を別に出す。X公式の予約投稿では返信を予約できないため、返信は投稿後に手動で行う |
 
 28日間では週1回の投稿枠が4週で一巡します。投稿URLのUTMは`utm_source=x&utm_medium=social&utm_campaign=<campaign>&utm_content=<声優ID/ranking/stats/devlog>`形式です。`utm_content`は声優紹介では声優ID、ランキングでは`ranking`、データ小ネタでは`stats`、開発ログでは`devlog`になります。クールが変わるたびに`--campaign`を変更してください。
 
