@@ -28,6 +28,33 @@ def hira(s):
     s = unicodedata.normalize("NFKC", s)
     return re.sub(r"\s+", "", "".join(chr(ord(c) - 96) if "ァ" <= c <= "ヶ" else c for c in s))
 
+def fill_cast_from_anilist(works, season, refresh):
+    """シーズン一覧で突き合わせられず、まだキャストがない作品を、AniListに個別に問い合わせて補う。"""
+    targets = [w for w in works if not any(w["casts"].values())]
+    if not targets:
+        return
+    lookup = cr.cached(f"anilist-lookup-{season}", lambda: cr.lookup_anilist_cast(targets), refresh)
+    if not isinstance(lookup, dict):
+        lookup = {}
+    filled = []
+    for w in targets:
+        hit = lookup.get(w["title"])
+        if hit and hit.get("cast"):
+            w["casts"]["anilist"] = hit["cast"]
+            filled.append((w["title"], hit.get("how"), hit.get("anilist_title")))
+    os.makedirs("reports", exist_ok=True)
+    lines = [f"# AniListでキャストを補った作品（{season}）", "",
+             f"キャストが未登録の{len(targets)}作品のうち、{len(filled)}作品を補いました。",
+             "「作品名で検索」は名前の近さで選んでいるので、取り違えがないか確認してください。", "",
+             "| 作品（Annict） | 方法 | AniListの作品名 |", "| --- | --- | --- |"]
+    lines += [f"| {t} | {'MALのID' if how == 'mal' else '作品名で検索'} | {a} |" for t, how, a in filled]
+    still = [w["title"] for w in targets if w["title"] not in {f[0] for f in filled}]
+    if still:
+        lines += ["", "## まだキャストがない作品", "", *[f"- {t}" for t in still]]
+    with open(os.path.join("reports", f"cast-fill-{season}.md"), "w", encoding="utf-8") as f:
+        f.write("\n".join(lines) + "\n")
+
+
 def pick_cast(w, kana, person_ids=None):
     """Annict のキャストを採用し、同一声優の別役を「／」で連結する。
     Annictにキャストが未登録の作品だけ、AniListのキャストで補う（作品の選定はAnnictが軸のまま）。"""
@@ -63,6 +90,7 @@ def main():
     # AniList は、Annictにキャストが未登録の作品の補完だけに使う（取得に失敗しても続行）
     anilist = cr.cached(f"anilist-{season}", cr.fetch_anilist, args.refresh)
     works = [w for w in cr.merge({"annict": annict, "anilist": anilist}, load_title_aliases()) if "annict" in w["src"]]
+    fill_cast_from_anilist(works, season, args.refresh)
     apply_vod_overrides(works, VOD_PROVIDERS)
 
     reading = {}
