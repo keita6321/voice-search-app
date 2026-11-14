@@ -1,0 +1,9 @@
+  [thumbnail] 公式サイトから取得できませんでした (青春ブタ野郎はディアフレンドの夢を見ない): robots.txt returned HTTP 403: https://ao-buta.com/robots.txt
+  [thumbnail] 公式サイトから取得できませんでした (BLEACH 千年血戦篇-禍進譚-): robots.txt returned HTTP 403: https://bleach-anime.com/robots.txt
+  [annict-2026-autumn] 取得失敗: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+Traceback (most recent call last):
+  File "/home/runner/work/voice-search-app/voice-search-app/build_data_from_sources.py", line 175, in <module>
+    main()
+  File "/home/runner/work/voice-search-app/voice-search-app/build_data_from_sources.py", line 89, in main
+    raise RuntimeError("Annict から作品データを取得できなかったため、既存の data.json は変更していません")
+RuntimeError: Annict から作品データを取得できなかったため、既存の data.json は変更していません
