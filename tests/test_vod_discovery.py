@@ -68,5 +68,23 @@ class SourceVerificationTest(AutoDiscoverTest):
         self.assertEqual([(u["title"], u["provider"]) for u in unverified], [("テスト作品", "Hulu")])
 
 
+class PrecisionTest(unittest.TestCase):
+    def test_prime_needs_a_title_page(self):
+        self.assertEqual(dv.provider_for_url("https://www.amazon.co.jp/gp/video/detail/B0X"), "Amazon Prime Video")
+        self.assertIsNone(dv.provider_for_url("https://www.amazon.co.jp/gp/video/storefront/"))
+        self.assertIsNone(dv.provider_for_url("https://www.amazon.co.jp/gp/video/channel/abc"))
+
+    def test_works_sharing_a_site_are_skipped(self):
+        data = {"works": {
+            "a": {"title": "本編", "official_url": "https://ex.com/"},
+            "b": {"title": "本編 ミニアニメ", "official_url": "https://ex.com/"},
+            "c": {"title": "シリーズ", "official_url": "https://series.com/"},
+            "d": {"title": "シリーズ 第3期", "official_url": "https://series.com/season3/"}}}
+        w = data["works"]
+        self.assertTrue(dv.shares_site(w["a"], data))
+        self.assertTrue(dv.shares_site(w["c"], data))   # 下に別の作品のページがある＝シリーズ全体のサイト
+        self.assertFalse(dv.shares_site(w["d"], data))  # 作品ごとのページ
+
+
 if __name__ == "__main__":
     unittest.main()

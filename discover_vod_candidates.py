@@ -84,7 +84,8 @@ def provider_for_url(url):
         return "Disney+" if re.search(r"/(series|movies|browse)/", path) else None
     query = parts.query.lower()
     # Amazonは配信ページ（/gp/video/）だけ。/dp/ はBlu-rayなどの商品ページのことが多いので拾わない
-    if host in ("amazon.co.jp", "www.amazon.co.jp") and path.startswith("/gp/video/"):
+    # 作品ページ（/gp/video/detail/）だけ。トップ・特集・有料チャンネル（/gp/video/storefront・channel など）は作品の配信の根拠にならない
+    if host in ("amazon.co.jp", "www.amazon.co.jp") and path.startswith("/gp/video/detail/"):
         return "Amazon Prime Video"
     if host.endswith("primevideo.com") and "/detail/" in path:
         return "Amazon Prime Video"
@@ -454,6 +455,10 @@ def scan_official_site(work, fetcher):
         except (requests.RequestException, PermissionError, ValueError):
             continue
     found = {}
+    # 作品ごとのページ（/season3/ など）がある場合、その下のページのリンクだけを使う（シリーズ全体のページの配信リンクは別の作品のものかもしれない）
+    _, base = _site_path(work["official_url"])
+    if base != "/":
+        pages = [(h, u) for h, u in pages if _site_path(u)[1].startswith(base)]
     for page_html, page_url in pages:
         for provider, link, _ in provider_links(page_html, page_url):
             found.setdefault(provider, (link, page_url))
@@ -472,6 +477,29 @@ UNOFFICIAL_SOURCE_HOSTS = {"animedia-khaki.vercel.app"}
 OVERRIDE_FIELDS = ["title", "provider", "source_url", "checked_at"]
 
 
+def _site_path(url):
+    parts = urlsplit(url or "")
+    path = parts.path
+    if path.endswith(("index.html", "index.php")):
+        path = path.rsplit("/", 1)[0] + "/"
+    return (parts.hostname or "").lower().removeprefix("www."), path.rstrip("/") + "/"
+
+
+def shares_site(work, data):
+    """劇場版やミニアニメなど、別の作品と同じ公式サイト（同じ場所）を使っている作品か。
+    その場合、公式サイトの配信リンクがどの作品のものか決められないので、自動では追加しない。
+    （同じホストでも /season3/ のように作品ごとのページがあれば対象にする）"""
+    host, path = _site_path(work["official_url"])
+    for other in data["works"].values():
+        if other is work or not other.get("official_url"):
+            continue
+        other_host, other_path = _site_path(other["official_url"])
+        # 同じ場所、またはこの作品のページの下に別の作品のページがある（シリーズ全体のサイト）
+        if other_host == host and other_path.startswith(path):
+            return True
+    return False
+
+
 def is_unofficial(url):
     return (urlsplit(url or "").hostname or "") in UNOFFICIAL_SOURCE_HOSTS
 
@@ -485,9 +513,12 @@ def auto_discover(data, fetcher, aliases, today=None, report_dir=ROOT / "reports
         with OVERRIDES_PATH.open(encoding="utf-8-sig", newline="") as f:
             rows = [row for row in csv.DictReader(f) if row.get("title")]
     by_key = {(title_key(canonical_title(row["title"], aliases)), row["provider"]): row for row in rows}
-    added, verified, errors, scanned = [], [], [], 0
+    added, verified, errors, shared, scanned = [], [], [], [], 0
     for work in data["works"].values():
         if not work.get("official_url"):
+            continue
+        if shares_site(work, data):
+            shared.append(work["title"])
             continue
         have = {link["provider"] for link in work.get("vod_links", [])}
         key = title_key(canonical_title(work["title"], aliases))
@@ -527,6 +558,8 @@ def auto_discover(data, fetcher, aliases, today=None, report_dir=ROOT / "reports
     lines += [f"| {v['title']} | {v['provider']} | {v['source_url']} | {v['evidence']} |" for v in verified]
     lines += ["", "## まだ裏付けが取れていない行（出典がまとめサイト）", ""]
     lines += [f"- {row['title']} / {row['provider']}" for row in unverified]
+    if shared:
+        lines += ["", "## 公式サイトを別の作品と共有しているため見送った作品", ""] + [f"- {title}" for title in shared]
     if errors:
         lines += ["", "## 取得できなかった公式サイト", ""] + [f"- {title}: {error}" for title, error in errors]
     (report_dir / f"vod-discovery-{data['season']}.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
