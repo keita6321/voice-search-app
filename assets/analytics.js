@@ -106,6 +106,7 @@
       return { work_id: data.gaWorkId, work_title: data.gaWorkTitle, va_id: data.gaVaId };
     }
     if (eventName === 'share_x_click') return { va_id: data.gaVaId, va_name: data.gaVaName };
+    if (eventName === 'share_native_click') return { va_id: data.gaVaId, va_name: data.gaVaName };
     if (eventName === 'feature_click') return { work_id: data.gaWorkId, work_title: data.gaWorkTitle, position: Number(data.gaPosition), page_type: data.gaPageType };
     if (eventName === 'copy_link_click') return { va_id: data.gaVaId };
     return null;
