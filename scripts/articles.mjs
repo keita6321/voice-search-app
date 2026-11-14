@@ -509,7 +509,32 @@ ${work.official_url ? `<p><a href="${esc(work.official_url)}" target="_blank" re
   });
 }
 
-export function nextIndexPage(ctx, next) {
+// 最近発表されたキャスト（data/next-cast-log.json。毎週の更新で増えた分）
+function newCastSection(next, castLog, days = 14) {
+  if (!castLog?.entries?.length || castLog.season !== next.season) return '';
+  const latest = castLog.entries.reduce((max, e) => (e.date > max ? e.date : max), '');
+  const from = new Date(Date.parse(latest) - days * 864e5).toISOString().slice(0, 10);
+  const recent = castLog.entries.filter(e => e.date > from && next.works[e.work_id]);
+  if (!recent.length) return '';
+  const byDate = new Map();
+  for (const e of recent) {
+    if (!byDate.has(e.date)) byDate.set(e.date, new Map());
+    const works = byDate.get(e.date);
+    if (!works.has(e.work_id)) works.set(e.work_id, []);
+    works.get(e.work_id).push(e);
+  }
+  const blocks = [...byDate.entries()].sort((a, b) => b[0].localeCompare(a[0])).map(([date, works]) => {
+    const [, m, d] = date.split('-').map(Number);
+    const items = [...works.entries()].map(([workId, entries]) =>
+      `<li><a href="/work/${esc(workId)}/">${esc(next.works[workId].title)}</a>：${entries.slice(0, 8).map(e => `${esc(e.character)}（<a href="/va/${toPageId(e.actor_id)}/">${esc(e.name)}</a>）`).join('、')}${entries.length > 8 ? ` ほか${entries.length - 8}名` : ''}</li>`).join('\n');
+    return `<h3>${m}月${d}日の更新で追加</h3>\n<ul>\n${items}\n</ul>`;
+  }).join('\n');
+  return `<h2>最近発表されたキャスト</h2>
+<p>毎週の更新で、新しく確認できたキャストです（直近${days}日分）。</p>
+${blocks}`;
+}
+
+export function nextIndexPage(ctx, next, castLog = null) {
   if (!next) {
     return page({ ...ctx, path: '/next/', title: '来期アニメの放送日とキャスト', noindex: true,
       description: '来期のアニメの放送日とキャストは、発表され次第このページにまとめます。',
@@ -530,6 +555,8 @@ export function nextIndexPage(ctx, next) {
   const body = `<h1>${esc(title)}</h1>
 <p class="lead">${esc(nextLabel)}として放送予定の${works.length}作品を、放送開始日の順に並べました（放送日が確認できているのは${dated}作品）。作品名を押すと、キャストと、同じ声優が来期に出るほかの作品を確認できます。</p>
 <p class="note">声優名で検索すると、その声優の来期の出演予定も見られます（<a href="/">トップで検索</a>）。放送前の情報のため、変更されることがあります（最終更新：${esc(next.updated_at.slice(0, 10))}）。</p>
+${newCastSection(next, castLog)}
+<h2>放送日の一覧</h2>
 <table>
 <thead><tr><th>放送開始</th><th>作品・おもなキャスト</th></tr></thead>
 <tbody>

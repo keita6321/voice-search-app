@@ -5,7 +5,7 @@
   ・声優情報が1名も無い作品は data.json に入れない（一覧は coverage_missing.csv）
   ・読み: readings.csv > Annictの読み仮名 > pykakasi（あれば）の順。不明な名前は readings_todo.csv に出力"""
 import argparse, csv, hashlib, json, os, re, tempfile, unicodedata
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import actor_registry as ar
 import coverage_report as cr
 from data_normalization import apply_vod_overrides, is_supported_actor_name, load_title_aliases, write_vod_audit
@@ -73,6 +73,38 @@ def pick_cast(w, kana, person_ids=None):
         elif role and role not in roles[name]:
             roles[name].append(role)
     return [(("／".join(r for r in rs if r)) or "（役名未登録）", n) for n, rs in roles.items()][:MAX_ROLES]
+
+CAST_LOG_PATH = os.path.join("data", "next-cast-log.json")
+CAST_LOG_DAYS = 60
+
+
+def cast_pairs(data):
+    return {(r["work_id"], a["actor_id"]): (a, r) for a in data["voice_actors"] for r in a["roles"]}
+
+
+def log_new_cast(previous_path, data, log_path, today=None):
+    """来期のキャストのうち、前回の取得から増えたものを記録する（「今週発表されたキャスト」用）。
+    前回のデータがない、またはシーズンが違うときは、記録をリセットして比較の起点だけ作る。"""
+    today = today or datetime.now(timezone(timedelta(hours=9))).strftime("%Y-%m-%d")
+    try:
+        with open(previous_path, encoding="utf-8") as f:
+            previous = json.load(f)
+    except (OSError, ValueError):
+        previous = None
+    log = ar.load_json(log_path, None) or {}
+    if not previous or previous.get("season") != data["season"] or log.get("season") != data["season"]:
+        log = {"season": data["season"], "entries": []}
+    if previous and previous.get("season") == data["season"]:
+        before = cast_pairs(previous)
+        for key, (actor, role) in sorted(cast_pairs(data).items()):
+            if key not in before:
+                log["entries"].append({"date": today, "work_id": role["work_id"], "actor_id": actor["actor_id"],
+                                       "name": actor["name"], "character": role["character_name"]})
+    cutoff = (datetime.strptime(today, "%Y-%m-%d") - timedelta(days=CAST_LOG_DAYS)).strftime("%Y-%m-%d")
+    log["entries"] = [e for e in log["entries"] if e["date"] >= cutoff]
+    ar.write_json(log_path, log)
+    return log
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -150,6 +182,8 @@ def main():
     va = [{"actor_id": ids[a["name"]], **a} for a in va]
     data = {"season": season, "updated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
             "works": out_works, "voice_actors": va}
+    if preview:
+        log_new_cast(out_path, data, CAST_LOG_PATH)
     fd, temp_path = tempfile.mkstemp(prefix="data.", suffix=".json", dir=".")
     try:
         with os.fdopen(fd, "w", encoding="utf-8") as f:
