@@ -249,6 +249,11 @@ function castOf(data) {
   return byWork;
 }
 
+// 提携サービスの無料体験など。index.html の PARTNER_NOTES と同じ内容にする
+const PARTNER_NOTES = {
+  'Amazon Prime Video': 'Amazonプライム会員の初回30日間無料体験あり（2026年11月時点。条件は公式サイトで確認してください）',
+};
+
 // 手書きの作品紹介（data/work_notes.json）
 function notesSection(note, title) {
   if (!note) return '';
@@ -298,9 +303,11 @@ export function workPages(ctx) {
       : `「${esc(work.title)}」の配信サービスは、まだ確認できていません（${esc(asOf)}時点）。配信が決まり次第、このページに追加します。`;
     const buttons = partners.map((v, index) =>
       `<a class="cta" href="${esc(v.url)}" target="_blank" rel="sponsored noopener" data-ga-event="vod_click" data-ga-provider="${esc(v.provider)}" data-ga-work-id="${esc(id)}" data-ga-work-title="${esc(work.title)}" data-ga-page-type="work" data-ga-position="${index + 1}">${esc(label(v.provider))}で見る ↗</a>`).join(' ');
+    const notesFor = partners.map(v => PARTNER_NOTES[v.provider]).filter(Boolean);
     const vodSection = vods.length
       ? `<h2>配信しているサービス</h2>
 ${buttons ? `<p>${buttons}</p>` : ''}
+${notesFor.map(note => `<p class="note">${esc(note)}</p>`).join('\n')}
 ${others.length ? `<p>${partners.length ? 'ほかの配信' : '配信'}：${esc(others.map(v => label(v.provider)).join('、'))}</p>` : ''}
 <p class="note">見放題・レンタルの区別や配信開始日は、各サービスでご確認ください。</p>`
       : '';

@@ -139,6 +139,7 @@ The shared 1200×630 OGP image is `assets/ogp-default.png` and is used by every 
 | `--no-history` | 紹介済み声優の記録を読み書きしない |
 | `--inspect` | 実データの読み取り結果だけを表示して終了 |
 | `--verify-pages` | 各声優ページの存在を確認し、欠落を警告してCSVと補助ページに表示 |
+| `--reply-link` | 本文にリンクを貼らず、返信（リプ欄）用のリンク文を別に出す。X公式の予約投稿では返信を予約できないため、返信は投稿後に手動で行う |
 
 28日間では週1回の投稿枠が4週で一巡します。投稿URLのUTMは`utm_source=x&utm_medium=social&utm_campaign=<campaign>&utm_content=<声優ID/ranking/stats/devlog>`形式です。`utm_content`は声優紹介では声優ID、ランキングでは`ranking`、データ小ネタでは`stats`、開発ログでは`devlog`になります。クールが変わるたびに`--campaign`を変更してください。
 

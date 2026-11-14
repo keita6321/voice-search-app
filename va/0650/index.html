@@ -106,6 +106,12 @@ button{font:inherit;color:inherit;cursor:pointer}
 .off{display:block;margin-top:6px;color:var(--sub);font-size:10px;text-align:center;text-decoration:none}
 .off:after{content:" ↗"}
 .em-next{color:var(--sub);font-weight:700}
+.pr-note{margin:0 2px 10px;color:var(--sub);font-size:10px}
+.best-vod{margin:0 0 16px;padding:12px 14px;border-radius:14px;background:#f5f2fa;border:1px solid #e3dcef}
+.best-lead{margin:0;font-size:13px;line-height:1.6}.best-lead b{color:var(--ac)}
+.best-rest{margin:4px 0 0;color:var(--sub);font-size:11px}
+.best-cta{display:inline-flex;margin-top:9px;background:#fff;font-weight:800}
+.best-note{margin:6px 0 0;color:var(--sub);font-size:10px;line-height:1.5}
 .next-h{margin:22px 2px 9px !important}
 .next-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .next-work{min-width:0;padding:11px 13px;border:1px dashed #cfc6dc;border-radius:13px;background:#fbfaf7}
@@ -165,6 +171,27 @@ const SERVICE_LABEL={'Amazon Prime Video':'Prime Video'};
 // それ以外は「ほかの配信」として文字だけで案内する（未提携のサービスへは送客しない）。
 // 提携できたら、vod_providers.py のURLをアフィリエイトリンクに差し替え、ここに追加する。
 const PARTNER_SERVICES=new Set(['Amazon Prime Video']);
+// 提携サービスの無料体験など（各社公式で条件を確認してから書く。確認日も入れる）。scripts/articles.mjs の PARTNER_NOTES と同じ内容にする
+const PARTNER_NOTES={'Amazon Prime Video':'Amazonプライム会員の初回30日間無料体験あり（2026年11月時点。条件は公式サイトで確認してください）'};
+// この声優の今期の出演作を、いちばん多く見られる配信サービス
+function bestVodHtml(a){
+  const roles=a.roles.filter(r=>D.works[r.work_id]?.vod_links?.length);
+  if(roles.length<2)return '';
+  const counts=new Map();
+  for(const r of roles)for(const p of new Set(D.works[r.work_id].vod_links.map(v=>v.provider)))counts.set(p,(counts.get(p)||0)+1);
+  // 同数なら提携サービスを先に
+  const ranked=[...counts].sort((x,y)=>y[1]-x[1]||PARTNER_SERVICES.has(y[0])-PARTNER_SERVICES.has(x[0])||x[0].localeCompare(y[0]));
+  const [top,n]=ranked[0];
+  const partner=ranked.find(([p])=>PARTNER_SERVICES.has(p));
+  const link=partner&&roles.map(r=>D.works[r.work_id].vod_links.find(v=>v.provider===partner[0])).find(Boolean);
+  const pageType=location.pathname.startsWith('/va/')?'va_detail':'home';
+  const rest=ranked.slice(1,4).map(([p,k])=>`${esc(serviceLabel(p))}（${k}作品）`).join('、');
+  return `<section class="best-vod" aria-label="出演作をまとめて見られる配信サービス"><p class="best-lead">今期の出演作${roles.length}作品のうち、<b>${esc(serviceLabel(top))}</b>なら<b>${n}作品</b>を見られます。</p>`+
+    (rest?`<p class="best-rest">ほかに：${rest}</p>`:'')+
+    (link?`<a class="vod best-cta" href="${esc(link.url)}" data-ga-event="vod_click" data-ga-provider="${esc(partner[0])}" data-ga-va-id="${esc(a.actor_id)}" data-ga-va-name="${esc(a.name)}" data-ga-position="0" data-ga-page-type="${pageType}_best" target="_blank" rel="sponsored noopener"><span>${esc(serviceLabel(partner[0]))}で${partner[1]}作品を見る</span></a>`+
+      (PARTNER_NOTES[partner[0]]?`<p class="best-note">${esc(PARTNER_NOTES[partner[0]])}</p>`:''):'')+
+    `</section>`;
+}
 const serviceLabel=name=>SERVICE_LABEL[name]||name;
 function vodLinksHtml(w,r,a){
   const partners=w.vod_links.filter(v=>PARTNER_SERVICES.has(v.provider)),others=w.vod_links.filter(v=>!PARTNER_SERVICES.has(v.provider));
@@ -262,7 +289,7 @@ function detail(a){
   $('#s2').innerHTML=`<div class="dialog" role="dialog" aria-modal="true" aria-labelledby="detail-name" tabindex="-1">
   <header class="detail-head"><div class="detail-bar"><button class="back" id="bk" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>声優一覧へ戻る</span></button><span class="detail-brand">ANIME CAST NOW</span><span aria-hidden="true"></span></div>
   <div class="profile"><div class="profile-copy"><h2 id="detail-name">${esc(a.name)}</h2><small>${esc(a.reading)}</small><em>${a.roles.length?`今季 ${a.roles.length}作品に出演中`:`来期 ${a.next.length}作品に出演予定`}${a.roles.length&&a.next?.length?`<span class="em-next">・来期 ${a.next.length}作品</span>`:''}</em><a class="share-x" id="share-x" data-ga-event="share_x_click" data-ga-va-id="${esc(a.actor_id)}" data-ga-va-name="${esc(a.name)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(a.name)}さんの出演情報をXでシェア">Xでシェア</a></div></div></header>
-  <div class="modal-scroll">${a.roles.length?'<h3>今季の出演作品</h3>':''}<div class="work-grid">`+a.roles.filter(r=>D.works[r.work_id]?.vod_links?.length).map(r=>{const w=D.works[r.work_id];
+  <div class="modal-scroll"><p class="pr-note">当ページのリンクには広告が含まれています。</p>${a.roles.length?bestVodHtml(a)+'<h3>今季の出演作品</h3>':''}<div class="work-grid">`+a.roles.filter(r=>D.works[r.work_id]?.vod_links?.length).map(r=>{const w=D.works[r.work_id];
    return `<article class="work"><div class="work-main"><div class="work-intro">${w.thumbnail?`<img class="work-thumb" src="${esc(w.thumbnail)}" alt="${esc(w.title)}の画像" loading="lazy" decoding="async" referrerpolicy="no-referrer">`:''}<div class="work-copy"><h4><a class="work-link" href="/work/${esc(r.work_id)}/">${esc(w.title)}</a></h4>${w.credit?`<div class="cr">${esc(w.credit)}</div>`:''}
    <div class="castline"><b>${esc(r.character_name)}</b> ／ ${esc(a.name)}</div><div class="vods">`+vodLinksHtml(w,r,a)+`</div></div></div></div>`+
    ((r.official_url||w.official_url)?`<a class="off" href="${esc(r.official_url||w.official_url)}" data-ga-event="official_site_click" data-ga-work-id="${esc(r.work_id)}" data-ga-work-title="${esc(w.title)}" data-ga-va-id="${esc(a.actor_id)}" target="_blank" rel="noopener">公式サイト</a>`:'')+'</article>'}).join('')+`</div>${nextHtml(a)}</div></div>`;

@@ -53,6 +53,8 @@ const CFG = {
   history: opt['no-history'] ? null : (opt.history || 'scripts/.post-history.json'),
   inspect: !!opt.inspect,
   verifyPages: !!opt['verify-pages'],
+  // 本文にリンクを貼らず、返信（リプ欄）にリンクを回す。X公式の予約投稿では返信を予約できないため、返信は投稿後に手動で行う
+  replyLink: !!opt['reply-link'],
 };
 
 // ───────── data.json の読み取り（スキーマ違いに強い版） ─────────
@@ -303,14 +305,22 @@ if (CFG.verifyPages) {
   }
 }
 rows.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+if (CFG.replyLink) {
+  for (const r of rows) {
+    const url = (r.text.match(/https?:\/\/\S+/) || [])[0];
+    if (!url) continue;
+    r.text = r.text.replace(`\n${url}`, '').replace(/👇/g, '（リンクはリプ欄に👇）');
+    r.reply = `出演作と配信先はこちら👇\n${url}`;
+  }
+}
 rows.forEach((r) => { r.len = weightedLength(r.text); });
 
 fs.mkdirSync(CFG.out, { recursive: true });
 const esc = (s) => `"${String(s).replace(/"/g, '""')}"`;
-const csvHeader = ['日付,時刻,種類,声優,本文,文字数(上限280)', ...(CFG.verifyPages ? ['ページなし'] : [])].join(',');
-const csv = '\uFEFF' + [csvHeader, ...rows.map((r) => [...[r.date, r.time, r.type, r.va, r.text, r.len], ...(CFG.verifyPages ? [r.pageMissing ? 'ページなし' : ''] : [])].map(esc).join(','))].join('\r\n');
+const csvHeader = ['日付,時刻,種類,声優,本文,文字数(上限280)', ...(CFG.replyLink ? ['返信（リンク）'] : []), ...(CFG.verifyPages ? ['ページなし'] : [])].join(',');
+const csv = '\uFEFF' + [csvHeader, ...rows.map((r) => [...[r.date, r.time, r.type, r.va, r.text, r.len], ...(CFG.replyLink ? [r.reply || ''] : []), ...(CFG.verifyPages ? [r.pageMissing ? 'ページなし' : ''] : [])].map(esc).join(','))].join('\r\n');
 fs.writeFileSync(path.join(CFG.out, 'posts.csv'), csv);
-const md = rows.map((r) => `### ${r.date} ${r.time}｜${r.type}${r.va ? `｜${r.va}` : ''}（${r.len}/280）\n\n\`\`\`\n${r.text}\n\`\`\`\n`).join('\n');
+const md = rows.map((r) => `### ${r.date} ${r.time}｜${r.type}${r.va ? `｜${r.va}` : ''}（${r.len}/280）\n\n\`\`\`\n${r.text}\n\`\`\`\n${r.reply ? `\n返信（投稿後に手動で）：\n\n\`\`\`\n${r.reply}\n\`\`\`\n` : ''}`).join('\n');
 fs.writeFileSync(path.join(CFG.out, 'posts.md'), `# 投稿下書き（${rows[0]?.date} 〜）\n\n※投稿前に、URLを貼ってカードが出るか確認してください。\n\n${md}`);
 
 
@@ -378,7 +388,14 @@ function render() {
     const dn = document.createElement('button'); dn.className = 'donebtn' + (d ? ' on' : ''); dn.textContent = d ? '予約済み ✓' : '予約済みにする';
     dn.onclick = () => { set(r, !d); render(); };
     btns.append(c, x, dn);
-    el.append(meta, pre, btns); list.append(el);
+    el.append(meta, pre, btns);
+    if (r.reply) {
+      const rl = document.createElement('p'); rl.className = 'hint'; rl.textContent = '返信（投稿されたあと、その投稿に返信として手動で）';
+      const rp = document.createElement('pre'); rp.textContent = r.reply;
+      const rc = document.createElement('button'); rc.textContent = '返信をコピー'; rc.onclick = () => copy(r.reply, rc);
+      el.append(rl, rp, rc);
+    }
+    list.append(el);
   }
   document.getElementById('prog').textContent = '予約済み ' + done + ' / ' + ROWS.length;
 }
