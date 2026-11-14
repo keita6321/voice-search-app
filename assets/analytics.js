@@ -1,6 +1,6 @@
 (() => {
   const GA_MEASUREMENT_ID = 'G-C8Z2Y9L8EP';
-  const PROD_HOSTNAMES = ['anime-cast-now.vercel.app'];
+  const PROD_HOSTNAMES = ['animecastnow.com'];
   const OPT_OUT_KEY = 'acn_ga_off';
   const query = new URLSearchParams(location.search);
   const debugMode = query.get('ga_debug') === '1';

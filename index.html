@@ -7,18 +7,18 @@
 <title>ANIME CAST NOW｜2026年秋アニメの声優検索</title>
 <!-- SOCIAL_METADATA_START -->
 <meta name="description" content="2026年秋アニメに出演中の声優を名前や読みで検索。出演作品や配信中のVODをまとめて確認できます。">
-<link rel="canonical" href="https://anime-cast-now.vercel.app/">
+<link rel="canonical" href="https://animecastnow.com/">
 <meta property="og:title" content="ANIME CAST NOW｜2026年秋アニメの声優検索">
 <meta property="og:description" content="2026年秋アニメに出演中の声優を名前や読みで検索。出演作品や配信中のVODをまとめて確認できます。">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://anime-cast-now.vercel.app/">
+<meta property="og:url" content="https://animecastnow.com/">
 <meta property="og:site_name" content="ANIME CAST NOW">
-<meta property="og:image" content="https://anime-cast-now.vercel.app/assets/ogp-default.png">
+<meta property="og:image" content="https://animecastnow.com/assets/ogp-default.png">
 <meta property="og:locale" content="ja_JP">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="ANIME CAST NOW｜2026年秋アニメの声優検索">
 <meta name="twitter:description" content="2026年秋アニメに出演中の声優を名前や読みで検索。出演作品や配信中のVODをまとめて確認できます。">
-<meta name="twitter:image" content="https://anime-cast-now.vercel.app/assets/ogp-default.png">
+<meta name="twitter:image" content="https://animecastnow.com/assets/ogp-default.png">
 <!-- SOCIAL_METADATA_END -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -264,7 +264,7 @@ function detail(a){
   $('#bk').onclick=closeDetail;
   const hashtag=a.name.replace(/[^\p{L}\p{N}_]/gu,'')||'声優';
   const post=a.roles.length?`#${hashtag} さんは今期${a.roles.length}作品に出演！ 配信はここでチェック →`:`#${hashtag} さんは${NEXT_LABEL}で${a.next.length}作品に出演予定！ 放送日はここでチェック →`;
-  const shareUrl=`https://anime-cast-now.vercel.app${actorPagePath(a.actor_id)}?ref=share_x`;
+  const shareUrl=`https://animecastnow.com${actorPagePath(a.actor_id)}?ref=share_x`;
   $('#share-x').href=`https://x.com/intent/post?text=${encodeURIComponent(post)}&url=${encodeURIComponent(shareUrl)}&hashtags=ANIMECASTNOW`;
   $('#s2').querySelector('.dialog').focus();
 }

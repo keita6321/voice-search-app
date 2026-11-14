@@ -1,0 +1,10 @@
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "anime-cast-now.vercel.app" }],
+      "destination": "https://animecastnow.com/:path*",
+      "permanent": true
+    }
+  ]
+}

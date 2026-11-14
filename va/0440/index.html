@@ -6,19 +6,19 @@
 <meta name="theme-color" content="#f8f7f2">
 <title>森なな子さんの今期出演作｜ANIME CAST NOW</title>
 <meta name="description" content="森なな子さんが2026年秋アニメで出演する1作品（冰剣の魔術師が世界を統べるⅡ）と、配信中のVODをまとめて確認。">
-<link rel="canonical" href="https://anime-cast-now.vercel.app/va/0440/">
+<link rel="canonical" href="https://animecastnow.com/va/0440/">
 <meta property="og:title" content="森なな子さんの今期出演作｜ANIME CAST NOW">
 <meta property="og:description" content="森なな子さんが2026年秋アニメで出演する1作品（冰剣の魔術師が世界を統べるⅡ）と、配信中のVODをまとめて確認。">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://anime-cast-now.vercel.app/va/0440/">
+<meta property="og:url" content="https://animecastnow.com/va/0440/">
 <meta property="og:site_name" content="ANIME CAST NOW">
-<meta property="og:image" content="https://anime-cast-now.vercel.app/assets/ogp-default.png">
+<meta property="og:image" content="https://animecastnow.com/assets/ogp-default.png">
 <meta property="og:locale" content="ja_JP">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="森なな子さんの今期出演作｜ANIME CAST NOW">
 <meta name="twitter:description" content="森なな子さんが2026年秋アニメで出演する1作品（冰剣の魔術師が世界を統べるⅡ）と、配信中のVODをまとめて確認。">
-<meta name="twitter:image" content="https://anime-cast-now.vercel.app/assets/ogp-default.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"トップ","item":"https://anime-cast-now.vercel.app/"},{"@type":"ListItem","position":2,"name":"森なな子","item":"https://anime-cast-now.vercel.app/va/0440/"}]}</script>
+<meta name="twitter:image" content="https://animecastnow.com/assets/ogp-default.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"トップ","item":"https://animecastnow.com/"},{"@type":"ListItem","position":2,"name":"森なな子","item":"https://animecastnow.com/va/0440/"}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -272,7 +272,7 @@ function detail(a){
   $('#bk').onclick=closeDetail;
   const hashtag=a.name.replace(/[^\p{L}\p{N}_]/gu,'')||'声優';
   const post=a.roles.length?`#${hashtag} さんは今期${a.roles.length}作品に出演！ 配信はここでチェック →`:`#${hashtag} さんは${NEXT_LABEL}で${a.next.length}作品に出演予定！ 放送日はここでチェック →`;
-  const shareUrl=`https://anime-cast-now.vercel.app${actorPagePath(a.actor_id)}?ref=share_x`;
+  const shareUrl=`https://animecastnow.com${actorPagePath(a.actor_id)}?ref=share_x`;
   $('#share-x').href=`https://x.com/intent/post?text=${encodeURIComponent(post)}&url=${encodeURIComponent(shareUrl)}&hashtags=ANIMECASTNOW`;
   $('#s2').querySelector('.dialog').focus();
 }

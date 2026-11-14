@@ -7,18 +7,18 @@
 <title>木花藍さん｜ANIME CAST NOW</title>
 <meta name="robots" content="noindex">
 <meta name="description" content="木花藍さんの出演作をANIME CAST NOWで確認できます。2026年秋アニメの出演作は、配信先を確認中です。">
-<link rel="canonical" href="https://anime-cast-now.vercel.app/va/0167/">
+<link rel="canonical" href="https://animecastnow.com/va/0167/">
 <meta property="og:title" content="木花藍さん｜ANIME CAST NOW">
 <meta property="og:description" content="木花藍さんの出演作をANIME CAST NOWで確認できます。2026年秋アニメの出演作は、配信先を確認中です。">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://anime-cast-now.vercel.app/va/0167/">
+<meta property="og:url" content="https://animecastnow.com/va/0167/">
 <meta property="og:site_name" content="ANIME CAST NOW">
-<meta property="og:image" content="https://anime-cast-now.vercel.app/assets/ogp-default.png">
+<meta property="og:image" content="https://animecastnow.com/assets/ogp-default.png">
 <meta property="og:locale" content="ja_JP">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="木花藍さん｜ANIME CAST NOW">
 <meta name="twitter:description" content="木花藍さんの出演作をANIME CAST NOWで確認できます。2026年秋アニメの出演作は、配信先を確認中です。">
-<meta name="twitter:image" content="https://anime-cast-now.vercel.app/assets/ogp-default.png">
+<meta name="twitter:image" content="https://animecastnow.com/assets/ogp-default.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -269,7 +269,7 @@ function detail(a){
   $('#bk').onclick=closeDetail;
   const hashtag=a.name.replace(/[^\p{L}\p{N}_]/gu,'')||'声優';
   const post=a.roles.length?`#${hashtag} さんは今期${a.roles.length}作品に出演！ 配信はここでチェック →`:`#${hashtag} さんは${NEXT_LABEL}で${a.next.length}作品に出演予定！ 放送日はここでチェック →`;
-  const shareUrl=`https://anime-cast-now.vercel.app${actorPagePath(a.actor_id)}?ref=share_x`;
+  const shareUrl=`https://animecastnow.com${actorPagePath(a.actor_id)}?ref=share_x`;
   $('#share-x').href=`https://x.com/intent/post?text=${encodeURIComponent(post)}&url=${encodeURIComponent(shareUrl)}&hashtags=ANIMECASTNOW`;
   $('#s2').querySelector('.dialog').focus();
 }

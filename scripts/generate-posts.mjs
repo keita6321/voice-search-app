@@ -10,7 +10,7 @@
 //   --mode <popular|random> 声優の選び方（既定: popular＝出演本数が多い順）
 //   --ranking-day <n>    週1回の「ランキング／データ小ネタ／開発ログ」を入れる起点の日（1始まり、既定: 3、0で無し）
 //   --season-tag <tag>   季節ハッシュタグ（既定: 秋アニメ）
-//   --base <url>         サイトURL（既定: https://anime-cast-now.vercel.app）
+//   --base <url>         サイトURL（既定: https://animecastnow.com）
 //   --link-style <utm|ref> リンクの計測パラメータ形式（既定: utm＝GA4向け）
 //   --campaign <name>    utm_campaign の値（既定: x_posts。クールごとに変えると便利 例: 2026autumn）
 //   --utm-source <name>  utm_source の値（既定: x）
@@ -44,7 +44,7 @@ const CFG = {
   mode: opt.mode === 'random' ? 'random' : 'popular',
   rankingDay: opt['ranking-day'] === undefined ? 3 : Number(opt['ranking-day']),
   seasonTag: String(opt['season-tag'] || '秋アニメ').replace(/^#/, ''),
-  base: String(opt.base || 'https://anime-cast-now.vercel.app').replace(/\/$/, ''),
+  base: String(opt.base || 'https://animecastnow.com').replace(/\/$/, ''),
   ref: String(opt.ref || 'x'),
   linkStyle: opt['link-style'] === 'ref' ? 'ref' : 'utm',
   campaign: String(opt.campaign || 'x_posts'),

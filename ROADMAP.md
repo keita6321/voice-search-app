@@ -58,3 +58,13 @@ afbで、Amazonプライムビデオ以外のVOD案件（U-NEXT、DMM TV、Hulu�
 - X専用アカウント、投稿下書きの生成と予約補助（#6）
 - afbでPrime Videoを提携、リンク差し替え
 - 声優IDの台帳によるURL固定（#7）
+
+## 🌐 独自ドメイン（animecastnow.com）への移行（2026-11-14）
+
+- ✅ ドメイン購入（Cloudflare Registrar）、Cloudflare Workers（静的アセット）で公開
+- ✅ サイト内のURL（canonical・OGP・サイトマップ・シェアURL・計測の本番ホスト名）を animecastnow.com に変更
+- ✅ anime-cast-now.vercel.app から animecastnow.com への恒久転送（vercel.json）
+- ⬜ Search Console：animecastnow.com を登録し、旧URLのプロパティから「アドレス変更」を届け出る、サイトマップを送信
+- ⬜ afb・A8：媒体（サイト）URLを animecastnow.com に変更
+- ⬜ X：プロフィールと固定ポストのリンクを変更
+- ⬜ GA4：データストリームのURLを animecastnow.com に変更
