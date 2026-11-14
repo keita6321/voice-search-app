@@ -10,6 +10,10 @@ on:
         description: "取得するシーズン（例: 2026-autumn）。空欄なら coverage_report.py の既定"
         required: false
         default: ""
+      next_season:
+        description: "来期の先行取得（例: 2027-winter）。指定すると今期の更新のあとに data-next.json も作る"
+        required: false
+        default: ""
       force_registry:
         description: "声優数が前回の半分未満でも続行する（取得失敗でないことを確認した場合のみ）"
         type: boolean
@@ -51,6 +55,10 @@ jobs:
           if [ -n "${{ inputs.season }}" ]; then args="$args --season ${{ inputs.season }}"; fi
           if [ "${{ inputs.force_registry }}" = "true" ]; then args="$args --force-registry"; fi
           python3 build_data_from_sources.py $args 2>&1 | tee reports-build.log
+          if [ -n "${{ inputs.next_season }}" ]; then
+            echo "===== 来期の先行取得: ${{ inputs.next_season }} =====" | tee -a reports-build.log
+            python3 build_data_from_sources.py --refresh --preview --season ${{ inputs.next_season }} 2>&1 | tee -a reports-build.log
+          fi
 
       - name: テスト
         if: success()
@@ -82,6 +90,6 @@ jobs:
           git checkout -b "$branch"
           git add -A
           for f in reports reports-build.log data/registry/review.json; do [ -e "$f" ] && git add -f "$f"; done; true
-          git commit -m "データ更新（${{ inputs.season || 'default' }}、${{ job.status }}）" || { echo "変更なし"; exit 0; }
+          git commit -m "データ更新（${{ inputs.season || 'default' }}${{ inputs.next_season && format('＋来期 {0}', inputs.next_season) || '' }}、${{ job.status }}）" || { echo "変更なし"; exit 0; }
           git push origin "$branch"
           echo "### 確認用ブランチ: \`$branch\`" >> "$GITHUB_STEP_SUMMARY"

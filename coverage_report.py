@@ -18,6 +18,8 @@ SEASON_ORDER = ["winter", "spring", "summer", "autumn"]
 # （前クールの最終回が今期の頭にずれ込んだだけの作品を外すため）
 CARRYOVER_MIN_DAYS_INTO_SEASON = 28
 CARRYOVER_PATH = "season_carryover.csv"
+# 来期の先行取得では、前クールからの継続作品は含めない（それは今期の作品なので）
+INCLUDE_CARRYOVER = True
 
 
 def parse_season(season):
@@ -228,11 +230,13 @@ def fetch_annict():
       pageInfo{hasNextPage endCursor}
       nodes{id title malAnimeId syobocalTid officialSiteUrl seasonName seasonYear
         programs(first:5,orderBy:{field:STARTED_AT,direction:DESC}){nodes{startedAt rebroadcast}}
+        firstPrograms: programs(first:3,orderBy:{field:STARTED_AT,direction:ASC}){nodes{startedAt rebroadcast}}
         casts(first:40){nodes{name person{annictId name nameKana} character{name}}}}}}"""
     include, exclude = load_carryover_overrides()
     out, after, decisions = [], None, []
     while True:
-        d = post("https://api.annict.com/graphql", {"query": q, "variables": {"s": [SEASON, previous_season(SEASON)], "a": after}},
+        seasons = [SEASON, previous_season(SEASON)] if INCLUDE_CARRYOVER else [SEASON]
+        d = post("https://api.annict.com/graphql", {"query": q, "variables": {"s": seasons, "a": after}},
                  {"Authorization": f"Bearer {token}"})["searchWorks"]
         for w in d["nodes"]:
             keep, reason, latest = carryover_decision(w, SEASON, include, exclude)
@@ -244,7 +248,7 @@ def fetch_annict():
                      (c["person"] or {}).get("nameKana") or "", (c["person"] or {}).get("annictId")] for c in w["casts"]["nodes"]]
             vods = fetch_work_vods(w["id"])
             thumbnail = fetch_official_thumbnail(w["officialSiteUrl"], w["title"])
-            out.append({"annict_id": w["id"], "title": w["title"], "mal": mal_id(w["malAnimeId"]),
+            out.append({"annict_id": w["id"], "title": w["title"], "mal": mal_id(w["malAnimeId"]), "start": first_broadcast(w),
                         "tid": w["syobocalTid"], "official": w["officialSiteUrl"],
                         "vods": vods, "thumbnail": thumbnail, "thumbnail_source": "official_site",
                         "cast": [c for c in cast if c[1]]})
@@ -253,6 +257,13 @@ def fetch_annict():
             write_carryover_report(decisions)
             return out
         after = d["pageInfo"]["endCursor"]; time.sleep(1)
+
+
+def first_broadcast(node):
+    """本放送の最初の放送日（YYYY-MM-DD）。Annictに放送予定が未登録ならNone。"""
+    programs = [p for p in ((node.get("firstPrograms") or {}).get("nodes") or []) if not p.get("rebroadcast") and p.get("startedAt")]
+    first = min((p["startedAt"] for p in programs), default=None)
+    return first[:10] if first else None
 
 
 def write_carryover_report(decisions):
@@ -377,6 +388,7 @@ def merge(sources, title_aliases=None):
             x["mal"] = x["mal"] or w["mal"]; x["tid"] = x["tid"] or w["tid"]
             x["official"] = x.get("official") or w.get("official")
             x["thumbnail"] = x.get("thumbnail") or w.get("thumbnail")
+            x["start"] = x.get("start") or w.get("start")
             x["vods"] = list(dict.fromkeys([*(x.get("vods") or []), *(w.get("vods") or [])]))
             x["src"].add(src)
             casts = x["casts"].setdefault(src, [])

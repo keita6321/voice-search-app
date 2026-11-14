@@ -80,13 +80,22 @@ def main():
     parser.add_argument("--force-registry", action="store_true",
                         help="声優数が前回の半分未満でも、声優IDの台帳を更新して続行する（取得失敗でないことを確認した場合のみ）")
     parser.add_argument("--season", default=cr.SEASON, help="取得するシーズン（例: 2027-winter）。既定は coverage_report.py の season")
+    parser.add_argument("--preview", action="store_true",
+                        help="来期の先行取得。data-next.json に出力し、今期の出演状態（台帳のactive/inactive）は変えない")
     args = parser.parse_args()
     cr.set_season(args.season)
     season = cr.SEASON
+    preview = args.preview
+    out_path = "data-next.json" if preview else "data.json"
+    # 先行取得の補助ファイルは、今期の分を上書きしないよう reports/ にシーズン名付きで出す
+    aux = (lambda name: os.path.join("reports", f"{name.rsplit('.', 1)[0]}-{season}.csv")) if preview else (lambda name: name)
+    if preview:
+        cr.INCLUDE_CARRYOVER = False
+        os.makedirs("reports", exist_ok=True)
     annict_cache = f"annict-{season}"
     annict = cr.cached(annict_cache, cr.fetch_annict, args.refresh or stale_annict_cache(f"cache/{annict_cache}.json"))
     if not annict:
-        raise RuntimeError("Annict から作品データを取得できなかったため、既存の data.json は変更していません")
+        raise RuntimeError(f"Annict から作品データを取得できなかったため、既存の {out_path} は変更していません")
     # AniList は、Annictにキャストが未登録の作品の補完だけに使う（取得に失敗しても続行）
     anilist = cr.cached(f"anilist-{season}", cr.fetch_anilist, args.refresh)
     works = [w for w in cr.merge({"annict": annict, "anilist": anilist}, load_title_aliases()) if "annict" in w["src"]]
@@ -109,7 +118,7 @@ def main():
             missing.append(w); continue
         wid = "w" + hashlib.md5(w["nt"].encode()).hexdigest()[:8]
         out_works[wid] = {"title": w["title"], "thumbnail": w.get("thumbnail"), "credit": None, "official_url": w.get("official"),
-                          "airing_confirmed": False,
+                          "airing_confirmed": False, "start_date": w.get("start"),
                           "vod_links": [{"provider": p, "url": VOD_PROVIDERS[p]} for p in (w.get("vods") or []) if p in VOD_PROVIDERS]}
         if not out_works[wid]["vod_links"]:
             vod_audit.append((w["title"], w.get("official") or "", "+".join(sorted(w["src"]))))
@@ -129,11 +138,11 @@ def main():
         ids, registry_report = ar.assign(
             registry,
             [{"name": a["name"], "reading": a["reading"], "annict_person_id": person_ids.get(a["name"])} for a in actors.values()],
-            season, overrides, force=args.force_registry)
+            season, overrides, force=args.force_registry, preview=preview)
     except ar.RegistryError as exc:
         if exc.review:
             ar.write_json(ar.REVIEW_PATH, {"season": season, "items": exc.review})
-        raise RuntimeError(f"声優IDの台帳: {exc}。data.json と台帳は変更していません") from None
+        raise RuntimeError(f"声優IDの台帳: {exc}。{out_path} と台帳は変更していません") from None
     if os.path.exists(ar.REVIEW_PATH):
         os.remove(ar.REVIEW_PATH)
     va = sorted(actors.values(), key=lambda a: (a["reading"], ids[a["name"]]))
@@ -144,23 +153,24 @@ def main():
     try:
         with os.fdopen(fd, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, separators=(",", ":"))
-        os.replace(temp_path, "data.json")
+        os.replace(temp_path, out_path)
     except Exception:
         if os.path.exists(temp_path):
             os.remove(temp_path)
         raise
     ar.write_json(ar.PEOPLE_PATH, registry)
     os.makedirs("reports", exist_ok=True)
-    with open(os.path.join("reports", f"registry-{season}.md"), "w", encoding="utf-8") as f:
+    with open(os.path.join("reports", f"registry-{season}{'-preview' if preview else ''}.md"), "w", encoding="utf-8") as f:
         f.write(ar.format_report(registry_report, season))
-    csv.writer(open("readings_todo.csv", "w", encoding="utf-8", newline="")).writerows([["name", "reading(自動)"], *sorted(todo.items())])
-    csv.writer(open("coverage_missing.csv", "w", encoding="utf-8", newline="")).writerows([["title", "sources"], *[[w["title"], "+".join(sorted(w["src"]))] for w in missing]])
-    write_vod_audit(vod_audit)
+    csv.writer(open(aux("readings_todo.csv"), "w", encoding="utf-8", newline="")).writerows([["name", "reading(自動)"], *sorted(todo.items())])
+    csv.writer(open(aux("coverage_missing.csv"), "w", encoding="utf-8", newline="")).writerows([["title", "sources"], *[[w["title"], "+".join(sorted(w["src"]))] for w in missing]])
+    write_vod_audit(vod_audit, aux("vod_audit.csv"))
     novod = sum(1 for x in out_works.values() if not x["vod_links"])
-    print(f"data.json: {len(out_works)}作品 / {len(va)}名（声優情報なしで除外 {len(missing)}作品）")
+    print(f"{out_path}: {len(out_works)}作品 / {len(va)}名（声優情報なしで除外 {len(missing)}作品）")
     print(f"配信先なし {novod}作品 / 公式サイトなし {sum(1 for x in out_works.values() if not x['official_url'])}作品 / 読み未登録 {len(todo)}名 → readings_todo.csv / vod_audit.csv")
     anilist_filled = sum(1 for w in works if not w["casts"].get("annict") and w["casts"].get("anilist"))
     print(f"キャストをAniListで補った作品: {anilist_filled}作品 / 前クールからの継続作品の判定 → reports/carryover-{season}.md")
+    print(f"放送開始日あり {sum(1 for x in out_works.values() if x['start_date'])}/{len(out_works)}作品")
     print(f"声優ID台帳: 新規 {len(registry_report['new'])}名 / 名前変更 {len(registry_report['renamed'])}名 / "
           f"今期出演なし {len(registry_report['inactivated'])}名 → reports/registry-{season}.md")
 

@@ -1,7 +1,7 @@
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { rankingPage, vodPage, workPages, workIndexPage } from './articles.mjs';
+import { nextIndexPage, nextWorkPages, rankingPage, startLabel, vodPage, workPages, workIndexPage } from './articles.mjs';
 
 if (Number(process.versions.node.split('.')[0]) < 18) {
   throw new Error('Node.js 18 or later is required.');
@@ -93,27 +93,48 @@ function makeDescription(actor, roles, works, label) {
   return `${listStart}${titleList}）${suffix}`;
 }
 
-function makeStaticContent(actor, roles, works) {
+function makeStaticContent(actor, roles, works, upcoming) {
   const roleItems = roles.map(role => {
     const work = works[role.work_id];
     return `<li>${escapeHtml(work.title)} — ${escapeHtml(role.character_name)}</li>`;
+  }).join('\n');
+  const nextItems = (upcoming?.roles ?? []).map(role => {
+    const work = upcoming.works[role.work_id];
+    const date = startLabel(work.start_date);
+    return `<li><a href="/work/${escapeHtml(role.work_id)}/">${escapeHtml(work.title)}</a> — ${escapeHtml(role.character_name)}（${date ? `${escapeHtml(date)}放送開始` : '放送日未定'}）</li>`;
   }).join('\n');
 
   return `<main class="wrap seo-content" id="seo-content">
   <h1>${escapeHtml(actor.name)}</h1>
   <p>読み：${escapeHtml(actor.reading)}</p>
-  <h2>今季の出演作品</h2>
+${roles.length ? `  <h2>今季の出演作品</h2>
   <ul>
 ${roleItems}
   </ul>
-</main>
+` : ''}${nextItems ? `  <h2>来期の出演予定（${escapeHtml(upcoming.label)}）</h2>
+  <ul>
+${nextItems}
+  </ul>
+` : ''}</main>
 `;
 }
 
-function makePage(template, actor, roles, works, pageId, label) {
+function makeNextDescription(actor, upcoming) {
+  const titles = [...new Set(upcoming.roles.map(role => upcoming.works[role.work_id].title))];
+  let list = titles.join('、');
+  if (characterLength(list) > 60) list = `${Array.from(list).slice(0, 59).join('')}…`;
+  return `${actor.name}さんが${upcoming.label}で出演予定の${titles.length}作品（${list}）の放送日と役名をまとめて確認。`;
+}
+
+// upcoming: { label, works, roles } 来期の出演予定（なければ null）
+function makePage(template, actor, roles, works, pageId, label, upcoming = null) {
   const pageUrl = `${origin}/va/${pageId}/`;
-  const title = `${actor.name}さんの今期出演作｜ANIME CAST NOW`;
-  const description = makeDescription(actor, roles, works, label);
+  const nextOnly = !roles.length;
+  const title = nextOnly
+    ? `${actor.name}さんの来期出演作（${upcoming.label}）｜ANIME CAST NOW`
+    : `${actor.name}さんの今期出演作｜ANIME CAST NOW`;
+  let description = nextOnly ? makeNextDescription(actor, upcoming) : makeDescription(actor, roles, works, label);
+  if (!nextOnly && upcoming?.roles.length) description = description.replace(/。$/, `。来期の出演予定${new Set(upcoming.roles.map(r => r.work_id)).size}作品も掲載。`);
   const breadcrumb = JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -155,7 +176,7 @@ function makePage(template, actor, roles, works, pageId, label) {
   return template
     .replace(/<title>[\s\S]*?<\/title>/, `<title>${escapeHtml(title)}</title>`)
     .replace(metadataMarker, metadata)
-    .replace(bodyMarker, `<body>\n${makeStaticContent(actor, roles, works)}<div class="wrap">`)
+    .replace(bodyMarker, `<body>\n${makeStaticContent(actor, roles, works, upcoming)}<div class="wrap">`)
     .replace(scriptMarker, `${initialVa}${scriptMarker}`);
 }
 
@@ -245,6 +266,22 @@ async function ensureRobotsSitemap() {
 const data = JSON.parse(await readFile(path.join(root, 'data.json'), 'utf8'));
 const template = (await readFile(path.join(root, 'index.html'), 'utf8')).replace(/\r\n/g, '\n');
 const label = seasonLabel(data.season);
+// 来期の先行取得（data-next.json）。なければ来期のページは作らない
+let next = null;
+try {
+  next = JSON.parse(await readFile(path.join(root, 'data-next.json'), 'utf8'));
+} catch (error) {
+  if (error.code !== 'ENOENT') throw error;
+}
+if (next && next.season === data.season) next = null; // 今期と同じシーズンなら使わない（切り替え後の取り残し）
+const nextLabel = next ? seasonLabel(next.season) : null;
+// 今期と同じタイトルの作品（同じID）は、今期のページを優先する
+const nextWorkIds = new Set(next ? Object.keys(next.works).filter(id => !data.works[id]) : []);
+const upcomingById = new Map();
+for (const actor of next?.voice_actors ?? []) {
+  const roles = actor.roles.filter(role => nextWorkIds.has(role.work_id));
+  if (roles.length) upcomingById.set(actor.actor_id, { actor, upcoming: { label: nextLabel, works: next.works, roles } });
+}
 const actors = [];
 const seenIds = new Set();
 
@@ -261,7 +298,17 @@ for (const actor of data.voice_actors) {
 for (const { actor, roles, pageId } of actors) {
   const directory = path.join(root, 'va', pageId);
   await mkdir(directory, { recursive: true });
-  await writeFile(path.join(directory, 'index.html'), makePage(template, actor, roles, data.works, pageId, label));
+  await writeFile(path.join(directory, 'index.html'), makePage(template, actor, roles, data.works, pageId, label, upcomingById.get(actor.actor_id)?.upcoming));
+}
+// 今期の配信ありの出演作はないが、来期の出演予定がある人のページ（検索対象にする）
+const nextOnlyActors = [];
+for (const [actorId, { actor, upcoming }] of upcomingById) {
+  const pageId = toPageId(actorId);
+  if (actors.some(item => item.pageId === pageId)) continue;
+  const directory = path.join(root, 'va', pageId);
+  await mkdir(directory, { recursive: true });
+  await writeFile(path.join(directory, 'index.html'), makePage(template, actor, [], data.works, pageId, label, upcoming));
+  nextOnlyActors.push({ pageId });
 }
 
 // 台帳（data/registry/people.json）にいる全員のURLを維持する
@@ -275,7 +322,12 @@ if (registry) {
       throw new Error(`data.json の ${actor.actor_id}（${actor.name}）が台帳にありません。build_data_from_sources.py で data.json を作り直してください`);
     }
   }
-  const pageIds = new Set(actors.map(({ pageId }) => pageId));
+  for (const actorId of upcomingById.keys()) {
+    if (!registry.people[actorId]) {
+      throw new Error(`data-next.json の ${actorId} が台帳にありません。build_data_from_sources.py --preview で作り直してください`);
+    }
+  }
+  const pageIds = new Set([...actors, ...nextOnlyActors].map(({ pageId }) => pageId));
   for (const [actorId, person] of Object.entries(registry.people)) {
     const pageId = toPageId(actorId);
     if (pageIds.has(pageId)) continue;
@@ -302,13 +354,13 @@ for (const work of Object.values(data.works)) {
   }
 }
 const aboutHtml = await readFile(path.join(root, 'about', 'index.html'), 'utf8');
-const articleContext = { data, seasonLabel: label, origin, ogImage, aboutHtml, partnerLinks, partnerServices };
-for (const [dir, html] of [['ranking', rankingPage(articleContext)], ['vod', vodPage(articleContext)], ['work', workIndexPage(articleContext)]]) {
+const articleContext = { data, seasonLabel: label, seasonLabelOf: seasonLabel, origin, ogImage, aboutHtml, partnerLinks, partnerServices };
+for (const [dir, html] of [['ranking', rankingPage(articleContext)], ['vod', vodPage(articleContext)], ['work', workIndexPage(articleContext)], ['next', nextIndexPage(articleContext, next)]]) {
   await mkdir(path.join(root, dir), { recursive: true });
   await writeFile(path.join(root, dir, 'index.html'), html);
 }
 // 作品ページ（/work/<作品ID>/）。今期のデータにない作品のディレクトリは消さずに残す
-const works = workPages(articleContext);
+const works = [...workPages(articleContext), ...(next ? nextWorkPages(articleContext, next, new Set(Object.keys(data.works))) : [])];
 for (const { id, html } of works) {
   await mkdir(path.join(root, 'work', id), { recursive: true });
   await writeFile(path.join(root, 'work', id, 'index.html'), html);
@@ -316,7 +368,7 @@ for (const { id, html } of works) {
 const indexedWorkUrls = works.filter(w => w.indexed).map(w => `${origin}/work/${w.id}/`);
 
 const sitemapDate = new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Tokyo' });
-const sitemapUrls = [`${origin}/`, `${origin}/ranking/`, `${origin}/vod/`, `${origin}/work/`, ...indexedWorkUrls, `${origin}/about/`, `${origin}/privacy/`, ...actors.map(({ pageId }) => `${origin}/va/${pageId}/`)];
+const sitemapUrls = [`${origin}/`, `${origin}/ranking/`, `${origin}/vod/`, `${origin}/work/`, ...(next ? [`${origin}/next/`] : []), ...indexedWorkUrls, `${origin}/about/`, `${origin}/privacy/`, ...[...actors, ...nextOnlyActors].map(({ pageId }) => `${origin}/va/${pageId}/`)];
 const sitemap = [
   '<?xml version="1.0" encoding="UTF-8"?>',
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
@@ -332,6 +384,7 @@ const sitemap = [
 
 await writeFile(path.join(root, 'sitemap.xml'), sitemap);
 await ensureRobotsSitemap();
+if (next) console.log(`Next season (${nextLabel}): ${nextWorkIds.size} works, ${upcomingById.size} actors (${nextOnlyActors.length} next-only pages).`);
 console.log(`Generated ${actors.length} voice actor pages, ${works.length} work pages (${indexedWorkUrls.length} indexed) and sitemap.xml.`);
 if (registry) {
   console.log(`Kept ${noWorksCount} pages without current works (noindex) and ${redirectCount} redirect pages from the ID registry.`);

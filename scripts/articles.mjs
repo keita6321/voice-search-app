@@ -36,9 +36,12 @@ td.num{white-space:nowrap;font-weight:700;text-align:right}
 details{margin:6px 0 0}summary{cursor:pointer;color:#62517f;font-size:14px}
 .cta{display:inline-block;margin-top:6px;padding:6px 14px;border:1px solid #d8d0e4;border-radius:999px;background:#f5f2fa;color:#4b3d6b;font-size:14px;font-weight:700;text-decoration:none}
 .related{margin-top:40px;padding-top:16px;border-top:1px solid #e3dfd2}
+.date{white-space:nowrap;font-weight:700}
+.countdown{display:inline-block;margin-left:4px;padding:0 7px;border-radius:999px;background:#f5f2fa;color:#62517f;font-size:12px;font-weight:700;white-space:nowrap}
+.countdown:empty{display:none}
 `;
 
-function page({ origin, ogImage, aboutHtml, path, title, description, body, noindex = false }) {
+function page({ origin, ogImage, aboutHtml, path, title, description, body, noindex = false, extraScript = '' }) {
   const { style, scripts } = shellParts(aboutHtml);
   const url = `${origin}${path}`;
   return `<!DOCTYPE html>
@@ -72,12 +75,13 @@ ${body}
 <li><a href="/ranking/">今期の出演本数ランキング</a></li>
 <li><a href="/vod/">配信サービス別の作品数</a></li>
 <li><a href="/work/">今期の作品一覧（配信はどこ？）</a></li>
+<li><a href="/next/">来期アニメの放送日とキャスト</a></li>
 <li><a href="/about/">このサイトについて</a></li>
 </ul>
 <p class="note">本ページのリンクにはアフィリエイトを含みます。配信状況は各サービスでご確認ください。</p>
 </div>
 </main>
-${scripts}</body>
+${extraScript}${scripts}</body>
 </html>
 `;
 }
@@ -333,4 +337,133 @@ ${rows}
 </table>`;
   const description = `${seasonLabel}のテレビアニメ${works.length}作品が、どの配信サービスで見られるかの一覧。キャストと、同じ声優が出ている作品も確認できます。`;
   return page({ ...ctx, path: '/work/', title, description, body });
+}
+
+// ---- 来期（data-next.json）のページ ----
+
+const WEEKDAYS = ['日', '月', '火', '水', '木', '金', '土'];
+
+// '2027-01-08' → '1月8日（金）'。不正な値は null
+export function startLabel(date) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(date ?? '');
+  if (!match) return null;
+  const [, y, m, d] = match.map(Number);
+  const weekday = WEEKDAYS[new Date(Date.UTC(y, m - 1, d)).getUTCDay()];
+  return `${m}月${d}日（${weekday}）`;
+}
+
+// 放送開始までの日数（ブラウザーで計算する）。data-start に放送開始日を入れた要素に表示する
+const COUNTDOWN_SCRIPT = `<script>
+document.querySelectorAll('[data-start]').forEach(el => {
+  const days = Math.ceil((Date.parse(el.dataset.start + 'T00:00:00+09:00') - Date.now()) / 864e5);
+  el.textContent = days > 1 ? 'あと' + days + '日' : days === 1 ? 'あす放送開始' : days === 0 ? 'きょう放送開始' : '放送中';
+});
+</script>
+`;
+const countdown = date => (startLabel(date) ? `<span class="countdown" data-start="${esc(date)}"></span>` : '');
+
+// 放送日順（未定は最後、同日はタイトル順）
+function byStart([, a], [, b]) {
+  return (a.start_date ?? '9999').localeCompare(b.start_date ?? '9999') || a.title.localeCompare(b.title, 'ja');
+}
+
+// 今期のデータ（data.json）の声優ごとの出演作品数
+function currentCounts(data) {
+  const counts = new Map();
+  // サイトに載せている（配信先のある）作品だけ数える
+  for (const actor of data?.voice_actors ?? []) {
+    const count = new Set(actor.roles.filter(r => data.works[r.work_id]?.vod_links?.length).map(r => r.work_id)).size;
+    if (count) counts.set(actor.actor_id, count);
+  }
+  return counts;
+}
+
+// skipIds: 今期の作品と同じIDの作品（同じタイトル）は、今期のページを優先して作らない
+export function nextWorkPages(ctx, next, skipIds = new Set()) {
+  const nextLabel = ctx.seasonLabelOf(next.season);
+  const byWork = castOf(next);
+  const counts = currentCounts(ctx.data);
+  const asOf = next.updated_at.slice(0, 10);
+  return Object.entries(next.works).filter(([id]) => !skipIds.has(id)).map(([id, work]) => {
+    const cast = byWork.get(id) ?? [];
+    const date = startLabel(work.start_date);
+    const year = work.start_date?.slice(0, 4);
+    const shared = new Map();
+    for (const { actor } of cast) {
+      for (const role of actor.roles) {
+        if (role.work_id === id) continue;
+        if (!shared.has(role.work_id)) shared.set(role.work_id, new Set());
+        shared.get(role.work_id).add(actor.name);
+      }
+    }
+    const related = [...shared.entries()]
+      .sort((a, b) => b[1].size - a[1].size || next.works[a[0]].title.localeCompare(next.works[b[0]].title, 'ja'))
+      .slice(0, 10);
+    const lead = date
+      ? `「${esc(work.title)}」は、${esc(year)}年${esc(date)}から放送開始予定です。${countdown(work.start_date)}`
+      : `「${esc(work.title)}」は${esc(nextLabel)}として放送予定です。放送日はまだ確認できていません。`;
+    const castRows = cast.map(({ actor, roles }) => {
+      const count = counts.get(actor.actor_id);
+      return `<tr><td>${esc(roles.join('／'))}</td><td><a href="/va/${toPageId(actor.actor_id)}/">${esc(actor.name)}</a></td><td class="num">${count ? `${count}作品` : '—'}</td></tr>`;
+    }).join('\n');
+    const relatedList = related.map(([wid, actors]) =>
+      `<li><a href="/work/${esc(wid)}/">${esc(next.works[wid].title)}</a><span class="note">（${esc([...actors].slice(0, 3).join('、'))}${actors.size > 3 ? ` ほか${actors.size - 3}名` : ''}）</span></li>`).join('\n');
+    const body = `<h1>「${esc(work.title)}」（${esc(nextLabel)}）の放送日とキャスト</h1>
+<p class="lead">${lead}</p>
+<h2>配信</h2>
+<p>配信サービスは発表待ちです。発表され次第、このページに追加します。</p>
+<h2>キャスト</h2>
+<p class="note">名前を押すと、その声優の今期の出演作と来期の出演予定をまとめて見られます。右端は今期（${esc(ctx.seasonLabel)}）の出演作品数です。</p>
+<table>
+<thead><tr><th>役名</th><th>声優</th><th>今期</th></tr></thead>
+<tbody>
+${castRows}
+</tbody>
+</table>
+${related.length ? `<h2>この作品の声優が、来期ほかに出る作品</h2>
+<p>「${esc(work.title)}」のキャストが出演する、${esc(nextLabel)}のほかの作品です。共演する声優が多い順に並べています。</p>
+<ul>
+${relatedList}
+</ul>` : ''}
+${work.official_url ? `<p><a href="${esc(work.official_url)}" target="_blank" rel="noopener" data-ga-event="official_site_click" data-ga-work-id="${esc(id)}" data-ga-work-title="${esc(work.title)}">公式サイト ↗</a></p>` : ''}
+<p><a href="/next/">${esc(nextLabel)}の放送日一覧へ</a></p>
+<h2>このページについて</h2>
+<p class="note">作品・キャスト・放送日はアニメ作品データベース「Annict」のAPIなどをもとにしています（最終更新：${esc(asOf)}）。放送前の情報のため、変更されることがあります。</p>`;
+    const description = `「${work.title}」（${nextLabel}）は${date ? `${date}放送開始` : '放送日未定'}。キャスト${cast.length}名と、同じ声優が来期に出るほかの作品をまとめています。`;
+    // キャストが発表済みの作品だけ検索に出す（配信先はまだなくてよい）
+    const indexed = cast.length > 0;
+    const html = page({ ...ctx, path: `/work/${id}/`, title: `「${work.title}」（${nextLabel}）の放送日とキャスト`, description, body, noindex: !indexed, extraScript: COUNTDOWN_SCRIPT });
+    return { id, html, indexed };
+  });
+}
+
+export function nextIndexPage(ctx, next) {
+  if (!next) {
+    return page({ ...ctx, path: '/next/', title: '来期アニメの放送日とキャスト', noindex: true,
+      description: '来期のアニメの放送日とキャストは、発表され次第このページにまとめます。',
+      body: '<h1>来期アニメの放送日とキャスト</h1>\n<p class="lead">来期のアニメの情報は準備中です。キャストが発表され次第、このページにまとめます。</p>' });
+  }
+  const nextLabel = ctx.seasonLabelOf(next.season);
+  const byWork = castOf(next);
+  const works = Object.entries(next.works).sort(byStart);
+  const dated = works.filter(([, w]) => startLabel(w.start_date)).length;
+  const rows = works.map(([id, work]) => {
+    const cast = byWork.get(id) ?? [];
+    const date = startLabel(work.start_date);
+    const names = cast.slice(0, 3).map(({ actor }) => actor.name);
+    return `<tr><td class="date">${date ? esc(date) : '放送日未定'}${date ? `<br>${countdown(work.start_date)}` : ''}</td><td><a href="/work/${esc(id)}/">${esc(work.title)}</a><div class="works">${esc(names.join('、'))}${cast.length > 3 ? ` ほか${cast.length - 3}名` : ''}</div></td></tr>`;
+  }).join('\n');
+  const title = `${nextLabel} 放送日一覧とキャスト`;
+  const first = works.find(([, w]) => startLabel(w.start_date));
+  const body = `<h1>${esc(title)}</h1>
+<p class="lead">${esc(nextLabel)}として放送予定の${works.length}作品を、放送開始日の順に並べました（放送日が確認できているのは${dated}作品）。作品名を押すと、キャストと、同じ声優が来期に出るほかの作品を確認できます。</p>
+<p class="note">声優名で検索すると、その声優の来期の出演予定も見られます（<a href="/">トップで検索</a>）。放送前の情報のため、変更されることがあります（最終更新：${esc(next.updated_at.slice(0, 10))}）。</p>
+<table>
+<thead><tr><th>放送開始</th><th>作品・おもなキャスト</th></tr></thead>
+<tbody>
+${rows}
+</tbody>
+</table>`;
+  const description = `${nextLabel}の${works.length}作品を放送開始日の順にまとめた一覧。${first ? `最初の放送は${startLabel(first[1].start_date)}の「${first[1].title}」。` : ''}キャストと、声優ごとの来期の出演予定も確認できます。`;
+  return page({ ...ctx, path: '/next/', title, description, body, extraScript: COUNTDOWN_SCRIPT });
 }

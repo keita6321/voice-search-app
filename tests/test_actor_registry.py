@@ -122,3 +122,40 @@ class AssignTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class PreviewTest(unittest.TestCase):
+    def test_preview_keeps_current_status_and_marks_new_as_upcoming(self):
+        registry = base_registry()
+        ids, report = reg.assign(registry, [actor("会沢紗弥", "あいざわさや"), actor("青木瑠璃子", "あおきるりこ")],
+                                 "2027-winter", preview=True)
+        people = registry["people"]
+        self.assertEqual(ids, {"会沢紗弥": "va0001", "青木瑠璃子": "va0004"})
+        self.assertEqual(people["va0001"]["last_seen"], "2026-autumn")
+        self.assertEqual(people["va0003"]["status"], "active")  # 来期に出ていなくても今期の状態は変えない
+        self.assertEqual(people["va0004"]["status"], "upcoming")
+        self.assertEqual(report["inactivated"], [])
+
+    def test_preview_skips_quality_gate(self):
+        registry = base_registry()
+        ids, _ = reg.assign(registry, [actor("会沢紗弥", "あいざわさや")], "2027-winter", preview=True)
+        self.assertEqual(ids, {"会沢紗弥": "va0001"})
+
+    def test_current_build_keeps_upcoming_until_their_season(self):
+        registry = base_registry()
+        registry["people"]["va0004"] = person("青木瑠璃子", "あおきるりこ", status="upcoming", season="2027-winter")
+        reg.assign(registry, [actor("会沢紗弥"), actor("相原嵩明"), actor("愛美")], "2026-autumn")
+        self.assertEqual(registry["people"]["va0004"]["status"], "upcoming")
+
+    def test_upcoming_becomes_active_when_season_arrives(self):
+        registry = base_registry()
+        registry["people"]["va0004"] = person("青木瑠璃子", "あおきるりこ", status="upcoming", season="2027-winter")
+        ids, report = reg.assign(registry, [actor("会沢紗弥"), actor("相原嵩明"), actor("青木瑠璃子")], "2027-winter")
+        self.assertEqual(registry["people"]["va0004"]["status"], "active")
+        self.assertIn(("va0004", "青木瑠璃子"), report["reactivated"])
+
+
+class SeasonKeyTest(unittest.TestCase):
+    def test_order(self):
+        self.assertLess(reg._season_key("2026-autumn"), reg._season_key("2027-winter"))
+        self.assertLess(reg._season_key("2027-winter"), reg._season_key("2027-spring"))
