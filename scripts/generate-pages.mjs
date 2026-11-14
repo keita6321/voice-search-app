@@ -366,6 +366,21 @@ try {
 } catch (error) {
   if (error.code !== 'ENOENT') throw error;
 }
+// トップの「今期の注目作品」：手書きの紹介（catch）があり、画像と配信先がある作品。提携サービスで見られる作品を先に
+const featured = Object.entries(notes)
+  .filter(([title, note]) => title !== '_about' && note.catch)
+  .map(([title, note]) => {
+    const entry = Object.entries(data.works).find(([, work]) => work.title === title);
+    if (!entry || !entry[1].thumbnail || !entry[1].vod_links?.length) return null;
+    const [id, work] = entry;
+    // 紹介文で独占配信とされている作品は、配信先データと食い違うおそれがあるのでバッジを出さない
+    const exclusive = JSON.stringify(note).includes('独占配信');
+    const partner = exclusive ? null : work.vod_links.find(v => partnerServices.includes(v.provider))?.provider ?? null;
+    return { id, title, thumbnail: work.thumbnail, catch: note.catch, partner };
+  })
+  .filter(Boolean)
+  .sort((a, b) => Number(Boolean(b.partner)) - Number(Boolean(a.partner)));
+await writeFile(path.join(root, 'featured.json'), `${JSON.stringify({ season: data.season, works: featured })}\n`);
 const articleContext = { data, notes, seasonLabel: label, seasonLabelOf: seasonLabel, origin, ogImage, aboutHtml, partnerLinks, partnerServices };
 for (const [dir, html] of [['ranking', rankingPage(articleContext)], ['vod', vodPage(articleContext)], ['work', workIndexPage(articleContext)], ['next', nextIndexPage(articleContext, next, castLog)]]) {
   await mkdir(path.join(root, dir), { recursive: true });
