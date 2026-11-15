@@ -65,6 +65,10 @@ class PastWorksTest(unittest.TestCase):
         got = pw.select_past({"characterMedia": {"edges": [e, e2, None]}}, set(), set())
         self.assertEqual([w["anilist_id"] for w in got], [1])
 
+    def test_char_name_avoids_hangul_and_spaces(self):
+        self.assertEqual(pw.char_name({"name": {"native": "라헬", "full": "Rachel"}}), "Rachel")
+        self.assertEqual(pw.char_name({"name": {"native": "小野寺小咲 "}}), "小野寺小咲")
+
     def test_due(self):
         today = date(2026, 11, 15)
         self.assertTrue(pw.due(None, today, 28))

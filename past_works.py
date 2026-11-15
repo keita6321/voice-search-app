@@ -52,6 +52,18 @@ def pick_staff(candidates, name):
     return None
 
 
+HANGUL = re.compile(r"[\uac00-\ud7a3]")
+
+
+def char_name(c):
+    """役名。日本語名を使い、韓国語表記しかないときはローマ字表記にする。"""
+    n = c.get("name") or {}
+    native = (n.get("native") or "").strip()
+    if native and not HANGUL.search(native):
+        return native
+    return (n.get("full") or "").strip()
+
+
 def select_past(staff, exclude_titles, exclude_seasons, top_n=TOP_N):
     out, seen_series, seen_ids = [], set(), set()
     edges = ((staff or {}).get("characterMedia") or {}).get("edges") or []
@@ -73,8 +85,8 @@ def select_past(staff, exclude_titles, exclude_seasons, top_n=TOP_N):
         if key in seen_series:
             continue
         seen_series.add(key); seen_ids.add(m.get("id"))
-        chars = [(c.get("name") or {}).get("native") or (c.get("name") or {}).get("full") for c in edge.get("characters") or [] if c]
-        out.append({"title": title, "year": m.get("seasonYear") or (m.get("startDate") or {}).get("year"),
+        chars = [char_name(c) for c in edge.get("characters") or [] if c]
+        out.append({"title": title.strip(), "year": m.get("seasonYear") or (m.get("startDate") or {}).get("year"),
                     "format": m.get("format"), "character": "、".join(c for c in chars if c)[:40],
                     "anilist_id": m.get("id")})
         if len(out) >= top_n:
