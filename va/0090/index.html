@@ -38,7 +38,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 /* ---- 検索画面 ---- */
 .top{text-align:center;padding:calc(env(safe-area-inset-top) + 34px) 0 18px}
 .brand{display:flex;align-items:center;justify-content:center;gap:1px;color:var(--tx);font-family:Arial,sans-serif;font-size:clamp(24px,8vw,48px);font-weight:900;line-height:1;letter-spacing:.015em}
-.brand svg{width:.78em;height:.92em;flex:none;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.brand img{display:block;width:min(100%,340px);height:auto}
 .tagline{margin:4px 0 28px!important;color:var(--tx)!important;font-size:14px!important;font-weight:700;letter-spacing:.12em}
 .top{text-align:left}.top .brand{justify-content:center}
 .top h1.hero-h{display:block;transform:none;margin:22px 0 6px;font-size:clamp(24px,6.6vw,34px);line-height:1.3;font-weight:900;color:#1d2a44;letter-spacing:.01em}.hero-h em{font-style:normal;color:var(--ac)}
@@ -109,7 +109,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .dialog{display:flex;flex-direction:column;width:min(100%,900px);max-height:min(90dvh,900px);overflow:hidden;border:1px solid rgba(25,41,68,.12);border-radius:18px;background:var(--bg);box-shadow:0 20px 60px rgba(10,15,25,.28)}
 .detail-head{flex:none;padding:12px 18px 14px;border-bottom:1px solid var(--ln)}
 .detail-bar{display:flex;align-items:center;justify-content:space-between;min-height:32px}
-.detail-brand{font-family:Arial,sans-serif;font-size:15px;font-weight:900;letter-spacing:.04em}
+.detail-brand{display:block;height:22px;width:auto}
 .back{display:inline-flex;align-items:center;gap:5px;padding:4px 0;border:0;background:none;color:var(--tx);font-size:12px;font-weight:700}
 .back svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
 .modal-close{display:none}
@@ -199,7 +199,7 @@ body.modal-open{overflow:hidden}
 </main>
 <div class="wrap">
  <section id="s1">
-  <div class="top"><div class="brand" aria-label="ANIME CAST NOW"><span>ANIME CAST N</span><svg viewBox="0 0 24 30" aria-hidden="true"><rect x="8" y="2" width="8" height="16" rx="4"/><path d="M4 13v1a8 8 0 0 0 16 0v-1M12 22v5m-4 0h8"/></svg><span>W</span></div><h1 class="hero-h"><em>推しの声優</em>、<br>今期なにに出てる？</h1><p class="hero-sub"><b id="sub">2026年 秋アニメ</b><span id="hero-count"></span></p></div>
+  <div class="top"><div class="brand"><img src="/assets/logo.svg" alt="ANIME CAST NOW" width="780" height="100"></div><h1 class="hero-h"><em>推しの声優</em>、<br>今期なにに出てる？</h1><p class="hero-sub"><b id="sub">2026年 秋アニメ</b><span id="hero-count"></span></p></div>
   <div class="sbar"><label class="sbox">
    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
    <input id="q" type="search" placeholder="今期の声優を名前・ひらがなで検索" autocomplete="off" enterkeyhint="search" aria-label="声優を検索">
@@ -443,7 +443,7 @@ function closeDetail(){
 }
 function detail(a){
   $('#s2').innerHTML=`<div class="dialog" role="dialog" aria-modal="true" aria-labelledby="detail-name" tabindex="-1">
-  <header class="detail-head"><div class="detail-bar"><button class="back" id="bk" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>声優一覧へ戻る</span></button><span class="detail-brand">ANIME CAST NOW</span><span aria-hidden="true"></span></div>
+  <header class="detail-head"><div class="detail-bar"><button class="back" id="bk" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>声優一覧へ戻る</span></button><img class="detail-brand" src="/assets/logo.svg" alt="ANIME CAST NOW" width="780" height="100"><span aria-hidden="true"></span></div>
   <div class="profile"><div class="profile-copy"><h2 id="detail-name">${esc(a.name)}</h2><small>${esc(a.reading)}</small><em>${a.roles.length?`今季 ${a.roles.length}作品に出演中`:`来期 ${a.next.length}作品に出演予定`}${a.roles.length&&a.next?.length?`<span class="em-next">・来期 ${a.next.length}作品</span>`:''}</em><a class="share-x" id="share-x" data-ga-event="share_x_click" data-ga-va-id="${esc(a.actor_id)}" data-ga-va-name="${esc(a.name)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(a.name)}さんの出演情報をXでシェア">Xでシェア</a><button type="button" class="share-native" id="share-native" hidden data-ga-event="share_native_click" data-ga-va-id="${esc(a.actor_id)}" data-ga-va-name="${esc(a.name)}">LINEなどで送る</button></div></div></header>
   <div class="modal-scroll"><p class="pr-note">当ページのリンクには広告が含まれています。</p>${a.roles.length?bestVodHtml(a)+'<h3>今季の出演作品</h3>':''}<div class="work-grid">`+a.roles.filter(r=>D.works[r.work_id]?.vod_links?.length).map(r=>{const w=D.works[r.work_id];
    return `<article class="work"><div class="work-main"><div class="work-intro">${w.thumbnail?`<img class="work-thumb" src="${esc(w.thumbnail)}" alt="${esc(w.title)}の画像" loading="lazy" decoding="async" referrerpolicy="no-referrer">`:''}<div class="work-copy"><h4><a class="work-link" href="/work/${esc(r.work_id)}/">${esc(w.title)}</a></h4>${w.credit?`<div class="cr">${esc(w.credit)}</div>`:''}
