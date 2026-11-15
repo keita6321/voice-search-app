@@ -1,4 +1,4 @@
-import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { nextIndexPage, nextWorkPages, rankingPage, startLabel, vodPage, workPages, workIndexPage } from './articles.mjs';
@@ -94,6 +94,8 @@ function makeDescription(actor, roles, works, label) {
 }
 
 function makeStaticContent(actor, roles, works, upcoming) {
+  const past = pastWorksOf(actor.actor_id);
+  const pastItems = past.map(w => `<li>${escapeHtml(w.title)}${w.year ? `（${w.year}年）` : ''}${w.character ? ` — ${escapeHtml(w.character)}` : ''}</li>`).join('\n');
   const roleItems = roles.map(role => {
     const work = works[role.work_id];
     return `<li>${escapeHtml(work.title)} — ${escapeHtml(role.character_name)}</li>`;
@@ -114,6 +116,10 @@ ${roleItems}
 ` : ''}${nextItems ? `  <h2>来期の出演予定（${escapeHtml(upcoming.label)}）</h2>
   <ul>
 ${nextItems}
+  </ul>
+` : ''}${pastItems ? `  <h2>主な過去の出演作</h2>
+  <ul>
+${pastItems}
   </ul>
 ` : ''}</main>
 `;
@@ -275,6 +281,16 @@ try {
 }
 if (next && next.season === data.season) next = null; // 今期と同じシーズンなら使わない（切り替え後の取り残し）
 const nextLabel = next ? seasonLabel(next.season) : null;
+// 主な過去の出演作（past_works.py が AniList から作る）。なければ出さない
+let pastStore = { actors: {} };
+try {
+  pastStore = JSON.parse(await readFile(path.join(root, 'data', 'past-works.json'), 'utf8'));
+} catch (error) {
+  if (error.code !== 'ENOENT') throw error;
+}
+function pastWorksOf(actorId) {
+  return pastStore.actors?.[actorId]?.works ?? [];
+}
 // 今期と同じタイトルの作品（同じID）は、今期のページを優先する
 const nextWorkIds = new Set(next ? Object.keys(next.works).filter(id => !data.works[id]) : []);
 const upcomingById = new Map();
@@ -309,6 +325,19 @@ for (const [actorId, { actor, upcoming }] of upcomingById) {
   await mkdir(directory, { recursive: true });
   await writeFile(path.join(directory, 'index.html'), makePage(template, actor, [], data.works, pageId, label, upcoming));
   nextOnlyActors.push({ pageId });
+}
+
+// 声優詳細で読み込む過去作（/past/va0001.json）。今期・来期の声優の分だけ
+await rm(path.join(root, 'past'), { recursive: true, force: true });
+await mkdir(path.join(root, 'past'), { recursive: true });
+let pastCount = 0;
+for (const actorId of new Set([...data.voice_actors, ...(next?.voice_actors ?? [])].map(actor => actor.actor_id))) {
+  const works = pastWorksOf(actorId);
+  if (!works.length) continue;
+  toPageId(actorId);
+  const slim = works.map(({ title, year, character }) => ({ title, year, character }));
+  await writeFile(path.join(root, 'past', `${actorId}.json`), JSON.stringify({ works: slim }));
+  pastCount += 1;
 }
 
 // 台帳（data/registry/people.json）にいる全員のURLを維持する
@@ -412,6 +441,7 @@ const sitemap = [
 await writeFile(path.join(root, 'sitemap.xml'), sitemap);
 await ensureRobotsSitemap();
 if (next) console.log(`Next season (${nextLabel}): ${nextWorkIds.size} works, ${upcomingById.size} actors (${nextOnlyActors.length} next-only pages).`);
+console.log(`Past works: ${pastCount} actors.`);
 console.log(`Generated ${actors.length} voice actor pages, ${works.length} work pages (${indexedWorkUrls.length} indexed) and sitemap.xml.`);
 if (registry) {
   console.log(`Kept ${noWorksCount} pages without current works (noindex) and ${redirectCount} redirect pages from the ID registry.`);

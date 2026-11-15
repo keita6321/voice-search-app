@@ -9,7 +9,7 @@ mkdir -p dist
 for f in index.html data.json data-next.json featured.json manifest.webmanifest robots.txt sitemap.xml google*.html _headers _redirects; do
   [ -e "$f" ] && cp "$f" dist/
 done
-for d in assets va work next ranking vod about privacy; do
+for d in assets va work next ranking vod about privacy past; do
   [ -d "$d" ] && cp -R "$d" dist/
 done
 echo "dist/: $(find dist -type f | wc -l) files"

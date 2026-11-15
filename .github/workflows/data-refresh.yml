@@ -22,6 +22,10 @@ on:
         description: "安全チェックを通れば main に反映する（本番公開）"
         type: boolean
         default: false
+      past_minutes:
+        description: "過去作（AniList）の取得に使う最大の分数。初回にまとめて取るときは 60 など"
+        required: false
+        default: "15"
       force_registry:
         description: "声優数が前回の半分未満でも続行する（取得失敗でないことを確認した場合のみ）"
         type: boolean
@@ -91,6 +95,12 @@ jobs:
             python3 build_data_from_sources.py --refresh --preview --season "$NEXT" 2>&1 | tee -a reports-build.log
           fi
 
+      - name: 声優の主な過去作を取る（AniList）
+        # 1回あたりの時間に上限があり、取りきれなかった人は翌週に回す。失敗しても更新は続ける
+        continue-on-error: true
+        run: |
+          python3 past_works.py --max-minutes "${{ inputs.past_minutes || '15' }}" 2>&1 | tee reports-past.log
+
       - name: テスト
         run: python3 -m unittest discover -s tests -t .
 
@@ -143,7 +153,7 @@ jobs:
           branch="data/refresh-$(date -u +%Y%m%d-%H%M)"
           git checkout -b "$branch"
           git add -A
-          for f in reports reports-build.log reports-discovery.log data/registry/review.json; do [ -e "$f" ] && git add -f "$f"; done; true
+          for f in reports reports-build.log reports-discovery.log reports-past.log data/registry/review.json; do [ -e "$f" ] && git add -f "$f"; done; true
           git commit -m "データ更新のレポート（${{ steps.season.outputs.current }}、${{ job.status }}）" || { echo "変更なし"; exit 0; }
           git push origin "$branch"
           echo "### 確認用ブランチ: \`$branch\`" >> "$GITHUB_STEP_SUMMARY"
