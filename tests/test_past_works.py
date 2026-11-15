@@ -4,10 +4,12 @@ from datetime import date
 import past_works as pw
 
 
-def edge(mid, title, chars=("キャラ",), fmt="TV", year=2020, season="SPRING", status="FINISHED", adult=False):
-    return {"characters": [{"name": {"native": c}} for c in chars],
+def edge(mid, title, chars=("キャラ",), fmt="TV", year=2020, season="SPRING", status="FINISHED", adult=False,
+         role="MAIN", popularity=1000):
+    return {"characterRole": role, "characters": [{"name": {"native": c}} for c in chars],
             "node": {"id": mid, "title": {"native": title}, "seasonYear": year, "season": season,
-                     "format": fmt, "status": status, "isAdult": adult, "startDate": {"year": year}}}
+                     "format": fmt, "status": status, "isAdult": adult, "startDate": {"year": year},
+                     "popularity": popularity}}
 
 
 class PastWorksTest(unittest.TestCase):
@@ -45,6 +47,15 @@ class PastWorksTest(unittest.TestCase):
     def test_select_past_limits_count(self):
         staff = {"characterMedia": {"edges": [edge(i, f"作品タイトル{chr(0x30A2 + i)}") for i in range(20)]}}
         self.assertEqual(len(pw.select_past(staff, set(), set(), top_n=8)), 8)
+
+    def test_main_roles_beat_bigger_cameos(self):
+        staff = {"characterMedia": {"edges": [
+            edge(1, "超人気作", ["端役"], role="BACKGROUND", popularity=900000),
+            edge(2, "人気作", ["脇役"], role="SUPPORTING", popularity=500000),
+            edge(3, "代表作", ["主人公"], role="MAIN", popularity=200000),
+        ]}}
+        got = pw.select_past(staff, set(), set())
+        self.assertEqual([w["anilist_id"] for w in got], [3, 2])
 
     def test_due(self):
         today = date(2026, 11, 15)

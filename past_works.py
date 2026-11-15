@@ -3,7 +3,7 @@
 実行: python3 past_works.py [--max-minutes 15] [--max-age-days 28]
 - 今期（data.json）と来期（data-next.json）の声優が対象
 - AniList で日本語名が完全一致する人だけを使う（同名の別人を出さないため。見つからなければ空のまま）
-- 人気順に並べ、同じシリーズは一番人気の1作だけ、今期・来期の作品は除いて上位8作を残す
+- 人気×役の重み（主役1・準主役0.3・端役は除く）で並べ、同じシリーズは一番人気の1作だけ、今期・来期の作品は除いて上位8作を残す
 - 結果は data/past-works.json。取得から max-age-days 日たった人だけ取り直す（AniList の回数制限があるため）
 """
 import argparse
@@ -17,10 +17,12 @@ from datetime import date, timedelta
 PATH = "data/past-works.json"
 TOP_N = 8
 KEEP_FORMATS = {"TV", "TV_SHORT", "MOVIE", "OVA", "ONA", "SPECIAL"}
+# 端役より主役・準主役を優先する（人気×役の重み で並べ直す）
+ROLE_WEIGHT = {"MAIN": 1.0, "SUPPORTING": 0.3, "BACKGROUND": 0.0}
 SEASON_NAMES = {"winter": "WINTER", "spring": "SPRING", "summer": "SUMMER", "autumn": "FALL"}
 
 QUERY = """query($q:String){Page(perPage:5){staff(search:$q){id name{native full alternative}
-  characterMedia(sort:POPULARITY_DESC,perPage:40){edges{characters{name{native full}}
+  characterMedia(sort:POPULARITY_DESC,perPage:50){edges{characterRole characters{name{native full}}
     node{id title{native romaji} seasonYear season startDate{year} format status isAdult popularity}}}}}}"""
 
 
@@ -52,7 +54,13 @@ def pick_staff(candidates, name):
 
 def select_past(staff, exclude_titles, exclude_seasons, top_n=TOP_N):
     out, seen_series, seen_ids = [], set(), set()
-    for edge in ((staff or {}).get("characterMedia") or {}).get("edges") or []:
+    edges = ((staff or {}).get("characterMedia") or {}).get("edges") or []
+    def score(edge):
+        m = edge.get("node") or {}
+        return (m.get("popularity") or 0) * ROLE_WEIGHT.get(edge.get("characterRole"), 0.3)
+    edges = [e for e in edges if ROLE_WEIGHT.get(e.get("characterRole"), 0.3) > 0]
+    edges.sort(key=score, reverse=True)  # 同点なら AniList の人気順のまま
+    for edge in edges:
         m = edge.get("node") or {}
         if not m or m.get("isAdult") or m.get("format") not in KEEP_FORMATS or m.get("status") == "NOT_YET_RELEASED":
             continue
