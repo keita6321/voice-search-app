@@ -474,7 +474,7 @@ function loadPast(a){
   fetch(`/past/${encodeURIComponent(a.actor_id)}.json`).then(r=>r.ok?r.json():null).then(p=>{
     const box=document.getElementById('past-works');
     if(!p?.works?.length||!box||box.closest('.dialog')!==$('#s2').querySelector('.dialog')||$('#detail-name')?.textContent!==a.name)return;
-    box.innerHTML=`<h3>主な過去の出演作</h3><ul class="past-list">`+p.works.map(w=>`<li><span class="past-title">${esc(w.title)}</span>${w.year?`<span class="past-year">${esc(w.year)}</span>`:''}${w.character?`<span class="past-role">${esc(w.character)}</span>`:''}</li>`).join('')+`</ul><p class="past-note">AniList の人気順。今期・来期の作品は除いています。</p>`;
+    box.innerHTML=`<h3>主な過去の出演作</h3><ul class="past-list">`+p.works.map(w=>`<li><span class="past-title">${esc(w.title)}</span>${w.year?`<span class="past-year">${esc(w.year)}</span>`:''}${w.character?`<span class="past-role">${esc(w.character)}</span>`:''}</li>`).join('')+`</ul><p class="past-note">AniList の人気順（主な役を優先）。今期・来期の作品は除いています。</p>`;
     box.hidden=false;
   }).catch(()=>{});
 }
