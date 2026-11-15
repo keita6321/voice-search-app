@@ -1,5 +1,108 @@
 # voice-search-app
 
+## Claude なしで運用する（手動手順）
+
+ふだんの更新はすべて自動です。Claude がいなくてもサイトは止まりません。
+
+- **毎週月曜 5:17（GitHub Actions「データ更新」）**：次の作業を順に行います。
+  - 今期・来期の作品と声優を Annict と AniList から取り直す
+  - 公式サイトから配信先を補う
+  - 過去作を取る
+  - ページを作り直す
+  - 安全チェックを通れば main に push する
+- **main が更新されると、Cloudflare（Workers Builds: animecastnow）が自動で本番に公開します。**
+- **シーズンの切り替えも自動です。** シーズンは実行した日付から決まります。トップのタイトルや説明文の「〇年〇アニメ」も `npm run build:pages` が書き換えます。
+
+以下は、ときどき人の手が要る場面の手順です。
+
+### 0. 手元で動かすための準備（最初に1回）
+
+```bash
+git clone https://github.com/keita6321/voice-search-app.git
+cd voice-search-app
+pip install -r requirements.txt pykakasi   # Python 3.12 推奨
+# Node.js 20 以上も入れておく（ページ生成と X 下書きに使う）
+export ANNICT_TOKEN='（Annict の個人用アクセストークン）'   # データを取り直すときだけ必要。コードやGitには書かない
+```
+
+手元で変更したら、最後は次の3つで本番に反映します（Cloudflare が自動で公開します）。
+
+```bash
+npm run build:pages
+python3 -m unittest discover -s tests -t .
+git add -A && git commit -m "…" && git push origin main
+```
+
+### 1. 自動更新が「安全チェック」で止まった（シーズンの切り替え時に起きやすい）
+
+声優数や作品数が前回より大きく減ると、取得失敗を疑って本番に反映しません。
+
+1. 結果は GitHub の **Actions タブ →「データ更新」** の最新の実行で確認します。確認用ブランチ `data/refresh-日時` の `reports-build.log` も見ます。
+2. シーズンの切り替えなど、減るのが正しい場合は、同じ画面で **Run workflow** を押し、**auto_apply** と **force_registry** にチェックを入れて実行します。
+3. Annict の障害など、取得の失敗が原因なら何もしません。翌週の定期実行に任せます。
+
+### 2. 自動更新が動いていない（Actions に新しい実行が出ない）
+
+公開リポジトリでは、60日間活動がないと定期実行が自動で止まります。Actions タブ →「データ更新」に出る **Enable workflow** を押すと再開します。すぐ更新したいときは **Run workflow** を押し、auto_apply にチェックを入れて実行します。
+
+### 3. 手元でデータを取り直したい
+
+```bash
+python3 build_data_from_sources.py --refresh --season 2027-winter               # 今期（data.json）
+python3 build_data_from_sources.py --refresh --preview --season 2027-spring     # 来期（data-next.json）
+python3 discover_vod_candidates.py --auto                                       # 公式サイトから配信先を補う
+python3 past_works.py --max-minutes 60                                          # 過去作（全員分なら40分ほど）
+```
+
+その後は「0.」の3つのコマンドで反映します。
+
+### 4. 配信先が間違っている・足りない
+
+`vod_overrides.csv` に1行足します（`title,provider,source_url,checked_at`）。
+
+- `title` は data.json の作品名と完全に一致させます。
+- `source_url` には公式の配信ページを書きます。
+
+追加したら `python3 build_data_from_sources.py` を実行し、「0.」の手順で反映します。間違った行は、その行を消してから同じ手順で反映します。
+
+### 5. 提携先や無料期間・料金が変わった
+
+- **提携が増えた**：「提携済みVODの管理」の手順で、`vod_providers.py` と `index.html` の `PARTNER_SERVICES` を更新します。
+- **無料期間や料金の表記を変える**：次の3か所を書き換えます。
+  - `index.html` の `PARTNER_OFFERS`
+  - `scripts/articles.mjs` の `PARTNER_OFFERS`
+  - `scripts/articles.mjs` の `VOD_PLANS`（/vod/ の比較表）
+
+  書き換えたら「0.」の手順で反映します。
+
+### 6. X の予約投稿を作る
+
+```bash
+npm run build:pages
+npm run posts -- --start 2027-01-12 --days 7 --campaign 2027winter --season-tag 冬アニメ --verify-pages
+```
+
+`posts-out/posts-helper.html` をブラウザーで開き、本文を X の予約画面に貼り付けます。
+
+- 季節が変わったら `--campaign` と `--season-tag` を変えます。
+- 紹介済みの記録 `scripts/.post-history.json` はコミットします。
+
+詳しいオプションは「X投稿の下書き生成」を見てください。
+
+### 7. 作品紹介（手書き）を足す
+
+`data/work_notes.json` に作品名をキーにして書き、「0.」の手順で反映します。
+
+- 書ける項目は「作品紹介（手書き）」を見てください。
+- `catch` を書くと、トップの「注目作品」に出せます。
+
+### 8. 年に1回など、たまに必要なこと
+
+- **ドメイン（animecastnow.com）の更新**：Cloudflare の管理画面で行います（支払い）。
+- **アフィリエイト（afb / A8 / もしも）の登録情報やリンクの変更**：各ASPの管理画面で行います。
+- **GA4 と Search Console の確認**：それぞれの管理画面で見ます。
+
+
 ## Data cleanup
 
 `build_data_from_sources.py` excludes cast names that are not written in Japanese or Latin characters. It also uses `title_aliases.csv` to merge alternate titles into one work.
