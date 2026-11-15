@@ -163,6 +163,11 @@ button{font:inherit;color:inherit;cursor:pointer}
 .cta-bar-btn{flex:none;padding:9px 13px;border-radius:999px;background:var(--ac);color:#fff;font-size:12px;font-weight:800;text-decoration:none}
 .cta-bar-close{flex:none;width:30px;height:30px;border:0;background:none;color:var(--sub);font-size:17px;cursor:pointer}}
 .next-h{margin:22px 2px 9px !important}
+.past{margin-top:22px}.past h3{margin:0 2px 9px}
+.past-list{list-style:none;margin:0;padding:0;border:1px solid var(--ln);border-radius:13px;background:var(--sf);overflow:hidden}
+.past-list li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;padding:10px 13px;border-top:1px solid var(--ln)}.past-list li:first-child{border-top:0}
+.past-title{font-size:14px;font-weight:800;line-height:1.4}.past-year{color:var(--sub);font-size:12px;font-weight:700;align-self:center}
+.past-role{grid-column:1/-1;color:#5c5a55;font-size:12px}.past-note{margin:6px 2px 0;color:var(--sub);font-size:11px}
 .next-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .next-work{min-width:0;padding:11px 13px;border:1px dashed #cfc6dc;border-radius:13px;background:#fbfaf7}
 .next-work h4{margin:0 0 3px;font-size:14px;line-height:1.35;font-weight:900}
@@ -192,6 +197,17 @@ body.modal-open{overflow:hidden}
   <h2>来期の出演予定（2027年冬アニメ）</h2>
   <ul>
 <li><a href="/work/wd519773d/">魔入りました！入間くん if Episode of 魔フィア</a> — オペラ（1月4日（月）放送開始）</li>
+  </ul>
+  <h2>主な過去の出演作</h2>
+  <ul>
+<li>進撃の巨人 The Final Season（2021年） — イェレナ</li>
+<li>ブラッククローバー（2017年） — ヘンリー・レゴラント</li>
+<li>BLEACH（2004年） — 蛇尾丸</li>
+<li>呪術廻戦 第2期（2023年） — 裏梅</li>
+<li>DRIFTERS（2016年） — 那須与一</li>
+<li>天元突破グレンラガン（2007年） — ロシウ・アダイ</li>
+<li>不滅のあなたへ（2021年） — ハヤセ</li>
+<li>鋼の錬金術師（2003年） — マリア・ロス</li>
   </ul>
 </main>
 <div class="wrap">
@@ -445,7 +461,7 @@ function detail(a){
   <div class="modal-scroll"><p class="pr-note">当ページのリンクには広告が含まれています。</p>${a.roles.length?bestVodHtml(a)+'<h3>今季の出演作品</h3>':''}<div class="work-grid">`+a.roles.filter(r=>D.works[r.work_id]?.vod_links?.length).map(r=>{const w=D.works[r.work_id];
    return `<article class="work"><div class="work-main"><div class="work-intro">${w.thumbnail?`<img class="work-thumb" src="${esc(w.thumbnail)}" alt="${esc(w.title)}の画像" loading="lazy" decoding="async" referrerpolicy="no-referrer">`:''}<div class="work-copy"><h4><a class="work-link" href="/work/${esc(r.work_id)}/">${esc(w.title)}</a></h4>${w.credit?`<div class="cr">${esc(w.credit)}</div>`:''}
    <div class="castline"><b>${esc(r.character_name)}</b> ／ ${esc(a.name)}</div><div class="vods">`+vodLinksHtml(w,r,a)+`</div></div></div></div>`+
-   ((r.official_url||w.official_url)?`<a class="off" href="${esc(r.official_url||w.official_url)}" data-ga-event="official_site_click" data-ga-work-id="${esc(r.work_id)}" data-ga-work-title="${esc(w.title)}" data-ga-va-id="${esc(a.actor_id)}" target="_blank" rel="noopener">公式サイト</a>`:'')+'</article>'}).join('')+`</div>${a.roles.length?endCtaHtml(a):''}${nextHtml(a)}</div>${a.roles.length?stickyBarHtml(a):''}</div>`;
+   ((r.official_url||w.official_url)?`<a class="off" href="${esc(r.official_url||w.official_url)}" data-ga-event="official_site_click" data-ga-work-id="${esc(r.work_id)}" data-ga-work-title="${esc(w.title)}" data-ga-va-id="${esc(a.actor_id)}" target="_blank" rel="noopener">公式サイト</a>`:'')+'</article>'}).join('')+`</div>${a.roles.length?endCtaHtml(a):''}${nextHtml(a)}<section class="past" id="past-works" hidden></section></div>${a.roles.length?stickyBarHtml(a):''}</div>`;
   $('#bk').onclick=closeDetail;
   const barClose=$('#cta-bar-close');
   if(barClose)barClose.onclick=()=>{try{localStorage.setItem(BAR_KEY,new Date().toDateString())}catch{}$('#cta-bar').remove()};
@@ -459,7 +475,17 @@ function detail(a){
   // スクロールしたら上の名前の部分を細くして、出演作を広く見せる
   const sc=$('#s2').querySelector('.modal-scroll'),dlg=$('#s2').querySelector('.dialog');
   if(sc&&dlg)sc.addEventListener('scroll',()=>dlg.classList.toggle('compact',sc.scrollTop>60),{passive:true});
+  loadPast(a);
   $('#s2').querySelector('.dialog').focus();
+}
+// 主な過去の出演作（/past/va0001.json。ない人は出さない）
+function loadPast(a){
+  fetch(`/past/${encodeURIComponent(a.actor_id)}.json`).then(r=>r.ok?r.json():null).then(p=>{
+    const box=document.getElementById('past-works');
+    if(!p?.works?.length||!box||box.closest('.dialog')!==$('#s2').querySelector('.dialog')||$('#detail-name')?.textContent!==a.name)return;
+    box.innerHTML=`<h3>主な過去の出演作</h3><ul class="past-list">`+p.works.map(w=>`<li><span class="past-title">${esc(w.title)}</span>${w.year?`<span class="past-year">${esc(w.year)}</span>`:''}${w.character?`<span class="past-role">${esc(w.character)}</span>`:''}</li>`).join('')+`</ul><p class="past-note">AniList の人気順（主な役を優先）。今期・来期の作品は除いています。</p>`;
+    box.hidden=false;
+  }).catch(()=>{});
 }
 // 来期の出演予定（data-next.json がある場合だけ）
 function nextHtml(a){
