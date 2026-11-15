@@ -23,6 +23,7 @@ function shellParts(aboutHtml) {
 }
 
 const EXTRA_STYLE = `
+.site-logo img{display:block;height:28px;width:auto}
 table{width:100%;border-collapse:collapse;margin:16px 0;font-size:15px}
 th,td{padding:8px 6px;border-bottom:1px solid #e3dfd2;text-align:left;vertical-align:top}
 th{color:#827f77;font-size:13px;font-weight:700}
@@ -64,11 +65,13 @@ ${noindex ? '<meta name="robots" content="noindex">\n' : ''}<meta name="descript
 <meta property="og:image" content="${ogImage}">
 <meta property="og:locale" content="ja_JP">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <style>${style}${EXTRA_STYLE}</style>
 </head>
 <body>
 <main>
-<p><a href="/">ANIME CAST NOW トップへ戻る</a></p>
+<p class="site-logo"><a href="/"><img src="/assets/logo.svg" alt="ANIME CAST NOW トップへ" width="780" height="100"></a></p>
 <p class="note">当ページのリンクには広告が含まれています。</p>
 ${body}
 <div class="related">
