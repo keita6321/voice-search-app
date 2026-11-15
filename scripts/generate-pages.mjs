@@ -270,8 +270,11 @@ async function ensureRobotsSitemap() {
 }
 
 const data = JSON.parse(await readFile(path.join(root, 'data.json'), 'utf8'));
-const template = (await readFile(path.join(root, 'index.html'), 'utf8')).replace(/\r\n/g, '\n');
 const label = seasonLabel(data.season);
+// トップの <title> や説明文の「2026年秋アニメ」を、data.json のシーズンに合わせて書き換える（シーズンが変わっても手作業不要）
+const rawTemplate = (await readFile(path.join(root, 'index.html'), 'utf8')).replace(/\r\n/g, '\n');
+const template = rawTemplate.replace(/\d{4}年( ?)[冬春夏秋]アニメ/g, (_, space) => (space ? label.replace('年', '年 ') : label));
+if (template !== rawTemplate) await writeFile(path.join(root, 'index.html'), template);
 // 来期の先行取得（data-next.json）。なければ来期のページは作らない
 let next = null;
 try {
