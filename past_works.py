@@ -58,7 +58,7 @@ def select_past(staff, exclude_titles, exclude_seasons, top_n=TOP_N):
     def score(edge):
         m = edge.get("node") or {}
         return (m.get("popularity") or 0) * ROLE_WEIGHT.get(edge.get("characterRole"), 0.3)
-    edges = [e for e in edges if ROLE_WEIGHT.get(e.get("characterRole"), 0.3) > 0]
+    edges = [e for e in edges if e and ROLE_WEIGHT.get(e.get("characterRole"), 0.3) > 0]
     edges.sort(key=score, reverse=True)  # 同点なら AniList の人気順のまま
     for edge in edges:
         m = edge.get("node") or {}
@@ -73,7 +73,7 @@ def select_past(staff, exclude_titles, exclude_seasons, top_n=TOP_N):
         if key in seen_series:
             continue
         seen_series.add(key); seen_ids.add(m.get("id"))
-        chars = [(c.get("name") or {}).get("native") or (c.get("name") or {}).get("full") for c in edge.get("characters") or []]
+        chars = [(c.get("name") or {}).get("native") or (c.get("name") or {}).get("full") for c in edge.get("characters") or [] if c]
         out.append({"title": title, "year": m.get("seasonYear") or (m.get("startDate") or {}).get("year"),
                     "format": m.get("format"), "character": "、".join(c for c in chars if c)[:40],
                     "anilist_id": m.get("id")})
@@ -133,8 +133,12 @@ def main():
             print(f"  [past] {name}: 取得失敗 {exc}", file=sys.stderr)
             time.sleep(3)
             continue
-        staff = pick_staff(cands, name)
-        works = select_past(staff, titles, seasons) if staff else []
+        try:
+            staff = pick_staff(cands, name)
+            works = select_past(staff, titles, seasons) if staff else []
+        except Exception as exc:  # 想定外の形のデータでも、その人だけ飛ばす
+            print(f"  [past] {name}: 選べませんでした {exc!r}", file=sys.stderr)
+            continue
         store["actors"][aid] = {"name": name, "anilist_id": staff and staff["id"], "fetched": today.isoformat(), "works": works}
         done += 1; found += bool(works)
         time.sleep(2.1)  # AniList は1分あたり30回まで

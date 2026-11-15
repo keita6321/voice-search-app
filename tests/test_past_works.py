@@ -57,6 +57,14 @@ class PastWorksTest(unittest.TestCase):
         got = pw.select_past(staff, set(), set())
         self.assertEqual([w["anilist_id"] for w in got], [3, 2])
 
+    def test_ignores_empty_characters(self):
+        e = edge(1, "作品")
+        e["characters"].append(None)
+        e2 = edge(2, "別の作品")
+        e2["node"] = None
+        got = pw.select_past({"characterMedia": {"edges": [e, e2, None]}}, set(), set())
+        self.assertEqual([w["anilist_id"] for w in got], [1])
+
     def test_due(self):
         today = date(2026, 11, 15)
         self.assertTrue(pw.due(None, today, 28))
