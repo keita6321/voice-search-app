@@ -246,7 +246,9 @@ const SERVICE_LABEL={'Amazon Prime Video':'Prime Video'};
 // アフィリエイト提携済みのサービス。ここにあるものだけ「〇〇で見る」ボタンにし、
 // それ以外は「ほかの配信」として文字だけで案内する（未提携のサービスへは送客しない）。
 // 提携できたら、vod_providers.py のURLをアフィリエイトリンクに差し替え、ここに追加する。
-const PARTNER_SERVICES=new Set(['Amazon Prime Video']);
+const PARTNER_SERVICES=new Set(['Amazon Prime Video','ABEMA']);
+// 作品数が同じなら、この順で優先する（無料体験があるサービスを先に）
+const partnerRank=p=>{const i=[...PARTNER_SERVICES].indexOf(p);return i<0?99:i};
 // 提携サービスの無料体験など（各社公式で条件を確認してから書く。確認日も入れる）。scripts/articles.mjs の PARTNER_NOTES と同じ内容にする
 const PARTNER_OFFERS={'Amazon Prime Video':{cta:'30日間無料で試す',note:'※Amazonプライム会員の初回のみ。無料期間が終わると月額600円（2026年11月時点。条件は公式サイトで確認してください）'}};
 const PARTNER_NOTES=Object.fromEntries(Object.entries(PARTNER_OFFERS).map(([k,v])=>[k,v.note]));
@@ -257,7 +259,7 @@ function partnerFor(a){
   const counts=new Map();
   for(const r of roles)for(const v of D.works[r.work_id].vod_links)if(PARTNER_SERVICES.has(v.provider)){
     const c=counts.get(v.provider)||{provider:v.provider,count:0,link:v};c.count++;counts.set(v.provider,c);}
-  return [...counts.values()].sort((x,y)=>y.count-x.count)[0]||null;
+  return [...counts.values()].sort((x,y)=>y.count-x.count||partnerRank(x.provider)-partnerRank(y.provider))[0]||null;
 }
 function partnerLinkHtml(a,p,suffix,cls){
   const pageType=(location.pathname.startsWith('/va/')?'va_detail':'home')+suffix;
@@ -282,7 +284,7 @@ function bestVodHtml(a){
   const counts=new Map();
   for(const r of roles)for(const p of new Set(D.works[r.work_id].vod_links.map(v=>v.provider)))counts.set(p,(counts.get(p)||0)+1);
   // 同数なら提携サービスを先に
-  const ranked=[...counts].sort((x,y)=>y[1]-x[1]||PARTNER_SERVICES.has(y[0])-PARTNER_SERVICES.has(x[0])||x[0].localeCompare(y[0]));
+  const ranked=[...counts].sort((x,y)=>y[1]-x[1]||partnerRank(x[0])-partnerRank(y[0])||x[0].localeCompare(y[0]));
   const [top,n]=ranked[0];
   const partner=ranked.find(([p])=>PARTNER_SERVICES.has(p));
   const link=partner&&roles.map(r=>D.works[r.work_id].vod_links.find(v=>v.provider===partner[0])).find(Boolean);
