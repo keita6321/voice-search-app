@@ -188,6 +188,7 @@ const VOD_PLANS = {
   'dアニメストア': { price: '660円', trial: '初回31日間※', source: 'https://animestore.docomo.ne.jp/animestore/CF/help_qa_charge' },
   'U-NEXT': { price: '2,189円', trial: '31日間', source: 'https://help.unext.jp/guide/detail/types-of-service-plan' },
   'DMM TV': { price: '550円', trial: '初回あり※', source: 'https://support.dmm.com/premium/article/47489' },
+  'ABEMA': { price: '680円〜※', trial: 'なし', source: 'https://www.cinematoday.jp/ent/?p=41980' },
 };
 
 function compareTable(providers, partnerLinks) {
@@ -210,7 +211,7 @@ function compareTable(providers, partnerLinks) {
 ${rows}
 </tbody>
 </table>
-<p class="note">料金と無料体験は${VOD_PLANS_CHECKED}時点で各社の案内を確認したものです（${sources}）。「—」は、こちらでまだ確認できていない項目です（各社の公式サイトで確認してください）。dアニメストアの31日間はキャンペーン中の期間で、通常は7日間です。DMM TVの無料期間は登録ページに表示されます。無料期間が終わると自動で有料になります。リンクは提携しているサービスだけに付けています。</p>`;
+<p class="note">料金と無料体験は${VOD_PLANS_CHECKED}時点で各社の案内を確認したものです（${sources}）。「—」は、こちらでまだ確認できていない項目です（各社の公式サイトで確認してください）。dアニメストアの31日間はキャンペーン中の期間で、通常は7日間です。DMM TVの無料期間は登録ページに表示されます。ABEMAの680円は広告つきプランの料金で、広告なしのプランは1,180円です（公式サイトで確認してください）。無料期間が終わると自動で有料になります。リンクは提携しているサービスだけに付けています。</p>`;
 }
 
 export function vodPage(ctx) {
