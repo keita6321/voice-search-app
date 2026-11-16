@@ -4830,7 +4830,7 @@
       ],
       "first_seen": "2026-autumn",
       "last_seen": "2026-autumn",
-      "status": "active",
+      "status": "inactive",
       "redirect_to": null
     },
     "va0404": {
@@ -6904,7 +6904,7 @@
       ],
       "first_seen": "2026-autumn",
       "last_seen": "2026-autumn",
-      "status": "active",
+      "status": "inactive",
       "redirect_to": null
     },
     "va0577": {
@@ -7072,7 +7072,7 @@
       ],
       "first_seen": "2026-autumn",
       "last_seen": "2026-autumn",
-      "status": "active",
+      "status": "inactive",
       "redirect_to": null
     },
     "va0591": {
@@ -8477,8 +8477,8 @@
         747
       ],
       "first_seen": "2027-winter",
-      "last_seen": "2027-winter",
-      "status": "upcoming",
+      "last_seen": "2026-autumn",
+      "status": "active",
       "redirect_to": null
     },
     "va0710": {
@@ -9223,6 +9223,78 @@
       "first_seen": "2027-winter",
       "last_seen": "2027-winter",
       "status": "upcoming",
+      "redirect_to": null
+    },
+    "va0772": {
+      "name": "上川隆也",
+      "kana": "かみかわたかや",
+      "aliases": [],
+      "annict_person_ids": [
+        27661
+      ],
+      "first_seen": "2026-autumn",
+      "last_seen": "2026-autumn",
+      "status": "active",
+      "redirect_to": null
+    },
+    "va0773": {
+      "name": "指出毬亜",
+      "kana": "さしでまりあ",
+      "aliases": [],
+      "annict_person_ids": [
+        19381
+      ],
+      "first_seen": "2026-autumn",
+      "last_seen": "2026-autumn",
+      "status": "active",
+      "redirect_to": null
+    },
+    "va0774": {
+      "name": "田中あいみ",
+      "kana": "たなかあいみ",
+      "aliases": [],
+      "annict_person_ids": [
+        7214
+      ],
+      "first_seen": "2026-autumn",
+      "last_seen": "2026-autumn",
+      "status": "active",
+      "redirect_to": null
+    },
+    "va0775": {
+      "name": "福原綾香",
+      "kana": "ふくはらあやか",
+      "aliases": [],
+      "annict_person_ids": [
+        16233
+      ],
+      "first_seen": "2026-autumn",
+      "last_seen": "2026-autumn",
+      "status": "active",
+      "redirect_to": null
+    },
+    "va0776": {
+      "name": "松嵜麗",
+      "kana": "まつざきれい",
+      "aliases": [],
+      "annict_person_ids": [
+        3091
+      ],
+      "first_seen": "2026-autumn",
+      "last_seen": "2026-autumn",
+      "status": "active",
+      "redirect_to": null
+    },
+    "va0777": {
+      "name": "三澤紗千香",
+      "kana": "みさわさちか",
+      "aliases": [],
+      "annict_person_ids": [
+        940
+      ],
+      "first_seen": "2026-autumn",
+      "last_seen": "2026-autumn",
+      "status": "active",
       "redirect_to": null
     }
   }

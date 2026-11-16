@@ -38088,6 +38088,327 @@
      "year": 2011
     }
    ]
+  },
+  "va0772": {
+   "anilist_id": null,
+   "fetched": "2026-11-16",
+   "name": "上川隆也",
+   "works": []
+  },
+  "va0773": {
+   "anilist_id": 131481,
+   "fetched": "2026-11-16",
+   "name": "指出毬亜",
+   "works": [
+    {
+     "anilist_id": 150695,
+     "character": "ルナ",
+     "format": "TV",
+     "title": "勇者パーティーを追放されたビーストテイマー、最強種の猫耳少女と出会う",
+     "year": 2022
+    },
+    {
+     "anilist_id": 102680,
+     "character": "白咲花",
+     "format": "TV",
+     "title": "私に天使が舞い降りた！",
+     "year": 2019
+    },
+    {
+     "anilist_id": 180812,
+     "character": "ネネ",
+     "format": "TV",
+     "title": "Aランクパーティを離脱した俺は、元教え子たちと迷宮深部を目指す。",
+     "year": 2025
+    },
+    {
+     "anilist_id": 137281,
+     "character": "ふたば",
+     "format": "TV",
+     "title": "阿波連さんははかれない",
+     "year": 2022
+    },
+    {
+     "anilist_id": 108092,
+     "character": "猪瀬舞",
+     "format": "TV",
+     "title": "恋する小惑星〈アステロイド〉",
+     "year": 2020
+    },
+    {
+     "anilist_id": 113970,
+     "character": "エマ・ヴェルデ",
+     "format": "TV",
+     "title": "ラブライブ！虹ヶ咲学園スクールアイドル同好会",
+     "year": 2020
+    },
+    {
+     "anilist_id": 173693,
+     "character": "福貫凪紗",
+     "format": "ONA",
+     "title": "ひとりぼっちの異世界攻略",
+     "year": 2024
+    },
+    {
+     "anilist_id": 180746,
+     "character": "遊奈",
+     "format": "TV",
+     "title": "死亡遊戯で飯を食う。",
+     "year": 2026
+    }
+   ]
+  },
+  "va0774": {
+   "anilist_id": 119281,
+   "fetched": "2026-11-16",
+   "name": "田中あいみ",
+   "works": [
+    {
+     "anilist_id": 21355,
+     "character": "プラム・リッシュ",
+     "format": "TV",
+     "title": "Re:ゼロから始める異世界生活",
+     "year": 2016
+    },
+    {
+     "anilist_id": 20987,
+     "character": "土間うまる",
+     "format": "TV",
+     "title": "干物妹！うまるちゃん",
+     "year": 2015
+    },
+    {
+     "anilist_id": 108632,
+     "character": "リューズ・メイエル",
+     "format": "TV",
+     "title": "Re:ゼロから始める異世界生活 2nd Season",
+     "year": 2020
+    },
+    {
+     "anilist_id": 21804,
+     "character": "斉木楠雄",
+     "format": "TV_SHORT",
+     "title": "斉木楠雄のΨ難",
+     "year": 2016
+    },
+    {
+     "anilist_id": 119661,
+     "character": "リューズ・メイエル",
+     "format": "TV",
+     "title": "Re:ゼロから始める異世界生活 2nd Season Part 2",
+     "year": 2021
+    },
+    {
+     "anilist_id": 98572,
+     "character": "土間うまる",
+     "format": "TV",
+     "title": "干物妹! うまるちゃん R",
+     "year": 2017
+    },
+    {
+     "anilist_id": 100773,
+     "character": "ベルタ",
+     "format": "TV",
+     "title": "『食戟のソーマ 餐ノ皿』 遠月列車篇",
+     "year": 2018
+    },
+    {
+     "anilist_id": 103632,
+     "character": "ユーリーン・ウレン",
+     "format": "TV",
+     "title": "蜘蛛ですが、なにか？",
+     "year": 2021
+    }
+   ]
+  },
+  "va0775": {
+   "anilist_id": 117223,
+   "fetched": "2026-11-16",
+   "name": "福原綾香",
+   "works": [
+    {
+     "anilist_id": 98314,
+     "character": "五十嵐清華",
+     "format": "TV",
+     "title": "賭ケグルイ",
+     "year": 2017
+    },
+    {
+     "anilist_id": 100876,
+     "character": "五十嵐清華",
+     "format": "TV",
+     "title": "賭ケグルイ××",
+     "year": 2019
+    },
+    {
+     "anilist_id": 127911,
+     "character": "狼谷藍",
+     "format": "TV",
+     "title": "可愛いだけじゃない式守さん",
+     "year": 2022
+    },
+    {
+     "anilist_id": 20631,
+     "character": "ルーグ",
+     "format": "TV",
+     "title": "トリニティセブン",
+     "year": 2014
+    },
+    {
+     "anilist_id": 208044,
+     "character": "エフタル",
+     "format": "ONA",
+     "title": "落第賢者の学院無双～二度目の転生、Sランクチート魔術師冒険録～",
+     "year": 2026
+    },
+    {
+     "anilist_id": 97922,
+     "character": "中本泰裕",
+     "format": "TV",
+     "title": "いぬやしき",
+     "year": 2017
+    },
+    {
+     "anilist_id": 21557,
+     "character": "凛堂ほたる",
+     "format": "TV",
+     "title": "クオリディア・コード",
+     "year": 2016
+    },
+    {
+     "anilist_id": 107418,
+     "character": "ヴェロニカ・ソーン",
+     "format": "TV",
+     "title": "フェアリーゴーン",
+     "year": 2019
+    }
+   ]
+  },
+  "va0776": {
+   "anilist_id": 106844,
+   "fetched": "2026-11-16",
+   "name": "松嵜麗",
+   "works": [
+    {
+     "anilist_id": 2251,
+     "character": "リア・リンシャン",
+     "format": "TV",
+     "title": "バッカーノ！",
+     "year": 2007
+    },
+    {
+     "anilist_id": 97994,
+     "character": "桜ノ宮愛香",
+     "format": "TV",
+     "title": "ブレンド・S",
+     "year": 2017
+    },
+    {
+     "anilist_id": 97832,
+     "character": "橘 ニナ",
+     "format": "TV",
+     "title": "citrus",
+     "year": 2018
+    },
+    {
+     "anilist_id": 107871,
+     "character": "アキノ",
+     "format": "TV",
+     "title": "プリンセスコネクト！Re:Dive",
+     "year": 2020
+    },
+    {
+     "anilist_id": 19221,
+     "character": "麗華堂絢女",
+     "format": "TV",
+     "title": "俺の脳内選択肢が、学園ラブコメを全力で邪魔している",
+     "year": 2013
+    },
+    {
+     "anilist_id": 10721,
+     "character": "唯",
+     "format": "TV",
+     "title": "輪るピングドラム",
+     "year": 2011
+    },
+    {
+     "anilist_id": 20693,
+     "character": "諸星きらり",
+     "format": "TV",
+     "title": "アイドルマスターシンデレラガールズ",
+     "year": 2015
+    },
+    {
+     "anilist_id": 11933,
+     "character": "丹羽長秀",
+     "format": "TV",
+     "title": "織田信奈の野望",
+     "year": 2012
+    }
+   ]
+  },
+  "va0777": {
+   "anilist_id": 102337,
+   "fetched": "2026-11-16",
+   "name": "三澤紗千香",
+   "works": [
+    {
+     "anilist_id": 104464,
+     "character": "秋野桜",
+     "format": "TV",
+     "title": "俺を好きなのはお前だけかよ",
+     "year": 2019
+    },
+    {
+     "anilist_id": 11759,
+     "character": "黒雪姫",
+     "format": "TV",
+     "title": "アクセル・ワールド",
+     "year": 2012
+    },
+    {
+     "anilist_id": 124845,
+     "character": "栗田薫",
+     "format": "TV",
+     "title": "ワンダーエッグ・プライオリティ",
+     "year": 2021
+    },
+    {
+     "anilist_id": 114195,
+     "character": "秋野桜",
+     "format": "OVA",
+     "title": "俺を好きなのはお前だけかよ～俺たちのゲームセット～",
+     "year": 2020
+    },
+    {
+     "anilist_id": 11743,
+     "character": "鳴護 アリサ",
+     "format": "MOVIE",
+     "title": "劇場版 とある魔術の禁書目録 エンデュミオンの奇蹟",
+     "year": 2013
+    },
+    {
+     "anilist_id": 20632,
+     "character": "ライエ・アリアーシュ",
+     "format": "TV",
+     "title": "アルドノア・ゼロ",
+     "year": 2014
+    },
+    {
+     "anilist_id": 138882,
+     "character": "葵沙苗",
+     "format": "TV",
+     "title": "組長娘と世話係",
+     "year": 2022
+    },
+    {
+     "anilist_id": 100715,
+     "character": "御翔桜世",
+     "format": "TV",
+     "title": "魔法少女 俺",
+     "year": 2018
+    }
+   ]
   }
  },
  "version": 1
