@@ -1,0 +1,80 @@
+# ANIME CAST NOW（voice-search-app）
+
+今期アニメの声優を名前で検索し、出演作と配信先（VOD）を一覧できるサイト。本番は https://animecastnow.com 。
+想定ユーザーはスマホからのアクセス。VOD のアフィリエイトで収益化している。運用は無料の範囲で行う。
+
+## 作業の進め方
+
+- コードの修正を頼まれたら、ブランチを切って PR を作り、main にマージして本番に反映するところまで進めてよい。
+  - main に入ると Cloudflare（Workers Builds: animecastnow）が自動で本番に公開する。
+  - マージ後は、そのコミットのチェック「Workers Builds: animecastnow」が success になるまで確認する。
+- コミットの名義は `keita6321 <keita6321@users.noreply.github.com>`。
+- 返事・コミットメッセージ・PR の説明・コード内のコメントは日本語で書く。
+
+## 守ること
+
+- **トークンや認証情報を自分で入力・貼り付けしない。**
+  - `ANNICT_TOKEN` は GitHub のシークレットにあり、オーナーが入力したもの。コードや Git にも書かない。
+- **ドメインや ASP などの支払い・契約・申請はオーナーが行う。** 必要なら手順を案内する。
+- **サイトに事実と違うことを書かない。**
+  - 例：計測していないのに「よく見られている」と書かない（今は「注目の声優」）。
+  - 料金・無料期間は公式で確かめてから書き、確認した日付を添える。
+- アフィリエイトリンクには `rel="sponsored noopener"` を付ける。広告を含むページには「当ページのリンクには広告が含まれています。」を出す。
+- 他社のロゴや画像を勝手に使わない。
+
+## よく使うコマンド
+
+```bash
+npm run build:pages                                  # data.json などから va/ work/ next/ ranking/ vod/ past/ などを生成
+python3 -m unittest discover -s tests -t .           # テスト
+python3 build_data_from_sources.py --refresh --season 2026-autumn             # 今期のデータを取り直す（ANNICT_TOKEN が必要）
+python3 build_data_from_sources.py --refresh --preview --season 2027-winter   # 来期（data-next.json）
+python3 discover_vod_candidates.py --auto            # 公式サイトから配信先を補う（vod_overrides.csv）
+python3 past_works.py --max-minutes 60               # 声優の主な過去作（AniList。data/past-works.json）
+npm run posts -- --start YYYY-MM-DD --days 7 --campaign 2027winter --season-tag 冬アニメ --verify-pages   # X の予約投稿の下書き
+```
+
+生成物（va/ work/ next/ ranking/ vod/ past/ sitemap.xml featured.json）はコミットする。
+データやテンプレートを変えたら、必ず `npm run build:pages` を実行してからコミットする。
+
+## 構成
+
+- `index.html`：トップ兼 SPA。声優ページ（/va/0001/）のテンプレートでもある。
+  - `PARTNER_SERVICES` が提携サービス、`PARTNER_OFFERS` が無料体験の文言。
+- `scripts/generate-pages.mjs`：静的ページの生成。トップの「〇年〇アニメ」の表記も data.json のシーズンに合わせて書き換える。
+- `scripts/articles.mjs`：作品ページ、ランキング、/vod/ 比較表（`VOD_PLANS`）、/next/。
+- `scripts/build-public.sh`：Cloudflare に出すファイルを dist/ にコピーする。新しいディレクトリやファイルを公開するときはここに追加する。
+- データ
+  - `data.json`：今期。
+  - `data-next.json`：来期。
+  - `data/registry/people.json`：声優 ID の台帳。URL を固定するためのもので、ID は変えない。
+  - `data/work_notes.json`：手書きの作品紹介。
+  - `data/past-works.json`：声優の主な過去作。
+  - `data/next-cast-log.json`：来期の新キャストの記録。
+  - `vod_overrides.csv`：配信先の手動修正。
+  - `vod_providers.py`：サービスごとのリンク先。提携先はアフィリエイトリンク。
+- `assets/analytics.js`：GA4 のイベント。
+  - `vod_click` / `feature_click` / `share_native_click` / `costar_click` など。
+  - 新しいイベントは `clickParams` に追加する。
+
+## 自動更新（.github/workflows/data-refresh.yml）
+
+- 毎週月曜 5:17 JST に動く。
+- 今期・来期の取り直し → 配信先の補完 → 過去作 → テスト → ページ生成 → 安全チェックの順に進む。
+- 安全チェックで作品数・声優数が 7 割未満に減っていたら止まる。通れば main に push する。
+- レポートは `data/refresh-日時` ブランチに残る。
+- 手動で動かすときは Actions タブの Run workflow で、`auto_apply` / `force_registry` / `past_minutes` を指定する。
+- シーズンの切り替わりで止まったら、内容を確認してから `force_registry` と `auto_apply` を付けて再実行する。
+
+## 提携の状況（2026-11-16 時点）
+
+- **ABEMA**：A8 のテキストリンクで提携中。
+- **Amazon Prime Video**：afb のサイト URL が再審査中のため、提携リンクを停止中。
+  - 承認されたら、新しい URL で発行し直したリンクを `vod_providers.py` と data.json に入れる。
+  - あわせて `PARTNER_SERVICES` の先頭に戻す。無料体験があるので、作品数が同数なら優先する。
+- **A8 / もしも / afb**：サイト URL の変更を申請中。
+
+## 環境についてのメモ
+
+- サンドボックスやクラウドの環境からは Annict / AniList に届かないことがある。その場合はワークフローを手動で動かしてデータを取る。
+- Claude なしでの運用手順は README の冒頭にある。
