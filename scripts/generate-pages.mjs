@@ -1,6 +1,7 @@
 import { mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { xToolsPage } from './x-tools.mjs';
 import { nextIndexPage, nextWorkPages, rankingPage, startLabel, vodPage, workPages, workIndexPage } from './articles.mjs';
 
 if (Number(process.versions.node.split('.')[0]) < 18) {
@@ -414,6 +415,9 @@ const featured = Object.entries(notes)
   .sort((a, b) => Number(Boolean(b.partner)) - Number(Boolean(a.partner)));
 await writeFile(path.join(root, 'featured.json'), `${JSON.stringify({ season: data.season, works: featured })}\n`);
 const articleContext = { data, notes, seasonLabel: label, seasonLabelOf: seasonLabel, origin, ogImage, aboutHtml, partnerLinks, partnerServices };
+// X 運用ツール（オーナー専用。noindex、サイトマップにも入れない）
+await mkdir(path.join(root, 'tools', 'x'), { recursive: true });
+await writeFile(path.join(root, 'tools', 'x', 'index.html'), xToolsPage({ data, next, castLog, origin, seasonLabel: label, nextLabel: next ? seasonLabel(next.season) : '' }));
 for (const [dir, html] of [['ranking', rankingPage(articleContext)], ['vod', vodPage(articleContext)], ['work', workIndexPage(articleContext)], ['next', nextIndexPage(articleContext, next, castLog)]]) {
   await mkdir(path.join(root, dir), { recursive: true });
   await writeFile(path.join(root, dir, 'index.html'), html);
