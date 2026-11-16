@@ -43,6 +43,7 @@ npm run posts -- --start YYYY-MM-DD --days 7 --campaign 2027winter --season-tag 
   - `PARTNER_SERVICES` が提携サービス、`PARTNER_OFFERS` が無料体験の文言。
 - `scripts/generate-pages.mjs`：静的ページの生成。トップの「〇年〇アニメ」の表記も data.json のシーズンに合わせて書き換える。
 - `scripts/articles.mjs`：作品ページ、ランキング、/vod/ 比較表（`VOD_PLANS`）、/next/。
+- `scripts/x-tools.mjs`：X 運用ツール（/tools/x/、noindex・計測なし）。引用ポストの文面と、週のデータポストの文面・画像（canvas）を作る。
 - `scripts/build-public.sh`：Cloudflare に出すファイルを dist/ にコピーする。新しいディレクトリやファイルを公開するときはここに追加する。
 - データ
   - `data.json`：今期。
