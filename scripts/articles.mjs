@@ -526,6 +526,7 @@ export function nextWorkPages(ctx, next, skipIds = new Set()) {
 ${costarSection}
 <h2>配信</h2>
 <p>配信サービスは発表待ちです。発表され次第、このページに追加します。</p>
+${notesSection(ctx.notes?.[work.title], work.title)}
 <h2>キャスト</h2>
 <p class="note">名前を押すと、その声優の今期の出演作と来期の出演予定をまとめて見られます。右端は今期（${esc(ctx.seasonLabel)}）の出演作品数です。</p>
 <table>
