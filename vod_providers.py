@@ -1,5 +1,5 @@
 VOD_PROVIDERS = {
-    "Amazon Prime Video": "https://t.afi-b.com/visit.php?a=915733P-Z510898x&p=K998634n",  # afb（primesignup、新URLで発行し直したもの。2026-11-17）
+    "Amazon Prime Video": "https://t.afi-b.com/visit.php?a=915733P-e510404t&p=K998634n",  # afb の「自由テキスト」原稿（自分の文言で使ってよい原稿。2026-11-17）。置き場所の印 id1 はクリック時に付ける
     "U-NEXT": "https://video.unext.jp",
     "Disney+": "https://www.disneyplus.com/ja-jp",
     "dアニメストア": "https://animestore.docomo.ne.jp",
