@@ -239,8 +239,7 @@ const SERVICE_LABEL={'Amazon Prime Video':'Prime Video'};
 // アフィリエイト提携済みのサービス。ここにあるものだけ「〇〇で見る」ボタンにし、
 // それ以外は「ほかの配信」として文字だけで案内する（未提携のサービスへは送客しない）。
 // 提携できたら、vod_providers.py のURLをアフィリエイトリンクに差し替え、ここに追加する。
-// Amazon Prime Video（afb）はサイトURLの再審査中のため停止中。承認後に先頭へ戻す
-const PARTNER_SERVICES=new Set(['ABEMA']);
+const PARTNER_SERVICES=new Set(['Amazon Prime Video','ABEMA']);
 // 作品数が同じなら、この順で優先する（無料体験があるサービスを先に）
 const partnerRank=p=>{const i=[...PARTNER_SERVICES].indexOf(p);return i<0?99:i};
 // 提携サービスの無料体験など（各社公式で条件を確認してから書く。確認日も入れる）。scripts/articles.mjs の PARTNER_NOTES と同じ内容にする
