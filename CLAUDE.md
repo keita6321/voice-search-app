@@ -67,13 +67,11 @@ npm run posts -- --start YYYY-MM-DD --days 7 --campaign 2027winter --season-tag 
 - 手動で動かすときは Actions タブの Run workflow で、`auto_apply` / `force_registry` / `past_minutes` を指定する。
 - シーズンの切り替わりで止まったら、内容を確認してから `force_registry` と `auto_apply` を付けて再実行する。
 
-## 提携の状況（2026-11-16 時点）
+## 提携の状況（2026-11-17 時点）
 
 - **ABEMA**：A8 のテキストリンクで提携中。
-- **Amazon Prime Video**：afb のサイト URL が再審査中のため、提携リンクを停止中。
-  - 承認されたら、新しい URL で発行し直したリンクを `vod_providers.py` と data.json に入れる。
-  - あわせて `PARTNER_SERVICES` の先頭に戻す。無料体験があるので、作品数が同数なら優先する。
-- **A8 / もしも / afb**：サイト URL の変更を申請中。
+- **Amazon Prime Video**：afb で提携中（primesignup のテキスト原稿。新 URL で発行し直したもの、2026-11-17）。無料体験があるので、作品数が同数なら ABEMA より優先する。
+- **サイト URL の変更**：afb は承認済み（2026-11-17）。A8 / もしもは申請中。
 
 ## 環境についてのメモ
 
