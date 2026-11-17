@@ -4,7 +4,7 @@ VOD_PROVIDERS = {
     "Disney+": "https://www.disneyplus.com/ja-jp",
     "dアニメストア": "https://animestore.docomo.ne.jp",
     "アニメ放題": "https://animehodai.jp",
-    "ABEMA": "https://px.a8.net/svt/ejp?a8mat=4BEPPX+6IKT4I+4EKC+60OXE",  # A8（2026-11-16 提携）
+    "ABEMA": "https://abema.tv/",  # A8 で提携中だが、商品リンクがなく文言の変更・リンク部分だけの使用が禁止のため、自前ボタンでは使わない（2026-11-17）
     "Netflix": "https://www.netflix.com/jp",
     "アニメタイムズ": "https://animetimes.com",
     "DMM TV": "https://tv.dmm.com",
