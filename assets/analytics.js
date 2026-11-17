@@ -1,3 +1,17 @@
+// afb のリンクに、置き場所の印（id1 = page_type）をクリックの直前に付ける。
+// afb の管理画面の「キーワード」に出るので、どのボタンから成果が出たかがわかる。GA4 の計測とは関係なく常に動かす。
+(() => {
+  const mark = event => {
+    const link = event.target instanceof Element ? event.target.closest('a[href*="t.afi-b.com/visit.php"]') : null;
+    if (!link || /[?&]id1=/.test(link.href)) return;
+    const place = (link.dataset.gaPageType || 'other').replace(/[^A-Za-z0-9_]/g, '_').slice(0, 40);
+    link.href += '&id1=' + place;
+  };
+  document.addEventListener('click', mark, true);
+  document.addEventListener('auxclick', mark, true);
+  document.addEventListener('contextmenu', mark, true);
+})();
+
 (() => {
   const GA_MEASUREMENT_ID = 'G-C8Z2Y9L8EP';
   const PROD_HOSTNAMES = ['animecastnow.com'];

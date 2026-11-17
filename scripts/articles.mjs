@@ -44,6 +44,7 @@ table.compare tr.partner td{background:#f5f2fa}.pr{font-size:10px;color:#62517f}
 .countdown{display:inline-block;margin-left:4px;padding:0 7px;border-radius:999px;background:#f5f2fa;color:#62517f;font-size:12px;font-weight:700;white-space:nowrap}
 .countdown:empty{display:none}
 .top-cta{margin:8px 0 4px}
+.raw-ad{padding:4px 2px}.raw-ad a{font-weight:800;font-size:15px}
 .costar{margin:22px 0 8px}.costar h2{margin-bottom:2px}
 .costar-list{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:8px}
 .costar-list a{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;align-items:center;padding:11px 14px;border:1px solid #e3dcef;border-radius:13px;background:#fff;color:inherit;text-decoration:none}
@@ -201,15 +202,25 @@ const VOD_PLANS = {
   'ABEMA': { price: '680円〜※', trial: 'なし', source: 'https://www.cinematoday.jp/ent/?p=41980' },
 };
 
+// A8 で発行されたコードを、1文字も変えずにそのまま貼るもの（A8 は文言の変更やリンク部分だけの使用を禁止しているため）。
+// 書き換えたくなったら、A8 で原稿を取り直して丸ごと差し替える。
+const RAW_AD_CODES = {
+  'ABEMA': `<a href="https://px.a8.net/svt/ejp?a8mat=4BEPPX+6IKT4I+4EKC+60OXE" rel="nofollow">オリジナルコンテンツ数No1！【ABEMAプレミアム】</a>
+<img border="0" width="1" height="1" src="https://www12.a8.net/0.gif?a8mat=4BEPPX+6IKT4I+4EKC+60OXE" alt="">`,
+};
+
 function compareTable(providers, partnerLinks) {
   const rows = providers.map(([provider, ids]) => {
     const plan = VOD_PLANS[provider];
     const partner = partnerLinks[provider];
     const cell = value => (value ? esc(value) : '<span class="note">—</span>');
-    const row = `<tr${partner ? ' class="partner"' : ''}><td><strong>${esc(label(provider))}</strong>${partner ? '<br><span class="pr">PR</span>' : ''}</td><td class="num">${ids.length}作品</td><td>${cell(plan?.price)}</td><td>${cell(plan?.trial)}</td></tr>`;
+    const raw = !partner ? RAW_AD_CODES[provider] : null;
+    const row = `<tr${partner || raw ? ' class="partner"' : ''}><td><strong>${esc(label(provider))}</strong>${partner || raw ? '<br><span class="pr">PR</span>' : ''}</td><td class="num">${ids.length}作品</td><td>${cell(plan?.price)}</td><td>${cell(plan?.trial)}</td></tr>`;
     const cta = partner
       ? `<tr class="partner"><td colspan="4"><a class="cta wide" href="${esc(partner)}" target="_blank" rel="sponsored noopener" data-ga-event="vod_click" data-ga-provider="${esc(provider)}" data-ga-page-type="vod_compare" data-ga-position="0">${esc(ctaText(provider))} ↗</a>${PARTNER_NOTES[provider] ? `<br><span class="note">${esc(PARTNER_NOTES[provider])}</span>` : ''}</td></tr>`
-      : '';
+      : raw
+        ? `<tr class="partner"><td colspan="4"><div class="raw-ad" data-ga-event="vod_click" data-ga-provider="${esc(provider)}" data-ga-page-type="vod_compare" data-ga-position="0">${raw}</div></td></tr>`
+        : '';
     return row + cta;
   }).join('\n');
   const sources = Object.entries(VOD_PLANS).map(([provider, plan]) => `<a href="${esc(plan.source)}" target="_blank" rel="noopener">${esc(label(provider))}</a>`).join('、');
