@@ -484,7 +484,7 @@ function route(){
   const a=actorFromLocation();
   window.__INITIAL_VA__=null;
   const seo=$('#seo-content');if(seo)seo.hidden=true;
-  document.title=a?(a.roles.length?`${a.name}さんの今期出演作｜ANIME CAST NOW`:`${a.name}さんの来期出演作（${NEXT_LABEL}）｜ANIME CAST NOW`):HOME_TITLE;
+  document.title=a?(a.roles.length?`${a.name}（声優）の出演作・${seasonText(D.season).replace(/\s/g,'')}と配信先｜ANIME CAST NOW`:`${a.name}（声優）の来期出演作・${NEXT_LABEL}｜ANIME CAST NOW`):HOME_TITLE;
   $('#s1').hidden=false;$('#s2').hidden=!a;document.body.classList.toggle('modal-open',!!a);
   if(a){detail(a);if(VIEW==='next'&&a.next?.length&&a.roles.length){const h=document.querySelector('.next-h');if(h)h.scrollIntoView({block:'start'})}}else list();
   window.acnPageView();

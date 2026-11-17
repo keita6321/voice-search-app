@@ -137,9 +137,10 @@ function makeNextDescription(actor, upcoming) {
 function makePage(template, actor, roles, works, pageId, label, upcoming = null) {
   const pageUrl = `${origin}/va/${pageId}/`;
   const nextOnly = !roles.length;
+  // 検索は声優名だけで来ることが多いので、名前を先頭に、「声優」「出演作」「配信先」を入れる
   const title = nextOnly
-    ? `${actor.name}さんの来期出演作（${upcoming.label}）｜ANIME CAST NOW`
-    : `${actor.name}さんの今期出演作｜ANIME CAST NOW`;
+    ? `${actor.name}（声優）の来期出演作・${upcoming.label}｜ANIME CAST NOW`
+    : `${actor.name}（声優）の出演作・${label}と配信先｜ANIME CAST NOW`;
   let description = nextOnly ? makeNextDescription(actor, upcoming) : makeDescription(actor, roles, works, label);
   if (!nextOnly && upcoming?.roles.length) description = description.replace(/。$/, `。来期の出演予定${new Set(upcoming.roles.map(r => r.work_id)).size}作品も掲載。`);
   const breadcrumb = JSON.stringify({

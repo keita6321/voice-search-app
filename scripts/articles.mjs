@@ -587,10 +587,10 @@ export function nextIndexPage(ctx, next, castLog = null) {
     const names = cast.slice(0, 3).map(({ actor }) => actor.name);
     return `<tr><td class="date">${date ? esc(date) : '放送日未定'}${date ? `<br>${countdown(work.start_date)}` : ''}</td><td><a href="/work/${esc(id)}/">${esc(work.title)}</a><div class="works">${esc(names.join('、'))}${cast.length > 3 ? ` ほか${cast.length - 3}名` : ''}</div></td></tr>`;
   }).join('\n');
-  const title = `${nextLabel} 放送日一覧とキャスト`;
+  const title = `${nextLabel} 声優・キャスト一覧と放送日`;
   const first = works.find(([, w]) => startLabel(w.start_date));
   const body = `<h1>${esc(title)}</h1>
-<p class="lead">${esc(nextLabel)}として放送予定の${works.length}作品を、放送開始日の順に並べました（放送日が確認できているのは${dated}作品）。作品名を押すと、キャストと、同じ声優が来期に出るほかの作品を確認できます。</p>
+<p class="lead">${esc(nextLabel)}の声優・キャストと放送日をまとめました。放送予定の${works.length}作品を、放送開始日の順に並べています（放送日が確認できているのは${dated}作品）。作品名を押すと、キャストと、同じ声優が来期に出るほかの作品を確認できます。</p>
 <p class="note">声優名で検索すると、その声優の来期の出演予定も見られます（<a href="/">トップで検索</a>）。放送前の情報のため、変更されることがあります（最終更新：${esc(next.updated_at.slice(0, 10))}）。</p>
 ${newCastSection(next, castLog)}
 <h2>放送日の一覧</h2>

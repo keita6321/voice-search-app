@@ -8,10 +8,10 @@
 <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48.png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-title" content="ANIME CAST NOW">
-<title>杉山里穂さんの今期出演作｜ANIME CAST NOW</title>
+<title>杉山里穂（声優）の出演作・2026年秋アニメと配信先｜ANIME CAST NOW</title>
 <meta name="description" content="杉山里穂さんが2026年秋アニメで出演する3作品（テムパル～アイテムの力～、彼女の友達、DARK MACHINE THE ANIMATION）と、配信中のVODをまとめて確認。">
 <link rel="canonical" href="https://animecastnow.com/va/0219/">
-<meta property="og:title" content="杉山里穂さんの今期出演作｜ANIME CAST NOW">
+<meta property="og:title" content="杉山里穂（声優）の出演作・2026年秋アニメと配信先｜ANIME CAST NOW">
 <meta property="og:description" content="杉山里穂さんが2026年秋アニメで出演する3作品（テムパル～アイテムの力～、彼女の友達、DARK MACHINE THE ANIMATION）と、配信中のVODをまとめて確認。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://animecastnow.com/va/0219/">
@@ -19,7 +19,7 @@
 <meta property="og:image" content="https://animecastnow.com/assets/ogp-default.png">
 <meta property="og:locale" content="ja_JP">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="杉山里穂さんの今期出演作｜ANIME CAST NOW">
+<meta name="twitter:title" content="杉山里穂（声優）の出演作・2026年秋アニメと配信先｜ANIME CAST NOW">
 <meta name="twitter:description" content="杉山里穂さんが2026年秋アニメで出演する3作品（テムパル～アイテムの力～、彼女の友達、DARK MACHINE THE ANIMATION）と、配信中のVODをまとめて確認。">
 <meta name="twitter:image" content="https://animecastnow.com/assets/ogp-default.png">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"トップ","item":"https://animecastnow.com/"},{"@type":"ListItem","position":2,"name":"杉山里穂","item":"https://animecastnow.com/va/0219/"}]}</script>
@@ -501,7 +501,7 @@ function route(){
   const a=actorFromLocation();
   window.__INITIAL_VA__=null;
   const seo=$('#seo-content');if(seo)seo.hidden=true;
-  document.title=a?(a.roles.length?`${a.name}さんの今期出演作｜ANIME CAST NOW`:`${a.name}さんの来期出演作（${NEXT_LABEL}）｜ANIME CAST NOW`):HOME_TITLE;
+  document.title=a?(a.roles.length?`${a.name}（声優）の出演作・${seasonText(D.season).replace(/\s/g,'')}と配信先｜ANIME CAST NOW`:`${a.name}（声優）の来期出演作・${NEXT_LABEL}｜ANIME CAST NOW`):HOME_TITLE;
   $('#s1').hidden=false;$('#s2').hidden=!a;document.body.classList.toggle('modal-open',!!a);
   if(a){detail(a);if(VIEW==='next'&&a.next?.length&&a.roles.length){const h=document.querySelector('.next-h');if(h)h.scrollIntoView({block:'start'})}}else list();
   window.acnPageView();
