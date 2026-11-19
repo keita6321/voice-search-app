@@ -110,7 +110,7 @@ function makeStaticContent(actor, roles, works, upcoming) {
   return `<main class="wrap seo-content" id="seo-content">
   <h1>${escapeHtml(actor.name)}</h1>
   <p>読み：${escapeHtml(actor.reading)}</p>
-${roles.length ? `  <h2>今季の出演作品</h2>
+${roles.length ? `  <h2>今期の出演作品</h2>
   <ul>
 ${roleItems}
   </ul>
