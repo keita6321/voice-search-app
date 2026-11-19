@@ -73,3 +73,4 @@ afbで、Amazonプライムビデオ以外のVOD案件（U-NEXT、DMM TV、Hulu�
 - ⬜ afb・A8：媒体（サイト）URLを animecastnow.com に変更
 - ⬜ X：プロフィールと固定ポストのリンクを変更
 - ⬜ GA4：データストリームのURLを animecastnow.com に変更
+- 2026-11-20：特集「今期よく共演している声優コンビ」（/costar/）と「続編アニメの前に見ておきたい作品」（/sequel/）を追加。続編ガイドは data/prev-seasons.json（Prime Video で確かめたものだけ）から作る。
