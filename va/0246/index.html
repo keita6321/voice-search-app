@@ -357,6 +357,30 @@ function renderHeroChips(){
   $('#hero-chips').innerHTML=`<span>${nextView?'来期の注目の声優':'注目の声優'}</span>`+top.map(([a,n])=>`<button type="button" data-id="${esc(a.actor_id)}">${esc(a.name)}<em>${n}作品</em></button>`).join('');
   $('#hero-chips').hidden=!!$('#q').value.trim();
 }
+// 横スクロールの枠を自動で送る。触ったら止める（読んでいる・押そうとしている人の邪魔をしない）
+// mode 'step'：一定間隔で1枚ずつ送り、端まで来たら先頭へ。'flow'：ゆっくり流し続け、中身を2回並べて切れ目なくつなぐ
+function autoScroll(el,mode){
+  if(!el||el.dataset.auto||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  if(el.scrollWidth<=el.clientWidth+4)return;
+  el.dataset.auto='1';
+  let stopped=false,visible=false,timer=null,raf=null,pos=0;
+  const stop=()=>{stopped=true;clearInterval(timer);cancelAnimationFrame(raf)};
+  ['pointerdown','touchstart','wheel','keydown','focusin'].forEach(t=>el.addEventListener(t,stop,{passive:true,once:true}));
+  if(mode==='flow'){
+    // 2回目は読み上げやタブ移動の対象にしない
+    const copies=[...el.children].filter(c=>c.tagName==='A'&&!c.hidden).map(c=>{const x=c.cloneNode(true);x.setAttribute('aria-hidden','true');x.tabIndex=-1;x.classList.add('auto-copy');return x});
+    if(!copies.length)return;
+    copies.forEach(c=>el.appendChild(c));
+    const first=[...el.children].find(c=>c.tagName==='A'&&!c.hidden);
+    const half=()=>copies[0].offsetLeft-first.offsetLeft;
+    pos=el.scrollLeft;
+    const tick=()=>{if(stopped)return;if(visible&&!document.hidden){pos+=0.35;if(pos>=half())pos-=half();el.scrollLeft=pos}raf=requestAnimationFrame(tick)};
+    raf=requestAnimationFrame(tick);
+  }else{
+    timer=setInterval(()=>{if(stopped||!visible||document.hidden)return;const card=el.firstElementChild;const w=(card?.offsetWidth||300)+10;if(el.scrollLeft+el.clientWidth>=el.scrollWidth-8)el.scrollTo({left:0,behavior:'smooth'});else el.scrollBy({left:w,behavior:'smooth'})},4000);
+  }
+  new IntersectionObserver(es=>{visible=es[0].isIntersecting},{threshold:.6}).observe(el);
+}
 function renderFeature(f){
   const el=$('#feature');if(!el)return;
   let h='';const tiles=[];
@@ -378,7 +402,10 @@ function renderFeature(f){
     const update=()=>{el.querySelector('.prev').hidden=car.scrollLeft<8;el.querySelector('.next').hidden=car.scrollLeft+car.clientWidth>=car.scrollWidth-8};
     el.querySelectorAll('.feature-nav').forEach(b=>b.onclick=()=>car.scrollBy({left:Number(b.dataset.dir)*(car.querySelector('.feature-card')?.offsetWidth+10||300),behavior:'smooth'}));
     car.addEventListener('scroll',update,{passive:true});update();
-  }el.hidden=!h||!!$('#q').value.trim();
+    el.querySelectorAll('.feature-nav').forEach(b=>b.addEventListener('click',()=>car.dispatchEvent(new Event('pointerdown'))));
+    setTimeout(()=>autoScroll(car,'step'),1500);
+  }
+  setTimeout(()=>autoScroll(document.querySelector('.feature-links'),'flow'),1500);el.hidden=!h||!!$('#q').value.trim();
 }
 Promise.all([fetch('/data.json').then(r=>r.json()),nextData]).then(([d,n])=>{
   D=d;
