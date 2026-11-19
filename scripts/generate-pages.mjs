@@ -285,9 +285,20 @@ try {
 const md = date => { const [, m, d] = String(date).split('-').map(Number); return `${m}/${d}`; };
 const escHtml = text => String(text).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const latestNews = news[0];
-const updatesHtml = `<!--updates--><div class="updates"><div class="upd-row"><span class="upd-date">毎週月曜更新・最終更新 ${md(data.updated_at.slice(0, 10))}</span><a class="x-follow" href="https://x.com/animecastnow" target="_blank" rel="noopener" data-ga-event="x_follow_click" data-ga-page-type="home">Xでフォロー</a></div>${latestNews ? `<${latestNews.url ? `a href="${escHtml(latestNews.url)}" data-ga-event="news_click" data-ga-page-type="home"` : 'p'} class="upd-news"><b>お知らせ</b><time datetime="${escHtml(latestNews.date)}">${md(latestNews.date)}</time><span>${escHtml(latestNews.text)}</span></${latestNews.url ? 'a' : 'p'}>` : ''}</div><!--/updates-->`;
+// 「最終更新」の置き場所。'sub'：シーズン表記の行の続き／'h1'：見出しのすぐ下に1行／'search'：検索窓の下に小さく
+const UPDATE_DATE_STYLE = process.env.UPDATE_DATE_STYLE || 'sub';
+const updated = md(data.updated_at.slice(0, 10));
+const dateHtml = {
+  sub: `<span class="upd-date upd-sub">${updated}更新・毎週月曜</span>`,
+  h1: `<p class="upd-date upd-h1">毎週月曜更新・最終更新 ${updated}</p>`,
+  search: `<p class="upd-date upd-search">毎週月曜更新・最終更新 ${updated}</p>`,
+}[UPDATE_DATE_STYLE];
+const newsLink = latestNews ? `<${latestNews.url ? `a href="${escHtml(latestNews.url)}" data-ga-event="news_click" data-ga-page-type="home"` : 'span'} class="news-item"><time datetime="${escHtml(latestNews.date)}">${md(latestNews.date)}</time>${escHtml(latestNews.text)}</${latestNews.url ? 'a' : 'span'}>` : '';
+const newsHtml = `<!--news-->${UPDATE_DATE_STYLE === 'search' ? dateHtml : ''}<div class="newsbar">${latestNews ? `<b class="news-label">お知らせ</b><div class="news-track"><div class="news-run">${newsLink}</div></div>` : '<span class="news-track"></span>'}<a class="x-follow" href="https://x.com/animecastnow" target="_blank" rel="noopener" data-ga-event="x_follow_click" data-ga-page-type="home">Xでフォロー</a></div><!--/news-->`;
 const template = rawTemplate.replace(/\d{4}年( ?)[冬春夏秋]アニメ/g, (_, space) => (space ? label.replace('年', '年 ') : label))
-  .replace(/<!--updates-->[\s\S]*?<!--\/updates-->/, updatesHtml);
+  .replace(/<!--updates-->[\s\S]*?<!--\/updates-->/, `<!--updates-->${UPDATE_DATE_STYLE === 'sub' ? dateHtml : ''}<!--/updates-->`)
+  .replace(/<!--h1date-->[\s\S]*?<!--\/h1date-->/, `<!--h1date-->${UPDATE_DATE_STYLE === 'h1' ? dateHtml : ''}<!--/h1date-->`)
+  .replace(/<!--news-->[\s\S]*?<!--\/news-->/, newsHtml);
 if (template !== rawTemplate) await writeFile(path.join(root, 'index.html'), template);
 // 来期の先行取得（data-next.json）。なければ来期のページは作らない
 let next = null;
