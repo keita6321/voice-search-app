@@ -58,12 +58,14 @@ table.compare tr.partner td{background:#f5f2fa}.pr{font-size:10px;color:#62517f}
 .cast-list a:hover{border-color:#62517f}
 .cast-name{font-weight:800;font-size:16px;line-height:1.35;color:#1d2a44}
 .cast-role{grid-column:1;color:#5d5a52;font-size:12px}
-.cast-n{grid-column:2;grid-row:1/3;color:#62517f;font-size:12px;font-weight:800;white-space:nowrap}
+.cast-n{grid-column:2;grid-row:1/4;color:#62517f;font-size:12px;font-weight:800;white-space:nowrap}
+.cast-rep{grid-column:1;color:#7a7568;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cast details{margin-top:8px}
+.prev{margin:22px 0 8px;padding:14px 16px;border:1px solid #e3dcef;border-radius:14px;background:#f8f6fc}.prev h2{margin:0 0 6px}.prev p{margin:6px 0}
 details.notes summary{margin-top:2px}
 `;
 
-function page({ origin, ogImage, aboutHtml, path, title, description, body, noindex = false, extraScript = '' }) {
+function page({ origin, ogImage, aboutHtml, path, title, description, body, noindex = false, extraScript = '', jsonLd = null }) {
   const { style, scripts } = shellParts(aboutHtml);
   const url = `${origin}${path}`;
   return `<!DOCTYPE html>
@@ -85,7 +87,7 @@ ${noindex ? '<meta name="robots" content="noindex">\n' : ''}<meta name="descript
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48.png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<style>${style}${EXTRA_STYLE}</style>
+${jsonLd ? `<script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, '\\u003c')}</script>\n` : ''}<style>${style}${EXTRA_STYLE}</style>
 </head>
 <body>
 <main>
@@ -354,11 +356,25 @@ ${hosts.length ? `<p class="note">参考：${hosts.join('、')}</p>` : ''}
 // 「この作品の声優が、ほかに出ている作品」。作品ページの最初の画面に出す（共演人数の多い順、5件＋残りはたたむ）
 // キャスト（声優ページへの入口）。最初の CAST_SHOWN 人を出し、残りは畳む
 const CAST_SHOWN = 8;
-function castHtml({ id, cast, countOf, note, pageType }) {
+// 作品名を比べるための正規化（空白・記号を除く）
+const normTitle = t => String(t ?? '').normalize('NFKC').toLowerCase().replace(/[\s・:：!！?？、。「」『』()（）\-－〜~]/g, '');
+// 同じシリーズか（先頭の6文字が同じなら同じシリーズとみなす）
+function sameSeries(a, b) {
+  const x = normTitle(a), y = normTitle(b);
+  const n = Math.min(6, x.length, y.length);
+  return n > 0 && x.slice(0, n) === y.slice(0, n);
+}
+// 声優の主な過去作から1つ（この作品と同じシリーズは除く）
+function repWork(past, actorId, title) {
+  return (past?.(actorId) ?? []).find(w => w.character && !sameSeries(w.title, title)) ?? null;
+}
+
+function castHtml({ id, title, cast, countOf, note, pageType, past }) {
   if (!cast.length) return '';
   const item = ({ actor, roles }, index) => {
     const count = countOf(actor);
-    return `<li><a href="/va/${toPageId(actor.actor_id)}/" data-ga-event="cast_click" data-ga-work-id="${esc(id)}" data-ga-actor-id="${esc(actor.actor_id)}" data-ga-position="${index + 1}" data-ga-page-type="${esc(pageType)}"><span class="cast-name">${esc(actor.name)}</span><span class="cast-role">${esc(roles.join('／'))}${/ナレーション$/.test(roles.at(-1) ?? '') ? '' : ' 役'}</span><span class="cast-n">${count ? `今期${count}作品 ›` : '›'}</span></a></li>`;
+    const rep = repWork(past, actor.actor_id, title);
+    return `<li><a href="/va/${toPageId(actor.actor_id)}/" data-ga-event="cast_click" data-ga-work-id="${esc(id)}" data-ga-actor-id="${esc(actor.actor_id)}" data-ga-position="${index + 1}" data-ga-page-type="${esc(pageType)}"><span class="cast-name">${esc(actor.name)}</span><span class="cast-role">${esc(roles.join('／'))}${/ナレーション$/.test(roles.at(-1) ?? '') ? '' : ' 役'}</span>${rep ? `<span class="cast-rep">主な出演：${esc(rep.character)}（${esc(rep.title)}）</span>` : ''}<span class="cast-n">${count ? `今期${count}作品 ›` : '›'}</span></a></li>`;
   };
   return `<section class="cast" aria-labelledby="cast-h">
 <h2 id="cast-h">キャスト（${cast.length}名）</h2>
@@ -390,6 +406,44 @@ ${related.slice(5).map((r, i) => item(r, i + 5)).join('\n')}
 </ol>
 </details>` : ''}
 </section>`;
+}
+
+// 続編の作品で「前のシーズンから見るなら」を出す（data/prev-seasons.json。配信を確かめた日付つき）
+function prevSection({ ctx, id, work, pageType }) {
+  const entry = ctx.prevSeasons?.[work.title];
+  const url = entry && ctx.partnerLinks?.[entry.provider];
+  if (!url) return '';
+  const note = PARTNER_NOTES[entry.provider];
+  return `<section class="prev" aria-labelledby="prev-h">
+<h2 id="prev-h">前のシーズンから見るなら</h2>
+<p>「${esc(entry.series)}」の${esc(entry.label)}は、${esc(label(entry.provider))}でプライム会員なら追加料金なしで見られます（${esc(entry.checked)}時点）。</p>
+${ctx.notes?.[work.title]?.before ? `<p class="note">${esc(ctx.notes[work.title].before)}</p>` : ''}
+<p><a class="cta" href="${esc(url)}" target="_blank" rel="sponsored noopener" data-ga-event="vod_click" data-ga-provider="${esc(entry.provider)}" data-ga-work-id="${esc(id)}" data-ga-work-title="${esc(work.title)}" data-ga-page-type="${esc(pageType)}" data-ga-position="1">${esc(ctaText(entry.provider))} ↗</a></p>
+${note ? `<p class="note">${esc(note)}</p>` : ''}
+</section>`;
+}
+
+// 作品ページの構造化データ（作品・キャスト・パンくず）
+function workJsonLd({ origin, id, work, cast, listName, listPath }) {
+  const url = `${origin}/work/${id}/`;
+  const series = {
+    '@type': 'TVSeries',
+    name: work.title,
+    url,
+    inLanguage: 'ja',
+    ...(work.start_date ? { startDate: work.start_date } : {}),
+    ...(work.official_url ? { sameAs: [work.official_url] } : {}),
+    actor: cast.map(({ actor }) => ({ '@type': 'Person', name: actor.name, url: `${origin}/va/${toPageId(actor.actor_id)}/` })),
+  };
+  const breadcrumb = {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'ANIME CAST NOW', item: `${origin}/` },
+      { '@type': 'ListItem', position: 2, name: listName, item: `${origin}${listPath}` },
+      { '@type': 'ListItem', position: 3, name: work.title, item: url },
+    ],
+  };
+  return { '@context': 'https://schema.org', '@graph': [series, breadcrumb] };
 }
 
 export function workPages(ctx) {
@@ -431,7 +485,7 @@ export function workPages(ctx) {
 ${others.length && partners.length ? `<p class="note">リンクは提携しているサービスだけに付けています。</p>` : ''}
 <p class="note">見放題・レンタルの区別や配信開始日は、各サービスでご確認ください。</p>`
       : '';
-    const castSection = castHtml({ id, cast, countOf: actor => new Set(actor.roles.map(r => r.work_id)).size, note: '名前を押すと、その声優の今期の出演作と配信先をまとめて見られます。', pageType: 'work' });
+    const castSection = castHtml({ id, title: work.title, past: ctx.past, cast, countOf: actor => new Set(actor.roles.map(r => r.work_id)).size, note: '名前を押すと、その声優の今期の出演作と配信先をまとめて見られます。', pageType: 'work' });
     const costarSection = costarHtml({ id, title: work.title, related, works: data.works, heading: 'このキャストが、今期ほかに出ている作品', what: `${seasonLabel}`, pageType: 'work' });
 
     const body = `<h1>「${esc(work.title)}」の配信はどこ？</h1>
@@ -440,6 +494,7 @@ ${buttons ? `<p class="top-cta">${buttons}</p>
 ${notesFor.map(note => `<p class="note">${esc(note)}</p>`).join('\n')}` : ''}
 ${castSection}
 ${costarSection}
+${prevSection({ ctx, id, work, pageType: 'work_prev' })}
 ${vodSection}
 ${notesSection(notes[work.title], work.title)}
 ${work.official_url ? `<p><a href="${esc(work.official_url)}" target="_blank" rel="noopener" data-ga-event="official_site_click" data-ga-work-id="${esc(id)}" data-ga-work-title="${esc(work.title)}">公式サイト ↗</a></p>` : ''}
@@ -453,7 +508,7 @@ ${notesFor.map(note => `<p class="note">${esc(note)}</p>`).join('\n')}</div>` : 
       : `「${work.title}」のキャスト${cast.length}名と、同じ声優が出ている${seasonLabel}のほかの作品をまとめています。配信サービスは確認中です。`;
     // 配信先が確認できていない作品は検索に出さない（中身の薄いページを増やさないため）
     const indexed = vods.length > 0;
-    const html = page({ ...ctx, path: `/work/${id}/`, title: `「${work.title}」の配信はどこ？見られるサービスとキャスト`, description, body, noindex: !indexed });
+    const html = page({ ...ctx, path: `/work/${id}/`, title: `「${work.title}」の配信はどこ？見られるサービスとキャスト`, description, body, noindex: !indexed, jsonLd: workJsonLd({ origin: ctx.origin, id, work, cast, listName: `${seasonLabel} 作品一覧`, listPath: '/work/' }) });
     return { id, html, indexed };
   });
 }
@@ -543,12 +598,13 @@ export function nextWorkPages(ctx, next, skipIds = new Set()) {
     const lead = date
       ? `「${esc(work.title)}」は、${esc(year)}年${esc(date)}から放送開始予定です。${countdown(work.start_date)}`
       : `「${esc(work.title)}」は${esc(nextLabel)}として放送予定です。放送日はまだ確認できていません。`;
-    const castSection = castHtml({ id, cast, countOf: actor => counts.get(actor.actor_id), note: `名前を押すと、その声優の今期（${ctx.seasonLabel}）の出演作と来期の出演予定をまとめて見られます。`, pageType: 'next_work' });
+    const castSection = castHtml({ id, title: work.title, past: ctx.past, cast, countOf: actor => counts.get(actor.actor_id), note: `名前を押すと、その声優の今期（${ctx.seasonLabel}）の出演作と来期の出演予定をまとめて見られます。`, pageType: 'next_work' });
     const costarSection = costarHtml({ id, title: work.title, related, works: next.works, heading: 'このキャストが、来期ほかに出る作品', what: `${nextLabel}`, pageType: 'next_work' });
     const body = `<h1>「${esc(work.title)}」（${esc(nextLabel)}）の放送日とキャスト</h1>
 <p class="lead">${lead}</p>
 ${castSection}
 ${costarSection}
+${prevSection({ ctx, id, work, pageType: 'next_work_prev' })}
 <h2>配信</h2>
 <p>配信サービスは発表待ちです。発表され次第、このページに追加します。</p>
 ${notesSection(ctx.notes?.[work.title], work.title)}
@@ -559,7 +615,7 @@ ${work.official_url ? `<p><a href="${esc(work.official_url)}" target="_blank" re
     const description = `「${work.title}」（${nextLabel}）は${date ? `${date}放送開始` : '放送日未定'}。キャスト${cast.length}名と、同じ声優が来期に出るほかの作品をまとめています。`;
     // キャストが発表済みの作品だけ検索に出す（配信先はまだなくてよい）
     const indexed = cast.length > 0;
-    const html = page({ ...ctx, path: `/work/${id}/`, title: `「${work.title}」（${nextLabel}）の放送日とキャスト`, description, body, noindex: !indexed, extraScript: COUNTDOWN_SCRIPT });
+    const html = page({ ...ctx, path: `/work/${id}/`, title: `「${work.title}」（${nextLabel}）の放送日とキャスト`, description, body, noindex: !indexed, extraScript: COUNTDOWN_SCRIPT, jsonLd: workJsonLd({ origin: ctx.origin, id, work, cast, listName: `${nextLabel} 放送日とキャスト`, listPath: '/next/' }) });
     return { id, html, indexed };
   });
 }
