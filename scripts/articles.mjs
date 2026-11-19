@@ -725,6 +725,7 @@ ${schedule}
 export function costarPairsPage(ctx) {
   const { data, seasonLabel } = ctx;
   const MIN = 3;
+  const SHOWN = 5; // 最初に見せる組数（残りは畳む）
   // 作品ごとに、声優と役名
   const byWork = new Map();
   for (const actor of data.voice_actors) {
@@ -755,10 +756,15 @@ export function costarPairsPage(ctx) {
   const title = `${seasonLabel} よく共演している声優コンビ`;
   const description = `${seasonLabel}のテレビアニメで、${MIN}作品以上で共演している声優の組み合わせ${list.length}組をまとめました。${most ? `最多は${most.a.name}さんと${most.b.name}さんの${most.works.length}作品。` : ''}共演作と役名も確認できます。`;
   const body = `<h1>${esc(title)}</h1>
-<p class="lead">今期、同じ作品で何度も顔を合わせている声優は？ ${esc(seasonLabel)}の作品で${MIN}作品以上共演している${list.length}組を、共演の多い順に並べました。名前を押すとその声優の出演作と配信先、作品名を押すと作品ページを見られます。</p>
+<p class="lead">今期、同じ作品で何度も顔を合わせている声優は？ ${esc(seasonLabel)}の作品で${MIN}作品以上共演している${list.length}組を、共演の多い順に並べました（上位5組を表示）。名前を押すとその声優の出演作と配信先、作品名を押すと作品ページを見られます。</p>
 ${list.length ? `<ol class="pair top">
-${list.map(card).join('\n')}
-</ol>` : '<p>今期はまだ、3作品以上で共演している組み合わせがありません。</p>'}
+${list.slice(0, SHOWN).map(card).join('\n')}
+</ol>
+${list.length > SHOWN ? `<details><summary>6位以降の${list.length - SHOWN}組を見る</summary>
+<ol class="pair" start="${SHOWN + 1}">
+${list.slice(SHOWN).map((p, i) => card(p, i + SHOWN)).join('\n')}
+</ol>
+</details>` : ''}` : '<p>今期はまだ、3作品以上で共演している組み合わせがありません。</p>'}
 <h2>集計について</h2>
 <p class="note">掲載している${esc(seasonLabel)}のテレビアニメ${Object.keys(data.works).length}作品のキャストから、同じ作品に出ている声優の組み合わせを数えました（劇場版などもデータにあれば含みます）。役名はアニメ作品データベース「Annict」の登録にもとづきます（最終更新：${esc(data.updated_at.slice(0, 10))}）。放送開始後にキャストが追加される作品もあるため、数は変わることがあります。</p>`;
   return page({ ...ctx, path: '/costar/', title, description, body });
