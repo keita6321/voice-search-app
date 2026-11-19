@@ -61,6 +61,25 @@ table.compare tr.partner td{background:#f5f2fa}.pr{font-size:10px;color:#62517f}
 .cast-n{grid-column:2;grid-row:1/4;color:#62517f;font-size:12px;font-weight:800;white-space:nowrap}
 .cast-rep{grid-column:1;color:#7a7568;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cast details{margin-top:8px}
+.rk{list-style:none;margin:12px 0;padding:0;display:grid;gap:8px}
+.rk a{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:2px 12px;align-items:center;padding:11px 14px;border:1px solid #e3dcef;border-radius:14px;background:#fff;color:inherit;text-decoration:none}
+.rk a:hover{border-color:#62517f}
+.rk-no{grid-row:1/3;min-width:2.4em;text-align:center;font-size:18px;font-weight:900;color:#62517f;line-height:1}.rk-no small{font-size:11px;margin-left:1px}
+.rk-name{font-size:16px;font-weight:900;color:#1d2a44;line-height:1.35}
+.rk-works{grid-column:2;color:#5d5a52;font-size:12px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.rk-n{grid-column:3;grid-row:1/3;padding:4px 10px;border-radius:999px;background:#efebf5;color:#62517f;font-size:13px;font-weight:800;white-space:nowrap}
+.rk.top a{padding:16px;border-width:2px}.rk.top .rk-no{font-size:30px}.rk.top .rk-name{font-size:20px}.rk.top .rk-n{background:#62517f;color:#fff;font-size:14px}
+.rk .r1 a{border-color:#F5C542;background:#fffaea}.rk .r1 .rk-no{color:#b8860b}
+.rk .r2 a{border-color:#c4c8d0;background:#f7f8fa}.rk .r2 .rk-no{color:#7d8592}
+.rk .r3 a{border-color:#ddb08a;background:#fdf6f0}.rk .r3 .rk-no{color:#a86a3d}
+.month{margin:22px 0 6px;font-size:15px;font-weight:900;color:#62517f}
+.sched{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.sched>li{display:grid;grid-template-columns:62px minmax(0,1fr);gap:12px;padding:12px 14px;border:1px solid #e3dcef;border-radius:14px;background:#fff}
+.sched-date{text-align:center;font-weight:900;color:#1d2a44;font-size:15px;line-height:1.25}.sched-date small{display:block;font-size:11px;color:#62517f;font-weight:700}.sched-date .countdown{display:block;margin-top:4px;font-size:10px;color:#5d5a52;font-weight:700}
+.sched-title{display:block;font-weight:800;font-size:15px;line-height:1.4;color:#1d2a44;text-decoration:none}
+.sched-cast{margin-top:3px;font-size:12.5px;color:#5d5a52;line-height:1.6}.sched-cast a{color:#62517f;font-weight:700;text-decoration:none;border-bottom:1px solid #d6cde6}
+.sched-chip{display:inline-block;margin-top:6px;padding:2px 9px;border-radius:999px;background:#F5C542;color:#1d2a44;font-size:11px;font-weight:800;text-decoration:none}
+.chips-va{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px}.chips-va a{display:inline-flex;align-items:baseline;gap:5px;padding:7px 12px;border:1px solid #e3dcef;border-radius:999px;background:#fff;color:#1d2a44;font-weight:800;font-size:14px;text-decoration:none}.chips-va a em{font-style:normal;font-size:11px;color:#62517f}
 .prev{margin:22px 0 8px;padding:14px 16px;border:1px solid #e3dcef;border-radius:14px;background:#f8f6fc}.prev h2{margin:0 0 6px}.prev p{margin:6px 0}
 details.notes summary{margin-top:2px}
 `;
@@ -138,40 +157,29 @@ export function rankingPage(ctx) {
   const top = ranked[0]?.item;
   const workTitle = id => data.works[id]?.title ?? '';
 
-  const rows = ranked.map(({ rank, item: { actor, count } }) => {
+  const card = ({ rank, item: { actor, count } }, index) => {
     const seen = new Set();
-    const works = actor.roles
-      .filter(role => !seen.has(role.work_id) && seen.add(role.work_id))
-      .map(role => `<a href="/work/${esc(role.work_id)}/">${esc(workTitle(role.work_id))}</a>（${esc(role.character_name)}）`)
-      .join('、');
-    return `<tr><td class="rank">${rank}位</td><td><a href="/va/${toPageId(actor.actor_id)}/">${esc(actor.name)}</a><div class="works">${works}</div></td><td class="num">${count}作品</td></tr>`;
-  }).join('\n');
+    const titles = actor.roles.filter(role => !seen.has(role.work_id) && seen.add(role.work_id)).map(role => workTitle(role.work_id));
+    return `<li class="r${rank}"><a href="/va/${toPageId(actor.actor_id)}/" data-ga-event="ranking_click" data-ga-actor-id="${esc(actor.actor_id)}" data-ga-position="${index + 1}" data-ga-page-type="ranking"><span class="rk-no">${rank}<small>位</small></span><span class="rk-name">${esc(actor.name)}</span><span class="rk-works">${esc(titles.join('、'))}</span><span class="rk-n">${count}作品 ›</span></a></li>`;
+  };
+  const topRows = ranked.filter(r => r.rank <= 3);
+  const restRows = ranked.filter(r => r.rank > 3);
 
   const title = `${seasonLabel}の声優 出演本数ランキング`;
   const description = `${seasonLabel}のテレビアニメに出演している声優${total}名を、出演作品数で集計したランキングです。${top ? `1位は${top.actor.name}さん（${top.count}作品）。` : ''}出演作と役名、配信サービスも確認できます。`;
   const body = `<h1>${esc(title)}</h1>
-<p class="lead">今期はどの声優が、いくつの作品に出ているのか。ANIME CAST NOW に掲載している${esc(seasonLabel)}のテレビアニメ${Object.keys(data.works).length}作品のキャスト情報から、声優ごとの出演作品数を集計しました。</p>
-
-<h2>今期のデータ</h2>
-<ul>
-<li>掲載している声優：${total}名</li>
-<li>2作品以上に出演：${multi}名（${Math.round((multi / total) * 100)}%）</li>
-<li>3作品以上に出演：${three}名</li>
-<li>1人あたりの平均出演数：${average}作品</li>
-</ul>
-<p>${top ? `最も多かったのは${esc(top.actor.name)}さんで、${top.count}作品に出演しています。` : ''}半数以上の声優は今期1作品のみの出演で、複数の作品を掛け持ちしている声優は一部に集中しています。</p>
-
-<h2>${threshold}作品以上に出演している声優</h2>
-<p class="note">作品名の後ろのかっこ内は役名です。名前を押すと、各作品の配信サービスを確認できます。</p>
-<table>
-<thead><tr><th>順位</th><th>声優・出演作品</th><th>作品数</th></tr></thead>
-<tbody>
-${rows}
-</tbody>
-</table>
+<p class="lead">今期いちばん多くの作品に出ている声優は？ ${esc(seasonLabel)}の出演作品数で並べました。名前を押すと、出演作と役名、配信サービスを見られます。</p>
+<ol class="rk top">
+${topRows.map((r, i) => card(r, i)).join('\n')}
+</ol>
+${restRows.length ? `<h2>${restRows[0].rank}位から（${threshold}作品以上）</h2>
+<ol class="rk">
+${restRows.map((r, i) => card(r, topRows.length + i)).join('\n')}
+</ol>` : ''}
 
 <h2>集計について</h2>
-<p class="note">作品とキャストの情報は、アニメ作品データベース「Annict」のAPIをもとにしています（最終更新：${esc(data.updated_at.slice(0, 10))}）。同じ作品で複数の役を演じている場合は1作品として数えています。放送開始後にキャストが追加される作品もあるため、数は変わることがあります。</p>`;
+<p class="note">掲載している${esc(seasonLabel)}のテレビアニメ${Object.keys(data.works).length}作品のキャストから、声優ごとの出演作品数を数えました。掲載している声優は${total}名で、2作品以上に出ているのは${multi}名（${Math.round((multi / total) * 100)}%）、3作品以上は${three}名、1人あたりの平均は${average}作品です。同じ作品で複数の役を演じている場合は1作品として数えています。</p>
+<p class="note">作品とキャストの情報は、アニメ作品データベース「Annict」のAPIをもとにしています（最終更新：${esc(data.updated_at.slice(0, 10))}）。放送開始後にキャストが追加される作品もあるため、数は変わることがあります。</p>`;
   return page({ ...ctx, path: '/ranking/', title, description, body });
 }
 
@@ -655,25 +663,42 @@ export function nextIndexPage(ctx, next, castLog = null) {
   const byWork = castOf(next);
   const works = Object.entries(next.works).sort(byStart);
   const dated = works.filter(([, w]) => startLabel(w.start_date)).length;
-  const rows = works.map(([id, work]) => {
+  // 来期の出演が多い声優（声優ページへの入口）
+  const busy = next.voice_actors
+    .map(actor => ({ actor, n: new Set(actor.roles.map(r => r.work_id)).size }))
+    .filter(x => x.n >= 2)
+    .sort((x, y) => y.n - x.n || x.actor.reading.localeCompare(y.actor.reading, 'ja'))
+    .slice(0, 8);
+  const busyHtml = busy.length ? `<h2>来期の出演が多い声優</h2>
+<div class="chips-va">${busy.map(({ actor, n }, i) => `<a href="/va/${toPageId(actor.actor_id)}/" data-ga-event="ranking_click" data-ga-actor-id="${esc(actor.actor_id)}" data-ga-position="${i + 1}" data-ga-page-type="next_busy">${esc(actor.name)}<em>${n}作品</em></a>`).join('')}</div>` : '';
+  const item = ([id, work]) => {
     const cast = byWork.get(id) ?? [];
+    const match = /^\d{4}-(\d{2})-(\d{2})$/.exec(work.start_date ?? '');
     const date = startLabel(work.start_date);
-    const names = cast.slice(0, 3).map(({ actor }) => actor.name);
-    return `<tr><td class="date">${date ? esc(date) : '放送日未定'}${date ? `<br>${countdown(work.start_date)}` : ''}</td><td><a href="/work/${esc(id)}/">${esc(work.title)}</a><div class="works">${esc(names.join('、'))}${cast.length > 3 ? ` ほか${cast.length - 3}名` : ''}</div></td></tr>`;
-  }).join('\n');
+    const prev = ctx.prevSeasons?.[work.title] && ctx.partnerLinks?.[ctx.prevSeasons[work.title].provider];
+    const names = cast.slice(0, 4).map(({ actor }, i) => `<a href="/va/${toPageId(actor.actor_id)}/" data-ga-event="cast_click" data-ga-work-id="${esc(id)}" data-ga-actor-id="${esc(actor.actor_id)}" data-ga-position="${i + 1}" data-ga-page-type="next_index">${esc(actor.name)}</a>`);
+    return `<li><div class="sched-date">${date ? `${Number(match[1])}/${Number(match[2])}<small>${esc(date.slice(-3))}</small>${countdown(work.start_date)}` : '未定'}</div><div><a class="sched-title" href="/work/${esc(id)}/">${esc(work.title)}</a><div class="sched-cast">${cast.length ? `${names.join('、')}${cast.length > 4 ? ` ほか${cast.length - 4}名` : ''}` : 'キャスト未発表'}</div>${prev ? `<a class="sched-chip" href="/work/${esc(id)}/#prev-h">前のシーズンはPrime Videoで</a>` : ''}</div></li>`;
+  };
+  const groups = new Map();
+  for (const entry of works) {
+    const m = /^\d{4}-(\d{2})/.exec(entry[1].start_date ?? '');
+    const key = m && startLabel(entry[1].start_date) ? `${Number(m[1])}月から放送` : '放送日未定';
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(entry);
+  }
+  const schedule = [...groups.entries()].map(([key, list]) => `<h3 class="month">${esc(key)}（${list.length}作品）</h3>
+<ul class="sched">
+${list.map(item).join('\n')}
+</ul>`).join('\n');
   const title = `${nextLabel} 声優・キャスト一覧と放送日`;
   const first = works.find(([, w]) => startLabel(w.start_date));
   const body = `<h1>${esc(title)}</h1>
-<p class="lead">${esc(nextLabel)}の声優・キャストと放送日をまとめました。放送予定の${works.length}作品を、放送開始日の順に並べています（放送日が確認できているのは${dated}作品）。作品名を押すと、キャストと、同じ声優が来期に出るほかの作品を確認できます。</p>
-<p class="note">声優名で検索すると、その声優の来期の出演予定も見られます（<a href="/">トップで検索</a>）。放送前の情報のため、変更されることがあります（最終更新：${esc(next.updated_at.slice(0, 10))}）。</p>
+<p class="lead">${esc(nextLabel)}の${works.length}作品を、放送開始日の順にまとめました。声優の名前を押すと、その声優の今期の出演作と来期の出演予定を見られます。</p>
+${busyHtml}
 ${newCastSection(next, castLog)}
 <h2>放送日の一覧</h2>
-<table>
-<thead><tr><th>放送開始</th><th>作品・おもなキャスト</th></tr></thead>
-<tbody>
-${rows}
-</tbody>
-</table>`;
+${schedule}
+<p class="note">放送日が確認できているのは${dated}作品です。放送前の情報のため、変更されることがあります（最終更新：${esc(next.updated_at.slice(0, 10))}）。声優名での検索は<a href="/">トップ</a>から。</p>`;
   const description = `${nextLabel}の${works.length}作品を放送開始日の順にまとめた一覧。${first ? `最初の放送は${startLabel(first[1].start_date)}の「${first[1].title}」。` : ''}キャストと、声優ごとの来期の出演予定も確認できます。`;
   return page({ ...ctx, path: '/next/', title, description, body, extraScript: COUNTDOWN_SCRIPT });
 }
