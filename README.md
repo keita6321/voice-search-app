@@ -149,6 +149,8 @@ Install dependencies with `python -m pip install -r requirements.txt` and `pytho
 
 `data/work_notes.json`に書いた作品は、作品ページ（`/work/<id>/`）に「どんな作品？」の欄が出ます。キーは`data.json`の作品名と完全に一致させます。項目は`intro`（紹介文）、`points`（見どころ）、`before`（前作は見ておくべき？、続編のみ）、`broadcast`（放送枠）、`staff`（主なスタッフ）、`sources`（確認に使った資料のURL）です。放送前・放送中の作品なので、結末に触れるネタバレは書きません。
 
+トップの「お知らせ」は `data/news.json` の先頭の1件が出ます（新しい順に書く。スマホで1行に収まる20字前後が目安。`url` を書くとリンクになる）。書いたら「0.」の手順でページを作り直してコミットします。「最終更新」の日付は `data.json` の `updated_at` から自動で入ります。
+
 `data/prev-seasons.json`に書いた続編は、作品ページに「前のシーズンから見るなら」の枠と Prime Video のボタンが出ます。Prime Video の作品ページで、前のシーズンの全話（ほぼ全話）に「30日間の無料体験」が付いている＝プライム会員なら追加料金なしで見られることを確かめたものだけを書きます。第1話だけ・数話だけのお試しや、チャンネル（dアニメストア for Prime Video など）での配信は載せません。`checked`に確かめた日を入れ、シーズンが変わったら見直します。
 
 ## 来期の先行取得（data-next.json）
