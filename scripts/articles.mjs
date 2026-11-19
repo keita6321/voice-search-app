@@ -89,6 +89,8 @@ table.compare tr.partner td{background:#f5f2fa}.pr{font-size:10px;color:#62517f}
 .pair-works{margin:8px 0 0;padding:0;list-style:none;font-size:13px;line-height:1.7}.pair-works li::before{content:"・";color:#62517f}.pair-works a{color:#62517f;font-weight:700}.pair-works span{display:block;margin-left:1em;color:#5d5a52;font-size:12px;line-height:1.5}
 .seq{list-style:none;margin:12px 0;padding:0;display:grid;gap:12px}
 .seq>li{padding:14px 16px;border:1px solid #e3dcef;border-radius:14px;background:#fff}
+.seq-thumb{display:block;width:96px;aspect-ratio:4/3;border-radius:10px;overflow:hidden;background:#efebf5}.seq-thumb img{display:block;width:100%;height:100%;object-fit:cover}
+.seq-head{display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;align-items:center}.seq-head .note{margin:4px 0 0}
 .seq-title{font-size:16px;font-weight:900;line-height:1.45}.seq-title a{color:#1d2a44;text-decoration:none}
 .seq-prev{margin:8px 0 4px;padding:8px 12px;border-radius:10px;background:#f8f6fc;font-size:13px;line-height:1.6}.seq-prev b{color:#62517f}
 .seq .cta{margin-top:6px}
@@ -784,8 +786,9 @@ export function sequelGuidePage(ctx, next) {
     const url = ctx.partnerLinks[x.entry.provider];
     const before = ctx.notes?.[x.title]?.before;
     const date = startLabel(x.work.start_date);
-    return `<li><div class="seq-title"><a href="/work/${esc(x.id)}/">${esc(x.title)}</a></div>
-${x.when === 'next' && date ? `<p class="note">${esc(date)}から放送開始予定 ${countdown(x.work.start_date)}</p>` : ''}
+    const thumb = x.work.thumbnail ? `<img src="${esc(x.work.thumbnail)}" alt="" width="96" height="72" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">` : '';
+    return `<li><div class="seq-head"><a class="seq-thumb" href="/work/${esc(x.id)}/" tabindex="-1" aria-hidden="true">${thumb}</a><div><div class="seq-title"><a href="/work/${esc(x.id)}/">${esc(x.title)}</a></div>
+${x.when === 'next' && date ? `<p class="note">${esc(date)}から放送開始予定 ${countdown(x.work.start_date)}</p>` : ''}</div></div>
 <div class="seq-prev">前に見ておく：<b>${esc(x.entry.series)}</b>の${esc(x.entry.label)}<br>${esc(label(x.entry.provider))}で、プライム会員なら追加料金なしで見られます（${esc(x.entry.checked)}時点）。</div>
 ${before ? `<p class="note">${esc(before)}</p>` : ''}
 <a class="cta" href="${esc(url)}" target="_blank" rel="sponsored noopener" data-ga-event="vod_click" data-ga-provider="${esc(x.entry.provider)}" data-ga-work-id="${esc(x.id)}" data-ga-work-title="${esc(x.title)}" data-ga-page-type="sequel_guide" data-ga-position="${index + 1}">${esc(ctaText(x.entry.provider))} ↗</a></li>`;
