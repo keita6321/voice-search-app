@@ -314,6 +314,12 @@ function castOf(data) {
       else list.push({ actor, roles: [role.character_name] });
     }
   }
+  // 公式のクレジット順（character_id の末尾の連番。1 が主人公）に並べる
+  const order = actor => Math.min(...actor.roles.map(r => Number(String(r.character_id ?? '').split('-').pop()) || Infinity));
+  for (const [workId, list] of byWork) {
+    const rank = c => order({ roles: c.actor.roles.filter(r => r.work_id === workId) });
+    list.sort((a, b) => rank(a) - rank(b));
+  }
   return byWork;
 }
 
