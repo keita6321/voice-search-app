@@ -43,11 +43,15 @@ button{font:inherit;color:inherit;cursor:pointer}
 .top{text-align:left}.top .brand{justify-content:center}
 .top h1.hero-h{display:block;transform:none;margin:22px 0 6px;font-size:clamp(24px,6.6vw,34px);line-height:1.3;font-weight:900;color:#1d2a44;letter-spacing:.01em}.hero-h em{font-style:normal;color:var(--ac)}
 .hero-sub{margin:0;font-size:12px;color:var(--sub);font-weight:700}.hero-sub b{display:inline-block;margin-right:6px;padding:1px 9px;border-radius:999px;background:#ece6f5;color:var(--ac);font-size:12px}
-.season-switch{display:flex;gap:4px;margin:10px 0 2px;padding:4px;border-radius:999px;background:#ece6f5;width:max-content}
+.season-switch{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:14px 0 4px;padding:4px;border:2px solid #1d2a44;border-radius:16px;background:#fff;box-shadow:0 3px 10px rgba(29,42,68,.12)}
 .season-switch[hidden]{display:none}
-.season-switch button{padding:7px 16px;border:0;border-radius:999px;background:transparent;color:var(--ac);font-size:13px;font-weight:800;cursor:pointer}
-.season-switch button small{margin-left:5px;font-size:10px;font-weight:700;opacity:.8}
-.season-switch button[aria-selected="true"]{background:var(--ac);color:#fff;box-shadow:0 2px 6px rgba(98,81,127,.3)}
+.season-switch button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;min-height:52px;padding:6px 10px;border:0;border-radius:11px;background:transparent;color:#1d2a44;font-size:17px;font-weight:900;line-height:1.2;cursor:pointer;transition:background .15s,color .15s}
+.season-switch button small{font-size:11px;font-weight:700;opacity:.75}
+.season-switch button[aria-selected="true"]{background:#1d2a44;color:#fff}
+.season-switch button[aria-selected="true"] small{opacity:.85}
+.season-switch{position:relative}.season-switch button{position:relative}
+.season-switch .sw-badge{position:absolute;top:-13px;right:6px;padding:2px 8px;border-radius:999px;background:#F5C542;color:#1d2a44;font-size:11px;font-weight:800;box-shadow:0 1px 4px rgba(29,42,68,.2)}
+.season-switch button:not([aria-selected="true"]):active{background:#f1eef7}
 .hero-chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:10px 2px 2px}.hero-chips>span{font-size:11px;color:var(--sub);font-weight:700;margin-right:2px}
 .hero-chips button{padding:6px 11px;border-radius:999px;background:#fff;border:1px solid #ddd5ea;color:#1d2a44;font-size:12px;font-weight:700;cursor:pointer}.hero-chips em{font-style:normal;margin-left:4px;color:var(--ac);font-size:10px}
 .filter-toggle[hidden]{display:none!important}
@@ -231,7 +235,7 @@ body.modal-open{overflow:hidden}
    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
    <input id="q" type="search" placeholder="今期の声優を名前・ひらがなで検索" autocomplete="off" enterkeyhint="search" aria-label="声優を検索">
    <button id="clr" type="button" hidden aria-label="入力を消す">✕</button></label></div>
-  <div class="season-switch" id="season-switch" role="tablist" aria-label="検索するシーズン" hidden><button type="button" role="tab" data-view="current" aria-selected="true">今期<small id="sw-cur"></small></button><button type="button" role="tab" data-view="next" aria-selected="false">来期<small id="sw-next"></small></button></div>
+  <div class="season-switch" id="season-switch" role="tablist" aria-label="検索するシーズン" hidden><button type="button" role="tab" data-view="current" aria-selected="true"><span>今期の出演作</span><small id="sw-cur"></small></button><button type="button" role="tab" data-view="next" aria-selected="false"><span>来期の出演予定<b class="sw-badge" id="sw-badge" hidden></b></span><small id="sw-next"></small></button></div>
   <div class="hero-chips" id="hero-chips" hidden></div>
   <section class="feature" id="feature" hidden aria-label="注目"></section>
   <nav class="feature-links" aria-label="特集"><span>特集</span><a href="/ranking/">今期の出演本数ランキング</a><a href="/vod/">配信サービス別の作品数</a><a href="/work/">作品一覧（配信はどこ？）</a><a href="/next/" id="next-link" hidden>来期アニメの放送日</a><a href="/costar/">よく共演している声優コンビ</a><a href="/sequel/">続編の前に見ておく作品</a></nav>
@@ -442,7 +446,8 @@ Promise.all([fetch('/data.json').then(r=>r.json()),nextData]).then(([d,n])=>{
   $('#hero-count').textContent=`${CURRENT_COUNT}名・${WORK_COUNT}作品の出演作と配信先`;
   if(N){
     const short=x=>{const [yy,ss]=x.split('-');return `${yy}${SEASON_NAMES[ss]||ss}`};
-    $('#sw-cur').textContent=short(d.season);$('#sw-next').textContent=short(N.season);$('#season-switch').hidden=false;
+    $('#sw-cur').textContent=short(d.season)+'・放送中';$('#sw-next').textContent=short(N.season)+'・キャスト発表中';$('#season-switch').hidden=false;
+    {const [ny,ns]=N.season.split('-');const days=Math.ceil((Date.parse(`${ny}-${String(SEASON_START_MONTH[ns]+1).padStart(2,'0')}-01T00:00:00+09:00`)-Date.now())/864e5);if(days>0){$('#sw-badge').textContent=`あと${days}日`;$('#sw-badge').hidden=false}}
     if(new URLSearchParams(location.search).get('view')==='next')VIEW='next';
   }
   applyView();
