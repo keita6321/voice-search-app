@@ -62,16 +62,16 @@ table.compare tr.partner td{background:#f5f2fa}.pr{font-size:10px;color:#62517f}
 .cast-rep{grid-column:1;color:#7a7568;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cast details{margin-top:8px}
 .rk{list-style:none;margin:12px 0;padding:0;display:grid;gap:8px}
-.rk a{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:2px 12px;align-items:center;padding:11px 14px;border:1px solid #e3dcef;border-radius:14px;background:#fff;color:inherit;text-decoration:none}
-.rk a:hover{border-color:#62517f}
+.rk>li{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:2px 12px;align-items:center;padding:11px 14px;border:1px solid #e3dcef;border-radius:14px;background:#fff}
+.rk>li:hover{border-color:#62517f}
 .rk-no{grid-row:1/3;min-width:2.4em;text-align:center;font-size:18px;font-weight:900;color:#62517f;line-height:1}.rk-no small{font-size:11px;margin-left:1px}
-.rk-name{font-size:16px;font-weight:900;color:#1d2a44;line-height:1.35}
-.rk-works{grid-column:2;color:#5d5a52;font-size:12px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.rk-n{grid-column:3;grid-row:1/3;padding:4px 10px;border-radius:999px;background:#efebf5;color:#62517f;font-size:13px;font-weight:800;white-space:nowrap}
-.rk.top a{padding:16px;border-width:2px}.rk.top .rk-no{font-size:30px}.rk.top .rk-name{font-size:20px}.rk.top .rk-n{background:#62517f;color:#fff;font-size:14px}
-.rk .r1 a{border-color:#F5C542;background:#fffaea}.rk .r1 .rk-no{color:#b8860b}
-.rk .r2 a{border-color:#c4c8d0;background:#f7f8fa}.rk .r2 .rk-no{color:#7d8592}
-.rk .r3 a{border-color:#ddb08a;background:#fdf6f0}.rk .r3 .rk-no{color:#a86a3d}
+.rk-name{font-size:16px;font-weight:900;color:#1d2a44;line-height:1.35;text-decoration:none}.rk-name::after{content:"";position:absolute;inset:0;border-radius:14px}
+.rk-works{grid-column:2/4;margin-top:2px;color:#5d5a52;font-size:12px;line-height:1.7}.rk-works a{position:relative;z-index:1;color:#62517f;text-decoration:none;border-bottom:1px solid #d6cde6}
+.rk-n{grid-column:3;grid-row:1;justify-self:end;padding:4px 10px;border-radius:999px;background:#efebf5;color:#62517f;font-size:13px;font-weight:800;white-space:nowrap}
+.rk.top>li{padding:16px;border-width:2px}.rk.top .rk-no{font-size:30px}.rk.top .rk-name{font-size:20px}.rk.top .rk-n{background:#62517f;color:#fff;font-size:14px}
+.rk .r1{border-color:#F5C542;background:#fffaea}.rk .r1 .rk-no{color:#b8860b}
+.rk .r2{border-color:#c4c8d0;background:#f7f8fa}.rk .r2 .rk-no{color:#7d8592}
+.rk .r3{border-color:#ddb08a;background:#fdf6f0}.rk .r3 .rk-no{color:#a86a3d}
 .month{margin:22px 0 6px;font-size:15px;font-weight:900;color:#62517f}
 .sched{list-style:none;margin:0;padding:0;display:grid;gap:8px}
 .sched>li{display:grid;grid-template-columns:62px minmax(0,1fr);gap:12px;padding:12px 14px;border:1px solid #e3dcef;border-radius:14px;background:#fff}
@@ -158,9 +158,13 @@ export function rankingPage(ctx) {
   const workTitle = id => data.works[id]?.title ?? '';
 
   const card = ({ rank, item: { actor, count } }, index) => {
+    // 1〜3位は4作品、4位以降は3作品まで出す（長い作品名でカードが伸びすぎないように）
+    const SHOWN_WORKS = rank <= 3 ? 4 : 3;
     const seen = new Set();
-    const titles = actor.roles.filter(role => !seen.has(role.work_id) && seen.add(role.work_id)).map(role => workTitle(role.work_id));
-    return `<li class="r${rank}"><a href="/va/${toPageId(actor.actor_id)}/" data-ga-event="ranking_click" data-ga-actor-id="${esc(actor.actor_id)}" data-ga-position="${index + 1}" data-ga-page-type="ranking"><span class="rk-no">${rank}<small>位</small></span><span class="rk-name">${esc(actor.name)}</span><span class="rk-works">${esc(titles.join('、'))}</span><span class="rk-n">${count}作品 ›</span></a></li>`;
+    const ids = actor.roles.filter(role => !seen.has(role.work_id) && seen.add(role.work_id)).map(role => role.work_id);
+    const links = ids.slice(0, SHOWN_WORKS).map(id => `<a href="/work/${esc(id)}/" data-ga-event="ranking_click" data-ga-actor-id="${esc(actor.actor_id)}" data-ga-position="${index + 1}" data-ga-page-type="ranking_work">${esc(workTitle(id))}</a>`);
+    // 名前のリンクはカード全体に広げる（作品名のリンクだけは作品ページへ）
+    return `<li class="r${rank}"><span class="rk-no">${rank}<small>位</small></span><a class="rk-name" href="/va/${toPageId(actor.actor_id)}/" data-ga-event="ranking_click" data-ga-actor-id="${esc(actor.actor_id)}" data-ga-position="${index + 1}" data-ga-page-type="ranking">${esc(actor.name)}</a><span class="rk-works">${links.join('、')}${ids.length > SHOWN_WORKS ? ` ほか${ids.length - SHOWN_WORKS}作品` : ''}</span><span class="rk-n">${count}作品 ›</span></li>`;
   };
   const topRows = ranked.filter(r => r.rank <= 3);
   const restRows = ranked.filter(r => r.rank > 3);
@@ -168,7 +172,7 @@ export function rankingPage(ctx) {
   const title = `${seasonLabel}の声優 出演本数ランキング`;
   const description = `${seasonLabel}のテレビアニメに出演している声優${total}名を、出演作品数で集計したランキングです。${top ? `1位は${top.actor.name}さん（${top.count}作品）。` : ''}出演作と役名、配信サービスも確認できます。`;
   const body = `<h1>${esc(title)}</h1>
-<p class="lead">今期いちばん多くの作品に出ている声優は？ ${esc(seasonLabel)}の出演作品数で並べました。名前を押すと、出演作と役名、配信サービスを見られます。</p>
+<p class="lead">今期いちばん多くの作品に出ている声優は？ ${esc(seasonLabel)}の出演作品数で並べました。カードを押すと声優の出演作と配信先、作品名を押すと作品ページを見られます。</p>
 <ol class="rk top">
 ${topRows.map((r, i) => card(r, i)).join('\n')}
 </ol>
