@@ -54,10 +54,11 @@ npm run posts -- --start YYYY-MM-DD --days 7 --campaign 2027winter --season-tag 
   - `data/past-works.json`：声優の主な過去作。作品ページのキャストに「主な出演」として1つ出す。
   - `data/prev-seasons.json`：続編の「前のシーズンから見るなら」。Prime Video の作品ページで、前のシーズンがプライム会員なら追加料金なしで見られると確かめたものだけ載せる（日付つき）。
   - `data/next-cast-log.json`：来期の新キャストの記録。
+  - `data/news.json`：トップの「お知らせ」（先頭の1件だけ出る。新しい特集などを作ったら1行足す）。
   - `vod_overrides.csv`：配信先の手動修正。
   - `vod_providers.py`：サービスごとのリンク先。提携先はアフィリエイトリンク。
 - `assets/analytics.js`：GA4 のイベント。
-  - `vod_click` / `feature_click` / `special_click` / `share_native_click` / `costar_click` / `cast_click` / `ranking_click` / `list_open` など。
+  - `vod_click` / `feature_click` / `special_click` / `share_native_click` / `costar_click` / `cast_click` / `ranking_click` / `list_open` / `x_follow_click` / `news_click` など。
   - 新しいイベントは `clickParams` に追加する。
 
 ## 自動更新（.github/workflows/data-refresh.yml）

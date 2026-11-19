@@ -125,6 +125,7 @@
     if (eventName === 'copy_link_click') return { va_id: data.gaVaId };
     if (eventName === 'special_click') return { target: data.gaTarget, position: Number(data.gaPosition), page_type: data.gaPageType };
     if (eventName === 'ranking_click') return { actor_id: data.gaActorId, position: Number(data.gaPosition), page_type: data.gaPageType };
+    if (eventName === 'x_follow_click' || eventName === 'news_click') return { page_type: data.gaPageType };
     if (eventName === 'cast_click') return { work_id: data.gaWorkId, actor_id: data.gaActorId, position: Number(data.gaPosition), page_type: data.gaPageType };
     if (eventName === 'costar_click') return { work_id: data.gaWorkId, target_work_id: data.gaTargetWorkId, position: Number(data.gaPosition), page_type: data.gaPageType };
     return null;

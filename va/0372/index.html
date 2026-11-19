@@ -42,6 +42,9 @@ button{font:inherit;color:inherit;cursor:pointer}
 .tagline{margin:4px 0 28px!important;color:var(--tx)!important;font-size:14px!important;font-weight:700;letter-spacing:.12em}
 .top{text-align:left}.top .brand{justify-content:center}
 .top h1.hero-h{display:block;transform:none;margin:22px 0 6px;font-size:clamp(24px,6.6vw,34px);line-height:1.3;font-weight:900;color:#1d2a44;letter-spacing:.01em}.hero-h em{font-style:normal;color:var(--ac)}
+.updates{margin:12px 0 0;padding:8px 12px;border-radius:12px;background:#fff;border:1px solid #e8e2f0;font-size:12px;line-height:1.5}.upd-row{display:flex;align-items:center;justify-content:space-between;gap:8px}.upd-date{color:var(--sub);font-weight:700}.upd-date::before{content:"";display:inline-block;width:7px;height:7px;margin-right:6px;border-radius:50%;background:#3fb27f;vertical-align:1px}
+.x-follow{flex:none;padding:5px 12px;border-radius:999px;background:#111;color:#fff;font-size:12px;font-weight:800;text-decoration:none}
+.upd-news{display:flex;align-items:baseline;gap:6px;margin:6px 0 0;padding-top:6px;border-top:1px dashed #e3dcef;color:#1d2a44;text-decoration:none;min-width:0}.upd-news b{flex:none;padding:0 6px;border-radius:4px;background:#ece6f5;color:var(--ac);font-size:10px}.upd-news time{flex:none;color:var(--sub);font-weight:700}.upd-news span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700}a.upd-news span::after{content:" ›"}
 .hero-sub{margin:0;font-size:12px;color:var(--sub);font-weight:700}.hero-sub b{display:inline-block;margin-right:6px;padding:1px 9px;border-radius:999px;background:#ece6f5;color:var(--ac);font-size:12px}
 .season-switch{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:14px 0 4px;padding:4px;border:2px solid #1d2a44;border-radius:16px;background:#fff;box-shadow:0 3px 10px rgba(29,42,68,.12)}
 .season-switch[hidden]{display:none}
@@ -208,7 +211,7 @@ body.modal-open{overflow:hidden}
 </main>
 <div class="wrap">
  <section id="s1">
-  <div class="top"><div class="brand"><img src="/assets/logo.svg" alt="ANIME CAST NOW" width="780" height="100"></div><h1 class="hero-h"><em>推しの声優</em>、<br>今期なにに出てる？</h1><p class="hero-sub"><b id="sub">2026年 秋アニメ</b><span id="hero-count"></span></p></div>
+  <div class="top"><div class="brand"><img src="/assets/logo.svg" alt="ANIME CAST NOW" width="780" height="100"></div><h1 class="hero-h"><em>推しの声優</em>、<br>今期なにに出てる？</h1><p class="hero-sub"><b id="sub">2026年 秋アニメ</b><span id="hero-count"></span></p><!--updates--><div class="updates"><div class="upd-row"><span class="upd-date">毎週月曜更新・最終更新 11/16</span><a class="x-follow" href="https://x.com/animecastnow" target="_blank" rel="noopener" data-ga-event="x_follow_click" data-ga-page-type="home">Xでフォロー</a></div><a href="/costar/" data-ga-event="news_click" data-ga-page-type="home" class="upd-news"><b>お知らせ</b><time datetime="2026-11-20">11/20</time><span>新特集「共演コンビ」「続編ガイド」を公開</span></a></div><!--/updates--></div>
   <div class="sbar"><label class="sbox">
    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
    <input id="q" type="search" placeholder="今期の声優を名前・ひらがなで検索" autocomplete="off" enterkeyhint="search" aria-label="声優を検索">

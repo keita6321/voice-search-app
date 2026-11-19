@@ -275,7 +275,19 @@ const data = JSON.parse(await readFile(path.join(root, 'data.json'), 'utf8'));
 const label = seasonLabel(data.season);
 // トップの <title> や説明文の「2026年秋アニメ」を、data.json のシーズンに合わせて書き換える（シーズンが変わっても手作業不要）
 const rawTemplate = (await readFile(path.join(root, 'index.html'), 'utf8')).replace(/\r\n/g, '\n');
-const template = rawTemplate.replace(/\d{4}年( ?)[冬春夏秋]アニメ/g, (_, space) => (space ? label.replace('年', '年 ') : label));
+// 更新情報（最終更新日・お知らせ）も、data.json と data/news.json から差し込む
+let news = [];
+try {
+  news = JSON.parse(await readFile(path.join(root, 'data', 'news.json'), 'utf8')).items ?? [];
+} catch (error) {
+  if (error.code !== 'ENOENT') throw error;
+}
+const md = date => { const [, m, d] = String(date).split('-').map(Number); return `${m}/${d}`; };
+const escHtml = text => String(text).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+const latestNews = news[0];
+const updatesHtml = `<!--updates--><div class="updates"><div class="upd-row"><span class="upd-date">毎週月曜更新・最終更新 ${md(data.updated_at.slice(0, 10))}</span><a class="x-follow" href="https://x.com/animecastnow" target="_blank" rel="noopener" data-ga-event="x_follow_click" data-ga-page-type="home">Xでフォロー</a></div>${latestNews ? `<${latestNews.url ? `a href="${escHtml(latestNews.url)}" data-ga-event="news_click" data-ga-page-type="home"` : 'p'} class="upd-news"><b>お知らせ</b><time datetime="${escHtml(latestNews.date)}">${md(latestNews.date)}</time><span>${escHtml(latestNews.text)}</span></${latestNews.url ? 'a' : 'p'}>` : ''}</div><!--/updates-->`;
+const template = rawTemplate.replace(/\d{4}年( ?)[冬春夏秋]アニメ/g, (_, space) => (space ? label.replace('年', '年 ') : label))
+  .replace(/<!--updates-->[\s\S]*?<!--\/updates-->/, updatesHtml);
 if (template !== rawTemplate) await writeFile(path.join(root, 'index.html'), template);
 // 来期の先行取得（data-next.json）。なければ来期のページは作らない
 let next = null;
