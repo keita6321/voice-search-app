@@ -51,6 +51,8 @@ button{font:inherit;color:inherit;cursor:pointer}
 .hero-chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:10px 2px 2px}.hero-chips>span{font-size:11px;color:var(--sub);font-weight:700;margin-right:2px}
 .hero-chips button{padding:6px 11px;border-radius:999px;background:#fff;border:1px solid #ddd5ea;color:#1d2a44;font-size:12px;font-weight:700;cursor:pointer}.hero-chips em{font-style:normal;margin-left:4px;color:var(--ac);font-size:10px}
 .filter-toggle[hidden]{display:none!important}
+.list-head[hidden],#list[hidden],.list-open[hidden]{display:none!important}
+.list-open{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;margin:18px 0 8px;padding:12px 14px;border:1px dashed #c9bedd;border-radius:12px;background:transparent;color:var(--ac);font-size:13px;font-weight:800;cursor:pointer}.list-open small{color:var(--sub);font-weight:700;font-size:11px}.list-open::after{content:"▾";font-size:11px}
 .list-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:16px 0 8px}.list-head .cnt{flex:1;min-width:0;padding:0 4px}
 .filter-toggle{display:inline-flex;align-items:center;gap:5px;flex:none;margin:0;padding:6px 11px;border:0;border-radius:999px;background:#ece7f4;color:var(--ac);font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap}.filter-toggle svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linejoin:round}.filter-toggle.on{background:var(--ac);color:#fff}
 .filter-toggle small{color:inherit;opacity:.8;font-weight:700;font-size:11px;margin-left:2px}.filter-toggle small::after{content:" ▾"}.filter-toggle[aria-expanded="true"] small::after{content:" ▴"}
@@ -208,7 +210,8 @@ body.modal-open{overflow:hidden}
   <div class="hero-chips" id="hero-chips" hidden></div>
   <section class="feature" id="feature" hidden aria-label="注目"></section>
   <nav class="feature-links" aria-label="特集"><span>特集</span><a href="/ranking/">今期の出演本数ランキング</a><a href="/vod/">配信サービス別の作品数</a><a href="/work/">作品一覧（配信はどこ？）</a><a href="/next/" id="next-link" hidden>来期アニメの放送日</a></nav>
-  <div class="list-head"><div class="cnt" id="cnt">今期放送中の声優（あいうえお順）</div><button class="filter-toggle" id="filter-toggle" type="button" aria-expanded="false" aria-controls="vod-filters"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16l-6 7.5V19l-4-2v-4.5z"/></svg>配信で絞り込み<small id="filter-status" aria-live="polite">すべて</small></button></div>
+  <button class="list-open" id="list-open" type="button" hidden>声優の一覧を見る<small id="list-open-n"></small></button>
+  <div class="list-head" id="list-head"><div class="cnt" id="cnt">今期放送中の声優（あいうえお順）</div><button class="filter-toggle" id="filter-toggle" type="button" aria-expanded="false" aria-controls="vod-filters"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16l-6 7.5V19l-4-2v-4.5z"/></svg>配信で絞り込み<small id="filter-status" aria-live="polite">すべて</small></button></div>
   <div class="vod-filters" id="vod-filters" role="group" aria-label="配信サービスで絞り込み" hidden></div>
   <div id="list"></div>
  </section>
@@ -422,6 +425,13 @@ Promise.all([fetch('/data.json').then(r=>r.json()),nextData]).then(([d,n])=>{
   route();
 }).catch(()=>{$('#list').innerHTML='<div class="empty"><b>データを読み込めませんでした</b>data.json を同じ場所に置き、サーバー経由で開いてください。</div>';window.acnPageView()});
 
+// 声優の一覧は、検索するか「一覧を見る」を押すまで畳んでおく（検索結果も同じ場所に出す）
+let LIST_OPEN=false;
+function foldList(){
+  const folded=!$('#q').value.trim()&&!LIST_OPEN&&!selectedService;
+  $('#list').hidden=folded;$('#list-head').hidden=folded;$('#list-open').hidden=!folded;
+  if(folded){$('#vod-filters').hidden=true;$('#filter-toggle').setAttribute('aria-expanded','false');$('#list-open-n').textContent=($('#cnt').textContent.match(/\d+名/)||[''])[0]+'・あいうえお順'}
+}
 function nextList(v,q){
   const r=A.filter(a=>a.next?.length&&(!q||a.k.includes(q)));
   const works=new Set(r.flatMap(a=>a.next.map(x=>x.work_id))).size;
@@ -430,7 +440,7 @@ function nextList(v,q){
   $('#list').innerHTML=r.length?r.map(a=>{const f=N.works[first(a).work_id];return `<button class="row" data-id="${esc(a.actor_id)}"><span class="nm"><b>${esc(a.name)}</b></span><span class="service-text">${esc(f.title)}${a.next.length>1?`<span class="service-more"> ほか${a.next.length-1}</span>`:''}</span><span class="role-count">来期 ${a.next.length}作品</span><i class="ch" aria-hidden="true"></i></button>`}).join(''):`<div class="empty"><b>「${esc(v)}」は${esc(NEXT_LABEL)}の作品に見つかりません</b>キャストが発表されるたびに、毎週更新しています。今期の出演作は「今期」に切り替えると探せます。</div>`;
 }
 function list(){
-  if(VIEW==='next'&&N){const v=$('#q').value;$('#clr').hidden=!v;return nextList(v,norm(v))}
+  if(VIEW==='next'&&N){const v=$('#q').value;$('#clr').hidden=!v;nextList(v,norm(v));return foldList()}
   $('#list').classList.toggle('filtered',!!selectedService);
   const v=$('#q').value,q=norm(v),r=A.filter(a=>(a.roles.length||q)&&(!selectedService||a.services.includes(selectedService))&&(!q||a.k.includes(q)));
   $('#clr').hidden=!v;
@@ -438,6 +448,7 @@ function list(){
   $('#filter-status').textContent=selectedService?serviceLabel(selectedService):'すべて';$('#filter-toggle').classList.toggle('on',!!selectedService);
   $('#cnt').textContent=q?(r.length?`${r.length}名が見つかりました／${selectedService?serviceLabel(selectedService)+'配信':'検索対象'}${workCount}作品`:`検索結果はありません／${selectedService?serviceLabel(selectedService)+'配信':'検索対象'}${workCount}作品`):selectedService?`${serviceLabel(selectedService)}で見られる声優 ${r.length}名（${workCount}作品）`:`今期の声優 ${r.length}名（あいうえお順）`;
   $('#list').innerHTML=r.length?r.map(a=>`<button class="row" data-id="${esc(a.actor_id)}"><span class="nm"><b>${esc(a.name)}</b></span><span class="service-text" aria-label="${esc(a.services.map(serviceLabel).join('、'))}で配信">${esc(a.services.slice(0,2).map(serviceLabel).join('・'))}${a.services.length>2?`<span class="service-more"> ほか${a.services.length-2}</span>`:''}</span><span class="role-count">${a.roles.length?`${a.roles.length}件出演`:`来期 ${a.next.length}作品`}</span><i class="ch" aria-hidden="true"></i></button>`).join(''):`<div class="empty"><b>${q?(selectedService?`${serviceLabel(selectedService)}で配信中の作品に「${esc(v)}」は見つかりません`:`「${esc(v)}」は今期の作品に見つかりません`):'このサービスで配信中の作品に出演する声優はいません'}</b>${q?(selectedService?'名前の一部やひらがなで検索できます。':(N?'過去作は対象外です。':'過去作・来期作は対象外です。')+'名前の一部やひらがなでも探せます。'):''}</div>`;
+  foldList();
 }
 function renderVodFilters(){
   $('#vod-filters').innerHTML=`<button class="vod-filter" type="button" data-service="" aria-pressed="true">すべての配信</button>`+SERVICES.map(s=>`<button class="vod-filter" type="button" data-service="${esc(s)}" aria-pressed="false">${esc(serviceLabel(s))}</button>`).join('');
@@ -533,6 +544,7 @@ $('#vod-filters').addEventListener('click',e=>{const b=e.target.closest('.vod-fi
 $('#filter-toggle').addEventListener('click',()=>{const open=$('#vod-filters').hidden;$('#vod-filters').hidden=!open;$('#filter-toggle').setAttribute('aria-expanded',String(open))});
 $('#season-switch').addEventListener('click',e=>{const b=e.target.closest('[data-view]');if(b)setView(b.dataset.view)});
 $('#hero-chips').addEventListener('click',e=>{const b=e.target.closest('[data-id]');if(b)openDetail(b.dataset.id)});
+$('#list-open').addEventListener('click',()=>{LIST_OPEN=true;foldList();if(window.acnTrack)window.acnTrack('list_open',{})});
 $('#list').addEventListener('click',e=>{const b=e.target.closest('.row');if(b){$('#q').blur();openDetail(b.dataset.id)}});
 $('#s2').addEventListener('click',e=>{if(e.target===$('#s2'))closeDetail()});
 addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#s2').hidden)closeDetail()});

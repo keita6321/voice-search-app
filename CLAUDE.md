@@ -56,7 +56,7 @@ npm run posts -- --start YYYY-MM-DD --days 7 --campaign 2027winter --season-tag 
   - `vod_overrides.csv`：配信先の手動修正。
   - `vod_providers.py`：サービスごとのリンク先。提携先はアフィリエイトリンク。
 - `assets/analytics.js`：GA4 のイベント。
-  - `vod_click` / `feature_click` / `special_click` / `share_native_click` / `costar_click` / `cast_click` / `ranking_click` など。
+  - `vod_click` / `feature_click` / `special_click` / `share_native_click` / `costar_click` / `cast_click` / `ranking_click` / `list_open` など。
   - 新しいイベントは `clickParams` に追加する。
 
 ## 自動更新（.github/workflows/data-refresh.yml）
