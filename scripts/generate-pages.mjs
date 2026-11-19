@@ -2,7 +2,7 @@ import { mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { xToolsPage } from './x-tools.mjs';
-import { nextIndexPage, nextWorkPages, rankingPage, startLabel, vodPage, workPages, workIndexPage } from './articles.mjs';
+import { costarPairsPage, nextIndexPage, sequelGuidePage, nextWorkPages, rankingPage, startLabel, vodPage, workPages, workIndexPage } from './articles.mjs';
 
 if (Number(process.versions.node.split('.')[0]) < 18) {
   throw new Error('Node.js 18 or later is required.');
@@ -425,7 +425,7 @@ const articleContext = { data, notes, past: pastWorksOf, prevSeasons, seasonLabe
 // X 運用ツール（オーナー専用。noindex、サイトマップにも入れない）
 await mkdir(path.join(root, 'tools', 'x'), { recursive: true });
 await writeFile(path.join(root, 'tools', 'x', 'index.html'), xToolsPage({ data, next, castLog, origin, past: pastWorksOf, seasonLabel: label, nextLabel: next ? seasonLabel(next.season) : '' }));
-for (const [dir, html] of [['ranking', rankingPage(articleContext)], ['vod', vodPage(articleContext)], ['work', workIndexPage(articleContext)], ['next', nextIndexPage(articleContext, next, castLog)]]) {
+for (const [dir, html] of [['ranking', rankingPage(articleContext)], ['vod', vodPage(articleContext)], ['work', workIndexPage(articleContext)], ['next', nextIndexPage(articleContext, next, castLog)], ['costar', costarPairsPage(articleContext)], ['sequel', sequelGuidePage(articleContext, next)]]) {
   await mkdir(path.join(root, dir), { recursive: true });
   await writeFile(path.join(root, dir, 'index.html'), html);
 }
@@ -438,7 +438,7 @@ for (const { id, html } of works) {
 const indexedWorkUrls = works.filter(w => w.indexed).map(w => `${origin}/work/${w.id}/`);
 
 const sitemapDate = new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Tokyo' });
-const sitemapUrls = [`${origin}/`, `${origin}/ranking/`, `${origin}/vod/`, `${origin}/work/`, ...(next ? [`${origin}/next/`] : []), ...indexedWorkUrls, `${origin}/about/`, `${origin}/privacy/`, ...[...actors, ...nextOnlyActors].map(({ pageId }) => `${origin}/va/${pageId}/`)];
+const sitemapUrls = [`${origin}/`, `${origin}/ranking/`, `${origin}/vod/`, `${origin}/work/`, ...(next ? [`${origin}/next/`] : []), `${origin}/costar/`, `${origin}/sequel/`, ...indexedWorkUrls, `${origin}/about/`, `${origin}/privacy/`, ...[...actors, ...nextOnlyActors].map(({ pageId }) => `${origin}/va/${pageId}/`)];
 const sitemap = [
   '<?xml version="1.0" encoding="UTF-8"?>',
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',

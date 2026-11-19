@@ -80,6 +80,18 @@ table.compare tr.partner td{background:#f5f2fa}.pr{font-size:10px;color:#62517f}
 .sched-cast{margin-top:3px;font-size:12.5px;color:#5d5a52;line-height:1.6}.sched-cast a{color:#62517f;font-weight:700;text-decoration:none;border-bottom:1px solid #d6cde6}
 .sched-chip{display:inline-block;margin-top:6px;padding:2px 9px;border-radius:999px;background:#F5C542;color:#1d2a44;font-size:11px;font-weight:800;text-decoration:none}
 .chips-va{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px}.chips-va a{display:inline-flex;align-items:baseline;gap:5px;padding:7px 12px;border:1px solid #e3dcef;border-radius:999px;background:#fff;color:#1d2a44;font-weight:800;font-size:14px;text-decoration:none}.chips-va a em{font-style:normal;font-size:11px;color:#62517f}
+.pair{list-style:none;margin:12px 0;padding:0;display:grid;gap:10px}
+.pair>li{padding:14px 16px;border:1px solid #e3dcef;border-radius:14px;background:#fff}
+.pair.top>li:first-child{border:2px solid #F5C542;background:#fffaea}
+.pair-h{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.pair-names{font-size:17px;font-weight:900;color:#1d2a44;line-height:1.4}.pair-names a{color:#1d2a44;text-decoration:none;border-bottom:2px solid #d6cde6}.pair-names i{font-style:normal;color:#62517f;margin:0 6px}
+.pair-n{flex:none;padding:4px 10px;border-radius:999px;background:#62517f;color:#fff;font-size:13px;font-weight:800;white-space:nowrap}
+.pair-works{margin:8px 0 0;padding:0;list-style:none;font-size:13px;line-height:1.7}.pair-works li::before{content:"・";color:#62517f}.pair-works a{color:#62517f;font-weight:700}.pair-works span{display:block;margin-left:1em;color:#5d5a52;font-size:12px;line-height:1.5}
+.seq{list-style:none;margin:12px 0;padding:0;display:grid;gap:12px}
+.seq>li{padding:14px 16px;border:1px solid #e3dcef;border-radius:14px;background:#fff}
+.seq-title{font-size:16px;font-weight:900;line-height:1.45}.seq-title a{color:#1d2a44;text-decoration:none}
+.seq-prev{margin:8px 0 4px;padding:8px 12px;border-radius:10px;background:#f8f6fc;font-size:13px;line-height:1.6}.seq-prev b{color:#62517f}
+.seq .cta{margin-top:6px}
 .prev{margin:22px 0 8px;padding:14px 16px;border:1px solid #e3dcef;border-radius:14px;background:#f8f6fc}.prev h2{margin:0 0 6px}.prev p{margin:6px 0}
 details.notes summary{margin-top:2px}
 `;
@@ -121,6 +133,8 @@ ${body}
 <li><a href="/vod/">配信サービス別の作品数</a></li>
 <li><a href="/work/">今期の作品一覧（配信はどこ？）</a></li>
 <li><a href="/next/">来期アニメの放送日とキャスト</a></li>
+<li><a href="/costar/">今期よく共演している声優コンビ</a></li>
+<li><a href="/sequel/">続編アニメの前に見ておきたい作品</a></li>
 <li><a href="/about/">このサイトについて</a></li>
 </ul>
 <p class="note">本ページのリンクにはアフィリエイトを含みます。配信状況は各サービスでご確認ください。</p>
@@ -705,4 +719,90 @@ ${schedule}
 <p class="note">放送日が確認できているのは${dated}作品です。放送前の情報のため、変更されることがあります（最終更新：${esc(next.updated_at.slice(0, 10))}）。声優名での検索は<a href="/">トップ</a>から。</p>`;
   const description = `${nextLabel}の${works.length}作品を放送開始日の順にまとめた一覧。${first ? `最初の放送は${startLabel(first[1].start_date)}の「${first[1].title}」。` : ''}キャストと、声優ごとの来期の出演予定も確認できます。`;
   return page({ ...ctx, path: '/next/', title, description, body, extraScript: COUNTDOWN_SCRIPT });
+}
+
+// ---- 特集：今期よく共演している声優コンビ ----
+export function costarPairsPage(ctx) {
+  const { data, seasonLabel } = ctx;
+  const MIN = 3;
+  // 作品ごとに、声優と役名
+  const byWork = new Map();
+  for (const actor of data.voice_actors) {
+    for (const role of actor.roles) {
+      if (!byWork.has(role.work_id)) byWork.set(role.work_id, new Map());
+      const cast = byWork.get(role.work_id);
+      if (!cast.has(actor.actor_id)) cast.set(actor.actor_id, { actor, roles: [] });
+      cast.get(actor.actor_id).roles.push(role.character_name);
+    }
+  }
+  const pairs = new Map();
+  for (const [workId, cast] of byWork) {
+    const ids = [...cast.keys()].sort();
+    for (let i = 0; i < ids.length; i++) {
+      for (let j = i + 1; j < ids.length; j++) {
+        const key = `${ids[i]}|${ids[j]}`;
+        if (!pairs.has(key)) pairs.set(key, { a: cast.get(ids[i]).actor, b: cast.get(ids[j]).actor, works: [] });
+        pairs.get(key).works.push({ workId, ra: cast.get(ids[i]).roles, rb: cast.get(ids[j]).roles });
+      }
+    }
+  }
+  const list = [...pairs.values()].filter(p => p.works.length >= MIN)
+    .sort((x, y) => y.works.length - x.works.length || x.a.reading.localeCompare(y.a.reading, 'ja') || x.b.reading.localeCompare(y.b.reading, 'ja'));
+  const actorLink = (actor, index, side) => `<a href="/va/${toPageId(actor.actor_id)}/" data-ga-event="ranking_click" data-ga-actor-id="${esc(actor.actor_id)}" data-ga-position="${index + 1}" data-ga-page-type="costar_pair_${side}">${esc(actor.name)}</a>`;
+  const card = (p, index) => `<li><div class="pair-h"><span class="pair-names">${actorLink(p.a, index, 'a')}<i>×</i>${actorLink(p.b, index, 'b')}</span><span class="pair-n">${p.works.length}作品で共演</span></div>
+<ul class="pair-works">${p.works.map(w => `<li><a href="/work/${esc(w.workId)}/">${esc(data.works[w.workId]?.title ?? '')}</a> <span>${esc(p.a.name)}：${esc(w.ra.join('／'))}、${esc(p.b.name)}：${esc(w.rb.join('／'))}</span></li>`).join('')}</ul></li>`;
+  const most = list[0];
+  const title = `${seasonLabel} よく共演している声優コンビ`;
+  const description = `${seasonLabel}のテレビアニメで、${MIN}作品以上で共演している声優の組み合わせ${list.length}組をまとめました。${most ? `最多は${most.a.name}さんと${most.b.name}さんの${most.works.length}作品。` : ''}共演作と役名も確認できます。`;
+  const body = `<h1>${esc(title)}</h1>
+<p class="lead">今期、同じ作品で何度も顔を合わせている声優は？ ${esc(seasonLabel)}の作品で${MIN}作品以上共演している${list.length}組を、共演の多い順に並べました。名前を押すとその声優の出演作と配信先、作品名を押すと作品ページを見られます。</p>
+${list.length ? `<ol class="pair top">
+${list.map(card).join('\n')}
+</ol>` : '<p>今期はまだ、3作品以上で共演している組み合わせがありません。</p>'}
+<h2>集計について</h2>
+<p class="note">掲載している${esc(seasonLabel)}のテレビアニメ${Object.keys(data.works).length}作品のキャストから、同じ作品に出ている声優の組み合わせを数えました（劇場版などもデータにあれば含みます）。役名はアニメ作品データベース「Annict」の登録にもとづきます（最終更新：${esc(data.updated_at.slice(0, 10))}）。放送開始後にキャストが追加される作品もあるため、数は変わることがあります。</p>`;
+  return page({ ...ctx, path: '/costar/', title, description, body });
+}
+
+// ---- 特集：続編ガイド（前のシーズンを見られる場所）----
+export function sequelGuidePage(ctx, next) {
+  const { data, seasonLabel } = ctx;
+  const nextLabel = next ? ctx.seasonLabelOf(next.season) : '';
+  const idOf = new Map();
+  for (const [id, w] of Object.entries(next?.works ?? {})) idOf.set(w.title, { id, work: w, when: 'next' });
+  for (const [id, w] of Object.entries(data.works)) idOf.set(w.title, { id, work: w, when: 'current' });
+  const items = Object.entries(ctx.prevSeasons ?? {})
+    .map(([title, entry]) => ({ title, entry, ...(idOf.get(title) ?? {}) }))
+    .filter(x => x.id && ctx.partnerLinks?.[x.entry.provider]);
+  const card = (x, index) => {
+    const url = ctx.partnerLinks[x.entry.provider];
+    const before = ctx.notes?.[x.title]?.before;
+    const date = startLabel(x.work.start_date);
+    return `<li><div class="seq-title"><a href="/work/${esc(x.id)}/">${esc(x.title)}</a></div>
+${x.when === 'next' && date ? `<p class="note">${esc(date)}から放送開始予定 ${countdown(x.work.start_date)}</p>` : ''}
+<div class="seq-prev">前に見ておく：<b>${esc(x.entry.series)}</b>の${esc(x.entry.label)}<br>${esc(label(x.entry.provider))}で、プライム会員なら追加料金なしで見られます（${esc(x.entry.checked)}時点）。</div>
+${before ? `<p class="note">${esc(before)}</p>` : ''}
+<a class="cta" href="${esc(url)}" target="_blank" rel="sponsored noopener" data-ga-event="vod_click" data-ga-provider="${esc(x.entry.provider)}" data-ga-work-id="${esc(x.id)}" data-ga-work-title="${esc(x.title)}" data-ga-page-type="sequel_guide" data-ga-position="${index + 1}">${esc(ctaText(x.entry.provider))} ↗</a></li>`;
+  };
+  const current = items.filter(x => x.when === 'current').sort((a, b) => a.title.localeCompare(b.title, 'ja'));
+  const upcoming = items.filter(x => x.when === 'next').sort((a, b) => (a.work.start_date ?? '9999').localeCompare(b.work.start_date ?? '9999') || a.title.localeCompare(b.title, 'ja'));
+  const providers = [...new Set(items.map(x => x.entry.provider))];
+  const note = providers.map(p => PARTNER_NOTES[p]).filter(Boolean);
+  const title = `続編アニメの前に見ておきたい作品と見られる場所（${seasonLabel}${nextLabel ? `・${nextLabel}` : ''}）`;
+  const description = `${seasonLabel}${nextLabel ? `と${nextLabel}` : ''}の続編アニメ${items.length}作品について、前に見ておきたいシーズンと、追加料金なしで見られる配信サービスをまとめました。`;
+  let n = 0;
+  const body = `<h1>${esc(title)}</h1>
+<p class="lead">2期・3期から見始める前に、前のシーズンを見ておきたい人へ。続編${items.length}作品について、前に見ておくシーズンと、どこで見られるかをまとめました。</p>
+${note.map(t => `<p class="note">${esc(t)}</p>`).join('\n')}
+${upcoming.length ? `<h2>${esc(nextLabel)}の続編（放送前に見ておく）</h2>
+<ol class="seq">
+${upcoming.map(x => card(x, n++)).join('\n')}
+</ol>` : ''}
+${current.length ? `<h2>${esc(seasonLabel)}の続編（放送中）</h2>
+<ol class="seq">
+${current.map(x => card(x, n++)).join('\n')}
+</ol>` : ''}
+<h2>このページについて</h2>
+<p class="note">前のシーズンが、各サービスの作品ページで追加料金なしで見られる（第1話だけ・数話だけのお試しではない）ことを確かめた作品だけを載せています。確かめた日付は各作品に書いています。配信状況は変わることがあるので、最新の情報は各サービスで確認してください。</p>`;
+  return page({ ...ctx, path: '/sequel/', title, description, body, extraScript: COUNTDOWN_SCRIPT });
 }
