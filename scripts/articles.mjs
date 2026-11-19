@@ -53,6 +53,13 @@ table.compare tr.partner td{background:#f5f2fa}.pr{font-size:10px;color:#62517f}
 .costar-who{grid-column:1;color:#5d5a52;font-size:12px}
 .costar-n{grid-column:2;grid-row:1/3;padding:3px 10px;border-radius:999px;background:#62517f;color:#fff;font-size:12px;font-weight:800;white-space:nowrap}
 .costar details{margin-top:8px}
+.cast-list{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px}
+.cast-list a{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1px 10px;align-items:center;padding:10px 14px;border:1px solid #e3dcef;border-radius:13px;background:#fff;color:inherit;text-decoration:none}
+.cast-list a:hover{border-color:#62517f}
+.cast-name{font-weight:800;font-size:16px;line-height:1.35;color:#1d2a44}
+.cast-role{grid-column:1;color:#5d5a52;font-size:12px}
+.cast-n{grid-column:2;grid-row:1/3;color:#62517f;font-size:12px;font-weight:800;white-space:nowrap}
+.cast details{margin-top:8px}
 details.notes summary{margin-top:2px}
 `;
 
@@ -339,6 +346,28 @@ ${hosts.length ? `<p class="note">参考：${hosts.join('、')}</p>` : ''}
 }
 
 // 「この作品の声優が、ほかに出ている作品」。作品ページの最初の画面に出す（共演人数の多い順、5件＋残りはたたむ）
+// キャスト（声優ページへの入口）。最初の CAST_SHOWN 人を出し、残りは畳む
+const CAST_SHOWN = 8;
+function castHtml({ id, cast, countOf, note, pageType }) {
+  if (!cast.length) return '';
+  const item = ({ actor, roles }, index) => {
+    const count = countOf(actor);
+    return `<li><a href="/va/${toPageId(actor.actor_id)}/" data-ga-event="cast_click" data-ga-work-id="${esc(id)}" data-ga-actor-id="${esc(actor.actor_id)}" data-ga-position="${index + 1}" data-ga-page-type="${esc(pageType)}"><span class="cast-name">${esc(actor.name)}</span><span class="cast-role">${esc(roles.join('／'))}${/ナレーション$/.test(roles.at(-1) ?? '') ? '' : ' 役'}</span><span class="cast-n">${count ? `今期${count}作品 ›` : '›'}</span></a></li>`;
+  };
+  return `<section class="cast" aria-labelledby="cast-h">
+<h2 id="cast-h">キャスト（${cast.length}名）</h2>
+<p class="note">${esc(note)}</p>
+<ul class="cast-list">
+${cast.slice(0, CAST_SHOWN).map((c, i) => item(c, i)).join('\n')}
+</ul>
+${cast.length > CAST_SHOWN ? `<details><summary>ほか${cast.length - CAST_SHOWN}名を見る</summary>
+<ul class="cast-list">
+${cast.slice(CAST_SHOWN).map((c, i) => item(c, i + CAST_SHOWN)).join('\n')}
+</ul>
+</details>` : ''}
+</section>`;
+}
+
 function costarHtml({ id, title, related, works, heading, what, pageType }) {
   if (!related.length) return '';
   const item = ([wid, actors], index) =>
@@ -396,23 +425,15 @@ export function workPages(ctx) {
 ${others.length && partners.length ? `<p class="note">リンクは提携しているサービスだけに付けています。</p>` : ''}
 <p class="note">見放題・レンタルの区別や配信開始日は、各サービスでご確認ください。</p>`
       : '';
-    const castRows = cast.map(({ actor, roles }) =>
-      `<tr><td>${esc(roles.join('／'))}</td><td><a href="/va/${toPageId(actor.actor_id)}/">${esc(actor.name)}</a></td><td class="num">${new Set(actor.roles.map(r => r.work_id)).size}作品</td></tr>`).join('\n');
+    const castSection = castHtml({ id, cast, countOf: actor => new Set(actor.roles.map(r => r.work_id)).size, note: '名前を押すと、その声優の今期の出演作と配信先をまとめて見られます。', pageType: 'work' });
     const costarSection = costarHtml({ id, title: work.title, related, works: data.works, heading: 'このキャストが、今期ほかに出ている作品', what: `${seasonLabel}`, pageType: 'work' });
 
     const body = `<h1>「${esc(work.title)}」の配信はどこ？</h1>
 <p class="lead">${lead}</p>
 ${buttons ? `<p class="top-cta">${buttons}</p>
 ${notesFor.map(note => `<p class="note">${esc(note)}</p>`).join('\n')}` : ''}
+${castSection}
 ${costarSection}
-<h2>キャスト</h2>
-<p class="note">名前を押すと、その声優の今期の出演作と配信先をまとめて見られます。右端は今期の出演作品数です。</p>
-<table>
-<thead><tr><th>役名</th><th>声優</th><th>今期</th></tr></thead>
-<tbody>
-${castRows}
-</tbody>
-</table>
 ${vodSection}
 ${notesSection(notes[work.title], work.title)}
 ${work.official_url ? `<p><a href="${esc(work.official_url)}" target="_blank" rel="noopener" data-ga-event="official_site_click" data-ga-work-id="${esc(id)}" data-ga-work-title="${esc(work.title)}">公式サイト ↗</a></p>` : ''}
@@ -516,25 +537,15 @@ export function nextWorkPages(ctx, next, skipIds = new Set()) {
     const lead = date
       ? `「${esc(work.title)}」は、${esc(year)}年${esc(date)}から放送開始予定です。${countdown(work.start_date)}`
       : `「${esc(work.title)}」は${esc(nextLabel)}として放送予定です。放送日はまだ確認できていません。`;
-    const castRows = cast.map(({ actor, roles }) => {
-      const count = counts.get(actor.actor_id);
-      return `<tr><td>${esc(roles.join('／'))}</td><td><a href="/va/${toPageId(actor.actor_id)}/">${esc(actor.name)}</a></td><td class="num">${count ? `${count}作品` : '—'}</td></tr>`;
-    }).join('\n');
+    const castSection = castHtml({ id, cast, countOf: actor => counts.get(actor.actor_id), note: `名前を押すと、その声優の今期（${ctx.seasonLabel}）の出演作と来期の出演予定をまとめて見られます。`, pageType: 'next_work' });
     const costarSection = costarHtml({ id, title: work.title, related, works: next.works, heading: 'このキャストが、来期ほかに出る作品', what: `${nextLabel}`, pageType: 'next_work' });
     const body = `<h1>「${esc(work.title)}」（${esc(nextLabel)}）の放送日とキャスト</h1>
 <p class="lead">${lead}</p>
+${castSection}
 ${costarSection}
 <h2>配信</h2>
 <p>配信サービスは発表待ちです。発表され次第、このページに追加します。</p>
 ${notesSection(ctx.notes?.[work.title], work.title)}
-<h2>キャスト</h2>
-<p class="note">名前を押すと、その声優の今期の出演作と来期の出演予定をまとめて見られます。右端は今期（${esc(ctx.seasonLabel)}）の出演作品数です。</p>
-<table>
-<thead><tr><th>役名</th><th>声優</th><th>今期</th></tr></thead>
-<tbody>
-${castRows}
-</tbody>
-</table>
 ${work.official_url ? `<p><a href="${esc(work.official_url)}" target="_blank" rel="noopener" data-ga-event="official_site_click" data-ga-work-id="${esc(id)}" data-ga-work-title="${esc(work.title)}">公式サイト ↗</a></p>` : ''}
 <p><a href="/next/">${esc(nextLabel)}の放送日一覧へ</a></p>
 <h2>このページについて</h2>
