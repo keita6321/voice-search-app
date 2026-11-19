@@ -1,5 +1,5 @@
 // X 運用ツール（/tools/x/）。オーナー専用のページで、検索には出さず、GA4 でも計測しない。
-// - 引用ポストの文面メーカー：声優を選ぶと、今期の出演作数とリンク入りの文面ができる
+// - 引用ポストの文面メーカー：公式ポストの作品と声優を選ぶと、一言目＋役名入りの本文＋リンクができる
 // - 週のデータポスト：サイトのデータから文面と画像（canvas）を作る
 // 画像はブラウザーで描くので、ビルドにブラウザーやフォントは要らない。
 
@@ -10,23 +10,41 @@ function vodWorkIds(data, actor) {
   return [...new Set(actor.roles.filter(r => data.works[r.work_id]?.vod_links?.length).map(r => r.work_id))];
 }
 
-export function xToolsPayload({ data, next, castLog, seasonLabel, nextLabel }) {
+export function xToolsPayload({ data, next, castLog, seasonLabel, nextLabel, past }) {
+  // 作品の一覧（今期＋来期）。文面メーカーで「どの作品の公式ポストか」を選ぶのに使う
+  const W = [];
+  const widx = new Map();
+  const addWork = (id, work, isNext) => {
+    if (widx.has(id)) return;
+    widx.set(id, W.length);
+    W.push({ id, t: work.title, x: isNext ? 1 : 0, v: work.vod_links?.length ? 1 : 0 });
+  };
+  for (const [id, work] of Object.entries(data.works)) addWork(id, work, false);
+  for (const [id, work] of Object.entries(next?.works ?? {})) addWork(id, work, true);
+
+  // 声優：今期の出演作数（声優ページと同じ数え方）、役（作品の番号と役名）、来期の役、主な過去作
   const actors = new Map();
+  const ensure = actor => {
+    if (!actors.has(actor.actor_id)) {
+      actors.set(actor.actor_id, {
+        id: actor.actor_id.slice(2), name: actor.name, reading: actor.reading ?? '', n: 0, r: [], next: [],
+        p: (past?.(actor.actor_id) ?? []).slice(0, 3).map(w => [w.title, w.character || '']),
+      });
+    }
+    return actors.get(actor.actor_id);
+  };
   for (const actor of data.voice_actors) {
-    const ids = vodWorkIds(data, actor);
-    actors.set(actor.actor_id, {
-      id: actor.actor_id.slice(2), name: actor.name, reading: actor.reading ?? '', n: ids.length,
-      works: ids.slice(0, 3).map(id => data.works[id].title), next: [],
-    });
+    const entry = ensure(actor);
+    entry.n = vodWorkIds(data, actor).length;
+    for (const role of actor.roles) if (widx.has(role.work_id)) entry.r.push([widx.get(role.work_id), role.character_name]);
   }
   for (const actor of next?.voice_actors ?? []) {
-    if (!actors.has(actor.actor_id)) {
-      actors.set(actor.actor_id, { id: actor.actor_id.slice(2), name: actor.name, reading: actor.reading ?? '', n: 0, works: [], next: [] });
-    }
-    const entry = actors.get(actor.actor_id);
+    const entry = ensure(actor);
     for (const role of actor.roles) {
       const work = next.works[role.work_id];
-      if (work) entry.next.push({ t: work.title, c: role.character_name, w: role.work_id });
+      if (!work) continue;
+      entry.next.push({ t: work.title, c: role.character_name, w: role.work_id });
+      entry.r.push([widx.get(role.work_id), role.character_name]);
     }
   }
   const counts = new Map([...actors].map(([key, a]) => [key, a.n]));
@@ -55,7 +73,7 @@ export function xToolsPayload({ data, next, castLog, seasonLabel, nextLabel }) {
 
   return {
     seasonLabel, nextLabel, updated: data.updated_at?.slice(0, 10),
-    actors: [...actors.values()], top, castWorks, schedule, newCast,
+    W, actors: [...actors.values()], top, castWorks, schedule, newCast,
   };
 }
 
@@ -87,6 +105,7 @@ button.ghost,.btn.ghost{background:#efeaf6;color:#4b3d6b}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chip{min-height:36px;padding:0 12px;border-radius:999px;border:1px solid #d8d0e4;background:#f5f2fa;color:#4b3d6b;font-weight:700;font-size:13px}
 .chip small{margin-left:4px;font-weight:600;color:var(--sub)}
+.chip.on{background:var(--ac);color:#fff;border-color:var(--ac)}.chip.on small{color:#e9e4f3}
 .count{font-size:12px;color:var(--sub)}.count.over{color:#b3261e;font-weight:800}
 .picked{font-weight:800;font-size:16px}
 .hint{font-size:12px;color:var(--sub);margin:4px 0 0}
@@ -108,26 +127,36 @@ ol.steps{padding-left:20px;font-size:14px;margin:6px 0}
 </div>
 
 <h2>引用ポストの文面メーカー</h2>
+<ol class="steps">
+<li>引用する公式ポストの<b>作品</b>か<b>声優</b>を選ぶ</li>
+<li><b>一言目</b>を選んで、「◯◯」を公式ポストの話題に書き換える</li>
+<li><b>本文</b>を選び、公式ポストの URL を貼って「X で開く」</li>
+</ol>
 <h3>今日の狙い目</h3>
 <p class="sub">来期の出演が決まっていて、今期の出演作も多い声優です（日替わり）。</p>
 <div class="chips" id="picks"></div>
-<label for="q">声優名で探す（ひらがなでも可）</label>
-<input id="q" type="search" placeholder="例：すぎた、松岡禎丞" autocomplete="off">
+<label for="q">作品名・声優名で探す（ひらがなでも可）</label>
+<input id="q" type="search" placeholder="例：氷の城壁、すぎた" autocomplete="off">
 <div class="chips" id="results" style="margin-top:8px"></div>
 
 <div class="box" id="composer" hidden>
 <p class="picked" id="picked"></p>
 <p class="sub" id="pickedInfo"></p>
+<div id="workBox" hidden><label>どの作品の公式ポスト？（選ぶと役名が入ります）</label><div class="chips" id="works"></div></div>
+<div id="castBox" hidden><label>この作品のキャスト（選ぶとその声優の文面になります）</label><div class="chips" id="cast"></div></div>
+<label for="opener">一言目（公式ポストの話題に合わせて書き換える）</label>
+<div class="chips" id="openers"></div>
+<input id="opener" type="text" placeholder="例：第22話、今夜も目が離せない…" style="margin-top:8px">
+<label>本文</label>
 <div class="chips" id="variants"></div>
-<label for="text">文面（1行目に、公式ポストの話題への一言を足すと自然です）</label>
-<textarea id="text"></textarea>
-<label for="tags">ハッシュタグ（公式が使っているもの）</label>
-<input id="tags" type="text" placeholder="例：#サカモトデイズ">
+<textarea id="text" style="margin-top:8px"></textarea>
+<label for="tags">ハッシュタグ（公式ポストに付いているタグに合わせて直す）</label>
+<input id="tags" type="text" placeholder="例：#氷の城壁">
 <label for="quote">公式ポストの URL（貼ると引用ポストになります）</label>
 <input id="quote" type="url" placeholder="https://x.com/…/status/…">
 <p class="count" id="count"></p>
 <div class="row"><a class="btn" id="intent" href="#" target="_blank" rel="noopener">X で開く</a><button class="ghost" id="copy" type="button">文面をコピー</button></div>
-<p class="hint">「X で開く」を押すと、文面と公式ポストが入った投稿画面が開きます。</p>
+<p class="hint">セリフの話者は決めつけない／1つの公式ポストに引用は1回まで／リンク付きは1件ずつ時間を空ける</p>
 </div>
 
 <h2>週のデータポスト</h2>
@@ -156,37 +185,101 @@ function weight(text) {
 }
 
 // ---- 引用ポストの文面 ----
-let current = null;
-function variantsOf(a) {
-  const url = utm('/va/' + a.id + '/', 'quote');
-  const out = [];
-  const works = a.works.slice(0, 2).join('、') + (a.n > 2 ? ' ほか' : '');
-  if (a.n > 0) out.push(['今期の出演作', a.name + 'さんは今期' + a.n + '作品に出演中🎙\\n' + works + '\\n\\n出演作と配信先はこちら👇\\n' + url]);
-  const nx = a.next[0];
-  if (nx && a.n > 0) out.push(['来期の出演決定', a.name + 'さん、来期は「' + nx.t + '」の' + nx.c + '役！\\n今期は' + a.n + '作品に出演中なので、放送前にチェックできます📺\\n' + url]);
-  if (nx && a.n === 0) out.push(['来期の出演決定', a.name + 'さん、来期は「' + nx.t + '」の' + nx.c + '役！\\n来期の出演予定と過去の代表作はこちら👇\\n' + url]);
-  if (a.n > 0) out.push(['役名から', '〔キャラ名〕の声は' + a.name + 'さん🎙\\n今期は' + works + 'にも出演中（全' + a.n + '作品）\\n' + url]);
+// このスレッドで決めた型：一言目で公式ポストの話題に乗る → 「◯◯役の△△さん」＋今期の作品数 or 代表作 → リンク
+const ST = { actor: null, work: null };
+const roleOf = (a, wi) => { const r = a.r.find(x => x[0] === wi); return r ? r[1] : ''; };
+const shortTitle = t => t
+  .replace(/[\\s　]*(第[0-9０-９]+期.*|第[0-9０-９]+クール.*|[0-9]+(st|nd|rd|th) season.*|Season ?[0-9]+.*)$/i, '')
+  .replace(/[\\s　]*[〜～].*$/, '').trim() || t;
+// 文面に入れる短い作品名：長い作品名は最初の空白の手前まで（「進撃の巨人 The Final Season」→「進撃の巨人」）
+const brief = t => { const s = shortTitle(t); const head = s.split(/[\\s　]/)[0].replace(/^(.{4,}?[！!]).*$/, '$1'); return s.length > 12 && head.length >= 4 ? head : s; };
+const tagOf = t => '#' + shortTitle(t).split(/[、,!！?？]/)[0].replace(/[\\s　・!！?？:：「」『』、。,.\\-－'"]/g, '');
+const othersOf = (a, exceptWi) => [...new Set(a.r.filter(x => x[0] !== exceptWi && !P.W[x[0]].x && P.W[x[0]].v).map(x => brief(P.W[x[0]].t)))];
+// 代表作：今期・来期の作品と同じシリーズは除く
+const famousOf = a => { const mine = new Set(a.r.map(x => brief(P.W[x[0]].t))); return a.p.filter(([t]) => !mine.has(brief(t))); };
+const workIndex = id => P.W.findIndex(w => w.id === id);
+
+function openers() {
+  const a = ST.actor, role = a && ST.work != null ? roleOf(a, ST.work) : '';
+  const list = [];
+  if (a && role) list.push(['キャスト発表', role + '役は' + a.name + 'さん！']);
+  list.push(['放送回の告知', '第◯話、今週も目が離せない…']);
+  list.push(['場面・セリフ', '「◯◯」の一言、刺さる…']);
+  list.push(['PV・ビジュアル', '新しいPV、期待しかない…！']);
+  list.push(['誕生日', (role || '◯◯') + '、お誕生日おめでとう🎉']);
+  list.push(['Blu-ray・グッズ', '発売おめでとうございます🎉']);
+  return list;
+}
+function bodies() {
+  const a = ST.actor, wi = ST.work, w = wi != null ? P.W[wi] : null, out = [];
+  // 一言目に名前が入っているときは、本文で「〇〇役の△△さんは」を繰り返さない
+  const named = a && $('#opener').value.includes(a.name);
+  if (a) {
+    const url = utm('/va/' + a.id + '/', 'quote');
+    const role = w ? roleOf(a, wi) : '';
+    const who = role ? role + '役の' + a.name + 'さん' : a.name + 'さん';
+    const others = othersOf(a, wi);
+    if (a.n > 0) {
+      const list = others.length ? '\\n' + others.slice(0, 2).join('、') + (others.length > 2 ? ' ほか' : '') : '';
+      out.push(['今期の出演作', (named ? '今期は' : who + 'は、今期') + a.n + '作品に出演中🎙' + list + '\\n出演作と配信先はこちら👇\\n' + url]);
+    }
+    const famous = famousOf(a);
+    if (famous.length) {
+      const fam = famous.slice(0, 3).map(([t, c]) => (c ? c.split('、')[0] + '（' + brief(t) + '）' : brief(t))).join('、');
+      out.push(['代表作から', (named ? '代表作は、' : who + 'といえば、') + fam + '🎙\\n今期の出演作と代表作はこちら👇\\n' + url]);
+    }
+    const nx = a.next.find(x => !w || x.w !== w.id);
+    if (nx) {
+      out.push(['来期の出演', a.name + 'さん、来期は「' + brief(nx.t) + '」の' + nx.c + '役！\\n'
+        + (a.n > 0 ? '今期は' + a.n + '作品に出演中なので、放送前にチェックできます📺' : '来期の出演予定と代表作はこちら📺') + '\\n' + url]);
+    }
+  }
+  if (w) {
+    const wurl = utm('/work/' + w.id + '/', 'quote');
+    if (!w.x && w.v) out.push(['作品ページ（配信）', '「' + brief(w.t) + '」は配信でも見られます📺\\n見逃した回も追いつけます\\nキャストが今期ほかに出ている作品もまとめました👇\\n' + wurl]);
+    if (w.x) out.push(['作品ページ（来期）', '「' + brief(w.t) + '」のキャスト、今期はほかに何に出てる？🎙\\n放送前にチェック👇\\n' + wurl]);
+  }
   return out;
 }
-function pick(a) {
-  current = a;
+function chipBtn(box, label, small, on, fn) {
+  const b = document.createElement('button'); b.type = 'button'; b.className = 'chip' + (on ? ' on' : '');
+  b.append(label);
+  if (small) { const s = document.createElement('small'); s.textContent = small; b.append(s); }
+  b.onclick = fn; box.appendChild(b); return b;
+}
+function render(scroll) {
+  chosen = 0;
+  const a = ST.actor, w = ST.work != null ? P.W[ST.work] : null;
   $('#composer').hidden = false;
-  $('#picked').textContent = a.name;
-  $('#pickedInfo').textContent = '今期 ' + a.n + '作品' + (a.next.length ? '／来期：' + a.next.map(x => x.t + '（' + x.c + '）').join('、') : '');
-  const vs = variantsOf(a);
-  const box = $('#variants'); box.innerHTML = '';
-  vs.forEach(([label, text], i) => {
-    const b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.textContent = label;
-    b.onclick = () => { $('#text').value = text; update(); };
-    box.appendChild(b);
-    if (i === 0) $('#text').value = text;
-  });
+  $('#picked').textContent = [w ? brief(w.t) + (w.x ? '（来期）' : '') : '', a ? a.name : ''].filter(Boolean).join(' × ');
+  $('#pickedInfo').textContent = a ? '今期 ' + a.n + '作品' + (a.next.length ? '／来期：' + a.next.map(x => brief(x.t) + '（' + x.c + '）').join('、') : '') : '作品ページの文面か、キャストを選んで声優ページの文面を作れます';
+  const worksBox = $('#works'); worksBox.innerHTML = '';
+  $('#workBox').hidden = !a;
+  if (a) a.r.forEach(([wi, c]) => chipBtn(worksBox, brief(P.W[wi].t), (P.W[wi].x ? '来期・' : '') + c, wi === ST.work, () => { ST.work = wi; render(); }));
+  const castBox = $('#cast'); castBox.innerHTML = '';
+  $('#castBox').hidden = !w;
+  if (w) P.actors.filter(x => x.r.some(r => r[0] === ST.work)).sort((x, y) => y.n - x.n)
+    .forEach(x => chipBtn(castBox, x.name, roleOf(x, ST.work) + '・今期' + x.n, x === a, () => { ST.actor = x; render(); }));
+  const ob = $('#openers'); ob.innerHTML = '';
+  openers().forEach(([l, t]) => chipBtn(ob, l, '', false, () => { $('#opener').value = t; $('#opener').focus(); renderVariants(); }));
+  renderVariants();
+  let saved = '';
+  if (w) { try { saved = localStorage.getItem('acn_tag_' + w.id) || ''; } catch {} }
+  $('#tags').value = w ? (saved || tagOf(w.t)) : '';
   update();
-  $('#composer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (scroll) $('#composer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+// 本文の候補を作り直す（選んでいた候補はそのまま選ぶ）
+let chosen = 0;
+function renderVariants() {
+  const vs = bodies(), vb = $('#variants'); vb.innerHTML = '';
+  if (chosen >= vs.length) chosen = 0;
+  vs.forEach(([l, t], i) => chipBtn(vb, l, '', i === chosen, () => { chosen = i; $('#text').value = t; [...vb.children].forEach((c, k) => c.classList.toggle('on', k === i)); update(); }));
+  $('#text').value = vs[chosen] ? vs[chosen][1] : '';
+  update();
 }
 function fullText() {
-  const tags = $('#tags').value.trim();
-  return $('#text').value.trim() + (tags ? '\\n' + tags : '');
+  return [$('#opener').value.trim(), $('#text').value.trim(), $('#tags').value.trim()].filter(Boolean).join('\\n');
 }
 function update() {
   const text = fullText();
@@ -195,33 +288,32 @@ function update() {
   const c = $('#count'); c.textContent = '文字数の目安：' + w + ' / 280'; c.className = 'count' + (w > 280 ? ' over' : '');
   $('#intent').href = 'https://x.com/intent/post?text=' + encodeURIComponent(text + (quote ? '\\n' + quote : ''));
 }
-['#text', '#tags', '#quote'].forEach(s => $(s).addEventListener('input', update));
+['#opener', '#text', '#quote'].forEach(s => $(s).addEventListener('input', update));
+$('#tags').addEventListener('input', () => {
+  if (ST.work != null) { try { localStorage.setItem('acn_tag_' + P.W[ST.work].id, $('#tags').value.trim()); } catch {} }
+  update();
+});
 $('#copy').onclick = async () => {
   try { await navigator.clipboard.writeText(fullText()); $('#copy').textContent = 'コピーしました'; }
   catch { $('#text').select(); document.execCommand('copy'); $('#copy').textContent = 'コピーしました'; }
   setTimeout(() => { $('#copy').textContent = '文面をコピー'; }, 1500);
 };
-function chip(a, box) {
-  const b = document.createElement('button'); b.type = 'button'; b.className = 'chip';
-  b.innerHTML = '';
-  b.append(a.name);
-  const s = document.createElement('small'); s.textContent = '今期' + a.n + (a.next.length ? '・来期あり' : ''); b.append(s);
-  b.onclick = () => pick(a);
-  box.appendChild(b);
-}
-// 今日の狙い目（日替わりで5人）
+// 今日の狙い目（日替わりで5人）。選ぶと、その人の来期の作品が「公式ポストの作品」に入る
 const strong = P.actors.filter(a => a.next.length && a.n >= 5);
 const pool = (strong.length >= 10 ? strong : P.actors.filter(a => a.next.length && a.n >= 3)).sort((a, b) => b.n - a.n || a.reading.localeCompare(b.reading, 'ja'));
 const day = Math.floor((Date.now() + 9 * 3600e3) / 864e5);
 const picks = pool.length ? Array.from({ length: Math.min(5, pool.length) }, (_, i) => pool[(day * 5 + i) % pool.length]) : [];
-picks.forEach(a => chip(a, $('#picks')));
+picks.forEach(a => chipBtn($('#picks'), a.name, brief(a.next[0].t) + '・今期' + a.n, false, () => { ST.actor = a; ST.work = workIndex(a.next[0].w); render(true); }));
 if (!picks.length) $('#picks').innerHTML = '<p class="empty">来期の出演が決まっている声優がまだいません。</p>';
-const kata = s => s.replace(/[\\u30a1-\\u30f6]/g, c => String.fromCharCode(c.charCodeAt(0) - 0x60));
+const kata = s => s.replace(/[ァ-ヶ]/g, c => String.fromCharCode(c.charCodeAt(0) - 0x60));
 const norm = s => kata((s || '').normalize('NFKC').replace(/[\\s・]/g, '').toLowerCase());
 $('#q').addEventListener('input', () => {
   const q = norm($('#q').value); const box = $('#results'); box.innerHTML = '';
   if (!q) return;
-  P.actors.filter(a => norm(a.name).includes(q) || norm(a.reading).includes(q)).sort((a, b) => b.n - a.n).slice(0, 10).forEach(a => chip(a, box));
+  P.W.map((w, i) => [w, i]).filter(([w]) => norm(w.t).includes(q)).slice(0, 6)
+    .forEach(([w, i]) => chipBtn(box, shortTitle(w.t), w.x ? '来期の作品' : '作品', false, () => { ST.work = i; ST.actor = null; render(true); }));
+  P.actors.filter(a => norm(a.name).includes(q) || norm(a.reading).includes(q)).sort((a, b) => b.n - a.n).slice(0, 8)
+    .forEach(a => chipBtn(box, a.name, '声優・今期' + a.n, false, () => { ST.actor = a; ST.work = null; render(true); }));
 });
 
 // ---- 週のデータポスト（文面＋画像） ----
