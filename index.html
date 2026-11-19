@@ -52,8 +52,9 @@ button{font:inherit;color:inherit;cursor:pointer}
 .hero-chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:10px 2px 2px}.hero-chips>span{font-size:11px;color:var(--sub);font-weight:700;margin-right:2px}
 .hero-chips button{padding:6px 11px;border-radius:999px;background:#fff;border:1px solid #ddd5ea;color:#1d2a44;font-size:12px;font-weight:700;cursor:pointer}.hero-chips em{font-style:normal;margin-left:4px;color:var(--ac);font-size:10px}
 .filter-toggle[hidden]{display:none!important}
-.filter-toggle{display:flex;align-items:center;justify-content:space-between;width:100%;margin:6px 0 8px;padding:10px 14px;border:1px solid #ddd5ea;border-radius:12px;background:#fff;color:#1d2a44;font-size:13px;font-weight:800;cursor:pointer}
-.filter-toggle small{color:var(--sub);font-weight:700;font-size:12px}.filter-toggle small::after{content:" ▾"}.filter-toggle[aria-expanded="true"] small::after{content:" ▴"}
+.list-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:16px 0 8px}.list-head .cnt{flex:1;min-width:0;padding:0 4px}
+.filter-toggle{display:inline-flex;align-items:center;gap:5px;flex:none;margin:0;padding:6px 11px;border:0;border-radius:999px;background:#ece7f4;color:var(--ac);font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap}.filter-toggle svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linejoin:round}.filter-toggle.on{background:var(--ac);color:#fff}
+.filter-toggle small{color:inherit;opacity:.8;font-weight:700;font-size:11px;margin-left:2px}.filter-toggle small::after{content:" ▾"}.filter-toggle[aria-expanded="true"] small::after{content:" ▴"}
 .vod-filters[hidden]{display:none!important}
 .season-info{display:flex;align-items:center;justify-content:center;gap:10px;width:max-content;margin:8px auto 0;padding:10px 18px;border-radius:999px;background:var(--ac)}
 .season-label{color:rgba(255,255,255,.82);font-size:12px;font-weight:700;line-height:1.4;letter-spacing:.04em}
@@ -87,13 +88,16 @@ button{font:inherit;color:inherit;cursor:pointer}
 .feature-card p{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.8em}
 .feature-chip{display:inline-block;margin-top:6px;padding:2px 8px;border-radius:999px;background:#F5C542;color:#1d2a44;font-size:10px;font-weight:800}
 @media(min-width:761px){.feature-card{flex-basis:300px}}
+.feature-links[hidden]{display:none!important}
 .feature-links{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;margin:12px 2px 12px;font-size:13px;line-height:1.6}.feature-links>span{color:var(--sub);font-size:11px;font-weight:700}.feature-links a{color:var(--ac);font-weight:700;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}.feature-links a:hover{text-decoration-thickness:2px}.feature-links a::after{content:" ›";text-decoration:none;display:inline-block;margin-left:2px}
-.vod-filters{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
+.vod-filters{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px;padding:10px;border-radius:14px;background:#efebf5}
 .vod-filter{display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:6px 12px;border:1px solid var(--ac);border-radius:999px;background:var(--sf);color:var(--tx);font-size:13px;font-weight:700;line-height:1.2;white-space:nowrap;box-shadow:0 1px 3px rgba(35,42,53,.05)}
 .vod-filter[aria-pressed="true"]{border-color:var(--ac);background:var(--ac);color:#fff}
 .vod-filter:active{transform:scale(.97)}
 .vod-filter[aria-pressed="true"] .filter-status{margin:0 0 6px;color:var(--tx);font-size:12px;font-weight:700}
 .cnt{padding:3px 4px 10px;font-size:12px;color:var(--sub);font-weight:500}
+.specials{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:14px 0 4px}.sp{display:flex;flex-direction:column;justify-content:space-between;gap:2px;min-height:74px;padding:10px 12px;border-radius:14px;background:#1d2a44;color:#fff;text-decoration:none;line-height:1.3}.sp small{font-size:10px;font-weight:800;letter-spacing:.02em;opacity:.75}.sp b{font-size:15px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sp span{font-size:11px;font-weight:700;opacity:.85}.sp.c1{background:#F5C542;color:#1d2a44}.sp.c2{background:var(--ac)}.sp:active{transform:scale(.98)}
+@media(max-width:540px){.specials{grid-template-columns:1fr 1fr}}
 #list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .row{display:flex;align-items:center;gap:10px;min-width:0;min-height:62px;padding:7px 12px;border:0;border-radius:13px;background:var(--sf);text-align:left;box-shadow:0 2px 6px rgba(35,42,53,.12);transition:transform .12s,box-shadow .12s}
 .row:active{transform:scale(.985);box-shadow:0 1px 3px rgba(35,42,53,.1)}
@@ -200,9 +204,8 @@ body.modal-open{overflow:hidden}
   <div class="hero-chips" id="hero-chips" hidden></div>
   <section class="feature" id="feature" hidden aria-label="注目"></section>
   <nav class="feature-links" aria-label="特集"><span>特集</span><a href="/ranking/">今期の出演本数ランキング</a><a href="/vod/">配信サービス別の作品数</a><a href="/work/">作品一覧（配信はどこ？）</a><a href="/next/" id="next-link" hidden>来期アニメの放送日</a></nav>
-  <button class="filter-toggle" id="filter-toggle" type="button" aria-expanded="false" aria-controls="vod-filters">配信サービスで絞り込む<small id="filter-status" aria-live="polite">すべての配信</small></button>
+  <div class="list-head"><div class="cnt" id="cnt">今期放送中の声優（あいうえお順）</div><button class="filter-toggle" id="filter-toggle" type="button" aria-expanded="false" aria-controls="vod-filters"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16l-6 7.5V19l-4-2v-4.5z"/></svg>配信で絞り込み<small id="filter-status" aria-live="polite">すべて</small></button></div>
   <div class="vod-filters" id="vod-filters" role="group" aria-label="配信サービスで絞り込み" hidden></div>
-  <div class="cnt" id="cnt">今期放送中の声優（あいうえお順）</div>
   <div id="list"></div>
  </section>
  <section id="s2" hidden></section>
@@ -326,12 +329,19 @@ function renderHeroChips(){
 }
 function renderFeature(f){
   const el=$('#feature');if(!el)return;
-  let h='';
+  let h='';const tiles=[];
   if(N){
     const [y,s]=N.season.split('-');const start=Date.parse(`${y}-${String(SEASON_START_MONTH[s]+1).padStart(2,'0')}-01T00:00:00+09:00`);
     const days=Math.ceil((start-Date.now())/864e5);
-    if(days>0)h+=`<a class="feature-rib" href="/next/"><span>${esc(NEXT_LABEL)}まで <b>あと${days}日</b></span><span>放送日一覧 →</span></a>`;
+    if(days>0)tiles.push(['next','/next/',NEXT_LABEL,`あと${days}日`,'放送日とキャスト →','c1']);
   }
+  // 特集：リンク先のページと同じ数え方で、中身がひと目でわかる数字を出す
+  if((D.voice_actors||[]).length){tiles.push(['ranking','/ranking/','出演本数ランキング','今期の1位は誰？','ランキングを見る →','c2'])}
+  const vw=Object.values(D.works||{}).filter(w=>w.vod_links?.length);const pc={};vw.forEach(w=>w.vod_links.forEach(l=>pc[l.provider]=(pc[l.provider]||0)+1));
+  const best=Object.entries(pc).sort((x,y)=>y[1]-x[1])[0];
+  if(best)tiles.push(['vod','/vod/','配信サービス比較',serviceLabel(best[0]),`最多の${best[1]}作品 →`,'']);
+  if(vw.length)tiles.push(['works','/work/','作品一覧',`${vw.length}作品の配信先`,'配信はどこ？ →','']);
+  if(tiles.length){h+=`<nav class="specials" aria-label="特集">`+tiles.map(([k,href,sm,b,sp,c],i)=>`<a class="sp ${c}" href="${href}" data-ga-event="special_click" data-ga-target="${k}" data-ga-position="${i+1}" data-ga-page-type="home"><small>${esc(sm)}</small><b>${esc(b)}</b><span>${esc(sp)}</span></a>`).join('')+`</nav>`;const fl=document.querySelector('.feature-links');if(fl)fl.hidden=true}
   if(f?.works?.length){
     h+=`<div class="feature-h">今期の注目作品<a href="/work/">作品一覧 →</a></div><div class="feature-wrap"><button type="button" class="feature-nav prev" data-dir="-1" aria-label="前の作品">‹</button><button type="button" class="feature-nav next" data-dir="1" aria-label="次の作品">›</button><div class="feature-car" id="feature-car">`+f.works.map((w,i)=>`<a class="feature-card" href="/work/${esc(w.id)}/" data-ga-event="feature_click" data-ga-work-id="${esc(w.id)}" data-ga-work-title="${esc(w.title)}" data-ga-position="${i+1}" data-ga-page-type="home_feature"><span class="feature-img"><img src="${esc(w.thumbnail)}" alt="${esc(w.title)}のキービジュアル" loading="${i<2?'eager':'lazy'}" decoding="async" referrerpolicy="no-referrer" onerror="this.style.visibility='hidden'"></span><div><p>${esc(w.catch)}</p><strong>${esc(w.title)}</strong>${w.partner?`<span class="feature-chip">${esc(serviceLabel(w.partner))}で配信中</span>`:''}</div></a>`).join('')+`</div></div>`;
   }
@@ -381,14 +391,14 @@ Promise.all([fetch('/data.json').then(r=>r.json()),nextData]).then(([d,n])=>{
   }
   applyView();
   renderHeroChips();
-  $('#cnt').textContent=`今期出演中の声優（あいうえお順）・${CURRENT_COUNT}名／${WORK_COUNT}作品`;
+  $('#cnt').textContent=`今期の声優 ${CURRENT_COUNT}名（あいうえお順）`;
   route();
 }).catch(()=>{$('#list').innerHTML='<div class="empty"><b>データを読み込めませんでした</b>data.json を同じ場所に置き、サーバー経由で開いてください。</div>';window.acnPageView()});
 
 function nextList(v,q){
   const r=A.filter(a=>a.next?.length&&(!q||a.k.includes(q)));
   const works=new Set(r.flatMap(a=>a.next.map(x=>x.work_id))).size;
-  $('#cnt').textContent=q?(r.length?`${r.length}名が見つかりました／${NEXT_LABEL}`:`検索結果はありません／${NEXT_LABEL}`):`${NEXT_LABEL}に出演予定の声優（あいうえお順）・${r.length}名／${works}作品`;
+  $('#cnt').textContent=q?(r.length?`${r.length}名が見つかりました／${NEXT_LABEL}`:`検索結果はありません／${NEXT_LABEL}`):`${NEXT_LABEL}の声優 ${r.length}名（あいうえお順）`;
   const first=a=>[...a.next].sort((x,y)=>(N.works[x.work_id].start_date||'9999').localeCompare(N.works[y.work_id].start_date||'9999'))[0];
   $('#list').innerHTML=r.length?r.map(a=>{const f=N.works[first(a).work_id];return `<button class="row" data-id="${esc(a.actor_id)}"><span class="nm"><b>${esc(a.name)}</b></span><span class="service-text">${esc(f.title)}${a.next.length>1?`<span class="service-more"> ほか${a.next.length-1}</span>`:''}</span><span class="role-count">来期 ${a.next.length}作品</span><i class="ch" aria-hidden="true"></i></button>`}).join(''):`<div class="empty"><b>「${esc(v)}」は${esc(NEXT_LABEL)}の作品に見つかりません</b>キャストが発表されるたびに、毎週更新しています。今期の出演作は「今期」に切り替えると探せます。</div>`;
 }
@@ -398,8 +408,8 @@ function list(){
   const v=$('#q').value,q=norm(v),r=A.filter(a=>(a.roles.length||q)&&(!selectedService||a.services.includes(selectedService))&&(!q||a.k.includes(q)));
   $('#clr').hidden=!v;
   const workCount=selectedService?SERVICE_WORK_COUNTS[selectedService]:WORK_COUNT;
-  $('#filter-status').textContent=selectedService?serviceLabel(selectedService):'すべての配信';
-  $('#cnt').textContent=q?(r.length?`${r.length}名が見つかりました／${selectedService?serviceLabel(selectedService)+'配信':'検索対象'}${workCount}作品`:`検索結果はありません／${selectedService?serviceLabel(selectedService)+'配信':'検索対象'}${workCount}作品`):selectedService?`${serviceLabel(selectedService)}で配信中の声優（あいうえお順）・${r.length}名／${workCount}作品`:`今期出演中の声優（あいうえお順）・${r.length}名／${WORK_COUNT}作品`;
+  $('#filter-status').textContent=selectedService?serviceLabel(selectedService):'すべて';$('#filter-toggle').classList.toggle('on',!!selectedService);
+  $('#cnt').textContent=q?(r.length?`${r.length}名が見つかりました／${selectedService?serviceLabel(selectedService)+'配信':'検索対象'}${workCount}作品`:`検索結果はありません／${selectedService?serviceLabel(selectedService)+'配信':'検索対象'}${workCount}作品`):selectedService?`${serviceLabel(selectedService)}で見られる声優 ${r.length}名（${workCount}作品）`:`今期の声優 ${r.length}名（あいうえお順）`;
   $('#list').innerHTML=r.length?r.map(a=>`<button class="row" data-id="${esc(a.actor_id)}"><span class="nm"><b>${esc(a.name)}</b></span><span class="service-text" aria-label="${esc(a.services.map(serviceLabel).join('、'))}で配信">${esc(a.services.slice(0,2).map(serviceLabel).join('・'))}${a.services.length>2?`<span class="service-more"> ほか${a.services.length-2}</span>`:''}</span><span class="role-count">${a.roles.length?`${a.roles.length}件出演`:`来期 ${a.next.length}作品`}</span><i class="ch" aria-hidden="true"></i></button>`).join(''):`<div class="empty"><b>${q?(selectedService?`${serviceLabel(selectedService)}で配信中の作品に「${esc(v)}」は見つかりません`:`「${esc(v)}」は今期の作品に見つかりません`):'このサービスで配信中の作品に出演する声優はいません'}</b>${q?(selectedService?'名前の一部やひらがなで検索できます。':(N?'過去作は対象外です。':'過去作・来期作は対象外です。')+'名前の一部やひらがなでも探せます。'):''}</div>`;
 }
 function renderVodFilters(){
