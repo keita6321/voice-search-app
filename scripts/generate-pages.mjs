@@ -444,7 +444,13 @@ try {
 } catch (error) {
   if (error.code !== 'ENOENT') throw error;
 }
-const articleContext = { data, notes, past: pastWorksOf, prevSeasons, seasonLabel: label, seasonLabelOf: seasonLabel, origin, ogImage, aboutHtml, partnerLinks, partnerServices };
+let thumbnailOverrides = {};
+try {
+  thumbnailOverrides = JSON.parse(await readFile(path.join(root, 'data', 'thumbnail-overrides.json'), 'utf8')).works ?? {};
+} catch (error) {
+  if (error.code !== 'ENOENT') throw error;
+}
+const articleContext = { data, notes, past: pastWorksOf, prevSeasons, thumbnailOverrides, seasonLabel: label, seasonLabelOf: seasonLabel, origin, ogImage, aboutHtml, partnerLinks, partnerServices };
 // X 運用ツール（オーナー専用。noindex、サイトマップにも入れない）
 await mkdir(path.join(root, 'tools', 'x'), { recursive: true });
 await writeFile(path.join(root, 'tools', 'x', 'index.html'), xToolsPage({ data, next, castLog, origin, past: pastWorksOf, seasonLabel: label, nextLabel: next ? seasonLabel(next.season) : '' }));

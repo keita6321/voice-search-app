@@ -1,0 +1,4 @@
+{
+  "_about": "作品のキービジュアルの手動指定（自動取得できなかった作品用）。キーは作品名（data.json / data-next.json と完全一致）、値は公式サイトの og:image の URL。今は /sequel/ だけで使う。",
+  "works": {}
+}
