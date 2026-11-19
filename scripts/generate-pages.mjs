@@ -418,7 +418,7 @@ await writeFile(path.join(root, 'featured.json'), `${JSON.stringify({ season: da
 const articleContext = { data, notes, seasonLabel: label, seasonLabelOf: seasonLabel, origin, ogImage, aboutHtml, partnerLinks, partnerServices };
 // X 運用ツール（オーナー専用。noindex、サイトマップにも入れない）
 await mkdir(path.join(root, 'tools', 'x'), { recursive: true });
-await writeFile(path.join(root, 'tools', 'x', 'index.html'), xToolsPage({ data, next, castLog, origin, seasonLabel: label, nextLabel: next ? seasonLabel(next.season) : '' }));
+await writeFile(path.join(root, 'tools', 'x', 'index.html'), xToolsPage({ data, next, castLog, origin, past: pastWorksOf, seasonLabel: label, nextLabel: next ? seasonLabel(next.season) : '' }));
 for (const [dir, html] of [['ranking', rankingPage(articleContext)], ['vod', vodPage(articleContext)], ['work', workIndexPage(articleContext)], ['next', nextIndexPage(articleContext, next, castLog)]]) {
   await mkdir(path.join(root, dir), { recursive: true });
   await writeFile(path.join(root, dir, 'index.html'), html);
