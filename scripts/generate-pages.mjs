@@ -415,7 +415,13 @@ const featured = Object.entries(notes)
   .filter(Boolean)
   .sort((a, b) => Number(Boolean(b.partner)) - Number(Boolean(a.partner)));
 await writeFile(path.join(root, 'featured.json'), `${JSON.stringify({ season: data.season, works: featured })}\n`);
-const articleContext = { data, notes, seasonLabel: label, seasonLabelOf: seasonLabel, origin, ogImage, aboutHtml, partnerLinks, partnerServices };
+let prevSeasons = {};
+try {
+  prevSeasons = JSON.parse(await readFile(path.join(root, 'data', 'prev-seasons.json'), 'utf8')).works ?? {};
+} catch (error) {
+  if (error.code !== 'ENOENT') throw error;
+}
+const articleContext = { data, notes, past: pastWorksOf, prevSeasons, seasonLabel: label, seasonLabelOf: seasonLabel, origin, ogImage, aboutHtml, partnerLinks, partnerServices };
 // X 運用ツール（オーナー専用。noindex、サイトマップにも入れない）
 await mkdir(path.join(root, 'tools', 'x'), { recursive: true });
 await writeFile(path.join(root, 'tools', 'x', 'index.html'), xToolsPage({ data, next, castLog, origin, past: pastWorksOf, seasonLabel: label, nextLabel: next ? seasonLabel(next.season) : '' }));

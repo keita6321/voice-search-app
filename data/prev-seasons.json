@@ -1,0 +1,138 @@
+{
+  "_about": "続編の作品ページに出す「前のシーズンから見るなら」。キーは data.json / data-next.json の作品名と完全一致。前のシーズンがプライム会員特典（追加料金なし）で見られることを Prime Video の作品ページで確かめたものだけを載せる（第1話だけ・数話だけお試しの作品やチャンネル配信は載せない）。checked は確かめた日。シーズンが変わったら見直す。",
+  "works": {
+    "Re:ゼロから始める異世界生活 4th season 奪還編": {
+      "series": "Re:ゼロから始める異世界生活",
+      "label": "1st〜3rd season",
+      "provider": "Amazon Prime Video",
+      "checked": "2026-11-20",
+      "source": "https://www.amazon.co.jp/gp/video/detail/B0H46QRKDD"
+    },
+    "薬屋のひとりごと 第3期": {
+      "series": "薬屋のひとりごと",
+      "label": "第1期・第2期",
+      "provider": "Amazon Prime Video",
+      "checked": "2026-11-20",
+      "source": "https://www.amazon.co.jp/gp/video/detail/B0CH5FZ9MV"
+    },
+    "アオのハコ Season2": {
+      "series": "アオのハコ",
+      "label": "Season1",
+      "provider": "Amazon Prime Video",
+      "checked": "2026-11-20",
+      "source": "https://www.amazon.co.jp/gp/video/detail/B0DGXKCXDM"
+    },
+    "探偵はもう、死んでいる。Season2": {
+      "series": "探偵はもう、死んでいる。",
+      "label": "Season1",
+      "provider": "Amazon Prime Video",
+      "checked": "2026-11-20",
+      "source": "https://www.amazon.co.jp/gp/video/detail/B0FPXTTF3F"
+    },
+    "氷の城壁 第2期": {
+      "series": "氷の城壁",
+      "label": "第1期",
+      "provider": "Amazon Prime Video",
+      "checked": "2026-11-20",
+      "source": "https://www.amazon.co.jp/gp/video/detail/B0GQJ73B85"
+    },
+    "転生貴族、鑑定スキルで成り上がる 第3期": {
+      "series": "転生貴族、鑑定スキルで成り上がる",
+      "label": "第1期・第2期",
+      "provider": "Amazon Prime Video",
+      "checked": "2026-11-20",
+      "source": "https://www.amazon.co.jp/gp/video/detail/B0CXDPGGXK"
+    },
+    "千歳くんはラムネ瓶のなか 第2クール": {
+      "series": "千歳くんはラムネ瓶のなか",
+      "label": "第1クール",
+      "provider": "Amazon Prime Video",
+      "checked": "2026-11-20",
+      "source": "https://www.amazon.co.jp/gp/video/detail/B0FT79RKYT"
+    },
+    "冰剣の魔術師が世界を統べるⅡ": {
+      "series": "冰剣の魔術師が世界を統べる",
+      "label": "第1期",
+      "provider": "Amazon Prime Video",
+      "checked": "2026-11-20",
+      "source": "https://www.amazon.co.jp/gp/video/detail/B0BZJQDYH1"
+    },
+    "アオアシ Season2": {
+      "series": "アオアシ",
+      "label": "Season1",
+      "provider": "Amazon Prime Video",
+      "checked": "2026-11-20",
+      "source": "https://www.amazon.co.jp/gp/video/detail/B0FC37F8VS"
+    },
+    "魔法の姉妹ルルットリリィ 第2クール": {
+      "series": "魔法の姉妹ルルットリリィ",
+      "label": "第1クール",
+      "provider": "Amazon Prime Video",
+      "checked": "2026-11-20",
+      "source": "https://www.amazon.co.jp/gp/video/detail/B0GVLHYCQC"
+    },
+    "ホテル・インヒューマンズ 第2期": {
+      "series": "ホテル・インヒューマンズ",
+      "label": "第1期",
+      "provider": "Amazon Prime Video",
+      "checked": "2026-11-20",
+      "source": "https://www.amazon.co.jp/gp/video/detail/B0F246RGBK"
+    },
+    "百妖譜 第3期京師篇": {
+      "series": "百妖譜",
+      "label": "第1期・第2期",
+      "provider": "Amazon Prime Video",
+      "checked": "2026-11-20",
+      "source": "https://www.amazon.co.jp/gp/video/detail/B0CPBNMRJL"
+    },
+    "SAKAMOTO DAYS 第2期": {
+      "series": "SAKAMOTO DAYS",
+      "label": "第1期",
+      "provider": "Amazon Prime Video",
+      "checked": "2026-11-20",
+      "source": "https://www.amazon.co.jp/gp/video/detail/B0DQKZ3P4W"
+    },
+    "あかね噺 第2期": {
+      "series": "あかね噺",
+      "label": "第1期",
+      "provider": "Amazon Prime Video",
+      "checked": "2026-11-20",
+      "source": "https://www.amazon.co.jp/gp/video/detail/B0GVB8Z4Z9"
+    },
+    "シャングリラ・フロンティア〜クソゲーハンター、神ゲーに挑まんとす〜 3rd season": {
+      "series": "シャングリラ・フロンティア",
+      "label": "1st・2nd season",
+      "provider": "Amazon Prime Video",
+      "checked": "2026-11-20",
+      "source": "https://www.amazon.co.jp/gp/video/detail/B0CH9BQDND"
+    },
+    "ワンパンマン 第3期第2クール": {
+      "series": "ワンパンマン",
+      "label": "第1期〜第3期第1クール",
+      "provider": "Amazon Prime Video",
+      "checked": "2026-11-20",
+      "source": "https://www.amazon.co.jp/gp/video/detail/B0DJS1982H"
+    },
+    "ふつつかな悪女ではございますが ～雛宮蝶鼠とりかえ伝～ 第2クール": {
+      "series": "ふつつかな悪女ではございますが",
+      "label": "第1クール",
+      "provider": "Amazon Prime Video",
+      "checked": "2026-11-20",
+      "source": "https://www.amazon.co.jp/gp/video/detail/B0H7WTGMT7"
+    },
+    "マリッジトキシン 第2期": {
+      "series": "マリッジトキシン",
+      "label": "第1期",
+      "provider": "Amazon Prime Video",
+      "checked": "2026-11-20",
+      "source": "https://www.amazon.co.jp/gp/video/detail/B0FZWJ9PR3"
+    },
+    "異世界でチート能力を手にした俺は、現実世界をも無双する ～レベルアップは人生を変えた～ 2nd Season": {
+      "series": "異世界でチート能力を手にした俺は、現実世界をも無双する",
+      "label": "第1期",
+      "provider": "Amazon Prime Video",
+      "checked": "2026-11-20",
+      "source": "https://www.amazon.co.jp/gp/video/detail/B0CH1KF4P2"
+    }
+  }
+}
