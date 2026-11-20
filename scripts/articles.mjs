@@ -76,6 +76,7 @@ table.compare tr.partner td{background:#f5f2fa}.pr{font-size:10px;color:#62517f}
 .month{margin:22px 0 6px;font-size:15px;font-weight:900;color:#62517f}
 .sched{list-style:none;margin:0;padding:0;display:grid;gap:8px}
 .sched>li{display:grid;grid-template-columns:62px minmax(0,1fr);gap:12px;padding:12px 14px;border:1px solid #e3dcef;border-radius:14px;background:#fff}
+.sched.season-list>li{display:block}
 .sched-date{text-align:center;font-weight:900;color:#1d2a44;font-size:15px;line-height:1.25}.sched-date small{display:block;font-size:11px;color:#62517f;font-weight:700}.sched-date .countdown{display:block;margin-top:4px;font-size:10px;color:#5d5a52;font-weight:700}
 .sched-title{display:block;font-weight:800;font-size:15px;line-height:1.4;color:#1d2a44;text-decoration:none}
 .sched-cast{margin-top:3px;font-size:12.5px;color:#5d5a52;line-height:1.6}.sched-cast a{color:#62517f;font-weight:700;text-decoration:none;border-bottom:1px solid #d6cde6}
@@ -106,7 +107,7 @@ function followBox(path) {
   return `<aside class="follow-x"><p><b>新しいキャスト情報は X でも発信しています</b><span>@animecastnow</span></p><a href="https://x.com/animecastnow" target="_blank" rel="noopener" data-ga-event="x_follow_click" data-ga-page-type="${esc(pageType)}" aria-label="X（@animecastnow）をフォロー">＋ フォロー</a></aside>`;
 }
 
-function page({ origin, ogImage, aboutHtml, path, title, description, body, noindex = false, extraScript = '', jsonLd = null }) {
+function page({ origin, ogImage, aboutHtml, path, title, description, body, noindex = false, extraScript = '', jsonLd = null, data = null, seasonLabel = '' }) {
   const { style, scripts } = shellParts(aboutHtml);
   const url = `${origin}${path}`;
   return `<!DOCTYPE html>
@@ -146,6 +147,7 @@ ${followBox(path)}
 <li><a href="/next/">来期アニメの放送日とキャスト</a></li>
 <li><a href="/costar/">今期よく共演している声優コンビ</a></li>
 <li><a href="/sequel/">続編アニメの前に見ておきたい作品</a></li>
+${data?.season && seasonLabel ? `<li><a href="/season/${esc(data.season)}/">${esc(seasonLabel)} 声優・キャストまとめ</a></li>` : ''}
 <li><a href="/about/">このサイトについて</a></li>
 </ul>
 <p class="note">本ページのリンクにはアフィリエイトを含みます。配信状況は各サービスでご確認ください。</p>
@@ -424,12 +426,12 @@ function repWork(past, actorId, title) {
   return (past?.(actorId) ?? []).find(w => w.character && !sameSeries(w.title, title)) ?? null;
 }
 
-function castHtml({ id, title, cast, countOf, note, pageType, past }) {
+function castHtml({ id, title, cast, countOf, note, pageType, past, countPrefix = '今期' }) {
   if (!cast.length) return '';
   const item = ({ actor, roles }, index) => {
     const count = countOf(actor);
     const rep = repWork(past, actor.actor_id, title);
-    return `<li><a href="/va/${toPageId(actor.actor_id)}/" data-ga-event="cast_click" data-ga-work-id="${esc(id)}" data-ga-actor-id="${esc(actor.actor_id)}" data-ga-position="${index + 1}" data-ga-page-type="${esc(pageType)}"><span class="cast-name">${esc(actor.name)}</span><span class="cast-role">${esc(roles.join('／'))}${/ナレーション$/.test(roles.at(-1) ?? '') ? '' : ' 役'}</span>${rep ? `<span class="cast-rep">主な出演：${esc(rep.character)}（${esc(rep.title)}）</span>` : ''}<span class="cast-n">${count ? `今期${count}作品 ›` : '›'}</span></a></li>`;
+    return `<li><a href="/va/${toPageId(actor.actor_id)}/" data-ga-event="cast_click" data-ga-work-id="${esc(id)}" data-ga-actor-id="${esc(actor.actor_id)}" data-ga-position="${index + 1}" data-ga-page-type="${esc(pageType)}"><span class="cast-name">${esc(actor.name)}</span><span class="cast-role">${esc(roles.join('／'))}${/ナレーション$/.test(roles.at(-1) ?? '') ? '' : ' 役'}</span>${rep ? `<span class="cast-rep">主な出演：${esc(rep.character)}（${esc(rep.title)}）</span>` : ''}<span class="cast-n">${count ? `${countPrefix}${count}作品 ›` : '›'}</span></a></li>`;
   };
   return `<section class="cast" aria-labelledby="cast-h">
 <h2 id="cast-h">キャスト（${cast.length}名）</h2>
@@ -501,12 +503,19 @@ function workJsonLd({ origin, id, work, cast, listName, listPath }) {
   return { '@context': 'https://schema.org', '@graph': [series, breadcrumb] };
 }
 
+// シーズンの始まりの月（放送開始の目安。終わったシーズンのページで「2026年10月から放送」と書く）
+const SEASON_START = { winter: 1, spring: 4, summer: 7, autumn: 10 };
+export const seasonStartText = season => { const [y, n] = String(season).split('-'); return SEASON_START[n] ? `${y}年${SEASON_START[n]}月から放送` : ''; };
+
+// ctx.archived が true のときは、放送が終わったシーズンのまとめとして作る（「今期」「配信中」を使わず、時点を明記する）
+// ctx.skip に入っている作品は作らない（今期・来期のデータにある作品は、そちらで作る）
 export function workPages(ctx) {
   const { data, seasonLabel, partnerServices } = ctx;
+  const archived = Boolean(ctx.archived);
   const notes = ctx.notes ?? {};
   const byWork = castOf(data);
   const asOf = data.updated_at.slice(0, 10);
-  return Object.entries(data.works).map(([id, work]) => {
+  return Object.entries(data.works).filter(([id]) => !ctx.skip?.has(id)).map(([id, work]) => {
     const cast = byWork.get(id) ?? [];
     const vods = work.vod_links ?? [];
     const partners = vods.filter(v => partnerServices.includes(v.provider));
@@ -526,24 +535,27 @@ export function workPages(ctx) {
       .sort((a, b) => b[1].size - a[1].size || data.works[a[0]].title.localeCompare(data.works[b[0]].title, 'ja'))
       .slice(0, 10);
 
-    const lead = vods.length
-      ? `${esc(names.length > 3 ? `${names.slice(0, 3).join('、')}など${names.length}サービス` : names.join('、'))}で配信中です（${esc(asOf)}時点）。`
-      : `「${esc(work.title)}」の配信サービスは、まだ確認できていません（${esc(asOf)}時点）。配信が決まり次第、このページに追加します。`;
+    const serviceText = esc(names.length > 3 ? `${names.slice(0, 3).join('、')}など${names.length}サービス` : names.join('、'));
+    const lead = archived
+      ? `${esc(seasonLabel)}（${esc(seasonStartText(data.season))}）の作品です。${vods.length ? `${serviceText}で配信されていました（${esc(asOf)}時点）。今の配信状況は各サービスで確認してください。` : ''}`
+      : vods.length
+        ? `${serviceText}で配信中です（${esc(asOf)}時点）。`
+        : `「${esc(work.title)}」の配信サービスは、まだ確認できていません（${esc(asOf)}時点）。配信が決まり次第、このページに追加します。`;
     const buttons = partners.map((v, index) =>
       `<a class="cta" href="${esc(v.url)}" target="_blank" rel="sponsored noopener" data-ga-event="vod_click" data-ga-provider="${esc(v.provider)}" data-ga-work-id="${esc(id)}" data-ga-work-title="${esc(work.title)}" data-ga-page-type="work" data-ga-position="${index + 1}">${esc(ctaText(v.provider))} ↗</a>`).join(' ');
     const endButtons = partners.map((v, index) =>
       `<a class="cta" href="${esc(v.url)}" target="_blank" rel="sponsored noopener" data-ga-event="vod_click" data-ga-provider="${esc(v.provider)}" data-ga-work-id="${esc(id)}" data-ga-work-title="${esc(work.title)}" data-ga-page-type="work_end" data-ga-position="${index + 1}">${esc(ctaText(v.provider))} ↗</a>`).join(' ');
     const notesFor = partners.map(v => PARTNER_NOTES[v.provider]).filter(Boolean);
     const vodSection = vods.length
-      ? `<h2>配信しているサービス</h2>
+      ? `<h2>${archived ? `配信していたサービス（${esc(asOf)}時点）` : '配信しているサービス'}</h2>
 <p>${esc(names.join('、'))}</p>
 ${others.length && partners.length ? `<p class="note">リンクは提携しているサービスだけに付けています。</p>` : ''}
 <p class="note">見放題・レンタルの区別や配信開始日は、各サービスでご確認ください。</p>`
       : '';
-    const castSection = castHtml({ id, title: work.title, past: ctx.past, cast, countOf: actor => new Set(actor.roles.map(r => r.work_id)).size, note: '名前を押すと、その声優の今期の出演作と配信先をまとめて見られます。', pageType: 'work' });
-    const costarSection = costarHtml({ id, title: work.title, related, works: data.works, heading: 'このキャストが、今期ほかに出ている作品', what: `${seasonLabel}`, pageType: 'work' });
+    const castSection = castHtml({ id, title: work.title, past: ctx.past, cast, countOf: actor => new Set(actor.roles.map(r => r.work_id)).size, note: archived ? '名前を押すと、その声優の最新の出演作と配信先を見られます。' : '名前を押すと、その声優の今期の出演作と配信先をまとめて見られます。', pageType: 'work', countPrefix: archived ? `${seasonLabel.replace(/アニメ$/, '')} ` : '今期' });
+    const costarSection = costarHtml({ id, title: work.title, related, works: data.works, heading: archived ? `このキャストが、${seasonLabel}でほかに出ていた作品` : 'このキャストが、今期ほかに出ている作品', what: `${seasonLabel}`, pageType: 'work' });
 
-    const body = `<h1>「${esc(work.title)}」の声優・キャストと配信先</h1>
+    const body = `<h1>「${esc(work.title)}」の声優・キャスト${archived ? `（${esc(seasonLabel)}）` : 'と配信先'}</h1>
 <p class="lead">${lead}</p>
 ${buttons ? `<p class="top-cta">${buttons}</p>
 ${notesFor.map(note => `<p class="note">${esc(note)}</p>`).join('\n')}` : ''}
@@ -558,12 +570,14 @@ ${endButtons ? `<div class="end-cta"><p>「${esc(work.title)}」を見るなら<
 ${notesFor.map(note => `<p class="note">${esc(note)}</p>`).join('\n')}</div>` : ''}
 <h2>このページについて</h2>
 <p class="note">作品とキャストはアニメ作品データベース「Annict」のAPI、配信先はAnnictの作品情報・公式サイト・配信サービスの公式ラインナップなどをもとにしています（最終更新：${esc(asOf)}）。配信状況は変わることがあります。</p>`;
-    const description = vods.length
-      ? `${castLead(work.title, cast)}${names.slice(0, 3).join('、')}${names.length > 3 ? `など${names.length}サービス` : ''}で配信中。キャストが出ている${seasonLabel}のほかの作品もまとめています。`
-      : `${castLead(work.title, cast)}キャストが出ている${seasonLabel}のほかの作品もまとめています。配信サービスは確認中です。`;
+    const description = archived
+      ? `${castLead(work.title, cast).replace('」の', `」（${seasonLabel}）の`)}${seasonStartText(data.season)}。キャストが出ていた${seasonLabel}のほかの作品もまとめています。`
+      : vods.length
+        ? `${castLead(work.title, cast)}${names.slice(0, 3).join('、')}${names.length > 3 ? `など${names.length}サービス` : ''}で配信中。キャストが出ている${seasonLabel}のほかの作品もまとめています。`
+        : `${castLead(work.title, cast)}キャストが出ている${seasonLabel}のほかの作品もまとめています。配信サービスは確認中です。`;
     // 配信先が確認できていない作品は検索に出さない（中身の薄いページを増やさないため）
     const indexed = vods.length > 0;
-    const html = page({ ...ctx, path: `/work/${id}/`, title: `「${work.title}」声優・キャスト一覧と配信先`, description, body, noindex: !indexed, jsonLd: workJsonLd({ origin: ctx.origin, id, work, cast, listName: `${seasonLabel} 作品一覧`, listPath: '/work/' }) });
+    const html = page({ ...ctx, path: `/work/${id}/`, title: archived ? `「${work.title}」声優・キャスト一覧（${seasonLabel}）` : `「${work.title}」声優・キャスト一覧と配信先`, description, body, noindex: !indexed, jsonLd: workJsonLd({ origin: ctx.origin, id, work, cast, listName: archived ? `${seasonLabel} 声優・キャストまとめ` : `${seasonLabel} 作品一覧`, listPath: archived ? `/season/${data.season}/` : '/work/' }) });
     return { id, html, indexed };
   });
 }
@@ -843,4 +857,36 @@ ${current.map(x => card(x, n++)).join('\n')}
 <h2>このページについて</h2>
 <p class="note">前のシーズンが、各サービスの作品ページで追加料金なしで見られる（第1話だけ・数話だけのお試しではない）ことを確かめた作品だけを載せています。確かめた日付は各作品に書いています。配信状況は変わることがあるので、最新の情報は各サービスで確認してください。</p>`;
   return page({ ...ctx, path: '/sequel/', title, description, body, extraScript: COUNTDOWN_SCRIPT });
+}
+
+// ---- シーズンのまとめ（/season/<シーズン>/）----
+// 放送中も終わったあとも同じ URL で残す。「今期」などの時間で変わる言い方は使わない。
+export function seasonPage(ctx) {
+  const { data, seasonLabel } = ctx;
+  const archived = Boolean(ctx.archived);
+  const byWork = castOf(data);
+  const asOf = data.updated_at.slice(0, 10);
+  const works = Object.entries(data.works).sort((a, b) => a[1].title.localeCompare(b[1].title, 'ja'));
+  const counts = data.voice_actors
+    .map(actor => ({ actor, n: new Set(actor.roles.map(r => r.work_id)).size }))
+    .filter(x => x.n > 0)
+    .sort((a, b) => b.n - a.n || a.actor.reading.localeCompare(b.actor.reading, 'ja'));
+  const top = counts.slice(0, 10);
+  const workItem = ([id, work]) => {
+    const cast = byWork.get(id) ?? [];
+    return `<li><a class="sched-title" href="/work/${esc(id)}/">${esc(work.title)}</a><div class="sched-cast">${cast.length ? `${esc(castPairs(cast, 3))}${cast.length > 3 ? ` ほか${cast.length - 3}名` : ''}` : 'キャスト未発表'}</div></li>`;
+  };
+  const title = `${seasonLabel} 声優・キャストまとめ（全${works.length}作品）`;
+  const description = `${seasonLabel}（${seasonStartText(data.season)}）のテレビアニメ${works.length}作品の声優・キャストをまとめました。${top[0] ? `出演作がいちばん多かったのは${top[0].actor.name}さん（${top[0].n}作品）。` : ''}`;
+  const body = `<h1>${esc(title)}</h1>
+<p class="lead">${esc(seasonLabel)}（${esc(seasonStartText(data.season))}）のテレビアニメ${works.length}作品の主な声優・キャストをまとめました。作品名を押すと、全キャストと配信先${archived ? `（${esc(asOf)}時点）` : ''}を見られます。</p>
+<h2>出演作の多い声優</h2>
+<div class="chips-va">${top.map(({ actor, n }, i) => `<a href="/va/${toPageId(actor.actor_id)}/" data-ga-event="ranking_click" data-ga-actor-id="${esc(actor.actor_id)}" data-ga-position="${i + 1}" data-ga-page-type="season">${esc(actor.name)}<em>${n}作品</em></a>`).join('')}</div>
+<h2>作品とキャスト（${works.length}作品）</h2>
+<ul class="sched season-list">
+${works.map(workItem).join('\n')}
+</ul>
+<h2>このページについて</h2>
+<p class="note">作品とキャストはアニメ作品データベース「Annict」のAPIをもとにしています（${archived ? '最終確認' : '最終更新'}：${esc(asOf)}）。キャストは主な3名を、データの登録順（主役級を先にしたもの）で載せています。</p>`;
+  return page({ ...ctx, path: `/season/${data.season}/`, title, description, body });
 }
