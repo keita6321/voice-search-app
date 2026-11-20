@@ -1,5 +1,7 @@
 import { mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { xToolsPage } from './x-tools.mjs';
 import { costarPairsPage, nextIndexPage, sequelGuidePage, nextWorkPages, rankingPage, startLabel, vodPage, workPages, workIndexPage } from './articles.mjs';
@@ -155,6 +157,12 @@ function makePage(template, actor, roles, works, pageId, label, upcoming = null)
     '>': '\\u003e',
     '&': '\\u0026',
   })[character]);
+  // 声優ごとの X 用画像（scripts/og_images.py が作る）。あれば使い、画像が変わったら URL も変える
+  let actorOg = ogImage;
+  try {
+    const bytes = readFileSync(path.join(root, 'og', 'va', `${toPageId(actor.actor_id)}.jpg`));
+    actorOg = `${origin}/og/va/${toPageId(actor.actor_id)}.jpg?v=${createHash('sha1').update(bytes).digest('hex').slice(0, 8)}`;
+  } catch {}
   const metadata = [
     `<meta name="description" content="${escapeHtml(description)}">`,
     `<link rel="canonical" href="${pageUrl}">`,
@@ -163,12 +171,12 @@ function makePage(template, actor, roles, works, pageId, label, upcoming = null)
     '<meta property="og:type" content="website">',
     `<meta property="og:url" content="${pageUrl}">`,
     '<meta property="og:site_name" content="ANIME CAST NOW">',
-    `<meta property="og:image" content="${ogImage}">`,
+    `<meta property="og:image" content="${actorOg}">`,
     '<meta property="og:locale" content="ja_JP">',
     '<meta name="twitter:card" content="summary_large_image">',
     `<meta name="twitter:title" content="${escapeHtml(title)}">`,
     `<meta name="twitter:description" content="${escapeHtml(description)}">`,
-    `<meta name="twitter:image" content="${ogImage}">`,
+    `<meta name="twitter:image" content="${actorOg}">`,
     `<script type="application/ld+json">${breadcrumb}</script>`,
   ].join('\n');
   const initialVa = `<script>window.__INITIAL_VA__ = ${JSON.stringify(actor.actor_id)};</script>\n`;
