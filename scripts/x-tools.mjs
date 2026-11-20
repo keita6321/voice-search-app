@@ -169,7 +169,9 @@ ol.steps{padding-left:20px;font-size:14px;margin:6px 0}
 const P = JSON.parse(document.getElementById('payload').textContent);
 const ORIGIN = ${JSON.stringify(origin)};
 const $ = s => document.querySelector(s);
-const utm = (path, campaign) => ORIGIN + path + '?utm_source=x&utm_medium=social&utm_campaign=' + campaign;
+// utm_content には「引用した作品のID_文面の種類_日付」を入れ、どの引用ポストから人が来たかを GA4 で見分けられるようにする
+const ymd = () => { const d = new Date(); return '' + d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0'); };
+const utm = (path, campaign, content) => ORIGIN + path + '?utm_source=x&utm_medium=social&utm_campaign=' + campaign + (content ? '&utm_content=' + encodeURIComponent(content + '_' + ymd()) : '');
 $('#updated').textContent = P.updated || '';
 
 // ---- X の文字数（URL は 23、全角は 2 として数える。上限 280） ----
@@ -215,27 +217,28 @@ function bodies() {
   // 一言目に名前が入っているときは、本文で「〇〇役の△△さんは」を繰り返さない
   const named = a && $('#opener').value.includes(a.name);
   if (a) {
-    const url = utm('/va/' + a.id + '/', 'quote');
+    const tag = (w ? w.id : 'none') + '_' + 'va' + a.id;
+    const url = kind => utm('/va/' + a.id + '/', 'quote', tag + '_' + kind);
     const role = w ? roleOf(a, wi) : '';
     const who = role ? role + '役の' + a.name + 'さん' : a.name + 'さん';
     const others = othersOf(a, wi);
     if (a.n > 0) {
       const list = others.length ? '\\n' + others.slice(0, 2).join('、') + (others.length > 2 ? ' ほか' : '') : '';
-      out.push(['今期の出演作', (named ? '今期は' : who + 'は、今期') + a.n + '作品に出演中🎙' + list + '\\n出演作と配信先はこちら👇\\n' + url]);
+      out.push(['今期の出演作', (named ? '今期は' : who + 'は、今期') + a.n + '作品に出演中🎙' + list + '\\n出演作と配信先はこちら👇\\n' + url('now')]);
     }
     const famous = famousOf(a);
     if (famous.length) {
       const fam = famous.slice(0, 3).map(([t, c]) => (c ? c.split('、')[0] + '（' + brief(t) + '）' : brief(t))).join('、');
-      out.push(['代表作から', (named ? '代表作は、' : who + 'といえば、') + fam + '🎙\\n今期の出演作と代表作はこちら👇\\n' + url]);
+      out.push(['代表作から', (named ? '代表作は、' : who + 'といえば、') + fam + '🎙\\n今期の出演作と代表作はこちら👇\\n' + url('famous')]);
     }
     const nx = a.next.find(x => !w || x.w !== w.id);
     if (nx) {
       out.push(['来期の出演', a.name + 'さん、来期は「' + brief(nx.t) + '」の' + nx.c + '役！\\n'
-        + (a.n > 0 ? '今期は' + a.n + '作品に出演中なので、放送前にチェックできます📺' : '来期の出演予定と代表作はこちら📺') + '\\n' + url]);
+        + (a.n > 0 ? '今期は' + a.n + '作品に出演中なので、放送前にチェックできます📺' : '来期の出演予定と代表作はこちら📺') + '\\n' + url('next')]);
     }
   }
   if (w) {
-    const wurl = utm('/work/' + w.id + '/', 'quote');
+    const wurl = utm('/work/' + w.id + '/', 'quote', w.id + '_work');
     if (!w.x && w.v) out.push(['作品ページ（配信）', '「' + brief(w.t) + '」は配信でも見られます📺\\n見逃した回も追いつけます\\nキャストが今期ほかに出ている作品もまとめました👇\\n' + wurl]);
     if (w.x) out.push(['作品ページ（来期）', '「' + brief(w.t) + '」のキャスト、今期はほかに何に出てる？🎙\\n放送前にチェック👇\\n' + wurl]);
   }
