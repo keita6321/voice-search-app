@@ -50,7 +50,9 @@ button{font:inherit;color:inherit;cursor:pointer}
 .news-run{display:inline-flex;gap:40px;padding-left:4px}.news-run.on{animation:news-tick var(--dur,14s) linear infinite}.news-track:hover .news-run,.news-track:active .news-run{animation-play-state:paused}
 @keyframes news-tick{from{transform:translateX(0)}to{transform:translateX(calc(-50% - 20px))}}
 .news-item{color:#1d2a44;font-weight:700;text-decoration:none}.news-item time{margin-right:6px;color:var(--sub)}
-.x-follow{flex:none;padding:5px 11px;border-radius:999px;background:#111;color:#fff;font-size:11px;font-weight:800;text-decoration:none}
+.x-follow{flex:none;padding:7px 14px;border-radius:999px;background:#111;color:#fff;font-size:12px;font-weight:900;text-decoration:none;box-shadow:0 0 0 3px rgba(17,17,17,.12);animation:x-pulse 2.2s ease-in-out 1.5s 4}
+@keyframes x-pulse{50%{box-shadow:0 0 0 7px rgba(17,17,17,.05)}}
+@media(prefers-reduced-motion:reduce){.x-follow{animation:none}}
 @media(prefers-reduced-motion:reduce){.news-track{overflow-x:auto}.news-run.on{animation:none}}
 .hero-sub{margin:0;font-size:12px;color:var(--sub);font-weight:700}.hero-sub b{display:inline-block;margin-right:6px;padding:1px 9px;border-radius:999px;background:#ece6f5;color:var(--ac);font-size:12px}
 .season-switch{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:14px 0 4px;padding:4px;border:2px solid #1d2a44;border-radius:16px;background:#fff;box-shadow:0 3px 10px rgba(29,42,68,.12)}
@@ -227,7 +229,7 @@ body.modal-open{overflow:hidden}
    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
    <input id="q" type="search" placeholder="今期の声優を名前・ひらがなで検索" autocomplete="off" enterkeyhint="search" aria-label="声優を検索">
    <button id="clr" type="button" hidden aria-label="入力を消す">✕</button></label></div>
-  <!--news--><div class="newsbar"><b class="news-label">お知らせ</b><div class="news-track"><div class="news-run"><a href="/costar/" data-ga-event="news_click" data-ga-page-type="home" class="news-item"><time datetime="2026-11-20">11/20</time>新特集「共演コンビ」「続編ガイド」を公開</a></div></div><a class="x-follow" href="https://x.com/animecastnow" target="_blank" rel="noopener" data-ga-event="x_follow_click" data-ga-page-type="home">Xでフォロー</a></div><!--/news-->
+  <!--news--><div class="newsbar"><b class="news-label">お知らせ</b><div class="news-track"><div class="news-run"><a href="/costar/" data-ga-event="news_click" data-ga-page-type="home" class="news-item"><time datetime="2026-11-20">11/20</time>新特集「共演コンビ」「続編ガイド」を公開</a></div></div><a class="x-follow" href="https://x.com/animecastnow" target="_blank" rel="noopener" data-ga-event="x_follow_click" data-ga-page-type="home" aria-label="X（@animecastnow）をフォロー">＋ Xでフォロー</a></div><!--/news-->
   <div class="season-switch" id="season-switch" role="tablist" aria-label="検索するシーズン" hidden><button type="button" role="tab" data-view="current" aria-selected="true"><span>今期の出演作</span><small id="sw-cur"></small></button><button type="button" role="tab" data-view="next" aria-selected="false"><span>来期の出演予定<b class="sw-badge" id="sw-badge" hidden></b></span><small id="sw-next"></small></button></div>
   <div class="hero-chips" id="hero-chips" hidden></div>
   <section class="feature" id="feature" hidden aria-label="注目"></section>

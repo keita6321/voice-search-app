@@ -294,7 +294,7 @@ const dateHtml = {
   search: `<p class="upd-date upd-search">毎週月曜更新・最終更新 ${updated}</p>`,
 }[UPDATE_DATE_STYLE];
 const newsLink = latestNews ? `<${latestNews.url ? `a href="${escHtml(latestNews.url)}" data-ga-event="news_click" data-ga-page-type="home"` : 'span'} class="news-item"><time datetime="${escHtml(latestNews.date)}">${md(latestNews.date)}</time>${escHtml(latestNews.text)}</${latestNews.url ? 'a' : 'span'}>` : '';
-const newsHtml = `<!--news-->${UPDATE_DATE_STYLE === 'search' ? dateHtml : ''}<div class="newsbar">${latestNews ? `<b class="news-label">お知らせ</b><div class="news-track"><div class="news-run">${newsLink}</div></div>` : '<span class="news-track"></span>'}<a class="x-follow" href="https://x.com/animecastnow" target="_blank" rel="noopener" data-ga-event="x_follow_click" data-ga-page-type="home">Xでフォロー</a></div><!--/news-->`;
+const newsHtml = `<!--news-->${UPDATE_DATE_STYLE === 'search' ? dateHtml : ''}<div class="newsbar">${latestNews ? `<b class="news-label">お知らせ</b><div class="news-track"><div class="news-run">${newsLink}</div></div>` : '<span class="news-track"></span>'}<a class="x-follow" href="https://x.com/animecastnow" target="_blank" rel="noopener" data-ga-event="x_follow_click" data-ga-page-type="home" aria-label="X（@animecastnow）をフォロー">＋ Xでフォロー</a></div><!--/news-->`;
 const template = rawTemplate.replace(/\d{4}年( ?)[冬春夏秋]アニメ/g, (_, space) => (space ? label.replace('年', '年 ') : label))
   .replace(/<!--updates-->[\s\S]*?<!--\/updates-->/, `<!--updates-->${UPDATE_DATE_STYLE === 'sub' ? dateHtml : ''}<!--/updates-->`)
   .replace(/<!--h1date-->[\s\S]*?<!--\/h1date-->/, `<!--h1date-->${UPDATE_DATE_STYLE === 'h1' ? dateHtml : ''}<!--/h1date-->`)
