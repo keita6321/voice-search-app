@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 // データ（data.json）から、クールごとに作り直す記事ページを生成する。
 // generate-pages.mjs から呼ばれる。見た目は about/index.html と揃える。
 
@@ -341,6 +342,18 @@ ${coverageText}
 }
 
 // 作品ごとの「配信はどこ？」ページ
+// 主役級の手動指定（data/main-cast.json）
+let MAIN_CAST = {};
+try {
+  MAIN_CAST = JSON.parse(readFileSync(new URL('../data/main-cast.json', import.meta.url), 'utf8')).works ?? {};
+} catch (error) {
+  if (error.code !== 'ENOENT') throw error;
+}
+// 説明文用：「役名：声優名」を先頭から n 人
+const castPairs = (cast, n) => cast.slice(0, n).map(({ actor, roles }) => `${roles[0]}：${actor.name}`).join('、');
+// 説明文の頭：「〇〇」の声優は、役名：声優名…ほか○名。（キャスト未発表なら、その旨）
+const castLead = (title, cast) => cast.length ? `「${title}」の声優は、${castPairs(cast, 3)}${cast.length > 3 ? `ほか${cast.length}名` : ''}。` : `「${title}」のキャストは未発表です。`;
+
 function castOf(data) {
   const byWork = new Map();
   for (const actor of data.voice_actors) {
@@ -352,10 +365,16 @@ function castOf(data) {
       else list.push({ actor, roles: [role.character_name] });
     }
   }
-  // 公式のクレジット順（character_id の末尾の連番。1 が主人公）に並べる
+  // 登録順（character_id の末尾の連番）に並べる。多くの作品ではこれが公式のクレジット順。
+  // 続編などで新しい役が先に登録されている作品は、data/main-cast.json に書いた主役級を先頭にする
   const order = actor => Math.min(...actor.roles.map(r => Number(String(r.character_id ?? '').split('-').pop()) || Infinity));
   for (const [workId, list] of byWork) {
-    const rank = c => order({ roles: c.actor.roles.filter(r => r.work_id === workId) });
+    const main = MAIN_CAST[data.works?.[workId]?.title] ?? [];
+    const rank = c => {
+      const roles = c.actor.roles.filter(r => r.work_id === workId);
+      const hit = Math.min(...roles.map(r => { const i = main.findIndex(name => String(r.character_name).startsWith(name)); return i < 0 ? Infinity : i; }));
+      return hit < Infinity ? hit - 1000 : order({ roles });
+    };
     list.sort((a, b) => rank(a) - rank(b));
   }
   return byWork;
@@ -524,7 +543,7 @@ ${others.length && partners.length ? `<p class="note">リンクは提携して�
     const castSection = castHtml({ id, title: work.title, past: ctx.past, cast, countOf: actor => new Set(actor.roles.map(r => r.work_id)).size, note: '名前を押すと、その声優の今期の出演作と配信先をまとめて見られます。', pageType: 'work' });
     const costarSection = costarHtml({ id, title: work.title, related, works: data.works, heading: 'このキャストが、今期ほかに出ている作品', what: `${seasonLabel}`, pageType: 'work' });
 
-    const body = `<h1>「${esc(work.title)}」の配信はどこ？</h1>
+    const body = `<h1>「${esc(work.title)}」の声優・キャストと配信先</h1>
 <p class="lead">${lead}</p>
 ${buttons ? `<p class="top-cta">${buttons}</p>
 ${notesFor.map(note => `<p class="note">${esc(note)}</p>`).join('\n')}` : ''}
@@ -540,11 +559,11 @@ ${notesFor.map(note => `<p class="note">${esc(note)}</p>`).join('\n')}</div>` : 
 <h2>このページについて</h2>
 <p class="note">作品とキャストはアニメ作品データベース「Annict」のAPI、配信先はAnnictの作品情報・公式サイト・配信サービスの公式ラインナップなどをもとにしています（最終更新：${esc(asOf)}）。配信状況は変わることがあります。</p>`;
     const description = vods.length
-      ? `「${work.title}」は${names.slice(0, 4).join('、')}${names.length > 4 ? 'など' : ''}で配信中。キャスト${cast.length}名と、同じ声優が出ている${seasonLabel}のほかの作品もまとめています。`
-      : `「${work.title}」のキャスト${cast.length}名と、同じ声優が出ている${seasonLabel}のほかの作品をまとめています。配信サービスは確認中です。`;
+      ? `${castLead(work.title, cast)}${names.slice(0, 3).join('、')}${names.length > 3 ? `など${names.length}サービス` : ''}で配信中。キャストが出ている${seasonLabel}のほかの作品もまとめています。`
+      : `${castLead(work.title, cast)}キャストが出ている${seasonLabel}のほかの作品もまとめています。配信サービスは確認中です。`;
     // 配信先が確認できていない作品は検索に出さない（中身の薄いページを増やさないため）
     const indexed = vods.length > 0;
-    const html = page({ ...ctx, path: `/work/${id}/`, title: `「${work.title}」の配信はどこ？見られるサービスとキャスト`, description, body, noindex: !indexed, jsonLd: workJsonLd({ origin: ctx.origin, id, work, cast, listName: `${seasonLabel} 作品一覧`, listPath: '/work/' }) });
+    const html = page({ ...ctx, path: `/work/${id}/`, title: `「${work.title}」声優・キャスト一覧と配信先`, description, body, noindex: !indexed, jsonLd: workJsonLd({ origin: ctx.origin, id, work, cast, listName: `${seasonLabel} 作品一覧`, listPath: '/work/' }) });
     return { id, html, indexed };
   });
 }
@@ -636,7 +655,7 @@ export function nextWorkPages(ctx, next, skipIds = new Set()) {
       : `「${esc(work.title)}」は${esc(nextLabel)}として放送予定です。放送日はまだ確認できていません。`;
     const castSection = castHtml({ id, title: work.title, past: ctx.past, cast, countOf: actor => counts.get(actor.actor_id), note: `名前を押すと、その声優の今期（${ctx.seasonLabel}）の出演作と来期の出演予定をまとめて見られます。`, pageType: 'next_work' });
     const costarSection = costarHtml({ id, title: work.title, related, works: next.works, heading: 'このキャストが、来期ほかに出る作品', what: `${nextLabel}`, pageType: 'next_work' });
-    const body = `<h1>「${esc(work.title)}」（${esc(nextLabel)}）の放送日とキャスト</h1>
+    const body = `<h1>「${esc(work.title)}」の声優・キャストと放送日（${esc(nextLabel)}）</h1>
 <p class="lead">${lead}</p>
 ${castSection}
 ${costarSection}
@@ -648,10 +667,10 @@ ${work.official_url ? `<p><a href="${esc(work.official_url)}" target="_blank" re
 <p><a href="/next/">${esc(nextLabel)}の放送日一覧へ</a></p>
 <h2>このページについて</h2>
 <p class="note">作品・キャスト・放送日はアニメ作品データベース「Annict」のAPIなどをもとにしています（最終更新：${esc(asOf)}）。放送前の情報のため、変更されることがあります。</p>`;
-    const description = `「${work.title}」（${nextLabel}）は${date ? `${date}放送開始` : '放送日未定'}。キャスト${cast.length}名と、同じ声優が来期に出るほかの作品をまとめています。`;
+    const description = `${castLead(`${work.title}`, cast).replace('」の', `」（${nextLabel}）の`)}${date ? `${date}放送開始` : '放送日は未定'}です。同じ声優が来期に出るほかの作品もまとめています。`;
     // キャストが発表済みの作品だけ検索に出す（配信先はまだなくてよい）
     const indexed = cast.length > 0;
-    const html = page({ ...ctx, path: `/work/${id}/`, title: `「${work.title}」（${nextLabel}）の放送日とキャスト`, description, body, noindex: !indexed, extraScript: COUNTDOWN_SCRIPT, jsonLd: workJsonLd({ origin: ctx.origin, id, work, cast, listName: `${nextLabel} 放送日とキャスト`, listPath: '/next/' }) });
+    const html = page({ ...ctx, path: `/work/${id}/`, title: `「${work.title}」声優・キャスト一覧と放送日（${nextLabel}）`, description, body, noindex: !indexed, extraScript: COUNTDOWN_SCRIPT, jsonLd: workJsonLd({ origin: ctx.origin, id, work, cast, listName: `${nextLabel} 放送日とキャスト`, listPath: '/next/' }) });
     return { id, html, indexed };
   });
 }

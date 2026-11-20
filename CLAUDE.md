@@ -56,6 +56,7 @@ npm run posts -- --start YYYY-MM-DD --days 7 --campaign 2027winter --season-tag 
   - `data/work_notes.json`：手書きの作品紹介。
   - `data/past-works.json`：声優の主な過去作。作品ページのキャストに「主な出演」として1つ出す。
   - `data/prev-seasons.json`：続編の「前のシーズンから見るなら」。Prime Video の作品ページで、前のシーズンがプライム会員なら追加料金なしで見られると確かめたものだけ載せる（日付つき）。
+  - `data/main-cast.json`：作品ページのキャストで先頭に出す主役級の役名（続編などで新しい役が先に登録されている作品用）。説明文の「役名：声優名」3人にも使う。
   - `data/next-cast-log.json`：来期の新キャストの記録。
   - `data/thumbnail-overrides.json`：作品のキービジュアルの手動指定（公式サイトから自動で取れなかった作品用。今は /sequel/ で使う）。
   - `data/sitemap-state.json`：サイトマップの lastmod 用。ページごとの中身のハッシュと更新日（中身が変わったページだけ日付を進める）。
