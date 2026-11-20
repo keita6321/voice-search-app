@@ -423,17 +423,24 @@ try {
 } catch (error) {
   if (error.code !== 'ENOENT') throw error;
 }
+let thumbnailOverrides = {};
+try {
+  thumbnailOverrides = JSON.parse(await readFile(path.join(root, 'data', 'thumbnail-overrides.json'), 'utf8')).works ?? {};
+} catch (error) {
+  if (error.code !== 'ENOENT') throw error;
+}
 // トップの「今期の注目作品」：手書きの紹介（catch）があり、画像と配信先がある作品。提携サービスで見られる作品を先に
 const featured = Object.entries(notes)
   .filter(([title, note]) => title !== '_about' && note.catch)
   .map(([title, note]) => {
     const entry = Object.entries(data.works).find(([, work]) => work.title === title);
-    if (!entry || !entry[1].thumbnail || !entry[1].vod_links?.length) return null;
+    const thumbnail = thumbnailOverrides[title] || entry?.[1].thumbnail;
+    if (!entry || !thumbnail || !entry[1].vod_links?.length) return null;
     const [id, work] = entry;
     // 紹介文で独占配信とされている作品は、配信先データと食い違うおそれがあるのでバッジを出さない
     const exclusive = JSON.stringify(note).includes('独占配信');
     const partner = exclusive ? null : work.vod_links.find(v => partnerServices.includes(v.provider))?.provider ?? null;
-    return { id, title, thumbnail: work.thumbnail, catch: note.catch, partner };
+    return { id, title, thumbnail, catch: note.catch, partner };
   })
   .filter(Boolean)
   .sort((a, b) => Number(Boolean(b.partner)) - Number(Boolean(a.partner)));
@@ -441,12 +448,6 @@ await writeFile(path.join(root, 'featured.json'), `${JSON.stringify({ season: da
 let prevSeasons = {};
 try {
   prevSeasons = JSON.parse(await readFile(path.join(root, 'data', 'prev-seasons.json'), 'utf8')).works ?? {};
-} catch (error) {
-  if (error.code !== 'ENOENT') throw error;
-}
-let thumbnailOverrides = {};
-try {
-  thumbnailOverrides = JSON.parse(await readFile(path.join(root, 'data', 'thumbnail-overrides.json'), 'utf8')).works ?? {};
 } catch (error) {
   if (error.code !== 'ENOENT') throw error;
 }

@@ -1,4 +1,8 @@
 {
-  "_about": "作品のキービジュアルの手動指定（自動取得できなかった作品用）。キーは作品名（data.json / data-next.json と完全一致）、値は公式サイトの og:image の URL。今は /sequel/ だけで使う。",
-  "works": {}
+  "_about": "作品のキービジュアルの手動指定（自動取得できなかった作品用）。キーは作品名（data.json / data-next.json と完全一致）、値は公式サイトの og:image の URL。今は /sequel/ だけで使う。「/assets/thumbs/」で始まるものは、公式サイトから取れずオーナーから受け取った画像を縮小して置いたもの。",
+  "works": {
+    "あかね噺 第2期": "https://akane-banashi.com/assets/og/ogp4.jpg",
+    "探偵はもう、死んでいる。Season2": "https://tanmoshi-anime.jp/core_sys/images/others/ogp.jpg",
+    "Re:ゼロから始める異世界生活 4th season 奪還編": "/assets/thumbs/rezero-4th.webp"
+  }
 }
