@@ -32,10 +32,11 @@ python3 build_data_from_sources.py --refresh --season 2026-autumn             # 
 python3 build_data_from_sources.py --refresh --preview --season 2027-winter   # 来期（data-next.json）
 python3 discover_vod_candidates.py --auto            # 公式サイトから配信先を補う（vod_overrides.csv）
 python3 past_works.py --max-minutes 60               # 声優の主な過去作（AniList。data/past-works.json）
+python3 scripts/og_images.py                         # 声優ごとの X 用画像（og/va/<ID>.jpg。日本語フォント Noto Sans CJK が必要）
 npm run posts -- --start YYYY-MM-DD --days 7 --campaign 2027winter --season-tag 冬アニメ --verify-pages   # X の予約投稿の下書き
 ```
 
-生成物（va/ work/ next/ ranking/ vod/ past/ sitemap.xml featured.json）はコミットする。
+生成物（va/ work/ next/ ranking/ vod/ past/ og/ sitemap.xml featured.json）はコミットする。
 データやテンプレートを変えたら、必ず `npm run build:pages` を実行してからコミットする。
 
 ## 構成
@@ -45,6 +46,7 @@ npm run posts -- --start YYYY-MM-DD --days 7 --campaign 2027winter --season-tag 
 - `scripts/generate-pages.mjs`：静的ページの生成。トップの「〇年〇アニメ」の表記も data.json のシーズンに合わせて書き換える。
 - `scripts/articles.mjs`：作品ページ、ランキング、/vod/ 比較表（`VOD_PLANS`）、/next/。
 - `scripts/x-tools.mjs`：X 運用ツール（/tools/x/、noindex・計測なし）。引用ポストの文面と、週のデータポストの文面・画像（canvas）を作る。
+- `scripts/og_images.py`：声優ごとの X 用画像（名前・今期の出演作品数・出演作）。声優ページの og:image / twitter:image に使う。自動更新でも作り直す。
 - `scripts/build-public.sh`：Cloudflare に出すファイルを dist/ にコピーする。新しいディレクトリやファイルを公開するときはここに追加する。
 - データ
   - `data.json`：今期。
@@ -65,7 +67,7 @@ npm run posts -- --start YYYY-MM-DD --days 7 --campaign 2027winter --season-tag 
 ## 自動更新（.github/workflows/data-refresh.yml）
 
 - 毎週月曜 5:17 JST に動く。
-- 今期・来期の取り直し → 配信先の補完 → 過去作 → テスト → ページ生成 → 安全チェックの順に進む。
+- 今期・来期の取り直し → 配信先の補完 → 過去作 → テスト → 声優ごとの X 用画像 → ページ生成 → 安全チェックの順に進む。
 - 安全チェックで作品数・声優数が 7 割未満に減っていたら止まる。通れば main に push する。
 - レポートは `data/refresh-日時` ブランチに残る。
 - 手動で動かすときは Actions タブの Run workflow で、`auto_apply` / `force_registry` / `past_minutes` を指定する。

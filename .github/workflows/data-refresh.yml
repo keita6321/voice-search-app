@@ -55,7 +55,9 @@ jobs:
 
       - name: 依存パッケージを入れる
         run: |
-          pip install -r requirements.txt pykakasi
+          pip install -r requirements.txt pykakasi pillow
+          # 声優ごとの X 用画像（scripts/og_images.py）に使う日本語フォント
+          sudo apt-get install -y -q fonts-noto-cjk
 
       - name: シーズンを決める
         id: season
@@ -103,6 +105,9 @@ jobs:
 
       - name: テスト
         run: python3 -m unittest discover -s tests -t .
+
+      - name: 声優ごとの X 用画像を作る
+        run: python3 scripts/og_images.py
 
       - name: ページを作り直す
         run: npm run build:pages
