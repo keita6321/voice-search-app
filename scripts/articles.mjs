@@ -94,9 +94,16 @@ table.compare tr.partner td{background:#f5f2fa}.pr{font-size:10px;color:#62517f}
 .seq-title{font-size:16px;font-weight:900;line-height:1.45}.seq-title a{color:#1d2a44;text-decoration:none}
 .seq-prev{margin:8px 0 4px;padding:8px 12px;border-radius:10px;background:#f8f6fc;font-size:13px;line-height:1.6}.seq-prev b{color:#62517f}
 .seq .cta{margin-top:6px}
+.follow-x{display:flex;align-items:center;gap:12px;margin:26px 0 8px;padding:14px 16px;border-radius:14px;background:#111;color:#fff}.follow-x p{flex:1;margin:0;min-width:0;line-height:1.4}.follow-x b{display:block;font-size:14px}.follow-x span{font-size:11px;opacity:.7}.follow-x a{flex:none;padding:8px 14px;border-radius:999px;background:#fff;color:#111;font-size:13px;font-weight:900;text-decoration:none}
 .prev{margin:22px 0 8px;padding:14px 16px;border:1px solid #e3dcef;border-radius:14px;background:#f8f6fc}.prev h2{margin:0 0 6px}.prev p{margin:6px 0}
 details.notes summary{margin-top:2px}
 `;
+
+// X のフォローへの導線（X から来た人の着地ページの最後に置く）
+function followBox(path) {
+  const pageType = path.split('/')[1] || 'home';
+  return `<aside class="follow-x"><p><b>新しいキャスト情報は X でも発信しています</b><span>@animecastnow</span></p><a href="https://x.com/animecastnow" target="_blank" rel="noopener" data-ga-event="x_follow_click" data-ga-page-type="${esc(pageType)}" aria-label="X（@animecastnow）をフォロー">＋ フォロー</a></aside>`;
+}
 
 function page({ origin, ogImage, aboutHtml, path, title, description, body, noindex = false, extraScript = '', jsonLd = null }) {
   const { style, scripts } = shellParts(aboutHtml);
@@ -127,6 +134,7 @@ ${jsonLd ? `<script type="application/ld+json">${JSON.stringify(jsonLd).replace(
 <p class="site-logo"><a href="/"><img src="/assets/logo.svg" alt="ANIME CAST NOW トップへ" width="780" height="100"></a></p>
 <p class="note">当ページのリンクには広告が含まれています。</p>
 ${body}
+${followBox(path)}
 <div class="related">
 <p><strong>関連ページ</strong></p>
 <ul>
