@@ -13,7 +13,7 @@ done
 for f in [0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]*.txt; do
   [ -e "$f" ] && cp "$f" dist/
 done
-for d in assets va work next ranking vod about privacy past tools costar sequel og; do
+for d in assets va work next ranking vod about privacy past tools costar sequel og season; do
   [ -d "$d" ] && cp -R "$d" dist/
 done
 echo "dist/: $(find dist -type f | wc -l) files"

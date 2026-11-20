@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { xToolsPage } from './x-tools.mjs';
-import { costarPairsPage, nextIndexPage, sequelGuidePage, nextWorkPages, rankingPage, startLabel, vodPage, workPages, workIndexPage } from './articles.mjs';
+import { costarPairsPage, nextIndexPage, seasonPage, sequelGuidePage, nextWorkPages, rankingPage, startLabel, vodPage, workPages, workIndexPage } from './articles.mjs';
 
 if (Number(process.versions.node.split('.')[0]) < 18) {
   throw new Error('Node.js 18 or later is required.');
@@ -492,6 +492,24 @@ for (const [dir, html] of [['ranking', rankingPage(articleContext)], ['vod', vod
 }
 // 作品ページ（/work/<作品ID>/）。今期のデータにない作品のディレクトリは消さずに残す
 const works = [...workPages(articleContext), ...(next ? nextWorkPages(articleContext, next, new Set(Object.keys(data.works))) : [])];
+
+// シーズンのまとめ（/season/<シーズン>/）と、放送が終わったシーズンの作品ページ。
+// 今期のデータを data/archive/<シーズン>.json に毎回残しておき、シーズンが変わったあとはそこから作る。
+const archiveDir = path.join(root, 'data', 'archive');
+await mkdir(archiveDir, { recursive: true });
+await writeFile(path.join(archiveDir, `${data.season}.json`), `${JSON.stringify(data)}\n`);
+const liveWorkIds = new Set([...Object.keys(data.works), ...Object.keys(next?.works ?? {})]);
+const seasonUrls = [];
+for (const file of (await readdir(archiveDir)).filter(name => name.endsWith('.json')).sort()) {
+  const season = file.replace(/\.json$/, '');
+  const archivedData = season === data.season ? data : JSON.parse(await readFile(path.join(archiveDir, file), 'utf8'));
+  const archived = season !== data.season;
+  const seasonCtx = { ...articleContext, data: archivedData, seasonLabel: seasonLabel(season), archived };
+  await mkdir(path.join(root, 'season', season), { recursive: true });
+  await writeFile(path.join(root, 'season', season, 'index.html'), seasonPage(seasonCtx));
+  seasonUrls.push(`${origin}/season/${season}/`);
+  if (archived) works.push(...workPages({ ...seasonCtx, skip: liveWorkIds }));
+}
 for (const { id, html } of works) {
   await mkdir(path.join(root, 'work', id), { recursive: true });
   await writeFile(path.join(root, 'work', id, 'index.html'), html);
@@ -499,7 +517,7 @@ for (const { id, html } of works) {
 const indexedWorkUrls = works.filter(w => w.indexed).map(w => `${origin}/work/${w.id}/`);
 
 const sitemapDate = new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Tokyo' });
-const sitemapUrls = [`${origin}/`, `${origin}/ranking/`, `${origin}/vod/`, `${origin}/work/`, ...(next ? [`${origin}/next/`] : []), `${origin}/costar/`, `${origin}/sequel/`, ...indexedWorkUrls, `${origin}/about/`, `${origin}/privacy/`, ...[...actors, ...nextOnlyActors].map(({ pageId }) => `${origin}/va/${pageId}/`)];
+const sitemapUrls = [`${origin}/`, `${origin}/ranking/`, `${origin}/vod/`, `${origin}/work/`, ...(next ? [`${origin}/next/`] : []), `${origin}/costar/`, `${origin}/sequel/`, ...seasonUrls, ...indexedWorkUrls, `${origin}/about/`, `${origin}/privacy/`, ...[...actors, ...nextOnlyActors].map(({ pageId }) => `${origin}/va/${pageId}/`)];
 // lastmod は、中身が変わったページだけ進める（毎回すべて今日にすると、Google が lastmod を当てにしなくなる）。
 // ページごとの中身のハッシュと更新日を data/sitemap-state.json に残す。日付や「あと○日」など毎回変わる部分は除いて比べる。
 const statePath = path.join(root, 'data', 'sitemap-state.json');

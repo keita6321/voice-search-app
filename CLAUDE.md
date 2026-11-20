@@ -37,7 +37,7 @@ python3 scripts/og_images.py                         # 声優ごとの X 用画�
 npm run posts -- --start YYYY-MM-DD --days 7 --campaign 2027winter --season-tag 冬アニメ --verify-pages   # X の予約投稿の下書き
 ```
 
-生成物（va/ work/ next/ ranking/ vod/ past/ og/ sitemap.xml featured.json）はコミットする。
+生成物（va/ work/ next/ ranking/ vod/ past/ og/ season/ sitemap.xml featured.json）とアーカイブ（data/archive/）はコミットする。
 データやテンプレートを変えたら、必ず `npm run build:pages` を実行してからコミットする。
 
 ## 構成
@@ -45,7 +45,7 @@ npm run posts -- --start YYYY-MM-DD --days 7 --campaign 2027winter --season-tag 
 - `index.html`：トップ兼 SPA。声優ページ（/va/0001/）のテンプレートでもある。
   - `PARTNER_SERVICES` が提携サービス、`PARTNER_OFFERS` が無料体験の文言。
 - `scripts/generate-pages.mjs`：静的ページの生成。トップの「〇年〇アニメ」の表記も data.json のシーズンに合わせて書き換える。
-- `scripts/articles.mjs`：作品ページ、ランキング、/vod/ 比較表（`VOD_PLANS`）、/next/。
+- `scripts/articles.mjs`：作品ページ、ランキング、/vod/ 比較表（`VOD_PLANS`）、/next/、シーズンのまとめ（/season/<シーズン>/、放送中も終了後も同じ URL）。
 - `scripts/x-tools.mjs`：X 運用ツール（/tools/x/、noindex・計測なし）。引用ポストの文面と、週のデータポストの文面・画像（canvas）を作る。
 - `scripts/og_images.py`：声優ごとの X 用画像（名前・今期の出演作品数・出演作）。声優ページの og:image / twitter:image に使う。自動更新でも作り直す。
 - `scripts/build-public.sh`：Cloudflare に出すファイルを dist/ にコピーする。新しいディレクトリやファイルを公開するときはここに追加する。
@@ -57,6 +57,7 @@ npm run posts -- --start YYYY-MM-DD --days 7 --campaign 2027winter --season-tag 
   - `data/past-works.json`：声優の主な過去作。作品ページのキャストに「主な出演」として1つ出す。
   - `data/prev-seasons.json`：続編の「前のシーズンから見るなら」。Prime Video の作品ページで、前のシーズンがプライム会員なら追加料金なしで見られると確かめたものだけ載せる（日付つき）。
   - `data/main-cast.json`：作品ページのキャストで先頭に出す主役級の役名（続編などで新しい役が先に登録されている作品用）。説明文の「役名：声優名」3人にも使う。
+  - `data/archive/<シーズン>.json`：今期のデータの控え。ページ生成のたびに上書きし、シーズンが変わったあとは、終わったシーズンのまとめ（/season/<シーズン>/）と作品ページをここから作る（「今期」「配信中」を使わず、時点を明記した書き方になる）。
   - `data/next-cast-log.json`：来期の新キャストの記録。
   - `data/thumbnail-overrides.json`：作品のキービジュアルの手動指定（公式サイトから自動で取れなかった作品用。今は /sequel/ で使う）。
   - `data/sitemap-state.json`：サイトマップの lastmod 用。ページごとの中身のハッシュと更新日（中身が変わったページだけ日付を進める）。
