@@ -1,0 +1,38 @@
+name: IndexNow 送信
+
+# main のサイトマップが変わったら、その日に更新したページを IndexNow（Bing など）に知らせる。
+# 手動で動かすときは Actions タブの Run workflow。all を true にすると全ページを送る。
+# （データ更新のワークフローが push したときは、このワークフローは動かないので、そちらの最後でも送っている）
+on:
+  push:
+    branches: [main]
+    paths: [sitemap.xml]
+  workflow_dispatch:
+    inputs:
+      all:
+        description: "サイトマップの全ページを送る"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # Cloudflare への公開が終わって鍵ファイルが見えるようになるまで待つ
+      - name: 公開を待つ
+        run: |
+          KEY=$(ls | grep -E '^[0-9a-f]{32}\.txt$' | head -1)
+          for i in $(seq 1 30); do
+            if curl -fsS "https://animecastnow.com/$KEY" >/dev/null; then echo "鍵ファイルを確認しました"; exit 0; fi
+            sleep 20
+          done
+          echo "鍵ファイルが見えないまま時間切れです" && exit 1
+      - name: 送る
+        run: python3 scripts/indexnow.py ${{ inputs.all && '--all' || '' }}
