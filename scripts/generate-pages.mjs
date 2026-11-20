@@ -145,12 +145,35 @@ function makePage(template, actor, roles, works, pageId, label, upcoming = null)
     : `${actor.name}（声優）の出演作・${label}と配信先｜ANIME CAST NOW`;
   let description = nextOnly ? makeNextDescription(actor, upcoming) : makeDescription(actor, roles, works, label);
   if (!nextOnly && upcoming?.roles.length) description = description.replace(/。$/, `。来期の出演予定${new Set(upcoming.roles.map(r => r.work_id)).size}作品も掲載。`);
+  // 声優の人物情報（ProfilePage + Person）と、出演作（作品ページへのリンクつき）
+  const seenWorks = new Set();
+  const appearances = [...roles, ...(upcoming?.roles ?? [])]
+    .filter(role => !seenWorks.has(role.work_id) && seenWorks.add(role.work_id))
+    .map(role => ({ '@type': 'TVSeries', name: (works[role.work_id] ?? upcoming?.works?.[role.work_id])?.title, url: `${origin}/work/${role.work_id}/` }))
+    .filter(work => work.name);
   const breadcrumb = JSON.stringify({
     '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'トップ', item: `${origin}/` },
-      { '@type': 'ListItem', position: 2, name: actor.name, item: pageUrl },
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'トップ', item: `${origin}/` },
+          { '@type': 'ListItem', position: 2, name: actor.name, item: pageUrl },
+        ],
+      },
+      {
+        '@type': 'ProfilePage',
+        url: pageUrl,
+        mainEntity: {
+          '@type': 'Person',
+          name: actor.name,
+          ...(actor.reading ? { alternateName: actor.reading } : {}),
+          jobTitle: '声優',
+          url: pageUrl,
+          // 「この人が actor（出演者）になっている作品」を逆向きの関係で書く
+          ...(appearances.length ? { '@reverse': { actor: appearances } } : {}),
+        },
+      },
     ],
   }).replace(/[<>&]/g, character => ({
     '<': '\\u003c',
@@ -477,13 +500,43 @@ const indexedWorkUrls = works.filter(w => w.indexed).map(w => `${origin}/work/${
 
 const sitemapDate = new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Tokyo' });
 const sitemapUrls = [`${origin}/`, `${origin}/ranking/`, `${origin}/vod/`, `${origin}/work/`, ...(next ? [`${origin}/next/`] : []), `${origin}/costar/`, `${origin}/sequel/`, ...indexedWorkUrls, `${origin}/about/`, `${origin}/privacy/`, ...[...actors, ...nextOnlyActors].map(({ pageId }) => `${origin}/va/${pageId}/`)];
+// lastmod は、中身が変わったページだけ進める（毎回すべて今日にすると、Google が lastmod を当てにしなくなる）。
+// ページごとの中身のハッシュと更新日を data/sitemap-state.json に残す。日付や「あと○日」など毎回変わる部分は除いて比べる。
+const statePath = path.join(root, 'data', 'sitemap-state.json');
+let sitemapState = {};
+try {
+  sitemapState = JSON.parse(await readFile(statePath, 'utf8'));
+} catch (error) {
+  if (error.code !== 'ENOENT') throw error;
+}
+const stableHash = html => createHash('sha1').update(html
+  .replace(/<!--(updates|news|h1date)-->[\s\S]*?<!--\/\1-->/g, '')
+  .replace(/\d{4}-\d{2}-\d{2}/g, '')
+  .replace(/\d{1,2}\/\d{1,2}更新/g, '')
+  .replace(/あと\d+日/g, '')
+  .replace(/\?v=[0-9a-f]{8}/g, '')).digest('hex').slice(0, 16);
+const nextState = {};
+const lastmodOf = {};
+for (const url of sitemapUrls) {
+  const rel = url.slice(origin.length).replace(/^\//, '');
+  let html = '';
+  try {
+    html = await readFile(path.join(root, rel, 'index.html'), 'utf8');
+  } catch {}
+  const hash = stableHash(html);
+  const prev = sitemapState[rel || '/'];
+  const lastmod = prev && prev.hash === hash ? prev.lastmod : sitemapDate;
+  nextState[rel || '/'] = { hash, lastmod };
+  lastmodOf[url] = lastmod;
+}
+await writeFile(statePath, `${JSON.stringify(nextState, null, 1)}\n`);
 const sitemap = [
   '<?xml version="1.0" encoding="UTF-8"?>',
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
   ...sitemapUrls.flatMap(url => [
     '  <url>',
     `    <loc>${escapeXml(url)}</loc>`,
-    `    <lastmod>${sitemapDate}</lastmod>`,
+    `    <lastmod>${lastmodOf[url]}</lastmod>`,
     '  </url>',
   ]),
   '</urlset>',
