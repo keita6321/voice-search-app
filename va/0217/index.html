@@ -51,6 +51,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 @keyframes news-tick{from{transform:translateX(0)}to{transform:translateX(calc(-50% - 20px))}}
 .news-item{color:#1d2a44;font-weight:700;text-decoration:none}.news-item time{margin-right:6px;color:var(--sub)}
 .follow-x{display:flex;align-items:center;gap:12px;margin:22px 0 8px;padding:14px 16px;border-radius:14px;background:#111;color:#fff}.follow-x p{flex:1;margin:0;min-width:0;line-height:1.4}.follow-x b{display:block;font-size:14px}.follow-x span{font-size:11px;opacity:.7}.follow-x a{flex:none;padding:8px 14px;border-radius:999px;background:#fff;color:#111;font-size:13px;font-weight:900;text-decoration:none}
+.best-abema{margin:4px 0 0;font-size:12px;color:var(--sub);line-height:1.6}.best-abema a{color:var(--ac);font-weight:700}.best-abema img{display:inline;width:1px;height:1px}.pr-tag{display:inline-block;margin-right:6px;padding:0 5px;border:1px solid #d6cde6;border-radius:4px;font-size:10px;color:var(--sub);vertical-align:1px}
 .x-follow{flex:none;padding:7px 14px;border-radius:999px;background:#111;color:#fff;font-size:12px;font-weight:900;text-decoration:none;box-shadow:0 0 0 3px rgba(17,17,17,.12);animation:x-pulse 2.2s ease-in-out 1.5s 4}
 @keyframes x-pulse{50%{box-shadow:0 0 0 7px rgba(17,17,17,.05)}}
 @media(prefers-reduced-motion:reduce){.x-follow{animation:none}}
@@ -315,6 +316,9 @@ function stickyBarHtml(a){
   return `<div class="cta-bar" id="cta-bar"><p><b>${esc(a.name)}さんの出演作${p.count}作品</b><br>${esc(serviceLabel(p.provider))}で見られます</p>${partnerLinkHtml(a,p,'_bar','cta-bar-btn')}${esc(PARTNER_OFFERS[p.provider]?.cta||'見る')}</a><button type="button" class="cta-bar-close" id="cta-bar-close" aria-label="閉じる">×</button></div>`;
 }
 // この声優の今期の出演作を、いちばん多く見られる配信サービス
+// A8 で発行された ABEMA の広告コード。A8 の規約で、文言・属性を含めて改変しない（scripts/articles.mjs の RAW_AD_CODES と同じもの）
+const ABEMA_AD_CODE=`<a href="https://px.a8.net/svt/ejp?a8mat=4BEPPX+6IKT4I+4EKC+60OXE" rel="nofollow">オリジナルコンテンツ数No1！【ABEMAプレミアム】</a>
+<img border="0" width="1" height="1" src="https://www12.a8.net/0.gif?a8mat=4BEPPX+6IKT4I+4EKC+60OXE" alt="">`;
 function bestVodHtml(a){
   const roles=a.roles.filter(r=>D.works[r.work_id]?.vod_links?.length);
   if(roles.length<2)return '';
@@ -329,6 +333,8 @@ function bestVodHtml(a){
   const rest=ranked.slice(1,4).map(([p,k])=>`${esc(serviceLabel(p))}（${k}作品）`).join('、');
   return `<section class="best-vod" aria-label="出演作をまとめて見られる配信サービス"><p class="best-lead">今期の出演作${roles.length}作品のうち、<b>${esc(serviceLabel(top))}</b>なら<b>${n}作品</b>を見られます。</p>`+
     (rest?`<p class="best-rest">ほかに：${rest}</p>`:'')+
+    // ABEMA で見られる作品があれば、発行コードをそのまま小さく出す（ボタンにはしない）
+    (counts.get('ABEMA')?`<p class="best-abema raw-ad" data-ga-event="vod_click" data-ga-provider="ABEMA" data-ga-page-type="${pageType}_abema"><span class="pr-tag">PR</span>ABEMA（${counts.get('ABEMA')}作品）：${ABEMA_AD_CODE}</p>`:'')+
     // 一番多いサービスが提携先でないときは、ボタンのサービスで見られる作品数も書く（文とボタンを食い違わせない）
     (link&&partner[0]!==top?`<p class="best-partner"><b>${esc(serviceLabel(partner[0]))}</b>なら<b>${partner[1]}作品</b>を見られます。</p>`:'')+
     (link?`<a class="vod best-cta" href="${esc(link.url)}" data-ga-event="vod_click" data-ga-provider="${esc(partner[0])}" data-ga-va-id="${esc(a.actor_id)}" data-ga-va-name="${esc(a.name)}" data-ga-position="0" data-ga-page-type="${pageType}_best" target="_blank" rel="sponsored noopener"><span>${esc(ctaText(partner[0]))}</span></a>`+
@@ -609,7 +615,8 @@ addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#s2').hidden)closeDetail
 addEventListener('popstate',route);
 addEventListener('hashchange',route);
 // 画像の読み込み失敗時は<img>を外し、下のプレースホルダーを見せる
-addEventListener('error',e=>{if(e.target.tagName==='IMG')e.target.remove()},true);
+// 読み込めない画像は消す（ただし広告コードの中の計測用画像は、発行されたまま残す）
+addEventListener('error',e=>{if(e.target.tagName==='IMG'&&!e.target.closest('.raw-ad'))e.target.remove()},true);
 </script>
 </body>
 </html>
