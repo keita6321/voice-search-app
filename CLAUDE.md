@@ -32,6 +32,7 @@ python3 build_data_from_sources.py --refresh --season 2026-autumn             # 
 python3 build_data_from_sources.py --refresh --preview --season 2027-winter   # 来期（data-next.json）
 python3 discover_vod_candidates.py --auto            # 公式サイトから配信先を補う（vod_overrides.csv）
 python3 past_works.py --max-minutes 60               # 声優の主な過去作（AniList。data/past-works.json）
+python3 scripts/indexnow.py --dry-run                 # IndexNow（Bing など）に送る URL の確認（実際の送信は GitHub Actions から）
 python3 scripts/og_images.py                         # 声優ごとの X 用画像（og/va/<ID>.jpg。日本語フォント Noto Sans CJK が必要）
 npm run posts -- --start YYYY-MM-DD --days 7 --campaign 2027winter --season-tag 冬アニメ --verify-pages   # X の予約投稿の下書き
 ```
@@ -65,10 +66,17 @@ npm run posts -- --start YYYY-MM-DD --days 7 --campaign 2027winter --season-tag 
   - `vod_click` / `feature_click` / `special_click` / `share_native_click` / `costar_click` / `cast_click` / `ranking_click` / `list_open` / `x_follow_click` / `news_click` など。
   - 新しいイベントは `clickParams` に追加する。
 
+## IndexNow（.github/workflows/indexnow.yml）
+
+- Bing Webmaster Tools に登録済み（2026-11-20、Search Console から取り込み）。
+- 鍵はリポジトリ直下の `<32桁の16進>.txt`（サイトに公開して使うもので、秘密情報ではない）。
+- main の sitemap.xml が変わると、その日に更新したページ（lastmod が今日）を送る。データ更新のワークフローも最後に送る。
+- 全ページを送り直すときは Actions タブで「IndexNow 送信」を all=true で動かす。
+
 ## 自動更新（.github/workflows/data-refresh.yml）
 
 - 毎週月曜 5:17 JST に動く。
-- 今期・来期の取り直し → 配信先の補完 → 過去作 → テスト → 声優ごとの X 用画像 → ページ生成 → 安全チェックの順に進む。
+- 今期・来期の取り直し → 配信先の補完 → 過去作 → テスト → 声優ごとの X 用画像 → ページ生成 → 安全チェック → main に push → IndexNow の順に進む。
 - 安全チェックで作品数・声優数が 7 割未満に減っていたら止まる。通れば main に push する。
 - レポートは `data/refresh-日時` ブランチに残る。
 - 手動で動かすときは Actions タブの Run workflow で、`auto_apply` / `force_registry` / `past_minutes` を指定する。

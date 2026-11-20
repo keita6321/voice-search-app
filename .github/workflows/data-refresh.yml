@@ -150,6 +150,13 @@ jobs:
           git push origin HEAD:main
           echo "### 本番に反映しました" >> "$GITHUB_STEP_SUMMARY"
 
+      - name: 更新したページを IndexNow（Bing など）に知らせる
+        if: steps.season.outputs.auto_apply == 'true' && steps.check.outcome == 'success'
+        continue-on-error: true
+        run: |
+          sleep 120 # Cloudflare への公開を待つ
+          python3 scripts/indexnow.py
+
       - name: 確認用のブランチに上げる（失敗時もログとレポートを残す）
         if: always()
         run: |
