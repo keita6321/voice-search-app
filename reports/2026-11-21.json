@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-22T04:14+09:00",
+ "generated_at": "2026-11-22T04:15+09:00",
  "range": {
   "last7": [
    "2026-11-15",
@@ -576,6 +576,167 @@
  ],
  "search_queries": [
   {
+   "query": "目覚めたら最強装備と宇宙船持ちだったので一戸建て目指して傭兵として自由に生きたい 配信",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 36.75
+  },
+  {
+   "query": "わたしの幸せな結婚 特別篇 配信",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 32.33333333333333
+  },
+  {
+   "query": "アニメ キャスト",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 5
+  },
+  {
+   "query": "カードファイト ヴァンガード divinez 運命星戦編 配信",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 31.666666666666668
+  },
+  {
+   "query": "ケロロ軍曹 配信",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 39.333333333333336
+  },
+  {
+   "query": "凶乱令嬢ニアリストン 病弱令嬢に転生した神殺しの武人の華麗なる無双録 配信",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 46
+  },
+  {
+   "query": "声優 出演数ランキング(2026)",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 7.333333333333333
+  },
+  {
+   "query": "新テニスの王子様 u17 world cup 決勝メンバー決定戦 配信",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 40.333333333333336
+  },
+  {
+   "query": "目覚めたら最強装備と宇宙船持ちだったので 声優",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 10.666666666666666
+  },
+  {
+   "query": "石見舞菜香",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 38.333333333333336
+  },
+  {
+   "query": "battle spirits re 絶界の空 配信",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 46.5
+  },
+  {
+   "query": "tank chair戦車椅子 配信",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 47
+  },
+  {
+   "query": "アニメフェスタ アニメ一覧",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 1
+  },
+  {
+   "query": "ダイヤのa act2 second season 第2クール 配信",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 23
+  },
+  {
+   "query": "テムパル 配信",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 27
+  },
+  {
+   "query": "マロニエ王国の七人の騎士 配信",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 49.5
+  },
+  {
+   "query": "ムルシエラゴ アニメ",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 47
+  },
+  {
+   "query": "声優 アニメ 人気",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 63
+  },
+  {
+   "query": "彼女の友達 ミニアニメ劇場",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 10.5
+  },
+  {
+   "query": "恐怖コレクター アニメ アマゾンプライム",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 9
+  },
+  {
+   "query": "日差敦",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 2.5
+  },
+  {
+   "query": "朱色の仮面 配信",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 27.5
+  },
+  {
+   "query": "桃源暗鬼 日光華厳の滝編 配信",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 44.5
+  },
+  {
    "query": "\"アゼスト\"",
    "clicks": 0,
    "impressions": 1,
@@ -597,13 +758,6 @@
    "position": 83
   },
   {
-   "query": "battle spirits re 絶界の空 配信",
-   "clicks": 0,
-   "impressions": 2,
-   "ctr": 0,
-   "position": 46.5
-  },
-  {
    "query": "duel masters lost 断罪の少年 配信",
    "clicks": 0,
    "impressions": 1,
@@ -623,13 +777,6 @@
    "impressions": 1,
    "ctr": 0,
    "position": 4
-  },
-  {
-   "query": "tank chair戦車椅子 配信",
-   "clicks": 0,
-   "impressions": 2,
-   "ctr": 0,
-   "position": 47
   },
   {
    "query": "ごーすとみーつぎゃる 配信",
@@ -660,13 +807,6 @@
    "position": 9
   },
   {
-   "query": "わたしの幸せな結婚 特別篇 配信",
-   "clicks": 0,
-   "impressions": 3,
-   "ctr": 0,
-   "position": 32.33333333333333
-  },
-  {
    "query": "アオアシシアターズ",
    "clicks": 0,
    "impressions": 1,
@@ -681,39 +821,11 @@
    "position": 18
   },
   {
-   "query": "アニメ キャスト",
-   "clicks": 0,
-   "impressions": 3,
-   "ctr": 0,
-   "position": 5
-  },
-  {
-   "query": "アニメフェスタ アニメ一覧",
-   "clicks": 0,
-   "impressions": 2,
-   "ctr": 0,
-   "position": 1
-  },
-  {
-   "query": "カードファイト ヴァンガード divinez 運命星戦編 配信",
-   "clicks": 0,
-   "impressions": 3,
-   "ctr": 0,
-   "position": 31.666666666666668
-  },
-  {
    "query": "ケロロ 軍曹 配信",
    "clicks": 0,
    "impressions": 1,
    "ctr": 0,
    "position": 33
-  },
-  {
-   "query": "ケロロ軍曹 配信",
-   "clicks": 0,
-   "impressions": 3,
-   "ctr": 0,
-   "position": 39.333333333333336
   },
   {
    "query": "シルバニアファミリー フレアのカラフルエブリデイ アニメ",
@@ -737,13 +849,6 @@
    "position": 35
   },
   {
-   "query": "ダイヤのa act2 second season 第2クール 配信",
-   "clicks": 0,
-   "impressions": 2,
-   "ctr": 0,
-   "position": 23
-  },
-  {
    "query": "ダークサモナーとデキている ミニアニメ",
    "clicks": 0,
    "impressions": 1,
@@ -756,13 +861,6 @@
    "impressions": 1,
    "ctr": 0,
    "position": 42
-  },
-  {
-   "query": "テムパル 配信",
-   "clicks": 0,
-   "impressions": 2,
-   "ctr": 0,
-   "position": 27
   },
   {
    "query": "パンどろぼう 配信",
@@ -791,20 +889,6 @@
    "impressions": 1,
    "ctr": 0,
    "position": 20
-  },
-  {
-   "query": "マロニエ王国の七人の騎士 配信",
-   "clicks": 0,
-   "impressions": 2,
-   "ctr": 0,
-   "position": 49.5
-  },
-  {
-   "query": "ムルシエラゴ アニメ",
-   "clicks": 0,
-   "impressions": 2,
-   "ctr": 0,
-   "position": 47
   },
   {
    "query": "リゼロ 4期 配信",
@@ -863,13 +947,6 @@
    "position": 50
   },
   {
-   "query": "凶乱令嬢ニアリストン 病弱令嬢に転生した神殺しの武人の華麗なる無双録 配信",
-   "clicks": 0,
-   "impressions": 3,
-   "ctr": 0,
-   "position": 46
-  },
-  {
    "query": "北見 六花",
    "clicks": 0,
    "impressions": 1,
@@ -884,25 +961,11 @@
    "position": 46
   },
   {
-   "query": "声優 アニメ 人気",
-   "clicks": 0,
-   "impressions": 2,
-   "ctr": 0,
-   "position": 63
-  },
-  {
    "query": "声優 出演数 ランキング 2026",
    "clicks": 0,
    "impressions": 1,
    "ctr": 0,
    "position": 12
-  },
-  {
-   "query": "声優 出演数ランキング(2026)",
-   "clicks": 0,
-   "impressions": 3,
-   "ctr": 0,
-   "position": 7.333333333333333
   },
   {
    "query": "声優ランキング 2026",
@@ -924,6 +987,104 @@
    "impressions": 1,
    "ctr": 0,
    "position": 14
+  },
+  {
+   "query": "富田美憂",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 82
+  },
+  {
+   "query": "帰還者の魔法は特別です 第2期 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 84
+  },
+  {
+   "query": "恐怖 コレクター アニメ どこで 見れる",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 19
+  },
+  {
+   "query": "恐怖 コレクター アニメ アマゾン プライム",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 10
+  },
+  {
+   "query": "甲斐田裕子",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 3
+  },
+  {
+   "query": "百妖譜 京師篇 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 48
+  },
+  {
+   "query": "矢 鹿まや 生天目",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 10
+  },
+  {
+   "query": "禎丞",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 57
+  },
+  {
+   "query": "野生のラスボスが現れた 2期 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 49
+  },
+  {
+   "query": "野生のラスボスが現れた2期 配信アマゾンプライム",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 10
+  },
+  {
+   "query": "釘宮理恵",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 34
+  },
+  {
+   "query": "鈴木みのり",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 60
+  },
+  {
+   "query": "青春のやり直しは異世界で アニメ",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 18
+  },
+  {
+   "query": "高野零 羊宮妃那",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 9
   }
  ],
  "search_pages": [
@@ -949,11 +1110,158 @@
    "position": 19.5
   },
   {
+   "page": "https://animecastnow.com/ranking/",
+   "clicks": 0,
+   "impressions": 31,
+   "ctr": 0,
+   "position": 22
+  },
+  {
    "page": "https://animecastnow.com/",
    "clicks": 0,
    "impressions": 10,
    "ctr": 0,
    "position": 14.7
+  },
+  {
+   "page": "https://animecastnow.com/work/w7419bb6a/",
+   "clicks": 0,
+   "impressions": 10,
+   "ctr": 0,
+   "position": 24.3
+  },
+  {
+   "page": "https://animecastnow.com/work/w535580c3/",
+   "clicks": 0,
+   "impressions": 8,
+   "ctr": 0,
+   "position": 20.125
+  },
+  {
+   "page": "https://animecastnow.com/work/wbe8c4220/",
+   "clicks": 0,
+   "impressions": 8,
+   "ctr": 0,
+   "position": 10.75
+  },
+  {
+   "page": "https://animecastnow.com/work/wb224eae4/",
+   "clicks": 0,
+   "impressions": 6,
+   "ctr": 0,
+   "position": 19.5
+  },
+  {
+   "page": "https://animecastnow.com/vod/",
+   "clicks": 0,
+   "impressions": 5,
+   "ctr": 0,
+   "position": 10
+  },
+  {
+   "page": "https://animecastnow.com/work/w3f72ba4c/",
+   "clicks": 0,
+   "impressions": 5,
+   "ctr": 0,
+   "position": 19.2
+  },
+  {
+   "page": "https://animecastnow.com/work/wc2df3b75/",
+   "clicks": 0,
+   "impressions": 5,
+   "ctr": 0,
+   "position": 22.6
+  },
+  {
+   "page": "https://animecastnow.com/work/w1824f0ec/",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 37.75
+  },
+  {
+   "page": "https://animecastnow.com/work/w916ce540/",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 37.5
+  },
+  {
+   "page": "https://animecastnow.com/work/wb4d26898/",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 11.75
+  },
+  {
+   "page": "https://animecastnow.com/work/wc021426f/",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 46.5
+  },
+  {
+   "page": "https://animecastnow.com/work/wd8118699/",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 17.75
+  },
+  {
+   "page": "https://animecastnow.com/va/0214/",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 8
+  },
+  {
+   "page": "https://animecastnow.com/va/0236/",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 4.333333333333334
+  },
+  {
+   "page": "https://animecastnow.com/work/w077d4189/",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 23
+  },
+  {
+   "page": "https://animecastnow.com/work/w4aef8908/",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 5.333333333333333
+  },
+  {
+   "page": "https://animecastnow.com/work/w4d76fa22/",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 46
+  },
+  {
+   "page": "https://animecastnow.com/work/w595b9dbf/",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 40.333333333333336
+  },
+  {
+   "page": "https://animecastnow.com/work/w641a8632/",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 33.333333333333336
+  },
+  {
+   "page": "https://animecastnow.com/work/wfafd71ff/",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 21.333333333333332
   },
   {
    "page": "https://animecastnow.com/about/",
@@ -963,25 +1271,172 @@
    "position": 3.5
   },
   {
-   "page": "https://animecastnow.com/privacy/",
-   "clicks": 0,
-   "impressions": 1,
-   "ctr": 0,
-   "position": 157
-  },
-  {
-   "page": "https://animecastnow.com/ranking/",
-   "clicks": 0,
-   "impressions": 31,
-   "ctr": 0,
-   "position": 22
-  },
-  {
    "page": "https://animecastnow.com/va/0050/",
    "clicks": 0,
    "impressions": 2,
    "ctr": 0,
    "position": 10.5
+  },
+  {
+   "page": "https://animecastnow.com/va/0392/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 6
+  },
+  {
+   "page": "https://animecastnow.com/va/0735/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 2.5
+  },
+  {
+   "page": "https://animecastnow.com/work/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 1
+  },
+  {
+   "page": "https://animecastnow.com/work/w000eaa2a/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 9
+  },
+  {
+   "page": "https://animecastnow.com/work/w08b2ce08/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 9.5
+  },
+  {
+   "page": "https://animecastnow.com/work/w13096aa4/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 47
+  },
+  {
+   "page": "https://animecastnow.com/work/w3c68d691/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 49.5
+  },
+  {
+   "page": "https://animecastnow.com/work/w3d89d2fe/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 10.5
+  },
+  {
+   "page": "https://animecastnow.com/work/w473ea32c/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 43
+  },
+  {
+   "page": "https://animecastnow.com/work/w506f2ccf/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 27
+  },
+  {
+   "page": "https://animecastnow.com/work/w80100e53/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 47
+  },
+  {
+   "page": "https://animecastnow.com/work/w84d30b10/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 10
+  },
+  {
+   "page": "https://animecastnow.com/work/w8a6520c4/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 27
+  },
+  {
+   "page": "https://animecastnow.com/work/w8ccea2a7/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 10
+  },
+  {
+   "page": "https://animecastnow.com/work/wb79f1270/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 14
+  },
+  {
+   "page": "https://animecastnow.com/work/wd6c7ddf7/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 43
+  },
+  {
+   "page": "https://animecastnow.com/work/wd8c565c6/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 11.5
+  },
+  {
+   "page": "https://animecastnow.com/work/wde28afde/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 10.5
+  },
+  {
+   "page": "https://animecastnow.com/work/wdec78e5e/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 29
+  },
+  {
+   "page": "https://animecastnow.com/work/we5c7474e/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 12
+  },
+  {
+   "page": "https://animecastnow.com/work/wf2fb9b57/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 9.5
+  },
+  {
+   "page": "https://animecastnow.com/work/wfed89f17/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 47
+  },
+  {
+   "page": "https://animecastnow.com/privacy/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 157
   },
   {
    "page": "https://animecastnow.com/va/0059/",
@@ -1005,32 +1460,11 @@
    "position": 3
   },
   {
-   "page": "https://animecastnow.com/va/0214/",
-   "clicks": 0,
-   "impressions": 3,
-   "ctr": 0,
-   "position": 8
-  },
-  {
-   "page": "https://animecastnow.com/va/0236/",
-   "clicks": 0,
-   "impressions": 3,
-   "ctr": 0,
-   "position": 4.333333333333334
-  },
-  {
    "page": "https://animecastnow.com/va/0367/",
    "clicks": 0,
    "impressions": 1,
    "ctr": 0,
    "position": 1
-  },
-  {
-   "page": "https://animecastnow.com/va/0392/",
-   "clicks": 0,
-   "impressions": 2,
-   "ctr": 0,
-   "position": 6
   },
   {
    "page": "https://animecastnow.com/va/0491/",
@@ -1047,34 +1481,6 @@
    "position": 9
   },
   {
-   "page": "https://animecastnow.com/va/0735/",
-   "clicks": 0,
-   "impressions": 2,
-   "ctr": 0,
-   "position": 2.5
-  },
-  {
-   "page": "https://animecastnow.com/vod/",
-   "clicks": 0,
-   "impressions": 5,
-   "ctr": 0,
-   "position": 10
-  },
-  {
-   "page": "https://animecastnow.com/work/",
-   "clicks": 0,
-   "impressions": 2,
-   "ctr": 0,
-   "position": 1
-  },
-  {
-   "page": "https://animecastnow.com/work/w000eaa2a/",
-   "clicks": 0,
-   "impressions": 2,
-   "ctr": 0,
-   "position": 9
-  },
-  {
    "page": "https://animecastnow.com/work/w0444ab20/",
    "clicks": 0,
    "impressions": 1,
@@ -1082,39 +1488,11 @@
    "position": 8
   },
   {
-   "page": "https://animecastnow.com/work/w077d4189/",
-   "clicks": 0,
-   "impressions": 3,
-   "ctr": 0,
-   "position": 23
-  },
-  {
-   "page": "https://animecastnow.com/work/w08b2ce08/",
-   "clicks": 0,
-   "impressions": 2,
-   "ctr": 0,
-   "position": 9.5
-  },
-  {
    "page": "https://animecastnow.com/work/w0f7d3bf6/",
    "clicks": 0,
    "impressions": 1,
    "ctr": 0,
    "position": 50
-  },
-  {
-   "page": "https://animecastnow.com/work/w13096aa4/",
-   "clicks": 0,
-   "impressions": 2,
-   "ctr": 0,
-   "position": 47
-  },
-  {
-   "page": "https://animecastnow.com/work/w1824f0ec/",
-   "clicks": 0,
-   "impressions": 4,
-   "ctr": 0,
-   "position": 37.75
   },
   {
    "page": "https://animecastnow.com/work/w1d995a66/",
@@ -1136,6 +1514,139 @@
    "impressions": 1,
    "ctr": 0,
    "position": 10
+  },
+  {
+   "page": "https://animecastnow.com/work/w38555eb9/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 11
+  },
+  {
+   "page": "https://animecastnow.com/work/w3d7ea0cc/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 10
+  },
+  {
+   "page": "https://animecastnow.com/work/w3dc47a36/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 42
+  },
+  {
+   "page": "https://animecastnow.com/work/w400cf8bc/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 11
+  },
+  {
+   "page": "https://animecastnow.com/work/w558aadd2/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 11
+  },
+  {
+   "page": "https://animecastnow.com/work/w633d0ada/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 10
+  },
+  {
+   "page": "https://animecastnow.com/work/w7c9a29a1/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 61
+  },
+  {
+   "page": "https://animecastnow.com/work/w8cd2faaa/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 27
+  },
+  {
+   "page": "https://animecastnow.com/work/w9a8a5912/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 48
+  },
+  {
+   "page": "https://animecastnow.com/work/wa0567fdf/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 33
+  },
+  {
+   "page": "https://animecastnow.com/work/wa9cab2ef/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 9
+  },
+  {
+   "page": "https://animecastnow.com/work/wb55e81a3/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 35
+  },
+  {
+   "page": "https://animecastnow.com/work/wd519773d/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 9
+  },
+  {
+   "page": "https://animecastnow.com/work/wd73d686a/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 10
+  },
+  {
+   "page": "https://animecastnow.com/work/wd8ce4712/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 19
+  },
+  {
+   "page": "https://animecastnow.com/work/we11e37b4/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 4
+  },
+  {
+   "page": "https://animecastnow.com/work/we1d17457/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 86
+  },
+  {
+   "page": "https://animecastnow.com/work/we7a4a1ae/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 9
+  },
+  {
+   "page": "https://animecastnow.com/work/wec2855ab/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 12
   }
  ],
  "search_daily": [
