@@ -52,6 +52,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .news-item{color:#1d2a44;font-weight:700;text-decoration:none}.news-item time{margin-right:6px;color:var(--sub)}
 .follow-x{display:flex;align-items:center;gap:12px;margin:22px 0 8px;padding:14px 16px;border-radius:14px;background:#111;color:#fff}.follow-x p{flex:1;margin:0;min-width:0;line-height:1.4}.follow-x b{display:block;font-size:14px}.follow-x span{font-size:11px;opacity:.7}.follow-x a{flex:none;padding:8px 14px;border-radius:999px;background:#fff;color:#111;font-size:13px;font-weight:900;text-decoration:none}
 .best-abema{margin:4px 0 0;font-size:12px;color:var(--sub);line-height:1.6}.best-abema a{color:var(--ac);font-weight:700}.best-abema img{display:inline;width:1px;height:1px}.pr-tag{display:inline-block;margin-right:6px;padding:0 5px;border:1px solid #d6cde6;border-radius:4px;font-size:10px;color:var(--sub);vertical-align:1px}
+.vod-txt{display:flex;flex-direction:column;gap:2px}.vod-txt b{font-weight:800}.vod-txt small{font-size:11px;font-weight:600;opacity:.8}
 .x-follow{flex:none;padding:7px 14px;border-radius:999px;background:#111;color:#fff;font-size:12px;font-weight:900;text-decoration:none;box-shadow:0 0 0 3px rgba(17,17,17,.12);animation:x-pulse 2.2s ease-in-out 1.5s 4}
 @keyframes x-pulse{50%{box-shadow:0 0 0 7px rgba(17,17,17,.05)}}
 @media(prefers-reduced-motion:reduce){.x-follow{animation:none}}
@@ -286,6 +287,8 @@ const partnerRank=p=>{const i=[...PARTNER_SERVICES].indexOf(p);return i<0?99:i};
 // 提携サービスの無料体験など（各社公式で条件を確認してから書く。確認日も入れる）。scripts/articles.mjs の PARTNER_NOTES と同じ内容にする
 const PARTNER_OFFERS={'Amazon Prime Video':{cta:'30日間無料で試す',note:'※Amazonプライム会員の初回のみ。無料期間が終わると月額600円（2026年11月時点。条件は公式サイトで確認してください）'}};
 const PARTNER_NOTES=Object.fromEntries(Object.entries(PARTNER_OFFERS).map(([k,v])=>[k,v.note]));
+// 作品ごとのボタン：「この作品は○○で配信中」＋「30日間無料で試す」（見放題かレンタルかはわからないので、無料で見られるとは書かない）
+const workCtaHtml=p=>PARTNER_OFFERS[p]?`<b>この作品は${esc(serviceLabel(p))}で配信中</b><small>${esc(PARTNER_OFFERS[p].cta)}</small>`:esc(ctaText(p));
 const ctaText=p=>PARTNER_OFFERS[p]?`${serviceLabel(p)}を${PARTNER_OFFERS[p].cta}`:`${serviceLabel(p)}で見る`;
 // この声優の今期の出演作を、提携サービスで何作品見られるか（いちばん多い提携サービス）
 function partnerFor(a){
@@ -341,7 +344,7 @@ const serviceLabel=name=>SERVICE_LABEL[name]||name;
 function vodLinksHtml(w,r,a){
   const partners=w.vod_links.filter(v=>PARTNER_SERVICES.has(v.provider)),others=w.vod_links.filter(v=>!PARTNER_SERVICES.has(v.provider));
   const pageType=location.pathname.startsWith('/va/')?'va_detail':'home';
-  return partners.map((v,index)=>`<a class="vod" href="${esc(v.url)}" data-ga-event="vod_click" data-ga-provider="${esc(v.provider)}" data-ga-work-id="${esc(r.work_id)}" data-ga-work-title="${esc(w.title)}" data-ga-va-id="${esc(a.actor_id)}" data-ga-va-name="${esc(a.name)}" data-ga-position="${index+1}" data-ga-page-type="${pageType}" target="_blank" rel="sponsored noopener"><span>${esc(ctaText(v.provider))}</span><i class="vod-go" aria-hidden="true">↗</i></a>`).join('')
+  return partners.map((v,index)=>`<a class="vod" href="${esc(v.url)}" data-ga-event="vod_click" data-ga-provider="${esc(v.provider)}" data-ga-work-id="${esc(r.work_id)}" data-ga-work-title="${esc(w.title)}" data-ga-va-id="${esc(a.actor_id)}" data-ga-va-name="${esc(a.name)}" data-ga-position="${index+1}" data-ga-page-type="${pageType}" target="_blank" rel="sponsored noopener"><span class="vod-txt">${workCtaHtml(v.provider)}</span><i class="vod-go" aria-hidden="true">↗</i></a>`).join('')
     +(others.length?`<p class="vod-others"><span>${partners.length?'ほかの配信':'配信'}</span>${esc(others.map(v=>serviceLabel(v.provider)).join('・'))}</p>`:'');
 }
 let VIEW='current',D,A=[],N=null,NEXT_LABEL='',CURRENT_COUNT=0,WORK_COUNT=0,SERVICES=[],selectedService='',SERVICE_WORK_COUNTS={};

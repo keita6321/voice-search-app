@@ -96,6 +96,7 @@ table.compare tr.partner td{background:#f5f2fa}.pr{font-size:10px;color:#62517f}
 .seq-title{font-size:16px;font-weight:900;line-height:1.45}.seq-title a{color:#1d2a44;text-decoration:none}
 .seq-prev{margin:8px 0 4px;padding:8px 12px;border-radius:10px;background:#f8f6fc;font-size:13px;line-height:1.6}.seq-prev b{color:#62517f}
 .seq .cta{margin-top:6px}
+.cta:has(.cta-main){border-radius:14px;padding:8px 16px}.cta .cta-main{display:block}.cta .cta-sub{display:block;margin-top:1px;font-size:12px;font-weight:600;opacity:.85}
 .follow-x{display:flex;align-items:center;gap:12px;margin:26px 0 8px;padding:14px 16px;border-radius:14px;background:#111;color:#fff}.follow-x p{flex:1;margin:0;min-width:0;line-height:1.4}.follow-x b{display:block;font-size:14px}.follow-x span{font-size:11px;opacity:.7}.follow-x a{flex:none;padding:8px 14px;border-radius:999px;background:#fff;color:#111;font-size:13px;font-weight:900;text-decoration:none}
 .prev{margin:22px 0 8px;padding:14px 16px;border:1px solid #e3dcef;border-radius:14px;background:#f8f6fc}.prev h2{margin:0 0 6px}.prev p{margin:6px 0}
 details.notes summary{margin-top:2px}
@@ -388,6 +389,10 @@ const PARTNER_OFFERS = {
 };
 const PARTNER_NOTES = Object.fromEntries(Object.entries(PARTNER_OFFERS).map(([k, v]) => [k, v.note]));
 const ctaText = provider => (PARTNER_OFFERS[provider] ? `${label(provider)}を${PARTNER_OFFERS[provider].cta}` : `${label(provider)}で見る`);
+// 作品ごとのボタン：「この作品は○○で配信中」＋「30日間無料で試す」（見放題かレンタルかはデータでわからないので、無料で見られるとは書かない）
+const workCtaHtml = provider => (PARTNER_OFFERS[provider]
+  ? `<span class="cta-main">この作品は${esc(label(provider))}で配信中</span><span class="cta-sub">${esc(PARTNER_OFFERS[provider].cta)} ↗</span>`
+  : `${esc(ctaText(provider))} ↗`);
 
 // 手書きの作品紹介（data/work_notes.json）
 function notesSection(note, title) {
@@ -542,9 +547,9 @@ export function workPages(ctx) {
         ? `${serviceText}で配信中です（${esc(asOf)}時点）。`
         : `「${esc(work.title)}」の配信サービスは、まだ確認できていません（${esc(asOf)}時点）。配信が決まり次第、このページに追加します。`;
     const buttons = partners.map((v, index) =>
-      `<a class="cta" href="${esc(v.url)}" target="_blank" rel="sponsored noopener" data-ga-event="vod_click" data-ga-provider="${esc(v.provider)}" data-ga-work-id="${esc(id)}" data-ga-work-title="${esc(work.title)}" data-ga-page-type="work" data-ga-position="${index + 1}">${esc(ctaText(v.provider))} ↗</a>`).join(' ');
+      `<a class="cta" href="${esc(v.url)}" target="_blank" rel="sponsored noopener" data-ga-event="vod_click" data-ga-provider="${esc(v.provider)}" data-ga-work-id="${esc(id)}" data-ga-work-title="${esc(work.title)}" data-ga-page-type="work" data-ga-position="${index + 1}">${archived ? `${esc(ctaText(v.provider))} ↗` : workCtaHtml(v.provider)}</a>`).join(' ');
     const endButtons = partners.map((v, index) =>
-      `<a class="cta" href="${esc(v.url)}" target="_blank" rel="sponsored noopener" data-ga-event="vod_click" data-ga-provider="${esc(v.provider)}" data-ga-work-id="${esc(id)}" data-ga-work-title="${esc(work.title)}" data-ga-page-type="work_end" data-ga-position="${index + 1}">${esc(ctaText(v.provider))} ↗</a>`).join(' ');
+      `<a class="cta" href="${esc(v.url)}" target="_blank" rel="sponsored noopener" data-ga-event="vod_click" data-ga-provider="${esc(v.provider)}" data-ga-work-id="${esc(id)}" data-ga-work-title="${esc(work.title)}" data-ga-page-type="work_end" data-ga-position="${index + 1}">${archived ? `${esc(ctaText(v.provider))} ↗` : workCtaHtml(v.provider)}</a>`).join(' ');
     const notesFor = partners.map(v => PARTNER_NOTES[v.provider]).filter(Boolean);
     const vodSection = vods.length
       ? `<h2>${archived ? `配信していたサービス（${esc(asOf)}時点）` : '配信しているサービス'}</h2>
