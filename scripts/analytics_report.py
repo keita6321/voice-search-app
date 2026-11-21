@@ -69,8 +69,10 @@ def ga(tok: str, dims: list[str], mets: list[str], start: str, end: str, limit: 
 
 def sc(tok: str, dims: list[str], start: str, end: str, limit: int = 50) -> list[dict]:
     url = f"https://www.googleapis.com/webmasters/v3/sites/{urllib.parse.quote(SC_SITE, safe='')}/searchAnalytics/query"
-    res = post(url, {"startDate": start, "endDate": end, "dimensions": dims, "rowLimit": limit}, tok)
-    return [{**dict(zip(dims, r["keys"])), "clicks": r["clicks"], "impressions": r["impressions"], "ctr": r["ctr"], "position": r["position"]} for r in res.get("rows", [])]
+    res = post(url, {"startDate": start, "endDate": end, "dimensions": dims, "rowLimit": 1000 if dims != ["date"] else limit}, tok)
+    rows = [{**dict(zip(dims, r["keys"])), "clicks": r["clicks"], "impressions": r["impressions"], "ctr": r["ctr"], "position": r["position"]} for r in res.get("rows", [])]
+    # 日別は日付順、それ以外はクリック・表示の多い順
+    return rows if dims == ["date"] else sorted(rows, key=lambda r: (-r["clicks"], -r["impressions"]))
 
 
 def total(rows: list[dict], key: str) -> float:
