@@ -68,6 +68,13 @@ npm run posts -- --start YYYY-MM-DD --days 7 --campaign 2027winter --season-tag 
   - `vod_click` / `feature_click` / `special_click` / `share_native_click` / `costar_click` / `cast_click` / `ranking_click` / `list_open` / `x_follow_click` / `news_click` など。
   - 新しいイベントは `clickParams` に追加する。
 
+## アクセスのまとめ（.github/workflows/analytics.yml）
+
+- 毎朝 7:23 JST に GA4 と Search Console の数字を取って、`analytics` ブランチの `reports/latest.md`（まとめ）と `reports/YYYY-MM-DD.json`（数字そのもの）に残す。main には入れない。
+- 読むとき：`gh api repos/keita6321/voice-search-app/contents/reports/latest.md?ref=analytics --jq .content | base64 -d`
+- 認証はシークレット `GA_SA_KEY`（Google Cloud のプロジェクト animecastnow のサービスアカウント ga-reader の JSON。GA4 は閲覧者、Search Console は制限付き）。オーナーが登録した。
+- 自分たちのアクセスは除外済み（オーナーのスマホ・PC、内蔵ブラウザで `?ga_optout=1`、2026-11-21〜22）。
+
 ## IndexNow（.github/workflows/indexnow.yml）
 
 - Bing Webmaster Tools に登録済み（2026-11-20、Search Console から取り込み）。

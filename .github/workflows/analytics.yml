@@ -1,0 +1,49 @@
+name: アクセスのまとめ（毎朝）
+
+# GA4 と Search Console の数字を取ってきて、analytics ブランチに残す（main には入れない＝本番の公開は動かない）。
+# 認証はシークレット GA_SA_KEY（サービスアカウントの JSON。GA4 は閲覧者、Search Console は制限付きの読み取り専用）。
+# 読むとき：analytics ブランチの reports/latest.md（日ごとの数字は reports/YYYY-MM-DD.json）。
+on:
+  schedule:
+    - cron: "23 22 * * *" # 毎朝 7:23 JST
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: analytics
+  cancel-in-progress: false
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: 準備
+        run: pip install -q google-auth requests
+      - name: 数字を取る
+        env:
+          GA_SA_KEY: ${{ secrets.GA_SA_KEY }}
+        run: python3 scripts/analytics_report.py out >> "$GITHUB_STEP_SUMMARY"
+      - name: analytics ブランチに残す
+        run: |
+          git config user.name "keita6321"
+          git config user.email "keita6321@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin analytics >/dev/null; then
+            git fetch -q origin analytics
+            git worktree add -q ../analytics origin/analytics
+            cd ../analytics && git checkout -q -B analytics
+          else
+            git worktree add -q --detach ../analytics
+            cd ../analytics && git checkout -q --orphan analytics && git rm -rq .
+          fi
+          mkdir -p reports
+          cp "$GITHUB_WORKSPACE"/out/* reports/
+          git add reports
+          git diff --cached --quiet && { echo "変わりなし"; exit 0; }
+          git commit -qm "アクセスのまとめ $(TZ=Asia/Tokyo date +%F)"
+          git push -q origin analytics
