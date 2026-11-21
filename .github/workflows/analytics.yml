@@ -39,7 +39,7 @@ jobs:
             cd ../analytics && git checkout -q -B analytics
           else
             git worktree add -q --detach ../analytics
-            cd ../analytics && git checkout -q --orphan analytics && git rm -rq .
+            cd ../analytics && git checkout -q --orphan analytics && git rm -rqf . && git clean -fdq
           fi
           mkdir -p reports
           cp "$GITHUB_WORKSPACE"/out/* reports/
