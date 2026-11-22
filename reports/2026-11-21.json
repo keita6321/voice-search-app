@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-22T12:01+09:00",
+ "generated_at": "2026-11-22T12:02+09:00",
  "range": {
   "last7": [
    "2026-11-15",
@@ -572,6 +572,202 @@
    "landingPage": "/work/wa147cdd6",
    "sessions": 1.0,
    "engagedSessions": 0.0
+  }
+ ],
+ "japan_channel_last7": [
+  {
+   "sessionDefaultChannelGroup": "Direct",
+   "sessions": 11.0,
+   "engagedSessions": 11.0,
+   "userEngagementDuration": 211.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Organic Search",
+   "sessions": 10.0,
+   "engagedSessions": 10.0,
+   "userEngagementDuration": 128.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Organic Social",
+   "sessions": 9.0,
+   "engagedSessions": 8.0,
+   "userEngagementDuration": 205.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Referral",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 2.0
+  }
+ ],
+ "japan_channel_prev7": [
+  {
+   "sessionDefaultChannelGroup": "Organic Social",
+   "sessions": 2.0
+  }
+ ],
+ "japan_landing_last7": [
+  {
+   "landingPage": "/",
+   "sessions": 9.0,
+   "engagedSessions": 9.0,
+   "userEngagementDuration": 141.0
+  },
+  {
+   "landingPage": "/next",
+   "sessions": 3.0,
+   "engagedSessions": 3.0,
+   "userEngagementDuration": 51.0
+  },
+  {
+   "landingPage": "/va/0062",
+   "sessions": 2.0,
+   "engagedSessions": 2.0,
+   "userEngagementDuration": 62.0
+  },
+  {
+   "landingPage": "/va/0386",
+   "sessions": 2.0,
+   "engagedSessions": 2.0,
+   "userEngagementDuration": 69.0
+  },
+  {
+   "landingPage": "/work/wa147cdd6",
+   "sessions": 2.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 29.0
+  },
+  {
+   "landingPage": "/ranking",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "landingPage": "/sequel",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "landingPage": "/va/0050",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 11.0
+  },
+  {
+   "landingPage": "/va/0098",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 36.0
+  },
+  {
+   "landingPage": "/va/0100",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 22.0
+  },
+  {
+   "landingPage": "/va/0217",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 21.0
+  },
+  {
+   "landingPage": "/va/0266",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "landingPage": "/va/0275",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "landingPage": "/va/0317",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 17.0
+  },
+  {
+   "landingPage": "/va/0617",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 21.0
+  },
+  {
+   "landingPage": "/work/w1cb15f5c",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 1.0
+  },
+  {
+   "landingPage": "/work/wd2821ffc",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 60.0
+  },
+  {
+   "landingPage": "/work/wf9098d76",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 5.0
+  }
+ ],
+ "japan_events_last7": [
+  {
+   "eventName": "page_view",
+   "eventCount": 124.0
+  },
+  {
+   "eventName": "user_engagement",
+   "eventCount": 38.0
+  },
+  {
+   "eventName": "session_start",
+   "eventCount": 31.0
+  },
+  {
+   "eventName": "first_visit",
+   "eventCount": 24.0
+  },
+  {
+   "eventName": "scroll",
+   "eventCount": 8.0
+  },
+  {
+   "eventName": "click",
+   "eventCount": 2.0
+  },
+  {
+   "eventName": "feature_click",
+   "eventCount": 2.0
+  },
+  {
+   "eventName": "official_site_click",
+   "eventCount": 2.0
+  },
+  {
+   "eventName": "search",
+   "eventCount": 2.0
+  },
+  {
+   "eventName": "va_open",
+   "eventCount": 2.0
+  },
+  {
+   "eventName": "costar_click",
+   "eventCount": 1.0
+  },
+  {
+   "eventName": "season_view_change",
+   "eventCount": 1.0
+  },
+  {
+   "eventName": "special_click",
+   "eventCount": 1.0
   }
  ],
  "direct_detail_last7": [
