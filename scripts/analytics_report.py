@@ -129,6 +129,15 @@ def main() -> int:
         "events_prev7": ga(tok, ["eventName"], ["eventCount"], f(pstart), f(pend), 50, "eventCount"),
         "quote_posts_last28": ga(tok, ["sessionManualAdContent", "landingPage"], ["sessions", "engagedSessions"], f(start28), f(end), 50, "sessions",
                                  {"filter": {"fieldName": "sessionCampaignName", "stringFilter": {"value": "quote"}}}),
+        # 日本からだけ：海外のデータセンターからの自動アクセス（ボット）を除いた、実際の利用者に近い数字
+        "japan_channel_last7": ga(tok, ["sessionDefaultChannelGroup"], ["sessions", "engagedSessions", "userEngagementDuration"], f(start7), f(end), 20, "sessions",
+                                  {"filter": {"fieldName": "country", "stringFilter": {"value": "Japan"}}}),
+        "japan_channel_prev7": ga(tok, ["sessionDefaultChannelGroup"], ["sessions"], f(pstart), f(pend), 20, "sessions",
+                                  {"filter": {"fieldName": "country", "stringFilter": {"value": "Japan"}}}),
+        "japan_landing_last7": ga(tok, ["landingPage"], ["sessions", "engagedSessions", "userEngagementDuration"], f(start7), f(end), 30, "sessions",
+                                  {"filter": {"fieldName": "country", "stringFilter": {"value": "Japan"}}}),
+        "japan_events_last7": ga(tok, ["eventName"], ["eventCount"], f(start7), f(end), 50, "eventCount",
+                                 {"filter": {"fieldName": "country", "stringFilter": {"value": "Japan"}}}),
         # 直接（direct）で来た人の内訳：誰が来ているのかを見るため
         "direct_detail_last7": ga(tok, ["date", "deviceCategory", "browser", "city", "landingPage"], ["sessions", "engagedSessions", "userEngagementDuration", "newUsers"], f(start7), f(end), 100, "sessions",
                                   {"filter": {"fieldName": "sessionDefaultChannelGroup", "stringFilter": {"value": "Direct"}}}),
@@ -154,7 +163,15 @@ def main() -> int:
 
 作成：{data['generated_at']}（GA4 は昨日まで、Search Console は {f(sc_start)}〜{f(sc_end)}）
 
-## 全体（直近7日）
+## 日本からのアクセス（直近7日。海外のデータセンターからの自動アクセスを除いた、実際の利用者に近い数字）
+- セッション {total(data['japan_channel_last7'], 'sessions'):.0f}{delta(total(data['japan_channel_last7'], 'sessions'), total(data['japan_channel_prev7'], 'sessions'))}／エンゲージ {total(data['japan_channel_last7'], 'engagedSessions'):.0f}
+
+{table(data['japan_channel_last7'], [('sessionDefaultChannelGroup', '流入元'), ('sessions', 'セッション'), ('engagedSessions', 'エンゲージ'), ('userEngagementDuration', '滞在合計(秒)')])}
+最初に開いたページ：
+{table(data['japan_landing_last7'], [('landingPage', 'ページ'), ('sessions', 'セッション'), ('engagedSessions', 'エンゲージ'), ('userEngagementDuration', '滞在合計(秒)')], 20)}
+イベント：
+{table([e for e in data['japan_events_last7'] if e['eventName'] not in ('page_view', 'session_start', 'first_visit', 'user_engagement')], [('eventName', 'イベント'), ('eventCount', '回数')], 30)}
+## 全体（直近7日。海外からの自動アクセスも含む）
 - セッション {last['sessions']:.0f}{delta(last['sessions'], prev['sessions'])}
 - ユーザー {last['activeUsers']:.0f}{delta(last['activeUsers'], prev['activeUsers'])}／うち新規 {last['newUsers']:.0f}
 - ページの表示 {last['screenPageViews']:.0f}{delta(last['screenPageViews'], prev['screenPageViews'])}
