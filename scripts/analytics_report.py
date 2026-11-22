@@ -129,6 +129,10 @@ def main() -> int:
         "events_prev7": ga(tok, ["eventName"], ["eventCount"], f(pstart), f(pend), 50, "eventCount"),
         "quote_posts_last28": ga(tok, ["sessionManualAdContent", "landingPage"], ["sessions", "engagedSessions"], f(start28), f(end), 50, "sessions",
                                  {"filter": {"fieldName": "sessionCampaignName", "stringFilter": {"value": "quote"}}}),
+        # 直接（direct）で来た人の内訳：誰が来ているのかを見るため
+        "direct_detail_last7": ga(tok, ["date", "deviceCategory", "browser", "city", "landingPage"], ["sessions", "engagedSessions", "userEngagementDuration", "newUsers"], f(start7), f(end), 100, "sessions",
+                                  {"filter": {"fieldName": "sessionDefaultChannelGroup", "stringFilter": {"value": "Direct"}}}),
+        "device_last7": ga(tok, ["sessionDefaultChannelGroup", "deviceCategory", "operatingSystem"], ["sessions", "userEngagementDuration"], f(start7), f(end), 30, "sessions"),
         "search_queries": sc(tok, ["query"], f(sc_start), f(sc_end), 50),
         "search_pages": sc(tok, ["page"], f(sc_start), f(sc_end), 30),
         "search_daily": sc(tok, ["date"], f(sc_start), f(sc_end), 40),
@@ -165,6 +169,10 @@ def main() -> int:
 {table(data['events_last7'], [('eventName', 'イベント'), ('eventCount', '回数'), ('prev', '前の7日'), ('totalUsers', '人数')], 30)}
 ## 引用ポストから（直近28日、utm_campaign=quote）
 {table(data['quote_posts_last28'], [('sessionManualAdContent', 'utm_content'), ('landingPage', '着地'), ('sessions', 'セッション'), ('engagedSessions', 'エンゲージ')], 30)}
+## 直接（Direct）で来た人の内訳（直近7日）
+{table(data['direct_detail_last7'], [('date', '日'), ('deviceCategory', '端末'), ('browser', 'ブラウザ'), ('city', '地域'), ('landingPage', '着地'), ('sessions', 'セッション'), ('userEngagementDuration', '滞在合計(秒)')], 40)}
+## 流入元×端末（直近7日）
+{table(data['device_last7'], [('sessionDefaultChannelGroup', '流入元'), ('deviceCategory', '端末'), ('operatingSystem', 'OS'), ('sessions', 'セッション'), ('userEngagementDuration', '滞在合計(秒)')], 20)}
 ## Google 検索（{f(sc_start)}〜{f(sc_end)}）
 - クリック {sc_clicks:.0f}／表示 {sc_impr:.0f}
 

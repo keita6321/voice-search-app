@@ -74,7 +74,7 @@ npm run posts -- --start YYYY-MM-DD --days 7 --campaign 2027winter --season-tag 
 - 読むとき：`gh api repos/keita6321/voice-search-app/contents/reports/latest.md?ref=analytics --jq .content | base64 -d`
 - 認証はシークレット `GA_SA_KEY`（Google Cloud のプロジェクト animecastnow のサービスアカウント ga-reader の JSON。GA4 は閲覧者、Search Console は制限付き）。オーナーが登録した。
 - 自分たちのアクセスは除外済み（オーナーのスマホ・PC、内蔵ブラウザで `?ga_optout=1`、2026-11-21〜22）。
-- サイトを変えたら `docs/experiments.md`（実験の記録）に1行足す（何を・どの数字で・いつ判断するか）。毎週月曜 9:47 JST の振り返り（予約タスク）が、判断日の来たものを確かめる。
+- サイトを変えたら `docs/experiments.md`（実験の記録）に1行足す（何を・どの数字で・いつ判断するか）。判断日が来たら、オーナーに頼まれた振り返りのときに確かめる（週1の自動の振り返りは作っていない）。
 
 ## IndexNow（.github/workflows/indexnow.yml）
 
