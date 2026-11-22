@@ -1,6 +1,6 @@
 # アクセスのまとめ（2026-11-15〜2026-11-21）
 
-作成：2026-11-22T11:20+09:00（GA4 は昨日まで、Search Console は 2026-10-23〜2026-11-19）
+作成：2026-11-22T12:01+09:00（GA4 は昨日まで、Search Console は 2026-10-23〜2026-11-19）
 
 ## 全体（直近7日）
 - セッション 90（前週比 +1400%）
@@ -62,6 +62,69 @@
 | (not set) | /va/0266 | 1 | 1 |
 | (not set) | /va/0275 | 1 | 1 |
 | (not set) | /work/wa147cdd6 | 1 | 0 |
+
+## 直接（Direct）で来た人の内訳（直近7日）
+| 日 | 端末 | ブラウザ | 地域 | 着地 | セッション | 滞在合計(秒) |
+|---|---|---|---|---|---|---|
+| 20261115 | desktop | Chrome | Haarlem | / | 4 | 0 |
+| 20261116 | desktop | Chrome | Amsterdam | / | 4 | 0 |
+| 20261115 | mobile | Safari | Ashburn | / | 3 | 9 |
+| 20261115 | desktop | Chrome | Kawasaki | / | 2 | 0 |
+| 20261115 | mobile | Chrome | Kawasaki | / | 2 | 0 |
+| 20261120 | desktop | Chrome | Kawasaki | / | 2 | 81 |
+| 20261115 | desktop | Chrome | Anyang-si | / | 1 | 0 |
+| 20261115 | desktop | Chrome | Burnaby | / | 1 | 6 |
+| 20261115 | desktop | Chrome | Council Bluffs | / | 1 | 14 |
+| 20261115 | desktop | Chrome | Dudley | / | 1 | 24 |
+| 20261115 | desktop | Chrome | Orlando | / | 1 | 0 |
+| 20261115 | desktop | Chrome | Paris | / | 1 | 3 |
+| 20261115 | mobile | Chrome | (not set) | / | 1 | 0 |
+| 20261115 | mobile | Chrome | Anyang-si | / | 1 | 3 |
+| 20261115 | mobile | Safari | Singapore | / | 1 | 0 |
+| 20261115 | mobile | Safari (in-app) | Kawasaki | /va/0062 | 1 | 43 |
+| 20261116 | desktop | Chrome | (not set) | / | 1 | 0 |
+| 20261116 | desktop | Chrome | Bengaluru | / | 1 | 9 |
+| 20261116 | desktop | Chrome | Blue Island | / | 1 | 0 |
+| 20261116 | desktop | Chrome | Burnaby | / | 1 | 6 |
+| 20261116 | desktop | Chrome | Musashino | / | 1 | 4 |
+| 20261116 | desktop | Firefox | Boardman | / | 1 | 5 |
+| 20261116 | mobile | Android Webview | Council Bluffs | / | 1 | 14 |
+| 20261116 | mobile | Safari | Ashburn | / | 1 | 5 |
+| 20261116 | mobile | YaBrowser | Sydney | / | 1 | 0 |
+| 20261117 | desktop | Chrome | (not set) | / | 1 | 3 |
+| 20261117 | desktop | Chrome | Chicago | / | 1 | 6 |
+| 20261117 | desktop | Chrome | Glenview | / | 1 | 0 |
+| 20261117 | desktop | Chrome | London | / | 1 | 0 |
+| 20261117 | desktop | Chrome | Manassas | / | 1 | 4 |
+| 20261117 | desktop | Chrome | Phoenix | / | 1 | 0 |
+| 20261117 | desktop | Chrome | Rio de Janeiro | / | 1 | 0 |
+| 20261117 | desktop | Chrome | Secaucus | / | 1 | 9 |
+| 20261117 | desktop | Edge | Council Bluffs | / | 1 | 0 |
+| 20261118 | desktop | Chrome | Burnaby | / | 1 | 4 |
+| 20261118 | desktop | Chrome | Glenview | / | 1 | 0 |
+| 20261118 | desktop | Edge | Council Bluffs | / | 1 | 2 |
+| 20261118 | desktop | Firefox | Yokohama | / | 1 | 54 |
+| 20261118 | mobile | Chrome | (not set) | / | 1 | 0 |
+| 20261118 | mobile | Chrome | Dubai | / | 1 | 0 |
+
+## 流入元×端末（直近7日）
+| 流入元 | 端末 | OS | セッション | 滞在合計(秒) |
+|---|---|---|---|---|
+| Direct | desktop | Windows | 28 | 240 |
+| Direct | desktop | Linux | 18 | 37 |
+| Direct | mobile | iOS | 12 | 60 |
+| Unassigned | desktop | Macintosh | 7 | 19 |
+| Organic Search | mobile | Android | 5 | 87 |
+| Organic Social | mobile | Android | 5 | 136 |
+| Direct | mobile | Android | 4 | 17 |
+| Organic Social | mobile | iOS | 4 | 69 |
+| Organic Search | mobile | iOS | 3 | 36 |
+| Direct | mobile | Windows | 2 | 0 |
+| Direct | desktop | Macintosh | 1 | 0 |
+| Organic Search | desktop | Macintosh | 1 | 0 |
+| Organic Search | desktop | Windows | 1 | 5 |
+| Referral | desktop | Windows | 1 | 2 |
+| Unassigned | desktop | Windows | 1 | 0 |
 
 ## Google 検索（2026-10-23〜2026-11-19）
 - クリック 4／表示 251

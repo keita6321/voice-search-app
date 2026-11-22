@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-22T11:20+09:00",
+ "generated_at": "2026-11-22T12:01+09:00",
  "range": {
   "last7": [
    "2026-11-15",
@@ -572,6 +572,698 @@
    "landingPage": "/work/wa147cdd6",
    "sessions": 1.0,
    "engagedSessions": 0.0
+  }
+ ],
+ "direct_detail_last7": [
+  {
+   "date": "20261115",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Haarlem",
+   "landingPage": "/",
+   "sessions": 4.0,
+   "engagedSessions": 2.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 4.0
+  },
+  {
+   "date": "20261116",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Amsterdam",
+   "landingPage": "/",
+   "sessions": 4.0,
+   "engagedSessions": 4.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 4.0
+  },
+  {
+   "date": "20261115",
+   "deviceCategory": "mobile",
+   "browser": "Safari",
+   "city": "Ashburn",
+   "landingPage": "/",
+   "sessions": 3.0,
+   "engagedSessions": 3.0,
+   "userEngagementDuration": 9.0,
+   "newUsers": 3.0
+  },
+  {
+   "date": "20261115",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Kawasaki",
+   "landingPage": "/",
+   "sessions": 2.0,
+   "engagedSessions": 2.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261115",
+   "deviceCategory": "mobile",
+   "browser": "Chrome",
+   "city": "Kawasaki",
+   "landingPage": "/",
+   "sessions": 2.0,
+   "engagedSessions": 2.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 0.0
+  },
+  {
+   "date": "20261120",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Kawasaki",
+   "landingPage": "/",
+   "sessions": 2.0,
+   "engagedSessions": 2.0,
+   "userEngagementDuration": 81.0,
+   "newUsers": 0.0
+  },
+  {
+   "date": "20261115",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Anyang-si",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 0.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261115",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Burnaby",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 6.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261115",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Council Bluffs",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 14.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261115",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Dudley",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 24.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261115",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Orlando",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 0.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261115",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Paris",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 3.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261115",
+   "deviceCategory": "mobile",
+   "browser": "Chrome",
+   "city": "(not set)",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261115",
+   "deviceCategory": "mobile",
+   "browser": "Chrome",
+   "city": "Anyang-si",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 3.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261115",
+   "deviceCategory": "mobile",
+   "browser": "Safari",
+   "city": "Singapore",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261115",
+   "deviceCategory": "mobile",
+   "browser": "Safari (in-app)",
+   "city": "Kawasaki",
+   "landingPage": "/va/0062",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 43.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261116",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "(not set)",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261116",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Bengaluru",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 9.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261116",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Blue Island",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 0.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261116",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Burnaby",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 6.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261116",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Musashino",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 4.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261116",
+   "deviceCategory": "desktop",
+   "browser": "Firefox",
+   "city": "Boardman",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 5.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261116",
+   "deviceCategory": "mobile",
+   "browser": "Android Webview",
+   "city": "Council Bluffs",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 14.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261116",
+   "deviceCategory": "mobile",
+   "browser": "Safari",
+   "city": "Ashburn",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 5.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261116",
+   "deviceCategory": "mobile",
+   "browser": "YaBrowser",
+   "city": "Sydney",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 0.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261117",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "(not set)",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 3.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261117",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Chicago",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 6.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261117",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Glenview",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261117",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "London",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261117",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Manassas",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 4.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261117",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Phoenix",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261117",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Rio de Janeiro",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261117",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Secaucus",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 9.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261117",
+   "deviceCategory": "desktop",
+   "browser": "Edge",
+   "city": "Council Bluffs",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261118",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Burnaby",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 4.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261118",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Glenview",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261118",
+   "deviceCategory": "desktop",
+   "browser": "Edge",
+   "city": "Council Bluffs",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 2.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261118",
+   "deviceCategory": "desktop",
+   "browser": "Firefox",
+   "city": "Yokohama",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 54.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261118",
+   "deviceCategory": "mobile",
+   "browser": "Chrome",
+   "city": "(not set)",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261118",
+   "deviceCategory": "mobile",
+   "browser": "Chrome",
+   "city": "Dubai",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 0.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261118",
+   "deviceCategory": "mobile",
+   "browser": "Safari",
+   "city": "Lille",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 0.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261119",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "(not set)",
+   "landingPage": "/va/0206",
+   "sessions": 1.0,
+   "engagedSessions": 0.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261119",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Frankfurt am Main",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 1.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261119",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Frankfurt am Main",
+   "landingPage": "/privacy",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261119",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Warsaw",
+   "landingPage": "/next",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 1.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261119",
+   "deviceCategory": "mobile",
+   "browser": "Safari",
+   "city": "Ashburn",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 3.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261120",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Burnaby",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 12.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261120",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Kawasaki",
+   "landingPage": "/ranking",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 0.0
+  },
+  {
+   "date": "20261120",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Kawasaki",
+   "landingPage": "/sequel",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 0.0
+  },
+  {
+   "date": "20261120",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Kawasaki",
+   "landingPage": "/work/wa147cdd6",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 29.0,
+   "newUsers": 0.0
+  },
+  {
+   "date": "20261120",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "San Jose",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261120",
+   "deviceCategory": "mobile",
+   "browser": "Safari (in-app)",
+   "city": "Kawasaki",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 0.0
+  },
+  {
+   "date": "20261121",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Orlando",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  }
+ ],
+ "device_last7": [
+  {
+   "sessionDefaultChannelGroup": "Direct",
+   "deviceCategory": "desktop",
+   "operatingSystem": "Windows",
+   "sessions": 28.0,
+   "userEngagementDuration": 240.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Direct",
+   "deviceCategory": "desktop",
+   "operatingSystem": "Linux",
+   "sessions": 18.0,
+   "userEngagementDuration": 37.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Direct",
+   "deviceCategory": "mobile",
+   "operatingSystem": "iOS",
+   "sessions": 12.0,
+   "userEngagementDuration": 60.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Unassigned",
+   "deviceCategory": "desktop",
+   "operatingSystem": "Macintosh",
+   "sessions": 7.0,
+   "userEngagementDuration": 19.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Organic Search",
+   "deviceCategory": "mobile",
+   "operatingSystem": "Android",
+   "sessions": 5.0,
+   "userEngagementDuration": 87.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Organic Social",
+   "deviceCategory": "mobile",
+   "operatingSystem": "Android",
+   "sessions": 5.0,
+   "userEngagementDuration": 136.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Direct",
+   "deviceCategory": "mobile",
+   "operatingSystem": "Android",
+   "sessions": 4.0,
+   "userEngagementDuration": 17.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Organic Social",
+   "deviceCategory": "mobile",
+   "operatingSystem": "iOS",
+   "sessions": 4.0,
+   "userEngagementDuration": 69.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Organic Search",
+   "deviceCategory": "mobile",
+   "operatingSystem": "iOS",
+   "sessions": 3.0,
+   "userEngagementDuration": 36.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Direct",
+   "deviceCategory": "mobile",
+   "operatingSystem": "Windows",
+   "sessions": 2.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Direct",
+   "deviceCategory": "desktop",
+   "operatingSystem": "Macintosh",
+   "sessions": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Organic Search",
+   "deviceCategory": "desktop",
+   "operatingSystem": "Macintosh",
+   "sessions": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Organic Search",
+   "deviceCategory": "desktop",
+   "operatingSystem": "Windows",
+   "sessions": 1.0,
+   "userEngagementDuration": 5.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Referral",
+   "deviceCategory": "desktop",
+   "operatingSystem": "Windows",
+   "sessions": 1.0,
+   "userEngagementDuration": 2.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Unassigned",
+   "deviceCategory": "desktop",
+   "operatingSystem": "Windows",
+   "sessions": 1.0,
+   "userEngagementDuration": 0.0
   }
  ],
  "search_queries": [
