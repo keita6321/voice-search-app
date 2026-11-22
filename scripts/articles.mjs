@@ -171,8 +171,10 @@ function rankRows(items, value) {
   });
 }
 
+// ctx.upcoming が true のときは来期版（/next/ranking/）。キャストが発表されている作品だけで数える
 export function rankingPage(ctx) {
   const { data, seasonLabel } = ctx;
+  const upcoming = Boolean(ctx.upcoming);
   const actors = data.voice_actors
     .map(actor => ({ actor, count: new Set(actor.roles.map(role => role.work_id)).size }))
     .sort((a, b) => b.count - a.count || a.actor.reading.localeCompare(b.actor.reading, 'ja'));
@@ -180,7 +182,7 @@ export function rankingPage(ctx) {
   const multi = actors.filter(a => a.count >= 2).length;
   const three = actors.filter(a => a.count >= 3).length;
   const average = (actors.reduce((sum, a) => sum + a.count, 0) / total).toFixed(2);
-  const threshold = 5;
+  const threshold = upcoming ? 3 : 5;
   const ranked = rankRows(actors.filter(a => a.count >= threshold), a => a.count);
   const top = ranked[0]?.item;
   const workTitle = id => data.works[id]?.title ?? '';
@@ -190,17 +192,21 @@ export function rankingPage(ctx) {
     const SHOWN_WORKS = rank <= 3 ? 4 : 3;
     const seen = new Set();
     const ids = actor.roles.filter(role => !seen.has(role.work_id) && seen.add(role.work_id)).map(role => role.work_id);
-    const links = ids.slice(0, SHOWN_WORKS).map(id => `<a href="/work/${esc(id)}/" data-ga-event="ranking_click" data-ga-actor-id="${esc(actor.actor_id)}" data-ga-position="${index + 1}" data-ga-page-type="ranking_work">${esc(workTitle(id))}</a>`);
+    const links = ids.slice(0, SHOWN_WORKS).map(id => `<a href="/work/${esc(id)}/" data-ga-event="ranking_click" data-ga-actor-id="${esc(actor.actor_id)}" data-ga-position="${index + 1}" data-ga-page-type="${upcoming ? 'next_ranking_work' : 'ranking_work'}">${esc(workTitle(id))}</a>`);
     // 名前のリンクはカード全体に広げる（作品名のリンクだけは作品ページへ）
-    return `<li class="r${rank}"><span class="rk-no">${rank}<small>位</small></span><a class="rk-name" href="/va/${toPageId(actor.actor_id)}/" data-ga-event="ranking_click" data-ga-actor-id="${esc(actor.actor_id)}" data-ga-position="${index + 1}" data-ga-page-type="ranking">${esc(actor.name)}</a><span class="rk-works">${links.join('、')}${ids.length > SHOWN_WORKS ? ` ほか${ids.length - SHOWN_WORKS}作品` : ''}</span><span class="rk-n">${count}作品 ›</span></li>`;
+    return `<li class="r${rank}"><span class="rk-no">${rank}<small>位</small></span><a class="rk-name" href="/va/${toPageId(actor.actor_id)}/" data-ga-event="ranking_click" data-ga-actor-id="${esc(actor.actor_id)}" data-ga-position="${index + 1}" data-ga-page-type="${upcoming ? 'next_ranking' : 'ranking'}">${esc(actor.name)}</a><span class="rk-works">${links.join('、')}${ids.length > SHOWN_WORKS ? ` ほか${ids.length - SHOWN_WORKS}作品` : ''}</span><span class="rk-n">${count}作品 ›</span></li>`;
   };
   const topRows = ranked.filter(r => r.rank <= 3);
   const restRows = ranked.filter(r => r.rank > 3);
 
   const title = `${seasonLabel}の声優 出演本数ランキング`;
-  const description = `${seasonLabel}のテレビアニメに出演している声優${total}名を、出演作品数で集計したランキングです。${top ? `1位は${top.actor.name}さん（${top.count}作品）。` : ''}出演作と役名、配信サービスも確認できます。`;
+  const description = upcoming
+    ? `${seasonLabel}のテレビアニメに出演が決まっている声優${total}名を、出演作品数で集計したランキングです。${top ? `いま1位は${top.actor.name}さん（${top.count}作品）。` : ''}出演作と役名、放送日も確認できます。`
+    : `${seasonLabel}のテレビアニメに出演している声優${total}名を、出演作品数で集計したランキングです。${top ? `1位は${top.actor.name}さん（${top.count}作品）。` : ''}出演作と役名、配信サービスも確認できます。`;
   const body = `<h1>${esc(title)}</h1>
-<p class="lead">今期いちばん多くの作品に出ている声優は？ ${esc(seasonLabel)}の出演作品数で並べました。カードを押すと声優の出演作と配信先、作品名を押すと作品ページを見られます。</p>
+<p class="lead">${upcoming
+    ? `${esc(seasonLabel)}にいちばん多く出る声優は？ キャストが発表されている作品で、出演作品数を数えました。キャストの発表が続いているので、順位は変わることがあります。カードを押すと声優の出演作、作品名を押すと作品ページを見られます。`
+    : `今期いちばん多くの作品に出ている声優は？ ${esc(seasonLabel)}の出演作品数で並べました。カードを押すと声優の出演作と配信先、作品名を押すと作品ページを見られます。`}</p>
 <ol class="rk top">
 ${topRows.map((r, i) => card(r, i)).join('\n')}
 </ol>
@@ -208,11 +214,12 @@ ${restRows.length ? `<h2>${restRows[0].rank}位から（${threshold}作品以上
 <ol class="rk">
 ${restRows.map((r, i) => card(r, topRows.length + i)).join('\n')}
 </ol>` : ''}
+${!upcoming && ctx.nextLabel ? `<p><a class="cta" href="/next/ranking/">${esc(ctx.nextLabel)}の出演本数ランキングを見る ›</a></p>` : ''}${upcoming ? `<p><a class="cta" href="/next/">${esc(seasonLabel)}の放送日とキャスト一覧へ ›</a></p>` : ''}
 
 <h2>集計について</h2>
-<p class="note">掲載している${esc(seasonLabel)}のテレビアニメ${Object.keys(data.works).length}作品のキャストから、声優ごとの出演作品数を数えました。掲載している声優は${total}名で、2作品以上に出ているのは${multi}名（${Math.round((multi / total) * 100)}%）、3作品以上は${three}名、1人あたりの平均は${average}作品です。同じ作品で複数の役を演じている場合は1作品として数えています。</p>
+<p class="note">掲載している${esc(seasonLabel)}のテレビアニメ${Object.keys(data.works).length}作品${upcoming ? '（キャスト発表前の作品を含む）' : ''}のキャストから、声優ごとの出演作品数を数えました。掲載している声優は${total}名で、2作品以上に出ているのは${multi}名（${Math.round((multi / total) * 100)}%）、3作品以上は${three}名、1人あたりの平均は${average}作品です。同じ作品で複数の役を演じている場合は1作品として数えています。</p>
 <p class="note">作品とキャストの情報は、アニメ作品データベース「Annict」のAPIをもとにしています（最終更新：${esc(data.updated_at.slice(0, 10))}）。放送開始後にキャストが追加される作品もあるため、数は変わることがあります。</p>`;
-  return page({ ...ctx, path: '/ranking/', title, description, body });
+  return page({ ...ctx, path: upcoming ? '/next/ranking/' : '/ranking/', title, description, body });
 }
 
 // 少ないサービス数で、どれだけの作品をカバーできるか（貪欲法）
@@ -736,6 +743,7 @@ export function nextIndexPage(ctx, next, castLog = null) {
     .sort((x, y) => y.n - x.n || x.actor.reading.localeCompare(y.actor.reading, 'ja'))
     .slice(0, 8);
   const busyHtml = busy.length ? `<h2>来期の出演が多い声優</h2>
+<p class="note"><a href="/next/ranking/">${esc(nextLabel)}の声優 出演本数ランキングを見る ›</a></p>
 <div class="chips-va">${busy.map(({ actor, n }, i) => `<a href="/va/${toPageId(actor.actor_id)}/" data-ga-event="ranking_click" data-ga-actor-id="${esc(actor.actor_id)}" data-ga-position="${i + 1}" data-ga-page-type="next_busy">${esc(actor.name)}<em>${n}作品</em></a>`).join('')}</div>` : '';
   const item = ([id, work]) => {
     const cast = byWork.get(id) ?? [];

@@ -482,11 +482,11 @@ try {
 } catch (error) {
   if (error.code !== 'ENOENT') throw error;
 }
-const articleContext = { data, notes, past: pastWorksOf, prevSeasons, thumbnailOverrides, seasonLabel: label, seasonLabelOf: seasonLabel, origin, ogImage, aboutHtml, partnerLinks, partnerServices };
+const articleContext = { data, notes, past: pastWorksOf, prevSeasons, thumbnailOverrides, seasonLabel: label, seasonLabelOf: seasonLabel, nextLabel: next ? seasonLabel(next.season) : '', origin, ogImage, aboutHtml, partnerLinks, partnerServices };
 // X 運用ツール（オーナー専用。noindex、サイトマップにも入れない）
 await mkdir(path.join(root, 'tools', 'x'), { recursive: true });
 await writeFile(path.join(root, 'tools', 'x', 'index.html'), xToolsPage({ data, next, castLog, origin, past: pastWorksOf, seasonLabel: label, nextLabel: next ? seasonLabel(next.season) : '' }));
-for (const [dir, html] of [['ranking', rankingPage(articleContext)], ['vod', vodPage(articleContext)], ['work', workIndexPage(articleContext)], ['next', nextIndexPage(articleContext, next, castLog)], ['costar', costarPairsPage(articleContext)], ['sequel', sequelGuidePage(articleContext, next)]]) {
+for (const [dir, html] of [['ranking', rankingPage(articleContext)], ['vod', vodPage(articleContext)], ['work', workIndexPage(articleContext)], ['next', nextIndexPage(articleContext, next, castLog)], ...(next ? [['next/ranking', rankingPage({ ...articleContext, data: next, seasonLabel: seasonLabel(next.season), upcoming: true })]] : []), ['costar', costarPairsPage(articleContext)], ['sequel', sequelGuidePage(articleContext, next)]]) {
   await mkdir(path.join(root, dir), { recursive: true });
   await writeFile(path.join(root, dir, 'index.html'), html);
 }
@@ -517,7 +517,7 @@ for (const { id, html } of works) {
 const indexedWorkUrls = works.filter(w => w.indexed).map(w => `${origin}/work/${w.id}/`);
 
 const sitemapDate = new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Tokyo' });
-const sitemapUrls = [`${origin}/`, `${origin}/ranking/`, `${origin}/vod/`, `${origin}/work/`, ...(next ? [`${origin}/next/`] : []), `${origin}/costar/`, `${origin}/sequel/`, ...seasonUrls, ...indexedWorkUrls, `${origin}/about/`, `${origin}/privacy/`, ...[...actors, ...nextOnlyActors].map(({ pageId }) => `${origin}/va/${pageId}/`)];
+const sitemapUrls = [`${origin}/`, `${origin}/ranking/`, `${origin}/vod/`, `${origin}/work/`, ...(next ? [`${origin}/next/`, `${origin}/next/ranking/`] : []), `${origin}/costar/`, `${origin}/sequel/`, ...seasonUrls, ...indexedWorkUrls, `${origin}/about/`, `${origin}/privacy/`, ...[...actors, ...nextOnlyActors].map(({ pageId }) => `${origin}/va/${pageId}/`)];
 // lastmod は、中身が変わったページだけ進める（毎回すべて今日にすると、Google が lastmod を当てにしなくなる）。
 // ページごとの中身のハッシュと更新日を data/sitemap-state.json に残す。日付や「あと○日」など毎回変わる部分は除いて比べる。
 const statePath = path.join(root, 'data', 'sitemap-state.json');
