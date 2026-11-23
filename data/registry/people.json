@@ -130,7 +130,7 @@
       ],
       "first_seen": "2026-autumn",
       "last_seen": "2026-autumn",
-      "status": "active",
+      "status": "inactive",
       "redirect_to": null
     },
     "va0012": {
@@ -944,7 +944,7 @@
       ],
       "first_seen": "2026-autumn",
       "last_seen": "2026-autumn",
-      "status": "active",
+      "status": "inactive",
       "redirect_to": null
     },
     "va0080": {
@@ -2300,7 +2300,7 @@
       ],
       "first_seen": "2026-autumn",
       "last_seen": "2026-autumn",
-      "status": "active",
+      "status": "inactive",
       "redirect_to": null
     },
     "va0193": {
@@ -8213,8 +8213,8 @@
         13
       ],
       "first_seen": "2027-winter",
-      "last_seen": "2027-winter",
-      "status": "upcoming",
+      "last_seen": "2026-autumn",
+      "status": "active",
       "redirect_to": null
     },
     "va0688": {
@@ -9295,6 +9295,282 @@
       "first_seen": "2026-autumn",
       "last_seen": "2026-autumn",
       "status": "active",
+      "redirect_to": null
+    },
+    "va0778": {
+      "name": "Mozu",
+      "kana": "",
+      "aliases": [],
+      "annict_person_ids": [
+        31113
+      ],
+      "first_seen": "2026-autumn",
+      "last_seen": "2026-autumn",
+      "status": "active",
+      "redirect_to": null
+    },
+    "va0779": {
+      "name": "小田杏樹",
+      "kana": "おだあんじゅ",
+      "aliases": [],
+      "annict_person_ids": [
+        31145
+      ],
+      "first_seen": "2026-autumn",
+      "last_seen": "2026-autumn",
+      "status": "active",
+      "redirect_to": null
+    },
+    "va0780": {
+      "name": "柿原徹也",
+      "kana": "かきはらてつや",
+      "aliases": [],
+      "annict_person_ids": [
+        32
+      ],
+      "first_seen": "2026-autumn",
+      "last_seen": "2026-autumn",
+      "status": "active",
+      "redirect_to": null
+    },
+    "va0781": {
+      "name": "水田わさび",
+      "kana": "すいでんわさび",
+      "aliases": [],
+      "annict_person_ids": [
+        576
+      ],
+      "first_seen": "2026-autumn",
+      "last_seen": "2026-autumn",
+      "status": "active",
+      "redirect_to": null
+    },
+    "va0782": {
+      "name": "夏目妃菜",
+      "kana": "なつめひな",
+      "aliases": [],
+      "annict_person_ids": [
+        25090
+      ],
+      "first_seen": "2026-autumn",
+      "last_seen": "2026-autumn",
+      "status": "active",
+      "redirect_to": null
+    },
+    "va0783": {
+      "name": "原奈津子",
+      "kana": "はらなつこ",
+      "aliases": [],
+      "annict_person_ids": [
+        17980
+      ],
+      "first_seen": "2026-autumn",
+      "last_seen": "2026-autumn",
+      "status": "active",
+      "redirect_to": null
+    },
+    "va0784": {
+      "name": "前島亜美",
+      "kana": "まえしまあみ",
+      "aliases": [],
+      "annict_person_ids": [
+        23007
+      ],
+      "first_seen": "2026-autumn",
+      "last_seen": "2026-autumn",
+      "status": "active",
+      "redirect_to": null
+    },
+    "va0785": {
+      "name": "真名瀬日和",
+      "kana": "まなせひより",
+      "aliases": [],
+      "annict_person_ids": [
+        28172
+      ],
+      "first_seen": "2026-autumn",
+      "last_seen": "2026-autumn",
+      "status": "active",
+      "redirect_to": null
+    },
+    "va0786": {
+      "name": "牛田裕子",
+      "kana": "うしだひろこ",
+      "aliases": [],
+      "annict_person_ids": [
+        3470
+      ],
+      "first_seen": "2027-winter",
+      "last_seen": "2027-winter",
+      "status": "upcoming",
+      "redirect_to": null
+    },
+    "va0787": {
+      "name": "内田夕夜",
+      "kana": "うちだゆうや",
+      "aliases": [],
+      "annict_person_ids": [
+        774
+      ],
+      "first_seen": "2027-winter",
+      "last_seen": "2027-winter",
+      "status": "upcoming",
+      "redirect_to": null
+    },
+    "va0788": {
+      "name": "榎本奈々",
+      "kana": "えのもとなな",
+      "aliases": [],
+      "annict_person_ids": [
+        31106
+      ],
+      "first_seen": "2027-winter",
+      "last_seen": "2027-winter",
+      "status": "upcoming",
+      "redirect_to": null
+    },
+    "va0789": {
+      "name": "緒方恵美",
+      "kana": "おがためぐみ",
+      "aliases": [],
+      "annict_person_ids": [
+        1178
+      ],
+      "first_seen": "2027-winter",
+      "last_seen": "2027-winter",
+      "status": "upcoming",
+      "redirect_to": null
+    },
+    "va0790": {
+      "name": "魚建",
+      "kana": "さかなけん",
+      "aliases": [],
+      "annict_person_ids": [
+        2597
+      ],
+      "first_seen": "2027-winter",
+      "last_seen": "2027-winter",
+      "status": "upcoming",
+      "redirect_to": null
+    },
+    "va0791": {
+      "name": "内匠靖明",
+      "kana": "たくみやすあき",
+      "aliases": [],
+      "annict_person_ids": [
+        5263
+      ],
+      "first_seen": "2027-winter",
+      "last_seen": "2027-winter",
+      "status": "upcoming",
+      "redirect_to": null
+    },
+    "va0792": {
+      "name": "津田里穂",
+      "kana": "つだりほ",
+      "aliases": [],
+      "annict_person_ids": [
+        26325
+      ],
+      "first_seen": "2027-winter",
+      "last_seen": "2027-winter",
+      "status": "upcoming",
+      "redirect_to": null
+    },
+    "va0793": {
+      "name": "照井春佳",
+      "kana": "てるいはるか",
+      "aliases": [],
+      "annict_person_ids": [
+        758
+      ],
+      "first_seen": "2027-winter",
+      "last_seen": "2027-winter",
+      "status": "upcoming",
+      "redirect_to": null
+    },
+    "va0794": {
+      "name": "中井和哉",
+      "kana": "なかいかずや",
+      "aliases": [],
+      "annict_person_ids": [
+        176
+      ],
+      "first_seen": "2027-winter",
+      "last_seen": "2027-winter",
+      "status": "upcoming",
+      "redirect_to": null
+    },
+    "va0795": {
+      "name": "廣田行生",
+      "kana": "ひろたゆきお",
+      "aliases": [],
+      "annict_person_ids": [
+        2991
+      ],
+      "first_seen": "2027-winter",
+      "last_seen": "2027-winter",
+      "status": "upcoming",
+      "redirect_to": null
+    },
+    "va0796": {
+      "name": "藤田茜",
+      "kana": "ふじたあかね",
+      "aliases": [],
+      "annict_person_ids": [
+        761
+      ],
+      "first_seen": "2027-winter",
+      "last_seen": "2027-winter",
+      "status": "upcoming",
+      "redirect_to": null
+    },
+    "va0797": {
+      "name": "古澤融",
+      "kana": "ふるさわとおる",
+      "aliases": [],
+      "annict_person_ids": [
+        31137
+      ],
+      "first_seen": "2027-winter",
+      "last_seen": "2027-winter",
+      "status": "upcoming",
+      "redirect_to": null
+    },
+    "va0798": {
+      "name": "堀内賢雄",
+      "kana": "ほりうちけんゆう",
+      "aliases": [],
+      "annict_person_ids": [
+        1024
+      ],
+      "first_seen": "2027-winter",
+      "last_seen": "2027-winter",
+      "status": "upcoming",
+      "redirect_to": null
+    },
+    "va0799": {
+      "name": "八百屋杏",
+      "kana": "やおやあんず",
+      "aliases": [],
+      "annict_person_ids": [
+        21789
+      ],
+      "first_seen": "2027-winter",
+      "last_seen": "2027-winter",
+      "status": "upcoming",
+      "redirect_to": null
+    },
+    "va0800": {
+      "name": "山内健嗣",
+      "kana": "やまうちたけつぐ",
+      "aliases": [],
+      "annict_person_ids": [
+        6919
+      ],
+      "first_seen": "2027-winter",
+      "last_seen": "2027-winter",
+      "status": "upcoming",
       "redirect_to": null
     }
   }

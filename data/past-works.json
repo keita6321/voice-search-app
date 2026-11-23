@@ -38409,6 +38409,994 @@
      "year": 2018
     }
    ]
+  },
+  "va0778": {
+   "anilist_id": null,
+   "fetched": "2026-11-23",
+   "name": "Mozu",
+   "works": []
+  },
+  "va0779": {
+   "anilist_id": 395643,
+   "fetched": "2026-11-23",
+   "name": "小田杏樹",
+   "works": []
+  },
+  "va0780": {
+   "anilist_id": 95167,
+   "fetched": "2026-11-23",
+   "name": "柿原徹也",
+   "works": [
+    {
+     "anilist_id": 2001,
+     "character": "シモン",
+     "format": "TV",
+     "title": "天元突破グレンラガン",
+     "year": 2007
+    },
+    {
+     "anilist_id": 6702,
+     "character": "ナツ・ドラグニル",
+     "format": "TV",
+     "title": "FAIRY TAIL",
+     "year": 2009
+    },
+    {
+     "anilist_id": 5114,
+     "character": "ケイン・フュリー",
+     "format": "TV",
+     "title": "鋼の錬金術師 FULLMETAL ALCHEMIST",
+     "year": 2009
+    },
+    {
+     "anilist_id": 269,
+     "character": "Shinji",
+     "format": "TV",
+     "title": "BLEACH",
+     "year": 2004
+    },
+    {
+     "anilist_id": 104647,
+     "character": "キース・クラエス",
+     "format": "TV",
+     "title": "乙女ゲームの破滅フラグしかない悪役令嬢に転生してしまった…",
+     "year": 2020
+    },
+    {
+     "anilist_id": 9919,
+     "character": "アマイモン",
+     "format": "TV",
+     "title": "青の祓魔師",
+     "year": 2011
+    },
+    {
+     "anilist_id": 176496,
+     "character": "Kei",
+     "format": "TV",
+     "title": "俺だけレベルアップな件 Season 2 -Arise from the Shadow-",
+     "year": 2025
+    },
+    {
+     "anilist_id": 7054,
+     "character": "荒嶽剛毅",
+     "format": "TV",
+     "title": "会長はメイド様!",
+     "year": 2010
+    }
+   ]
+  },
+  "va0781": {
+   "anilist_id": 101567,
+   "fetched": "2026-11-23",
+   "name": "水田わさび",
+   "works": [
+    {
+     "anilist_id": 21,
+     "character": "シャーロット・アマンド",
+     "format": "TV",
+     "title": "ONE PIECE",
+     "year": 1999
+    },
+    {
+     "anilist_id": 4155,
+     "character": "シャオ",
+     "format": "MOVIE",
+     "title": "ONE PIECE FILM STRONG WORLD",
+     "year": 2009
+    },
+    {
+     "anilist_id": 3701,
+     "character": "ひょーひょー",
+     "format": "TV",
+     "title": "カイバ",
+     "year": 2008
+    },
+    {
+     "anilist_id": 20515,
+     "character": "ドラえもん",
+     "format": "MOVIE",
+     "title": "STAND BY ME ドラえもん",
+     "year": 2014
+    },
+    {
+     "anilist_id": 1827,
+     "character": "コヒョイ",
+     "format": "TV",
+     "title": "精霊の守り人",
+     "year": 2007
+    },
+    {
+     "anilist_id": 14751,
+     "character": "ペッツ",
+     "format": "ONA",
+     "title": "美少女戦士セーラームーンCrystal",
+     "year": 2014
+    },
+    {
+     "anilist_id": 9107,
+     "character": "キクヨ",
+     "format": "TV",
+     "title": "ポケットモンスターベストウイッシュ",
+     "year": 2010
+    },
+    {
+     "anilist_id": 250,
+     "character": "マジロウ",
+     "format": "TV",
+     "title": "金色のガッシュベル!!",
+     "year": 2003
+    }
+   ]
+  },
+  "va0782": {
+   "anilist_id": 259585,
+   "fetched": "2026-11-23",
+   "name": "夏目妃菜",
+   "works": [
+    {
+     "anilist_id": 126659,
+     "character": "ソウルララ",
+     "format": "MOVIE",
+     "title": "僕のヒーローアカデミア THE MOVIE ワールド ヒーローズ ミッション",
+     "year": 2021
+    },
+    {
+     "anilist_id": 185736,
+     "character": "とっとこシスターズ",
+     "format": "TV",
+     "title": "ヴィジランテ -僕のヒーローアカデミア ILLEGALS-",
+     "year": 2025
+    },
+    {
+     "anilist_id": 187260,
+     "character": "女子Ｃ",
+     "format": "TV",
+     "title": "きみが死ぬまで恋をしたい",
+     "year": 2026
+    },
+    {
+     "anilist_id": 177509,
+     "character": "まみみ",
+     "format": "TV_SHORT",
+     "title": "かくして！ マキナさん!!",
+     "year": 2025
+    },
+    {
+     "anilist_id": 158871,
+     "character": "ボッコ",
+     "format": "TV",
+     "title": "ポケットモンスター (2023)",
+     "year": 2023
+    },
+    {
+     "anilist_id": 138699,
+     "character": "ハルカ",
+     "format": "ONA",
+     "title": "Pokémon Evolutions",
+     "year": 2021
+    },
+    {
+     "anilist_id": 156896,
+     "character": "サラ",
+     "format": "TV",
+     "title": "絆のアリル",
+     "year": 2023
+    }
+   ]
+  },
+  "va0783": {
+   "anilist_id": 120401,
+   "fetched": "2026-11-23",
+   "name": "原奈津子",
+   "works": [
+    {
+     "anilist_id": 111321,
+     "character": "リーシア＝アイヴィレッド",
+     "format": "TV",
+     "title": "盾の勇者の成り上がり Season 2",
+     "year": 2022
+    },
+    {
+     "anilist_id": 107067,
+     "character": "奏言葉",
+     "format": "ONA",
+     "title": "理系が恋に落ちたので証明してみた。",
+     "year": 2020
+    },
+    {
+     "anilist_id": 97986,
+     "character": "Ilim",
+     "format": "TV",
+     "title": "メイドインアビス",
+     "year": 2017
+    },
+    {
+     "anilist_id": 125124,
+     "character": "奏言葉",
+     "format": "TV",
+     "title": "理系が恋に落ちたので証明してみた。r=1-sinθ（ハート）",
+     "year": 2022
+    },
+    {
+     "anilist_id": 97863,
+     "character": "上坂歩美",
+     "format": "TV",
+     "title": "はじめてのギャル",
+     "year": 2017
+    },
+    {
+     "anilist_id": 105932,
+     "character": "竹山祐子",
+     "format": "TV",
+     "title": "荒ぶる季節の乙女どもよ。",
+     "year": 2019
+    },
+    {
+     "anilist_id": 100714,
+     "character": "橘芽依",
+     "format": "TV",
+     "title": "邪神ちゃんドロップキック",
+     "year": 2018
+    },
+    {
+     "anilist_id": 169927,
+     "character": "葵",
+     "format": "TV",
+     "title": "ワンルーム、日当たり普通、天使つき。",
+     "year": 2024
+    }
+   ]
+  },
+  "va0784": {
+   "anilist_id": 128161,
+   "fetched": "2026-11-23",
+   "name": "前島亜美",
+   "works": [
+    {
+     "anilist_id": 133965,
+     "character": "矢田野まける",
+     "format": "TV",
+     "title": "古見さんは、コミュ症です。",
+     "year": 2021
+    },
+    {
+     "anilist_id": 110354,
+     "character": "ニナ・フリップ",
+     "format": "ONA",
+     "title": "BNA ビー・エヌ・エー",
+     "year": 2020
+    },
+    {
+     "anilist_id": 180746,
+     "character": "亜門",
+     "format": "TV",
+     "title": "死亡遊戯で飯を食う。",
+     "year": 2026
+    },
+    {
+     "anilist_id": 201514,
+     "character": "旭可憐",
+     "format": "TV",
+     "title": "才女のお世話 高嶺の花だらけな名門校で、学院一のお嬢様(生活能力皆無)を陰ながらお世話することになりました",
+     "year": 2026
+    },
+    {
+     "anilist_id": 101632,
+     "character": "丸山彩",
+     "format": "TV_SHORT",
+     "title": "BanG Dream! ガルパ☆ピコ",
+     "year": 2018
+    },
+    {
+     "anilist_id": 185575,
+     "character": "堀田美緒",
+     "format": "TV",
+     "title": "不器用な先輩。",
+     "year": 2025
+    },
+    {
+     "anilist_id": 170113,
+     "character": "カレン",
+     "format": "ONA",
+     "title": "公女殿下の家庭教師",
+     "year": 2025
+    },
+    {
+     "anilist_id": 115069,
+     "character": "新島衣舞紀",
+     "format": "TV",
+     "title": "D4DJ First Mix",
+     "year": 2020
+    }
+   ]
+  },
+  "va0785": {
+   "anilist_id": 363782,
+   "fetched": "2026-11-23",
+   "name": "真名瀬日和",
+   "works": [
+    {
+     "anilist_id": 191689,
+     "character": "クロノジェネシス",
+     "format": "ONA",
+     "title": "うまゆる ぷりてぃ～ぐれい",
+     "year": 2025
+    }
+   ]
+  },
+  "va0786": {
+   "anilist_id": null,
+   "fetched": "2026-11-23",
+   "name": "牛田裕子",
+   "works": []
+  },
+  "va0787": {
+   "anilist_id": 96637,
+   "fetched": "2026-11-23",
+   "name": "内田夕夜",
+   "works": [
+    {
+     "anilist_id": 21,
+     "character": "シャーロット・ペロスペロー",
+     "format": "TV",
+     "title": "ONE PIECE",
+     "year": 1999
+    },
+    {
+     "anilist_id": 20605,
+     "character": "霧嶋新",
+     "format": "TV",
+     "title": "東京喰種 トーキョーグール",
+     "year": 2014
+    },
+    {
+     "anilist_id": 127230,
+     "character": "暴力の魔人",
+     "format": "TV",
+     "title": "チェンソーマン",
+     "year": 2022
+    },
+    {
+     "anilist_id": 1735,
+     "character": "麟児",
+     "format": "TV",
+     "title": "NARUTO -ナルト- 疾風伝",
+     "year": 2007
+    },
+    {
+     "anilist_id": 20789,
+     "character": "ヘンドリクセン",
+     "format": "TV",
+     "title": "七つの大罪",
+     "year": 2014
+    },
+    {
+     "anilist_id": 154587,
+     "character": "オルデン",
+     "format": "TV",
+     "title": "葬送のフリーレン",
+     "year": 2023
+    },
+    {
+     "anilist_id": 3588,
+     "character": "フランケン・シュタイン",
+     "format": "TV",
+     "title": "ソウルイーター",
+     "year": 2008
+    },
+    {
+     "anilist_id": 6702,
+     "character": "サミュエル",
+     "format": "TV",
+     "title": "FAIRY TAIL",
+     "year": 2009
+    }
+   ]
+  },
+  "va0788": {
+   "anilist_id": 386847,
+   "fetched": "2026-11-23",
+   "name": "榎本奈々",
+   "works": []
+  },
+  "va0789": {
+   "anilist_id": 95287,
+   "fetched": "2026-11-23",
+   "name": "緒方恵美",
+   "works": [
+    {
+     "anilist_id": 30,
+     "character": "碇シンジ",
+     "format": "TV",
+     "title": "新世紀エヴァンゲリオン",
+     "year": 1995
+    },
+    {
+     "anilist_id": 6547,
+     "character": "直井文人",
+     "format": "TV",
+     "title": "Angel Beats!",
+     "year": 2010
+    },
+    {
+     "anilist_id": 131573,
+     "character": "乙骨憂太",
+     "format": "MOVIE",
+     "title": "呪術廻戦 0",
+     "year": 2021
+    },
+    {
+     "anilist_id": 32,
+     "character": "碇シンジ",
+     "format": "MOVIE",
+     "title": "新世紀エヴァンゲリオン劇場版 Air/まごころを、君に",
+     "year": 1997
+    },
+    {
+     "anilist_id": 108463,
+     "character": "花子",
+     "format": "TV",
+     "title": "地縛少年 花子くん",
+     "year": 2020
+    },
+    {
+     "anilist_id": 16592,
+     "character": "苗木誠",
+     "format": "TV",
+     "title": "ダンガンロンパ 希望の学園と絶望の高校生 The Animation",
+     "year": 2013
+    },
+    {
+     "anilist_id": 20755,
+     "character": "堀部イトナ",
+     "format": "TV",
+     "title": "暗殺教室",
+     "year": 2015
+    },
+    {
+     "anilist_id": 116566,
+     "character": "医者",
+     "format": "TV",
+     "title": "アクダマドライブ",
+     "year": 2020
+    }
+   ]
+  },
+  "va0790": {
+   "anilist_id": null,
+   "fetched": "2026-11-23",
+   "name": "魚建",
+   "works": []
+  },
+  "va0791": {
+   "anilist_id": 106510,
+   "fetched": "2026-11-23",
+   "name": "内匠靖明",
+   "works": [
+    {
+     "anilist_id": 20872,
+     "character": "水柿ツカサ",
+     "format": "TV",
+     "title": "プラスティックメモリーズ",
+     "year": 2015
+    },
+    {
+     "anilist_id": 105333,
+     "character": "アルゴ",
+     "format": "TV",
+     "title": "Dr.STONE",
+     "year": 2019
+    },
+    {
+     "anilist_id": 101280,
+     "character": "カリオン",
+     "format": "TV",
+     "title": "転生したらスライムだった件",
+     "year": 2018
+    },
+    {
+     "anilist_id": 97668,
+     "character": "業火のフレイム",
+     "format": "TV",
+     "title": "ワンパンマン 2",
+     "year": 2019
+    },
+    {
+     "anilist_id": 20997,
+     "character": "権藤",
+     "format": "TV",
+     "title": "Charlotte(シャーロット)",
+     "year": 2015
+    },
+    {
+     "anilist_id": 20992,
+     "character": "古牧譲",
+     "format": "TV",
+     "title": "ハイキュー!! セカンドシーズン",
+     "year": 2015
+    },
+    {
+     "anilist_id": 11617,
+     "character": "松田",
+     "format": "TV",
+     "title": "ハイスクールDxD",
+     "year": 2012
+    },
+    {
+     "anilist_id": 101165,
+     "character": "戦士",
+     "format": "TV",
+     "title": "ゴブリンスレイヤー",
+     "year": 2018
+    }
+   ]
+  },
+  "va0792": {
+   "anilist_id": 376043,
+   "fetched": "2026-11-23",
+   "name": "津田里穂",
+   "works": [
+    {
+     "anilist_id": 197824,
+     "character": "ロザリンド",
+     "format": "TV",
+     "title": "異世界のんびり農家２",
+     "year": 2026
+    }
+   ]
+  },
+  "va0793": {
+   "anilist_id": 109161,
+   "fetched": "2026-11-23",
+   "name": "照井春佳",
+   "works": [
+    {
+     "anilist_id": 21,
+     "character": "くまの母",
+     "format": "TV",
+     "title": "ONE PIECE",
+     "year": 1999
+    },
+    {
+     "anilist_id": 21428,
+     "character": "シホル",
+     "format": "TV",
+     "title": "灰と幻想のグリムガル",
+     "year": 2016
+    },
+    {
+     "anilist_id": 20464,
+     "character": "氏家愛花",
+     "format": "TV",
+     "title": "ハイキュー!!",
+     "year": 2014
+    },
+    {
+     "anilist_id": 154587,
+     "character": "ゼンゼ",
+     "format": "TV",
+     "title": "葬送のフリーレン",
+     "year": 2023
+    },
+    {
+     "anilist_id": 20483,
+     "character": "夜ノ森小紅",
+     "format": "TV",
+     "title": "未確認で進行形",
+     "year": 2014
+    },
+    {
+     "anilist_id": 20800,
+     "character": "結城友奈",
+     "format": "TV",
+     "title": "結城友奈は勇者である",
+     "year": 2014
+    },
+    {
+     "anilist_id": 155907,
+     "character": "羽生杏奈",
+     "format": "TV",
+     "title": "Buddy Daddies",
+     "year": 2023
+    },
+    {
+     "anilist_id": 142769,
+     "character": "浜本先生",
+     "format": "MOVIE",
+     "title": "夏へのトンネル、さよならの出口",
+     "year": 2022
+    }
+   ]
+  },
+  "va0794": {
+   "anilist_id": 95123,
+   "fetched": "2026-11-23",
+   "name": "中井和哉",
+   "works": [
+    {
+     "anilist_id": 21,
+     "character": "ロロノア・ゾロ",
+     "format": "TV",
+     "title": "ONE PIECE",
+     "year": 1999
+    },
+    {
+     "anilist_id": 105310,
+     "character": "秋樽桜備",
+     "format": "TV",
+     "title": "炎炎ノ消防隊",
+     "year": 2019
+    },
+    {
+     "anilist_id": 1535,
+     "character": "模木完造",
+     "format": "TV",
+     "title": "DEATH NOTE",
+     "year": 2006
+    },
+    {
+     "anilist_id": 205,
+     "character": "無限",
+     "format": "TV",
+     "title": "サムライチャンプルー",
+     "year": 2004
+    },
+    {
+     "anilist_id": 16592,
+     "character": "大和田紋土",
+     "format": "TV",
+     "title": "ダンガンロンパ 希望の学園と絶望の高校生 The Animation",
+     "year": 2013
+    },
+    {
+     "anilist_id": 5114,
+     "character": "マイルズ",
+     "format": "TV",
+     "title": "鋼の錬金術師 FULLMETAL ALCHEMIST",
+     "year": 2009
+    },
+    {
+     "anilist_id": 1735,
+     "character": "フリド",
+     "format": "TV",
+     "title": "NARUTO -ナルト- 疾風伝",
+     "year": 2007
+    },
+    {
+     "anilist_id": 101280,
+     "character": "ラプラス",
+     "format": "TV",
+     "title": "転生したらスライムだった件",
+     "year": 2018
+    }
+   ]
+  },
+  "va0795": {
+   "anilist_id": 102321,
+   "fetched": "2026-11-23",
+   "name": "廣田行生",
+   "works": [
+    {
+     "anilist_id": 21,
+     "character": "ハック",
+     "format": "TV",
+     "title": "ONE PIECE",
+     "year": 1999
+    },
+    {
+     "anilist_id": 127230,
+     "character": "ヤクザ",
+     "format": "TV",
+     "title": "チェンソーマン",
+     "year": 2022
+    },
+    {
+     "anilist_id": 21827,
+     "character": "メルクーロフ",
+     "format": "TV",
+     "title": "ヴァイオレット・エヴァーガーデン",
+     "year": 2018
+    },
+    {
+     "anilist_id": 269,
+     "character": "大宇奈原厳呉郎",
+     "format": "TV",
+     "title": "BLEACH",
+     "year": 2004
+    },
+    {
+     "anilist_id": 1,
+     "character": "ウダイ",
+     "format": "TV",
+     "title": "カウボーイビバップ",
+     "year": 1998
+    },
+    {
+     "anilist_id": 18679,
+     "character": "黒井戸滝司",
+     "format": "TV",
+     "title": "キルラキル",
+     "year": 2013
+    },
+    {
+     "anilist_id": 147103,
+     "character": "鶴木義浪",
+     "format": "TV",
+     "title": "わたしの幸せな結婚",
+     "year": 2023
+    },
+    {
+     "anilist_id": 6675,
+     "character": "ロボワールド大統領",
+     "format": "MOVIE",
+     "title": "REDLINE",
+     "year": 2009
+    }
+   ]
+  },
+  "va0796": {
+   "anilist_id": 116155,
+   "fetched": "2026-11-23",
+   "name": "藤田茜",
+   "works": [
+    {
+     "anilist_id": 21700,
+     "character": "システィーナ フィーベル",
+     "format": "TV",
+     "title": "ロクでなし魔術講師と禁忌教典(アカシックレコード)",
+     "year": 2017
+    },
+    {
+     "anilist_id": 21685,
+     "character": "和泉紗霧",
+     "format": "TV",
+     "title": "エロマンガ先生",
+     "year": 2017
+    },
+    {
+     "anilist_id": 126546,
+     "character": "セリア・クレール",
+     "format": "TV",
+     "title": "精霊幻想記",
+     "year": 2021
+    },
+    {
+     "anilist_id": 20931,
+     "character": "島田紗英",
+     "format": "TV",
+     "title": "デス・パレード",
+     "year": 2015
+    },
+    {
+     "anilist_id": 20992,
+     "character": "中島真",
+     "format": "TV",
+     "title": "ハイキュー!! セカンドシーズン",
+     "year": 2015
+    },
+    {
+     "anilist_id": 152523,
+     "character": "マリーカ",
+     "format": "TV",
+     "title": "解雇された暗黒兵士（30代）のスローなセカンドライフ",
+     "year": 2023
+    },
+    {
+     "anilist_id": 20705,
+     "character": "レヴィアタン",
+     "format": "TV",
+     "title": "sin 七つの大罪",
+     "year": 2017
+    },
+    {
+     "anilist_id": 112443,
+     "character": "成田つぐみ",
+     "format": "TV",
+     "title": "弱キャラ友崎くん",
+     "year": 2021
+    }
+   ]
+  },
+  "va0797": {
+   "anilist_id": 411922,
+   "fetched": "2026-11-23",
+   "name": "古澤融",
+   "works": []
+  },
+  "va0798": {
+   "anilist_id": 95262,
+   "fetched": "2026-11-23",
+   "name": "堀内賢雄",
+   "works": [
+    {
+     "anilist_id": 11061,
+     "character": "ゴトー",
+     "format": "TV",
+     "title": "HUNTER×HUNTER (2011)",
+     "year": 2011
+    },
+    {
+     "anilist_id": 21,
+     "character": "錦えもん",
+     "format": "TV",
+     "title": "ONE PIECE",
+     "year": 1999
+    },
+    {
+     "anilist_id": 20,
+     "character": "千手扉間",
+     "format": "TV",
+     "title": "NARUTO -ナルト-",
+     "year": 2002
+    },
+    {
+     "anilist_id": 105228,
+     "character": "煙",
+     "format": "TV",
+     "title": "ドロヘドロ",
+     "year": 2020
+    },
+    {
+     "anilist_id": 21355,
+     "character": "ヴィルヘルム・ヴァン・アストレア",
+     "format": "TV",
+     "title": "Re:ゼロから始める異世界生活",
+     "year": 2016
+    },
+    {
+     "anilist_id": 97940,
+     "character": "ロータス・フーモルト",
+     "format": "TV",
+     "title": "ブラッククローバー",
+     "year": 2017
+    },
+    {
+     "anilist_id": 269,
+     "character": "あまがい体調",
+     "format": "TV",
+     "title": "BLEACH",
+     "year": 2004
+    },
+    {
+     "anilist_id": 99423,
+     "character": "フランクス博士",
+     "format": "TV",
+     "title": "ダーリン・イン・ザ・フランキス",
+     "year": 2018
+    }
+   ]
+  },
+  "va0799": {
+   "anilist_id": 151148,
+   "fetched": "2026-11-23",
+   "name": "八百屋杏",
+   "works": [
+    {
+     "anilist_id": 105333,
+     "character": "エン",
+     "format": "TV",
+     "title": "Dr.STONE",
+     "year": 2019
+    },
+    {
+     "anilist_id": 174576,
+     "character": "ジーナ",
+     "format": "TV",
+     "title": "杖と剣のウィストリア",
+     "year": 2024
+    },
+    {
+     "anilist_id": 112649,
+     "character": "ロコモ",
+     "format": "TV",
+     "title": "たとえばラストダンジョン前の村の少年が序盤の街で暮らすような物語",
+     "year": 2021
+    },
+    {
+     "anilist_id": 210031,
+     "character": "平の母",
+     "format": "TV",
+     "title": "正反対な君と僕 第2期",
+     "year": 2026
+    },
+    {
+     "anilist_id": 169441,
+     "character": "八百屋",
+     "format": "TV",
+     "title": "わたしの幸せな結婚 第二期",
+     "year": 2025
+    },
+    {
+     "anilist_id": 21116,
+     "character": "審判",
+     "format": "TV",
+     "title": "ヴァルキリードライヴ マーメイド",
+     "year": 2015
+    },
+    {
+     "anilist_id": 183660,
+     "character": "園長",
+     "format": "TV",
+     "title": "カヤちゃんはコワくない",
+     "year": 2026
+    },
+    {
+     "anilist_id": 131912,
+     "character": "鏡野キク",
+     "format": "ONA",
+     "title": "風都探偵",
+     "year": 2022
+    }
+   ]
+  },
+  "va0800": {
+   "anilist_id": 105085,
+   "fetched": "2026-11-23",
+   "name": "山内健嗣",
+   "works": [
+    {
+     "anilist_id": 1735,
+     "character": "ハルサメ",
+     "format": "TV",
+     "title": "NARUTO -ナルト- 疾風伝",
+     "year": 2007
+    },
+    {
+     "anilist_id": 6773,
+     "character": "ジルニトラ",
+     "format": "TV",
+     "title": "灼眼のシャナIII (Final)",
+     "year": 2011
+    },
+    {
+     "anilist_id": 101336,
+     "character": "ドクトル・ラーオ",
+     "format": "TV",
+     "title": "からくりサーカス",
+     "year": 2018
+    },
+    {
+     "anilist_id": 164440,
+     "character": "日高兼人",
+     "format": "TV",
+     "title": "オーイ! とんぼ",
+     "year": 2024
+    },
+    {
+     "anilist_id": 115715,
+     "character": "ヒデキ・タナセダ",
+     "format": "ONA",
+     "title": "オルタード・カーボン：リスリーブド",
+     "year": 2020
+    },
+    {
+     "anilist_id": 100620,
+     "character": "ソウギョク",
+     "format": "TV",
+     "title": "新幹線変形ロボ シンカリオン THE ANIMATION",
+     "year": 2018
+    }
+   ]
   }
  },
  "version": 1

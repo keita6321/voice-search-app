@@ -1,4 +1,432 @@
 {
   "season": "2027-winter",
-  "entries": []
+  "entries": [
+    {
+      "date": "2026-11-23",
+      "work_id": "w08a70425",
+      "actor_id": "va0016",
+      "name": "阿座上洋平",
+      "character": "山岡士郎"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w08a70425",
+      "actor_id": "va0069",
+      "name": "越後屋コースケ",
+      "character": "富井富雄"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w08a70425",
+      "actor_id": "va0076",
+      "name": "大塚明夫",
+      "character": "海原雄山"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w08a70425",
+      "actor_id": "va0098",
+      "name": "小野大輔",
+      "character": "団一郎"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w08a70425",
+      "actor_id": "va0192",
+      "name": "咲々木瞳",
+      "character": "栗田ゆう子"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w08a70425",
+      "actor_id": "va0231",
+      "name": "関智一",
+      "character": "岡星精一"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w08a70425",
+      "actor_id": "va0295",
+      "name": "飛田展男",
+      "character": "大原大蔵"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w08a70425",
+      "actor_id": "va0727",
+      "name": "中博史",
+      "character": "小泉鏡一"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w08a70425",
+      "actor_id": "va0786",
+      "name": "牛田裕子",
+      "character": "三谷典子(旧姓花村典子)"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w08a70425",
+      "actor_id": "va0790",
+      "name": "魚建",
+      "character": "唐山陶人"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w08a70425",
+      "actor_id": "va0791",
+      "name": "内匠靖明",
+      "character": "近城勇"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w08a70425",
+      "actor_id": "va0796",
+      "name": "藤田茜",
+      "character": "二木まり子"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w08a70425",
+      "actor_id": "va0797",
+      "name": "古澤融",
+      "character": "谷村秀夫"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w08a70425",
+      "actor_id": "va0799",
+      "name": "八百屋杏",
+      "character": "荒川絹江(旧姓田畑絹枝)"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w08a70425",
+      "actor_id": "va0800",
+      "name": "山内健嗣",
+      "character": "京極万太郎"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w131d8f1f",
+      "actor_id": "va0061",
+      "name": "内田雄馬",
+      "character": "ゲッコー"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w25fd469c",
+      "actor_id": "va0123",
+      "name": "茅野愛衣",
+      "character": "リューディア・グリューネヴァルト"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w25fd469c",
+      "actor_id": "va0228",
+      "name": "諏訪部順一",
+      "character": "フロリアン"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w25fd469c",
+      "actor_id": "va0298",
+      "name": "富田美憂",
+      "character": "モニカ・グリューネヴァルト"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w25fd469c",
+      "actor_id": "va0350",
+      "name": "速水奨",
+      "character": "ベルンハルト・グリューネヴァルト"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w25fd469c",
+      "actor_id": "va0424",
+      "name": "三宅健太",
+      "character": "ベンケイ"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w25fd469c",
+      "actor_id": "va0545",
+      "name": "綿貫竜之介",
+      "character": "クロ"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w25fd469c",
+      "actor_id": "va0667",
+      "name": "大森日雅",
+      "character": "マルギット・グリューネヴァルト"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w2ea3ad00",
+      "actor_id": "va0276",
+      "name": "鳥海浩輔",
+      "character": "三日月宗近"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w3890faba",
+      "actor_id": "va0036",
+      "name": "伊瀬茉莉也",
+      "character": "らて"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w3890faba",
+      "actor_id": "va0290",
+      "name": "遠野ひかる",
+      "character": "いちごみるく"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w3890faba",
+      "actor_id": "va0788",
+      "name": "榎本奈々",
+      "character": "ごまみるく"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w3890faba",
+      "actor_id": "va0792",
+      "name": "津田里穂",
+      "character": "じょせまる"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w3f554b40",
+      "actor_id": "va0021",
+      "name": "雨宮天",
+      "character": "石室明日香"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w3f554b40",
+      "actor_id": "va0166",
+      "name": "小林裕介",
+      "character": "賢島渡"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w3f554b40",
+      "actor_id": "va0441",
+      "name": "諸星すみれ",
+      "character": "晴山日撫"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w636ddaee",
+      "actor_id": "va0159",
+      "name": "小清水亜美",
+      "character": "ホロ"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w636ddaee",
+      "actor_id": "va0301",
+      "name": "豊崎愛生",
+      "character": "メルタ"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w636ddaee",
+      "actor_id": "va0382",
+      "name": "福山潤",
+      "character": "クラフト・ロレンス"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w636ddaee",
+      "actor_id": "va0618",
+      "name": "朴璐美",
+      "character": "エーブ・ボラン"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w636ddaee",
+      "actor_id": "va0787",
+      "name": "内田夕夜",
+      "character": "リゴロ・デドリ"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w636ddaee",
+      "actor_id": "va0795",
+      "name": "廣田行生",
+      "character": "アロルド・エクルンド"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w9882956e",
+      "actor_id": "va0266",
+      "name": "谷山紀章",
+      "character": "クラブ・ジャム"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w9882956e",
+      "actor_id": "va0794",
+      "name": "中井和哉",
+      "character": "キャロライナ・リーパー"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "w9882956e",
+      "actor_id": "va0798",
+      "name": "堀内賢雄",
+      "character": "廟堂"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "wa17a0b69",
+      "actor_id": "va0039",
+      "name": "伊藤彩沙",
+      "character": "マーナガルム"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "wa17a0b69",
+      "actor_id": "va0067",
+      "name": "浦和希",
+      "character": "桐原ユキト"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "wa17a0b69",
+      "actor_id": "va0096",
+      "name": "落合福嗣",
+      "character": "ロシナンテ"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "wa17a0b69",
+      "actor_id": "va0278",
+      "name": "月城日花",
+      "character": "桐原佐奈"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "wa17a0b69",
+      "actor_id": "va0358",
+      "name": "日笠陽子",
+      "character": "ネフィリア・カース"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "wa17a0b69",
+      "actor_id": "va0462",
+      "name": "優木かな",
+      "character": "シャルロッテ・R・ブラウニア"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "wa17a0b69",
+      "actor_id": "va0572",
+      "name": "石川由依",
+      "character": "ルミリア・シャーウッド"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "wa17a0b69",
+      "actor_id": "va0673",
+      "name": "勝杏里",
+      "character": "世界書／ナレーション"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "wa17a0b69",
+      "actor_id": "va0749",
+      "name": "前田佳織里",
+      "character": "リヴェルナ・ダーク"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "wb9b8d1d3",
+      "actor_id": "va0142",
+      "name": "釘宮理恵",
+      "character": "アイリーン"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "wb9b8d1d3",
+      "actor_id": "va0383",
+      "name": "藤寺美徳",
+      "character": "リナ"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "wca48fb2e",
+      "actor_id": "va0016",
+      "name": "阿座上洋平",
+      "character": "ナレーション"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "wca48fb2e",
+      "actor_id": "va0181",
+      "name": "榊原優希",
+      "character": "めろ"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "wca48fb2e",
+      "actor_id": "va0374",
+      "name": "ファイルーズあい",
+      "character": "るぅ"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "wca48fb2e",
+      "actor_id": "va0706",
+      "name": "菅野真衣",
+      "character": "きゅん"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "wd927ac6b",
+      "actor_id": "va0206",
+      "name": "下野紘",
+      "character": "ガリウス"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "wd927ac6b",
+      "actor_id": "va0369",
+      "name": "檜山修之",
+      "character": "グリレット"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "wd927ac6b",
+      "actor_id": "va0789",
+      "name": "緒方恵美",
+      "character": "シルファ"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "wd927ac6b",
+      "actor_id": "va0793",
+      "name": "照井春佳",
+      "character": "ラハブ"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "wdd1fa12a",
+      "actor_id": "va0068",
+      "name": "江口拓也",
+      "character": "三光楼雪笹"
+    },
+    {
+      "date": "2026-11-23",
+      "work_id": "wdd1fa12a",
+      "actor_id": "va0163",
+      "name": "小林千晃",
+      "character": "一瀬柳"
+    }
+  ]
 }
