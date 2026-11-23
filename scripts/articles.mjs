@@ -79,6 +79,13 @@ table.compare tr.partner td{background:#f5f2fa}.pr{font-size:10px;color:#62517f}
 .sched.season-list>li{display:block}
 .sched-date{text-align:center;font-weight:900;color:#1d2a44;font-size:15px;line-height:1.25}.sched-date small{display:block;font-size:11px;color:#62517f;font-weight:700}.sched-date .countdown{display:block;margin-top:4px;font-size:10px;color:#5d5a52;font-weight:700}
 .sched-title{display:block;font-weight:800;font-size:15px;line-height:1.4;color:#1d2a44;text-decoration:none}
+.sched>li{grid-template-columns:96px minmax(0,1fr);align-items:start}
+.sched-thumb{box-sizing:border-box;position:relative;display:flex;align-items:center;justify-content:center;width:96px;aspect-ratio:4/3;padding:4px;border-radius:10px;overflow:hidden;background:linear-gradient(135deg,#62517f,#1d2a44);color:#fff;font-size:10px;font-weight:900;line-height:1.3;text-align:center;text-decoration:none}.sched-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.sched-day{display:inline-block;margin-bottom:3px;padding:1px 8px;border-radius:999px;background:#efebf5;color:#62517f;font-size:11px;font-weight:800}.sched-day .countdown{display:inline;margin-left:4px;font-size:11px;color:#62517f}
+.sched-catch{margin-top:3px;font-size:12px;color:#62517f;font-weight:700}
+.newcast{margin:18px 0 10px;padding:14px 16px;border-radius:14px;background:#1d2a44;color:#fff}.newcast h2{margin:0 0 4px;font-size:17px;color:#fff}.newcast>p{margin:0 0 10px;font-size:12px;opacity:.8}
+.newcast-top{list-style:none;margin:0;padding:0;display:grid;gap:8px}.newcast-top a{color:#fff;text-decoration:none;font-size:13px}.newcast-top b{color:#F5C542}.newcast-top span{display:block;font-size:11px;opacity:.75}
+.newcast details{margin-top:10px}.newcast summary{color:#F5C542;font-weight:800;font-size:13px;cursor:pointer}.newcast details h3{color:#fff;font-size:13px}.newcast details li,.newcast details a{color:#fff;font-size:12px}
 .sched-cast{margin-top:3px;font-size:12.5px;color:#5d5a52;line-height:1.6}.sched-cast a{color:#62517f;font-weight:700;text-decoration:none;border-bottom:1px solid #d6cde6}
 .sched-chip{display:inline-block;margin-top:6px;padding:2px 9px;border-radius:999px;background:#F5C542;color:#1d2a44;font-size:11px;font-weight:800;text-decoration:none}
 .chips-va{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px}.chips-va a{display:inline-flex;align-items:baseline;gap:5px;padding:7px 12px;border:1px solid #e3dcef;border-radius:999px;background:#fff;color:#1d2a44;font-weight:800;font-size:14px;text-decoration:none}.chips-va a em{font-style:normal;font-size:11px;color:#62517f}
@@ -702,12 +709,20 @@ ${work.official_url ? `<p><a href="${esc(work.official_url)}" target="_blank" re
 }
 
 // 最近発表されたキャスト（data/next-cast-log.json。毎週の更新で増えた分）
-function newCastSection(next, castLog, days = 14) {
+// 最近加わったキャスト。直近の更新分を目立つ枠で（有名な声優＝今期・来期の出演が多い順に5人）、残りと過去14日分は「すべて見る」で開く
+function newCastSection(next, castLog, data, days = 14) {
   if (!castLog?.entries?.length || castLog.season !== next.season) return '';
   const latest = castLog.entries.reduce((max, e) => (e.date > max ? e.date : max), '');
   const from = new Date(Date.parse(latest) - days * 864e5).toISOString().slice(0, 10);
   const recent = castLog.entries.filter(e => e.date > from && next.works[e.work_id]);
   if (!recent.length) return '';
+  const workCount = new Map();
+  for (const d of [data, next]) for (const a of d?.voice_actors ?? []) workCount.set(a.actor_id, (workCount.get(a.actor_id) ?? 0) + new Set(a.roles.map(r => r.work_id)).size);
+  const newest = recent.filter(e => e.date === latest);
+  const seen = new Set();
+  const picks = [...newest].sort((a, b) => (workCount.get(b.actor_id) ?? 0) - (workCount.get(a.actor_id) ?? 0))
+    .filter(e => !seen.has(e.actor_id) && seen.add(e.actor_id)).slice(0, 5);
+  const [, lm, ld] = latest.split('-').map(Number);
   const byDate = new Map();
   for (const e of recent) {
     if (!byDate.has(e.date)) byDate.set(e.date, new Map());
@@ -721,9 +736,16 @@ function newCastSection(next, castLog, days = 14) {
       `<li><a href="/work/${esc(workId)}/">${esc(next.works[workId].title)}</a>：${entries.slice(0, 8).map(e => `${esc(e.character)}（<a href="/va/${toPageId(e.actor_id)}/">${esc(e.name)}</a>）`).join('、')}${entries.length > 8 ? ` ほか${entries.length - 8}名` : ''}</li>`).join('\n');
     return `<h3>${m}月${d}日の更新で追加</h3>\n<ul>\n${items}\n</ul>`;
   }).join('\n');
-  return `<h2>最近発表されたキャスト</h2>
-<p>毎週の更新で、新しく確認できたキャストです（直近${days}日分）。</p>
-${blocks}`;
+  return `<section class="newcast" aria-labelledby="newcast-h">
+<h2 id="newcast-h">新しく加わったキャスト（${lm}/${ld}の更新・${newest.length}人）</h2>
+<p>毎週月曜の更新で、新しく確認できたキャストです。名前を押すと、その声優の出演作を見られます。</p>
+<ul class="newcast-top">
+${picks.map((e, i) => `<li><a href="/va/${toPageId(e.actor_id)}/" data-ga-event="cast_click" data-ga-work-id="${esc(e.work_id)}" data-ga-actor-id="${esc(e.actor_id)}" data-ga-position="${i + 1}" data-ga-page-type="next_newcast"><b>${esc(e.name)}</b>　${esc(e.character)}${/ナレーション$/.test(e.character) ? '' : ' 役'}</a><span>${esc(next.works[e.work_id].title)}</span></li>`).join('\n')}
+</ul>
+<details><summary>すべて見る（直近${days}日分）</summary>
+${blocks}
+</details>
+</section>`;
 }
 
 export function nextIndexPage(ctx, next, castLog = null) {
@@ -751,7 +773,11 @@ export function nextIndexPage(ctx, next, castLog = null) {
     const date = startLabel(work.start_date);
     const prev = ctx.prevSeasons?.[work.title] && ctx.partnerLinks?.[ctx.prevSeasons[work.title].provider];
     const names = cast.slice(0, 4).map(({ actor }, i) => `<a href="/va/${toPageId(actor.actor_id)}/" data-ga-event="cast_click" data-ga-work-id="${esc(id)}" data-ga-actor-id="${esc(actor.actor_id)}" data-ga-position="${i + 1}" data-ga-page-type="next_index">${esc(actor.name)}</a>`);
-    return `<li><div class="sched-date">${date ? `${Number(match[1])}/${Number(match[2])}<small>${esc(date.slice(-3))}</small>${countdown(work.start_date)}` : '未定'}</div><div><a class="sched-title" href="/work/${esc(id)}/">${esc(work.title)}</a><div class="sched-cast">${cast.length ? `${names.join('、')}${cast.length > 4 ? ` ほか${cast.length - 4}名` : ''}` : 'キャスト未発表'}</div>${prev ? `<a class="sched-chip" href="/work/${esc(id)}/#prev-h">前のシーズンはPrime Videoで</a>` : ''}</div></li>`;
+    // キービジュアル（オーナー判断で /next/ にも出す。読み込めないときは作品名入りの枠）と、作品紹介のキャッチコピー
+    const src = ctx.thumbnailOverrides?.[work.title] || work.thumbnail;
+    const thumb = `<a class="sched-thumb" href="/work/${esc(id)}/" tabindex="-1" aria-hidden="true"><span>${esc(work.title.slice(0, 14))}</span>${src ? `<img src="${esc(src)}" alt="" width="96" height="72" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}</a>`;
+    const catchCopy = ctx.notes?.[work.title]?.catch;
+    return `<li>${thumb}<div><span class="sched-day">${date ? `${Number(match[1])}/${Number(match[2])}${esc(date.slice(-3))}${countdown(work.start_date)}` : '放送日未定'}</span><a class="sched-title" href="/work/${esc(id)}/">${esc(work.title)}</a>${catchCopy ? `<div class="sched-catch">${esc(catchCopy)}</div>` : ''}<div class="sched-cast">${cast.length ? `${names.join('、')}${cast.length > 4 ? ` ほか${cast.length - 4}名` : ''}` : 'キャスト未発表'}</div>${prev ? `<a class="sched-chip" href="/work/${esc(id)}/#prev-h">前のシーズンはPrime Videoで</a>` : ''}</div></li>`;
   };
   const groups = new Map();
   for (const entry of works) {
@@ -768,8 +794,8 @@ ${list.map(item).join('\n')}
   const first = works.find(([, w]) => startLabel(w.start_date));
   const body = `<h1>${esc(title)}</h1>
 <p class="lead">${esc(nextLabel)}の${works.length}作品を、放送開始日の順にまとめました。声優の名前を押すと、その声優の今期の出演作と来期の出演予定を見られます。</p>
+${newCastSection(next, castLog, ctx.data)}
 ${busyHtml}
-${newCastSection(next, castLog)}
 <h2>放送日の一覧</h2>
 ${schedule}
 <p class="note">放送日が確認できているのは${dated}作品です。放送前の情報のため、変更されることがあります（最終更新：${esc(next.updated_at.slice(0, 10))}）。声優名での検索は<a href="/">トップ</a>から。</p>`;
