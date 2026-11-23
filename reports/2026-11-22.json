@@ -1,0 +1,2662 @@
+{
+ "generated_at": "2026-11-23T10:55+09:00",
+ "range": {
+  "last7": [
+   "2026-11-16",
+   "2026-11-22"
+  ],
+  "prev7": [
+   "2026-11-09",
+   "2026-11-15"
+  ],
+  "last28": [
+   "2026-10-26",
+   "2026-11-22"
+  ],
+  "search": [
+   "2026-10-24",
+   "2026-11-20"
+  ]
+ },
+ "daily": [
+  {
+   "date": "20261115",
+   "sessions": 23.0,
+   "activeUsers": 22.0,
+   "newUsers": 21.0,
+   "screenPageViews": 50.0,
+   "engagedSessions": 18.0,
+   "userEngagementDuration": 207.0
+  },
+  {
+   "date": "20261116",
+   "sessions": 22.0,
+   "activeUsers": 22.0,
+   "newUsers": 15.0,
+   "screenPageViews": 42.0,
+   "engagedSessions": 13.0,
+   "userEngagementDuration": 143.0
+  },
+  {
+   "date": "20261117",
+   "sessions": 13.0,
+   "activeUsers": 13.0,
+   "newUsers": 13.0,
+   "screenPageViews": 27.0,
+   "engagedSessions": 12.0,
+   "userEngagementDuration": 62.0
+  },
+  {
+   "date": "20261118",
+   "sessions": 12.0,
+   "activeUsers": 12.0,
+   "newUsers": 12.0,
+   "screenPageViews": 30.0,
+   "engagedSessions": 10.0,
+   "userEngagementDuration": 81.0
+  },
+  {
+   "date": "20261120",
+   "sessions": 10.0,
+   "activeUsers": 6.0,
+   "newUsers": 4.0,
+   "screenPageViews": 55.0,
+   "engagedSessions": 10.0,
+   "userEngagementDuration": 146.0
+  },
+  {
+   "date": "20261122",
+   "sessions": 8.0,
+   "activeUsers": 8.0,
+   "newUsers": 8.0,
+   "screenPageViews": 19.0,
+   "engagedSessions": 7.0,
+   "userEngagementDuration": 127.0
+  },
+  {
+   "date": "20261119",
+   "sessions": 6.0,
+   "activeUsers": 6.0,
+   "newUsers": 6.0,
+   "screenPageViews": 11.0,
+   "engagedSessions": 5.0,
+   "userEngagementDuration": 16.0
+  },
+  {
+   "date": "20261114",
+   "sessions": 4.0,
+   "activeUsers": 4.0,
+   "newUsers": 4.0,
+   "screenPageViews": 8.0,
+   "engagedSessions": 4.0,
+   "userEngagementDuration": 4.0
+  },
+  {
+   "date": "20261121",
+   "sessions": 4.0,
+   "activeUsers": 4.0,
+   "newUsers": 4.0,
+   "screenPageViews": 12.0,
+   "engagedSessions": 4.0,
+   "userEngagementDuration": 53.0
+  },
+  {
+   "date": "20261113",
+   "sessions": 2.0,
+   "activeUsers": 2.0,
+   "newUsers": 2.0,
+   "screenPageViews": 6.0,
+   "engagedSessions": 2.0,
+   "userEngagementDuration": 0.0
+  }
+ ],
+ "channel_last7": [
+  {
+   "sessionSourceMedium": "(direct) / (none)",
+   "sessions": 49.0,
+   "engagedSessions": 44.0,
+   "userEngagementDuration": 262.0
+  },
+  {
+   "sessionSourceMedium": "google / organic",
+   "sessions": 10.0,
+   "engagedSessions": 9.0,
+   "userEngagementDuration": 212.0
+  },
+  {
+   "sessionSourceMedium": "(not set)",
+   "sessions": 7.0,
+   "engagedSessions": 0.0,
+   "userEngagementDuration": 19.0
+  },
+  {
+   "sessionSourceMedium": "x / social",
+   "sessions": 6.0,
+   "engagedSessions": 5.0,
+   "userEngagementDuration": 100.0
+  },
+  {
+   "sessionSourceMedium": "yahoo / organic",
+   "sessions": 2.0,
+   "engagedSessions": 2.0,
+   "userEngagementDuration": 33.0
+  },
+  {
+   "sessionSourceMedium": "adv-console.a8.net / referral",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 2.0
+  }
+ ],
+ "channel_prev7": [
+  {
+   "sessionSourceMedium": "(direct) / (none)",
+   "sessions": 23.0
+  },
+  {
+   "sessionSourceMedium": "x / social",
+   "sessions": 3.0
+  },
+  {
+   "sessionSourceMedium": "t.co / referral",
+   "sessions": 2.0
+  },
+  {
+   "sessionSourceMedium": "(not set)",
+   "sessions": 1.0
+  }
+ ],
+ "landing_last7": [
+  {
+   "landingPage": "/",
+   "sessions": 52.0,
+   "engagementRate": 0.7884615384615384,
+   "userEngagementDuration": 253.0
+  },
+  {
+   "landingPage": "/next",
+   "sessions": 5.0,
+   "engagementRate": 1.0,
+   "userEngagementDuration": 169.0
+  },
+  {
+   "landingPage": "/work/wa147cdd6",
+   "sessions": 2.0,
+   "engagementRate": 0.5,
+   "userEngagementDuration": 29.0
+  },
+  {
+   "landingPage": "/privacy",
+   "sessions": 1.0,
+   "engagementRate": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "landingPage": "/ranking",
+   "sessions": 1.0,
+   "engagementRate": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "landingPage": "/sequel",
+   "sessions": 1.0,
+   "engagementRate": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "landingPage": "/va/0050",
+   "sessions": 1.0,
+   "engagementRate": 1.0,
+   "userEngagementDuration": 11.0
+  },
+  {
+   "landingPage": "/va/0062",
+   "sessions": 1.0,
+   "engagementRate": 1.0,
+   "userEngagementDuration": 19.0
+  },
+  {
+   "landingPage": "/va/0100",
+   "sessions": 1.0,
+   "engagementRate": 1.0,
+   "userEngagementDuration": 22.0
+  },
+  {
+   "landingPage": "/va/0206",
+   "sessions": 1.0,
+   "engagementRate": 0.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "landingPage": "/va/0217",
+   "sessions": 1.0,
+   "engagementRate": 1.0,
+   "userEngagementDuration": 21.0
+  },
+  {
+   "landingPage": "/va/0266",
+   "sessions": 1.0,
+   "engagementRate": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "landingPage": "/va/0275",
+   "sessions": 1.0,
+   "engagementRate": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "landingPage": "/va/0317",
+   "sessions": 1.0,
+   "engagementRate": 1.0,
+   "userEngagementDuration": 17.0
+  },
+  {
+   "landingPage": "/va/0617",
+   "sessions": 1.0,
+   "engagementRate": 1.0,
+   "userEngagementDuration": 21.0
+  },
+  {
+   "landingPage": "/va/0696",
+   "sessions": 1.0,
+   "engagementRate": 0.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "landingPage": "/work/w1cb15f5c",
+   "sessions": 1.0,
+   "engagementRate": 1.0,
+   "userEngagementDuration": 1.0
+  },
+  {
+   "landingPage": "/work/wd2821ffc",
+   "sessions": 1.0,
+   "engagementRate": 1.0,
+   "userEngagementDuration": 60.0
+  },
+  {
+   "landingPage": "/work/wf9098d76",
+   "sessions": 1.0,
+   "engagementRate": 1.0,
+   "userEngagementDuration": 5.0
+  }
+ ],
+ "pages_last7": [
+  {
+   "pagePath": "/",
+   "screenPageViews": 103.0,
+   "activeUsers": 52.0,
+   "userEngagementDuration": 156.0
+  },
+  {
+   "pagePath": "/next/",
+   "screenPageViews": 20.0,
+   "activeUsers": 6.0,
+   "userEngagementDuration": 191.0
+  },
+  {
+   "pagePath": "/work/wa147cdd6/",
+   "screenPageViews": 7.0,
+   "activeUsers": 3.0,
+   "userEngagementDuration": 39.0
+  },
+  {
+   "pagePath": "/sequel/",
+   "screenPageViews": 6.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "pagePath": "/va/0617/",
+   "screenPageViews": 4.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 21.0
+  },
+  {
+   "pagePath": "/work/w6276c40d/",
+   "screenPageViews": 4.0,
+   "activeUsers": 2.0,
+   "userEngagementDuration": 11.0
+  },
+  {
+   "pagePath": "/costar/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 3.0
+  },
+  {
+   "pagePath": "/privacy/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "pagePath": "/ranking/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "pagePath": "/va/0009/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 11.0
+  },
+  {
+   "pagePath": "/va/0050/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 11.0
+  },
+  {
+   "pagePath": "/va/0062/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 19.0
+  },
+  {
+   "pagePath": "/va/0088/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 12.0
+  },
+  {
+   "pagePath": "/va/0100/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 22.0
+  },
+  {
+   "pagePath": "/va/0217/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "pagePath": "/va/0266/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "pagePath": "/va/0275/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "pagePath": "/va/0317/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 17.0
+  },
+  {
+   "pagePath": "/va/0361/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 15.0
+  },
+  {
+   "pagePath": "/work/w1cb15f5c/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 1.0
+  },
+  {
+   "pagePath": "/work/w7af539b7/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 4.0
+  },
+  {
+   "pagePath": "/work/w916ce540/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 4.0
+  },
+  {
+   "pagePath": "/work/w9653231e/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "pagePath": "/work/w9882956e/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "pagePath": "/work/w9ea05b5d/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 10.0
+  },
+  {
+   "pagePath": "/work/wa1c52218/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 5.0
+  },
+  {
+   "pagePath": "/work/wc4798f29/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 3.0
+  },
+  {
+   "pagePath": "/work/wd2821ffc/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 60.0
+  },
+  {
+   "pagePath": "/work/wd519773d/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 6.0
+  },
+  {
+   "pagePath": "/work/wefe2e801/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 2.0
+  }
+ ],
+ "events_last7": [
+  {
+   "eventName": "page_view",
+   "eventCount": 196.0,
+   "totalUsers": 71.0
+  },
+  {
+   "eventName": "session_start",
+   "eventCount": 68.0,
+   "totalUsers": 64.0
+  },
+  {
+   "eventName": "first_visit",
+   "eventCount": 62.0,
+   "totalUsers": 62.0
+  },
+  {
+   "eventName": "user_engagement",
+   "eventCount": 62.0,
+   "totalUsers": 39.0
+  },
+  {
+   "eventName": "scroll",
+   "eventCount": 16.0,
+   "totalUsers": 13.0
+  },
+  {
+   "eventName": "feature_click",
+   "eventCount": 2.0,
+   "totalUsers": 1.0
+  },
+  {
+   "eventName": "cast_click",
+   "eventCount": 1.0,
+   "totalUsers": 1.0
+  },
+  {
+   "eventName": "click",
+   "eventCount": 1.0,
+   "totalUsers": 1.0
+  },
+  {
+   "eventName": "costar_click",
+   "eventCount": 1.0,
+   "totalUsers": 1.0
+  },
+  {
+   "eventName": "official_site_click",
+   "eventCount": 1.0,
+   "totalUsers": 1.0
+  },
+  {
+   "eventName": "season_view_change",
+   "eventCount": 1.0,
+   "totalUsers": 1.0
+  },
+  {
+   "eventName": "special_click",
+   "eventCount": 1.0,
+   "totalUsers": 1.0
+  },
+  {
+   "eventName": "va_open",
+   "eventCount": 1.0,
+   "totalUsers": 1.0
+  }
+ ],
+ "events_prev7": [
+  {
+   "eventName": "page_view",
+   "eventCount": 64.0
+  },
+  {
+   "eventName": "session_start",
+   "eventCount": 28.0
+  },
+  {
+   "eventName": "first_visit",
+   "eventCount": 27.0
+  },
+  {
+   "eventName": "user_engagement",
+   "eventCount": 11.0
+  },
+  {
+   "eventName": "scroll",
+   "eventCount": 7.0
+  },
+  {
+   "eventName": "search",
+   "eventCount": 2.0
+  },
+  {
+   "eventName": "click",
+   "eventCount": 1.0
+  },
+  {
+   "eventName": "official_site_click",
+   "eventCount": 1.0
+  },
+  {
+   "eventName": "va_open",
+   "eventCount": 1.0
+  }
+ ],
+ "quote_posts_last28": [
+  {
+   "sessionManualAdContent": "(not set)",
+   "landingPage": "/va/0062",
+   "sessions": 1.0,
+   "engagedSessions": 1.0
+  },
+  {
+   "sessionManualAdContent": "(not set)",
+   "landingPage": "/va/0266",
+   "sessions": 1.0,
+   "engagedSessions": 1.0
+  },
+  {
+   "sessionManualAdContent": "(not set)",
+   "landingPage": "/va/0275",
+   "sessions": 1.0,
+   "engagedSessions": 1.0
+  },
+  {
+   "sessionManualAdContent": "(not set)",
+   "landingPage": "/work/wa147cdd6",
+   "sessions": 1.0,
+   "engagedSessions": 0.0
+  }
+ ],
+ "japan_channel_last7": [
+  {
+   "sessionDefaultChannelGroup": "Organic Search",
+   "sessions": 12.0,
+   "engagedSessions": 11.0,
+   "userEngagementDuration": 245.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Direct",
+   "sessions": 8.0,
+   "engagedSessions": 8.0,
+   "userEngagementDuration": 168.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Organic Social",
+   "sessions": 6.0,
+   "engagedSessions": 5.0,
+   "userEngagementDuration": 100.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Referral",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 2.0
+  }
+ ],
+ "japan_channel_prev7": [
+  {
+   "sessionDefaultChannelGroup": "Organic Social",
+   "sessions": 5.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Direct",
+   "sessions": 3.0
+  }
+ ],
+ "japan_landing_last7": [
+  {
+   "landingPage": "/",
+   "sessions": 7.0,
+   "engagedSessions": 7.0,
+   "userEngagementDuration": 141.0
+  },
+  {
+   "landingPage": "/next",
+   "sessions": 4.0,
+   "engagedSessions": 4.0,
+   "userEngagementDuration": 168.0
+  },
+  {
+   "landingPage": "/work/wa147cdd6",
+   "sessions": 2.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 29.0
+  },
+  {
+   "landingPage": "/ranking",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "landingPage": "/sequel",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "landingPage": "/va/0050",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 11.0
+  },
+  {
+   "landingPage": "/va/0062",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 19.0
+  },
+  {
+   "landingPage": "/va/0100",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 22.0
+  },
+  {
+   "landingPage": "/va/0217",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 21.0
+  },
+  {
+   "landingPage": "/va/0266",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "landingPage": "/va/0275",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "landingPage": "/va/0317",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 17.0
+  },
+  {
+   "landingPage": "/va/0617",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 21.0
+  },
+  {
+   "landingPage": "/va/0696",
+   "sessions": 1.0,
+   "engagedSessions": 0.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "landingPage": "/work/w1cb15f5c",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 1.0
+  },
+  {
+   "landingPage": "/work/wd2821ffc",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 60.0
+  },
+  {
+   "landingPage": "/work/wf9098d76",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 5.0
+  }
+ ],
+ "japan_events_last7": [
+  {
+   "eventName": "page_view",
+   "eventCount": 109.0
+  },
+  {
+   "eventName": "user_engagement",
+   "eventCount": 37.0
+  },
+  {
+   "eventName": "session_start",
+   "eventCount": 27.0
+  },
+  {
+   "eventName": "first_visit",
+   "eventCount": 21.0
+  },
+  {
+   "eventName": "scroll",
+   "eventCount": 8.0
+  },
+  {
+   "eventName": "feature_click",
+   "eventCount": 2.0
+  },
+  {
+   "eventName": "cast_click",
+   "eventCount": 1.0
+  },
+  {
+   "eventName": "click",
+   "eventCount": 1.0
+  },
+  {
+   "eventName": "costar_click",
+   "eventCount": 1.0
+  },
+  {
+   "eventName": "official_site_click",
+   "eventCount": 1.0
+  },
+  {
+   "eventName": "season_view_change",
+   "eventCount": 1.0
+  },
+  {
+   "eventName": "special_click",
+   "eventCount": 1.0
+  },
+  {
+   "eventName": "va_open",
+   "eventCount": 1.0
+  }
+ ],
+ "direct_detail_last7": [
+  {
+   "date": "20261116",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Amsterdam",
+   "landingPage": "/",
+   "sessions": 4.0,
+   "engagedSessions": 4.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 4.0
+  },
+  {
+   "date": "20261120",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Kawasaki",
+   "landingPage": "/",
+   "sessions": 2.0,
+   "engagedSessions": 2.0,
+   "userEngagementDuration": 81.0,
+   "newUsers": 0.0
+  },
+  {
+   "date": "20261116",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "(not set)",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261116",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Bengaluru",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 9.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261116",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Blue Island",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 0.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261116",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Burnaby",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 6.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261116",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Musashino",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 4.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261116",
+   "deviceCategory": "desktop",
+   "browser": "Firefox",
+   "city": "Boardman",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 5.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261116",
+   "deviceCategory": "mobile",
+   "browser": "Android Webview",
+   "city": "Council Bluffs",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 14.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261116",
+   "deviceCategory": "mobile",
+   "browser": "Safari",
+   "city": "Ashburn",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 5.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261116",
+   "deviceCategory": "mobile",
+   "browser": "YaBrowser",
+   "city": "Sydney",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 0.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261117",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "(not set)",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 3.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261117",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Chicago",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 6.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261117",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Glenview",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261117",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "London",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261117",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Manassas",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 4.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261117",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Phoenix",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261117",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Rio de Janeiro",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261117",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Secaucus",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 9.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261117",
+   "deviceCategory": "desktop",
+   "browser": "Edge",
+   "city": "Council Bluffs",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261118",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Burnaby",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 4.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261118",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Glenview",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261118",
+   "deviceCategory": "desktop",
+   "browser": "Edge",
+   "city": "Council Bluffs",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 2.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261118",
+   "deviceCategory": "desktop",
+   "browser": "Firefox",
+   "city": "Yokohama",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 54.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261118",
+   "deviceCategory": "mobile",
+   "browser": "Chrome",
+   "city": "(not set)",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261118",
+   "deviceCategory": "mobile",
+   "browser": "Chrome",
+   "city": "Dubai",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 0.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261118",
+   "deviceCategory": "mobile",
+   "browser": "Safari",
+   "city": "Lille",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 0.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261119",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "(not set)",
+   "landingPage": "/va/0206",
+   "sessions": 1.0,
+   "engagedSessions": 0.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261119",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Frankfurt am Main",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 1.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261119",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Frankfurt am Main",
+   "landingPage": "/privacy",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261119",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Warsaw",
+   "landingPage": "/next",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 1.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261119",
+   "deviceCategory": "mobile",
+   "browser": "Safari",
+   "city": "Ashburn",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 3.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261120",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Burnaby",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 12.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261120",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Kawasaki",
+   "landingPage": "/ranking",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 0.0
+  },
+  {
+   "date": "20261120",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Kawasaki",
+   "landingPage": "/sequel",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 0.0
+  },
+  {
+   "date": "20261120",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Kawasaki",
+   "landingPage": "/work/wa147cdd6",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 29.0,
+   "newUsers": 0.0
+  },
+  {
+   "date": "20261120",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "San Jose",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261120",
+   "deviceCategory": "mobile",
+   "browser": "Safari (in-app)",
+   "city": "Kawasaki",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 0.0
+  },
+  {
+   "date": "20261121",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Orlando",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261122",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Aspen",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261122",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Burnaby",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 8.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261122",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Glenview",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261122",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Xinyi District",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261122",
+   "deviceCategory": "desktop",
+   "browser": "Edge",
+   "city": "Council Bluffs",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 2.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261122",
+   "deviceCategory": "mobile",
+   "browser": "Chrome",
+   "city": "Anyang-si",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  }
+ ],
+ "device_last7": [
+  {
+   "sessionDefaultChannelGroup": "Direct",
+   "deviceCategory": "desktop",
+   "operatingSystem": "Windows",
+   "sessions": 27.0,
+   "userEngagementDuration": 204.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Direct",
+   "deviceCategory": "desktop",
+   "operatingSystem": "Linux",
+   "sessions": 12.0,
+   "userEngagementDuration": 36.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Unassigned",
+   "deviceCategory": "desktop",
+   "operatingSystem": "Macintosh",
+   "sessions": 7.0,
+   "userEngagementDuration": 19.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Direct",
+   "deviceCategory": "mobile",
+   "operatingSystem": "iOS",
+   "sessions": 6.0,
+   "userEngagementDuration": 8.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Organic Search",
+   "deviceCategory": "mobile",
+   "operatingSystem": "Android",
+   "sessions": 6.0,
+   "userEngagementDuration": 204.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Organic Search",
+   "deviceCategory": "mobile",
+   "operatingSystem": "iOS",
+   "sessions": 4.0,
+   "userEngagementDuration": 36.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Organic Social",
+   "deviceCategory": "mobile",
+   "operatingSystem": "Android",
+   "sessions": 4.0,
+   "userEngagementDuration": 100.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Direct",
+   "deviceCategory": "mobile",
+   "operatingSystem": "Android",
+   "sessions": 3.0,
+   "userEngagementDuration": 14.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Organic Social",
+   "deviceCategory": "mobile",
+   "operatingSystem": "iOS",
+   "sessions": 2.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Direct",
+   "deviceCategory": "desktop",
+   "operatingSystem": "Macintosh",
+   "sessions": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Organic Search",
+   "deviceCategory": "desktop",
+   "operatingSystem": "Macintosh",
+   "sessions": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Organic Search",
+   "deviceCategory": "desktop",
+   "operatingSystem": "Windows",
+   "sessions": 1.0,
+   "userEngagementDuration": 5.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Referral",
+   "deviceCategory": "desktop",
+   "operatingSystem": "Windows",
+   "sessions": 1.0,
+   "userEngagementDuration": 2.0
+  }
+ ],
+ "search_queries": [
+  {
+   "query": "矢 鹿まや 生天目",
+   "clicks": 0,
+   "impressions": 7,
+   "ctr": 0,
+   "position": 9.428571428571429
+  },
+  {
+   "query": "凶乱令嬢ニアリストン 病弱令嬢に転生した神殺しの武人の華麗なる無双録 配信",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 44.25
+  },
+  {
+   "query": "声優 出演数ランキング(2026)",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 7.75
+  },
+  {
+   "query": "新テニスの王子様 u17 world cup 決勝メンバー決定戦 配信",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 40
+  },
+  {
+   "query": "日差敦",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 3.75
+  },
+  {
+   "query": "目覚めたら最強装備と宇宙船持ちだったので一戸建て目指して傭兵として自由に生きたい 配信",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 36.75
+  },
+  {
+   "query": "わたしの幸せな結婚 特別篇 配信",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 32.33333333333333
+  },
+  {
+   "query": "アニメ キャスト",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 5
+  },
+  {
+   "query": "カードファイト ヴァンガード divinez 運命星戦編 配信",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 31.666666666666668
+  },
+  {
+   "query": "ケロロ軍曹 配信",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 39.333333333333336
+  },
+  {
+   "query": "目覚めたら最強装備と宇宙船持ちだったので 声優",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 10.666666666666666
+  },
+  {
+   "query": "石見舞菜香",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 38.333333333333336
+  },
+  {
+   "query": "battle spirits re 絶界の空 配信",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 46.5
+  },
+  {
+   "query": "tank chair戦車椅子 配信",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 47
+  },
+  {
+   "query": "アニメフェスタ アニメ一覧",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 1
+  },
+  {
+   "query": "ダイヤのa act2 second season 第2クール 配信",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 23
+  },
+  {
+   "query": "ダークサモナーとデキている 配信",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 35
+  },
+  {
+   "query": "テムパル 配信",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 27
+  },
+  {
+   "query": "マロニエ王国の七人の騎士 配信",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 49.5
+  },
+  {
+   "query": "ムルシエラゴ アニメ",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 47
+  },
+  {
+   "query": "北見六花 表",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 5.5
+  },
+  {
+   "query": "声優 アニメ 人気",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 63
+  },
+  {
+   "query": "声優 出演数 ランキング 2026",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 9.5
+  },
+  {
+   "query": "彼女の友達 ミニアニメ劇場",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 10.5
+  },
+  {
+   "query": "恐怖コレクター アニメ アマゾンプライム",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 9
+  },
+  {
+   "query": "斧澤優 キャラ",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 4
+  },
+  {
+   "query": "朱色の仮面 配信",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 27.5
+  },
+  {
+   "query": "桃源暗鬼 日光華厳の滝編 配信",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 44.5
+  },
+  {
+   "query": "\"アゼスト\"",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 22
+  },
+  {
+   "query": "40代",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 21
+  },
+  {
+   "query": "amazon.co.jp わたしの幸せな結婚 特別篇",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 2
+  },
+  {
+   "query": "battle spirits [re] 絶界の空 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 83
+  },
+  {
+   "query": "duel masters lost 断罪の少年 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 13
+  },
+  {
+   "query": "hulu.jp わたしの幸せな結婚 特別篇",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 3
+  },
+  {
+   "query": "hulu.jp ダイヤのa",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 4
+  },
+  {
+   "query": "ごーすとみーつぎゃる 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 50
+  },
+  {
+   "query": "どうも好きな人に惚れ薬を依頼された魔女です 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 33
+  },
+  {
+   "query": "ふつつかな悪女ではございますが 雛宮蝶鼠とりかえ伝 第2クール",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 33
+  },
+  {
+   "query": "ぷにるんず ぷに４ アニメ",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 14
+  },
+  {
+   "query": "らんま12 3期",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 9
+  },
+  {
+   "query": "らんま12 第3期 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 45
+  },
+  {
+   "query": "アオアシシアターズ",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 6
+  },
+  {
+   "query": "アニメ 2027",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 18
+  },
+  {
+   "query": "ケロロ 軍曹 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 33
+  },
+  {
+   "query": "シルバニアファミリー フレアのカラフルエブリデイ アニメ",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 35
+  },
+  {
+   "query": "ゾンビさがしてます 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 45
+  },
+  {
+   "query": "ゾンビのあふれた世界で俺だけが襲われない",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 6
+  },
+  {
+   "query": "ダイヤのa act2 second season 第2クール",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 35
+  },
+  {
+   "query": "ダークサモナーとデキている ミニアニメ",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 15
+  },
+  {
+   "query": "パンどろぼう 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 40
+  },
+  {
+   "query": "ブラッククローバー 2nd season 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 86
+  },
+  {
+   "query": "ホテルインヒューマンズ 2期",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 47
+  },
+  {
+   "query": "マゼンチュ 声優",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 20
+  },
+  {
+   "query": "リゼロ 4期 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 85
+  },
+  {
+   "query": "ロメリア 戦記 アニメ アマゾン プライム",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 50
+  },
+  {
+   "query": "ロメリア戦記",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 14
+  },
+  {
+   "query": "ロメリア戦記 プライムビデオ",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 9
+  },
+  {
+   "query": "ロメリア戦記 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 49
+  },
+  {
+   "query": "世界最高の暗殺者 異世界貴族に転生する 2期",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 84
+  },
+  {
+   "query": "今期アニメ 声優",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 13
+  },
+  {
+   "query": "体にいい男 アニメ",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 20
+  },
+  {
+   "query": "冬アニメ",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 50
+  },
+  {
+   "query": "北見 六花",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 86
+  },
+  {
+   "query": "和泉風花",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 46
+  },
+  {
+   "query": "声優ランキング 2026",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 9
+  },
+  {
+   "query": "声優出演アニメ",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 6
+  },
+  {
+   "query": "天幕のジャードゥーガル 声優",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 14
+  },
+  {
+   "query": "富田美憂",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 82
+  },
+  {
+   "query": "帰還者の魔法は特別です 第2期 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 84
+  },
+  {
+   "query": "恐怖 コレクター アニメ どこで 見れる",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 19
+  },
+  {
+   "query": "恐怖 コレクター アニメ アマゾン プライム",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 10
+  },
+  {
+   "query": "甲斐田裕子",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 3
+  },
+  {
+   "query": "百妖譜 京師篇 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 48
+  },
+  {
+   "query": "禎丞",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 57
+  },
+  {
+   "query": "豊口めぐみ",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 71
+  },
+  {
+   "query": "野生のラスボスが現れた 2期 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 49
+  },
+  {
+   "query": "野生のラスボスが現れた2期 配信アマゾンプライム",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 10
+  },
+  {
+   "query": "釘宮理恵",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 34
+  },
+  {
+   "query": "鈴木みのり",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 60
+  },
+  {
+   "query": "青春のやり直しは異世界で アニメ",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 18
+  },
+  {
+   "query": "高野零 羊宮妃那",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 9
+  },
+  {
+   "query": "魔 入り まし た 入間 くん 声優",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 43
+  }
+ ],
+ "search_pages": [
+  {
+   "page": "https://animecastnow.com/next/",
+   "clicks": 3,
+   "impressions": 47,
+   "ctr": 0.06382978723404255,
+   "position": 18.06382978723404
+  },
+  {
+   "page": "https://animecastnow.com/va/0617/",
+   "clicks": 1,
+   "impressions": 2,
+   "ctr": 0.5,
+   "position": 6.5
+  },
+  {
+   "page": "https://animecastnow.com/work/w1cb15f5c/",
+   "clicks": 1,
+   "impressions": 2,
+   "ctr": 0.5,
+   "position": 19.5
+  },
+  {
+   "page": "https://animecastnow.com/ranking/",
+   "clicks": 0,
+   "impressions": 49,
+   "ctr": 0,
+   "position": 16.775510204081634
+  },
+  {
+   "page": "https://animecastnow.com/",
+   "clicks": 0,
+   "impressions": 10,
+   "ctr": 0,
+   "position": 14.7
+  },
+  {
+   "page": "https://animecastnow.com/work/w7419bb6a/",
+   "clicks": 0,
+   "impressions": 10,
+   "ctr": 0,
+   "position": 24.3
+  },
+  {
+   "page": "https://animecastnow.com/va/0050/",
+   "clicks": 0,
+   "impressions": 9,
+   "ctr": 0,
+   "position": 9.333333333333334
+  },
+  {
+   "page": "https://animecastnow.com/work/w535580c3/",
+   "clicks": 0,
+   "impressions": 9,
+   "ctr": 0,
+   "position": 23.444444444444443
+  },
+  {
+   "page": "https://animecastnow.com/work/wbe8c4220/",
+   "clicks": 0,
+   "impressions": 8,
+   "ctr": 0,
+   "position": 10.75
+  },
+  {
+   "page": "https://animecastnow.com/va/0236/",
+   "clicks": 0,
+   "impressions": 6,
+   "ctr": 0,
+   "position": 4.166666666666666
+  },
+  {
+   "page": "https://animecastnow.com/work/wb224eae4/",
+   "clicks": 0,
+   "impressions": 6,
+   "ctr": 0,
+   "position": 19.5
+  },
+  {
+   "page": "https://animecastnow.com/work/wc2df3b75/",
+   "clicks": 0,
+   "impressions": 6,
+   "ctr": 0,
+   "position": 19.166666666666668
+  },
+  {
+   "page": "https://animecastnow.com/vod/",
+   "clicks": 0,
+   "impressions": 5,
+   "ctr": 0,
+   "position": 10
+  },
+  {
+   "page": "https://animecastnow.com/work/w3f72ba4c/",
+   "clicks": 0,
+   "impressions": 5,
+   "ctr": 0,
+   "position": 19.2
+  },
+  {
+   "page": "https://animecastnow.com/va/0059/",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 7.5
+  },
+  {
+   "page": "https://animecastnow.com/va/0735/",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 3.75
+  },
+  {
+   "page": "https://animecastnow.com/work/",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 9.25
+  },
+  {
+   "page": "https://animecastnow.com/work/w1824f0ec/",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 37.75
+  },
+  {
+   "page": "https://animecastnow.com/work/w4d76fa22/",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 44.25
+  },
+  {
+   "page": "https://animecastnow.com/work/w595b9dbf/",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 40
+  },
+  {
+   "page": "https://animecastnow.com/work/w916ce540/",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 37.5
+  },
+  {
+   "page": "https://animecastnow.com/work/wb4d26898/",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 11.75
+  },
+  {
+   "page": "https://animecastnow.com/work/wc021426f/",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 46.5
+  },
+  {
+   "page": "https://animecastnow.com/work/wd8118699/",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 17.75
+  },
+  {
+   "page": "https://animecastnow.com/va/0214/",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 8
+  },
+  {
+   "page": "https://animecastnow.com/va/0491/",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 32.33333333333333
+  },
+  {
+   "page": "https://animecastnow.com/work/w077d4189/",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 23
+  },
+  {
+   "page": "https://animecastnow.com/work/w3d89d2fe/",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 8.666666666666668
+  },
+  {
+   "page": "https://animecastnow.com/work/w4aef8908/",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 5.333333333333333
+  },
+  {
+   "page": "https://animecastnow.com/work/w641a8632/",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 33.333333333333336
+  },
+  {
+   "page": "https://animecastnow.com/work/w84d30b10/",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 21.666666666666668
+  },
+  {
+   "page": "https://animecastnow.com/work/wfafd71ff/",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 21.333333333333332
+  },
+  {
+   "page": "https://animecastnow.com/about/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 3.5
+  },
+  {
+   "page": "https://animecastnow.com/va/0100/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 6
+  },
+  {
+   "page": "https://animecastnow.com/va/0392/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 6
+  },
+  {
+   "page": "https://animecastnow.com/work/w000eaa2a/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 9
+  },
+  {
+   "page": "https://animecastnow.com/work/w08b2ce08/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 9.5
+  },
+  {
+   "page": "https://animecastnow.com/work/w13096aa4/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 47
+  },
+  {
+   "page": "https://animecastnow.com/work/w3c68d691/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 49.5
+  },
+  {
+   "page": "https://animecastnow.com/work/w3dc47a36/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 35
+  },
+  {
+   "page": "https://animecastnow.com/work/w473ea32c/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 43
+  },
+  {
+   "page": "https://animecastnow.com/work/w506f2ccf/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 27
+  },
+  {
+   "page": "https://animecastnow.com/work/w7c9a29a1/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 41
+  },
+  {
+   "page": "https://animecastnow.com/work/w80100e53/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 47
+  },
+  {
+   "page": "https://animecastnow.com/work/w8a6520c4/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 27
+  },
+  {
+   "page": "https://animecastnow.com/work/w8ccea2a7/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 10
+  },
+  {
+   "page": "https://animecastnow.com/work/w8cd2faaa/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 19
+  },
+  {
+   "page": "https://animecastnow.com/work/wb79f1270/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 14
+  },
+  {
+   "page": "https://animecastnow.com/work/wd519773d/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 26
+  },
+  {
+   "page": "https://animecastnow.com/work/wd6c7ddf7/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 43
+  },
+  {
+   "page": "https://animecastnow.com/work/wd8c565c6/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 11.5
+  },
+  {
+   "page": "https://animecastnow.com/work/wde28afde/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 10.5
+  },
+  {
+   "page": "https://animecastnow.com/work/wdec78e5e/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 29
+  },
+  {
+   "page": "https://animecastnow.com/work/we5c7474e/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 12
+  },
+  {
+   "page": "https://animecastnow.com/work/wf2fb9b57/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 9.5
+  },
+  {
+   "page": "https://animecastnow.com/work/wfed89f17/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 47
+  },
+  {
+   "page": "https://animecastnow.com/costar/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 69
+  },
+  {
+   "page": "https://animecastnow.com/privacy/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 157
+  },
+  {
+   "page": "https://animecastnow.com/va/0083/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 7
+  },
+  {
+   "page": "https://animecastnow.com/va/0101/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 3
+  },
+  {
+   "page": "https://animecastnow.com/va/0207/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 5
+  },
+  {
+   "page": "https://animecastnow.com/va/0300/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 71
+  },
+  {
+   "page": "https://animecastnow.com/va/0367/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 1
+  },
+  {
+   "page": "https://animecastnow.com/va/0420/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 20
+  },
+  {
+   "page": "https://animecastnow.com/va/0445/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 4
+  },
+  {
+   "page": "https://animecastnow.com/va/0527/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 9
+  },
+  {
+   "page": "https://animecastnow.com/work/w0444ab20/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 8
+  },
+  {
+   "page": "https://animecastnow.com/work/w0f7d3bf6/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 50
+  },
+  {
+   "page": "https://animecastnow.com/work/w1bf13874/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 10
+  },
+  {
+   "page": "https://animecastnow.com/work/w1d995a66/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 14
+  },
+  {
+   "page": "https://animecastnow.com/work/w265db617/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 13
+  },
+  {
+   "page": "https://animecastnow.com/work/w2fcb8a67/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 10
+  },
+  {
+   "page": "https://animecastnow.com/work/w38555eb9/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 11
+  },
+  {
+   "page": "https://animecastnow.com/work/w3d7ea0cc/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 10
+  },
+  {
+   "page": "https://animecastnow.com/work/w400cf8bc/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 11
+  },
+  {
+   "page": "https://animecastnow.com/work/w558aadd2/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 11
+  },
+  {
+   "page": "https://animecastnow.com/work/w633d0ada/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 10
+  },
+  {
+   "page": "https://animecastnow.com/work/w9a8a5912/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 48
+  },
+  {
+   "page": "https://animecastnow.com/work/wa0567fdf/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 33
+  },
+  {
+   "page": "https://animecastnow.com/work/wa9a48897/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 5
+  },
+  {
+   "page": "https://animecastnow.com/work/wa9cab2ef/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 9
+  },
+  {
+   "page": "https://animecastnow.com/work/wb55e81a3/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 35
+  },
+  {
+   "page": "https://animecastnow.com/work/wcb4d4230/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 45
+  },
+  {
+   "page": "https://animecastnow.com/work/wd73d686a/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 10
+  },
+  {
+   "page": "https://animecastnow.com/work/wd8ce4712/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 19
+  },
+  {
+   "page": "https://animecastnow.com/work/we0191e29/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 33
+  },
+  {
+   "page": "https://animecastnow.com/work/we11e37b4/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 4
+  },
+  {
+   "page": "https://animecastnow.com/work/we1d17457/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 86
+  },
+  {
+   "page": "https://animecastnow.com/work/we7a4a1ae/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 9
+  },
+  {
+   "page": "https://animecastnow.com/work/wec2855ab/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 12
+  },
+  {
+   "page": "https://animecastnow.com/work/wf6b55917/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 11
+  },
+  {
+   "page": "https://animecastnow.com/work/wf9098d76/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 8
+  }
+ ],
+ "search_daily": [
+  {
+   "date": "2026-11-13",
+   "clicks": 0,
+   "impressions": 0,
+   "ctr": 0,
+   "position": 0
+  },
+  {
+   "date": "2026-11-14",
+   "clicks": 0,
+   "impressions": 8,
+   "ctr": 0,
+   "position": 23.625
+  },
+  {
+   "date": "2026-11-15",
+   "clicks": 0,
+   "impressions": 29,
+   "ctr": 0,
+   "position": 36.689655172413794
+  },
+  {
+   "date": "2026-11-16",
+   "clicks": 2,
+   "impressions": 59,
+   "ctr": 0.03389830508474576,
+   "position": 20.28813559322034
+  },
+  {
+   "date": "2026-11-17",
+   "clicks": 2,
+   "impressions": 66,
+   "ctr": 0.030303030303030304,
+   "position": 17.742424242424242
+  },
+  {
+   "date": "2026-11-18",
+   "clicks": 0,
+   "impressions": 52,
+   "ctr": 0,
+   "position": 19.25
+  },
+  {
+   "date": "2026-11-19",
+   "clicks": 0,
+   "impressions": 37,
+   "ctr": 0,
+   "position": 18.864864864864863
+  },
+  {
+   "date": "2026-11-20",
+   "clicks": 1,
+   "impressions": 66,
+   "ctr": 0.015151515151515152,
+   "position": 13.742424242424242
+  }
+ ]
+}
