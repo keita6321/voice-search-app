@@ -157,7 +157,7 @@ ${followBox(path)}
 <li><a href="/costar/">今期よく共演している声優コンビ</a></li>
 <li><a href="/sequel/">続編アニメの前に見ておきたい作品</a></li>
 ${data?.season && seasonLabel ? `<li><a href="/season/${esc(data.season)}/">${esc(seasonLabel)} 声優・キャストまとめ</a></li>` : ''}
-<li><a href="/about/">このサイトについて</a></li>
+<li><a href="/about/">このサイトと運営者について</a></li>
 </ul>
 <p class="note">本ページのリンクにはアフィリエイトを含みます。配信状況は各サービスでご確認ください。</p>
 </div>
