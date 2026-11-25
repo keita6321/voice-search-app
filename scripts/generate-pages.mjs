@@ -5,7 +5,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { xToolsPage } from './x-tools.mjs';
 import { plateClientData, plateFontHref, plateOf, splitTitle } from './plate.mjs';
-import { castOf, costarPairsPage, nextIndexPage, seasonPage, sequelGuidePage, nextWorkPages, rankingPage, startLabel, vodPage, workPages, workIndexPage } from './articles.mjs';
+import { castOf, ownerNoteOf, costarPairsPage, nextIndexPage, seasonPage, sequelGuidePage, nextWorkPages, rankingPage, startLabel, vodPage, workPages, workIndexPage } from './articles.mjs';
 
 if (Number(process.versions.node.split('.')[0]) < 18) {
   throw new Error('Node.js 18 or later is required.');
@@ -482,10 +482,11 @@ const featured = Object.entries(notes)
     // 主役級3人（作品ページのキャストと同じ順番）。役名は「・」より前の短い形
     const cast = (castByWork.get(id) ?? []).slice(0, 3).map(({ actor, roles }) => ({ c: String(roles[0] ?? '').split(/[・（(]/)[0], n: actor.name }));
     const { main, sub } = splitTitle(title);
-    return { id, title, t1: main, t2: sub, catch: note.catch, partner, genre: plate.key, label: plate.label, tags: plate.tags, cast };
+    return { id, title, t1: main, t2: sub, catch: note.catch, partner, owner: Boolean(ownerNoteOf(title)), genre: plate.key, label: plate.label, tags: plate.tags, cast };
   })
   .filter(Boolean)
-  .sort((a, b) => Number(Boolean(b.partner)) - Number(Boolean(a.partner)));
+  // 運営者のひとことがある作品を先に、次に提携サービスで見られる作品
+  .sort((a, b) => Number(b.owner) - Number(a.owner) || Number(Boolean(b.partner)) - Number(Boolean(a.partner)));
 await writeFile(path.join(root, 'featured.json'), `${JSON.stringify({ season: data.season, works: featured })}\n`);
 let prevSeasons = {};
 try {
