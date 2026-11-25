@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { iconSvg, plateOf, plateStyle, splitTitle } from './plate.mjs';
 // データ（data.json）から、クールごとに作り直す記事ページを生成する。
 // generate-pages.mjs から呼ばれる。見た目は about/index.html と揃える。
 
@@ -80,7 +81,7 @@ table.compare tr.partner td{background:#f5f2fa}.pr{font-size:10px;color:#62517f}
 .sched-date{text-align:center;font-weight:900;color:#1d2a44;font-size:15px;line-height:1.25}.sched-date small{display:block;font-size:11px;color:#62517f;font-weight:700}.sched-date .countdown{display:block;margin-top:4px;font-size:10px;color:#5d5a52;font-weight:700}
 .sched-title{display:block;font-weight:800;font-size:15px;line-height:1.4;color:#1d2a44;text-decoration:none}
 .sched>li{grid-template-columns:96px minmax(0,1fr);align-items:start}
-.sched-thumb{box-sizing:border-box;position:relative;display:flex;align-items:center;justify-content:center;width:96px;aspect-ratio:4/3;padding:4px;border-radius:10px;overflow:hidden;background:linear-gradient(135deg,#62517f,#1d2a44);color:#fff;font-size:10px;font-weight:900;line-height:1.3;text-align:center;text-decoration:none}.sched-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.mini-plate{box-sizing:border-box;position:relative;display:flex;flex-direction:column;justify-content:space-between;flex:none;width:96px;aspect-ratio:4/3;padding:5px 6px;border-radius:10px;overflow:hidden;color:#fff;text-decoration:none}.mini-plate .mini-ic{position:absolute;right:-6px;bottom:-8px;width:52px;height:52px;opacity:.18}.mini-plate i{position:relative;font-style:normal;font-size:9.5px;font-weight:700;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mini-plate b{position:relative;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;font-size:12px;line-height:1.25;font-weight:800;font-synthesis:none}
 .sched-day{display:inline-block;margin-bottom:3px;padding:1px 8px;border-radius:999px;background:#efebf5;color:#62517f;font-size:11px;font-weight:800}.sched-day .countdown{display:inline;margin-left:4px;font-size:11px;color:#62517f}
 .sched-catch{margin-top:3px;font-size:12px;color:#62517f;font-weight:700}
 .newcast{margin:18px 0 10px;padding:14px 16px;border-radius:14px;background:#1d2a44;color:#fff}.newcast h2{margin:0 0 4px;font-size:17px;color:#fff}.newcast>p{margin:0 0 10px;font-size:12px;opacity:.8}
@@ -98,7 +99,7 @@ table.compare tr.partner td{background:#f5f2fa}.pr{font-size:10px;color:#62517f}
 .pair-works{margin:8px 0 0;padding:0;list-style:none;font-size:13px;line-height:1.7}.pair-works li::before{content:"・";color:#62517f}.pair-works a{color:#62517f;font-weight:700}.pair-works span{display:block;margin-left:1em;color:#5d5a52;font-size:12px;line-height:1.5}
 .seq{list-style:none;margin:12px 0;padding:0;display:grid;gap:12px}
 .seq>li{padding:14px 16px;border:1px solid #e3dcef;border-radius:14px;background:#fff}
-.seq-thumb{box-sizing:border-box;position:relative;display:flex;align-items:center;justify-content:center;width:96px;aspect-ratio:4/3;padding:6px;border-radius:10px;overflow:hidden;background:linear-gradient(135deg,#62517f,#1d2a44);color:#fff;font-size:11px;font-weight:900;line-height:1.3;text-align:center;text-decoration:none}.seq-thumb img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;object-position:center 75%}
+.mini-plate{box-sizing:border-box;position:relative;display:flex;flex-direction:column;justify-content:space-between;flex:none;width:96px;aspect-ratio:4/3;padding:5px 6px;border-radius:10px;overflow:hidden;color:#fff;text-decoration:none}.mini-plate .mini-ic{position:absolute;right:-6px;bottom:-8px;width:52px;height:52px;opacity:.18}.mini-plate i{position:relative;font-style:normal;font-size:9.5px;font-weight:700;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mini-plate b{position:relative;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;font-size:12px;line-height:1.25;font-weight:800;font-synthesis:none}
 .seq-head{display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;align-items:center}.seq-head .note{margin:4px 0 0}
 .seq-title{font-size:16px;font-weight:900;line-height:1.45}.seq-title a{color:#1d2a44;text-decoration:none}
 .seq-prev{margin:8px 0 4px;padding:8px 12px;border-radius:10px;background:#f8f6fc;font-size:13px;line-height:1.6}.seq-prev b{color:#62517f}
@@ -371,7 +372,13 @@ const castPairs = (cast, n) => cast.slice(0, n).map(({ actor, roles }) => `${rol
 // 説明文の頭：「〇〇」の声優は、役名：声優名…ほか○名。（キャスト未発表なら、その旨）
 const castLead = (title, cast) => cast.length ? `「${title}」の声優は、${castPairs(cast, 3)}${cast.length > 3 ? `ほか${cast.length}名` : ''}。` : `「${title}」のキャストは未発表です。`;
 
-function castOf(data) {
+// 作品の小さなタイトルプレート（/next/・/sequel/ の作品カードの左）。他社の画像は使わず、ジャンルの色・柄・アイコンと作品名で見せる
+function miniPlate(title, href, text = splitTitle(title).main) {
+  const p = plateOf(title);
+  return `<a class="mini-plate" href="${esc(href)}" tabindex="-1" aria-hidden="true" style="${plateStyle(p)}">${iconSvg(p.icon, 'mini-ic')}<i>${esc(p.short || 'アニメ')}</i><b style="font-family:${esc(p.font)}">${esc(text)}</b></a>`;
+}
+
+export function castOf(data) {
   const byWork = new Map();
   for (const actor of data.voice_actors) {
     for (const role of actor.roles) {
@@ -773,9 +780,8 @@ export function nextIndexPage(ctx, next, castLog = null) {
     const date = startLabel(work.start_date);
     const prev = ctx.prevSeasons?.[work.title] && ctx.partnerLinks?.[ctx.prevSeasons[work.title].provider];
     const names = cast.slice(0, 4).map(({ actor }, i) => `<a href="/va/${toPageId(actor.actor_id)}/" data-ga-event="cast_click" data-ga-work-id="${esc(id)}" data-ga-actor-id="${esc(actor.actor_id)}" data-ga-position="${i + 1}" data-ga-page-type="next_index">${esc(actor.name)}</a>`);
-    // キービジュアル（オーナー判断で /next/ にも出す。読み込めないときは作品名入りの枠）と、作品紹介のキャッチコピー
-    const src = ctx.thumbnailOverrides?.[work.title] || work.thumbnail;
-    const thumb = `<a class="sched-thumb" href="/work/${esc(id)}/" tabindex="-1" aria-hidden="true"><span>${esc(work.title.slice(0, 14))}</span>${src ? `<img src="${esc(src)}" alt="" width="96" height="72" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}</a>`;
+    // タイトルプレート（ジャンルの色・柄と作品名）と、作品紹介のキャッチコピー
+    const thumb = miniPlate(work.title, `/work/${id}/`);
     const catchCopy = ctx.notes?.[work.title]?.catch;
     return `<li>${thumb}<div><span class="sched-day">${date ? `${Number(match[1])}/${Number(match[2])}${esc(date.slice(-3))}${countdown(work.start_date)}` : '放送日未定'}</span><a class="sched-title" href="/work/${esc(id)}/">${esc(work.title)}</a>${catchCopy ? `<div class="sched-catch">${esc(catchCopy)}</div>` : ''}<div class="sched-cast">${cast.length ? `${names.join('、')}${cast.length > 4 ? ` ほか${cast.length - 4}名` : ''}` : 'キャスト未発表'}</div>${prev ? `<a class="sched-chip" href="/work/${esc(id)}/#prev-h">前のシーズンはPrime Videoで</a>` : ''}</div></li>`;
   };
@@ -866,10 +872,7 @@ export function sequelGuidePage(ctx, next) {
     const url = ctx.partnerLinks[x.entry.provider];
     const before = ctx.notes?.[x.title]?.before;
     const date = startLabel(x.work.start_date);
-    // 画像がない・読み込めないときは、作品名の入った色付きの枠になる（data/thumbnail-overrides.json で手動指定もできる）
-    const src = ctx.thumbnailOverrides?.[x.title] || x.work.thumbnail;
-    const thumb = `<span>${esc(x.entry.series)}</span>` + (src ? `<img src="${esc(src)}" alt="" width="96" height="72" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">` : '');
-    return `<li><div class="seq-head"><a class="seq-thumb" href="/work/${esc(x.id)}/" tabindex="-1" aria-hidden="true">${thumb}</a><div><div class="seq-title"><a href="/work/${esc(x.id)}/">${esc(x.title)}</a></div>
+    return `<li><div class="seq-head">${miniPlate(x.title, `/work/${x.id}/`, x.entry.series)}<div><div class="seq-title"><a href="/work/${esc(x.id)}/">${esc(x.title)}</a></div>
 ${x.when === 'next' && date ? `<p class="note">${esc(date)}から放送開始予定 ${countdown(x.work.start_date)}</p>` : ''}</div></div>
 <div class="seq-prev">前に見ておく：<b>${esc(x.entry.series)}</b>の${esc(x.entry.label)}<br>${esc(label(x.entry.provider))}で、プライム会員なら追加料金なしで見られます（${esc(x.entry.checked)}時点）。</div>
 ${before ? `<p class="note">${esc(before)}</p>` : ''}

@@ -150,7 +150,8 @@ def main():
         if not cast:
             missing.append(w); continue
         wid = "w" + hashlib.md5(w["nt"].encode()).hexdigest()[:8]
-        out_works[wid] = {"title": w["title"], "thumbnail": w.get("thumbnail"), "credit": None, "official_url": w.get("official"),
+        # 作品のキービジュアル（公式サイトの画像）は掲載許可がないので、サイトのデータには入れない（2026-11-25、ASP の審査で指摘）
+        out_works[wid] = {"title": w["title"], "thumbnail": None, "credit": None, "official_url": w.get("official"),
                           "airing_confirmed": False, "start_date": w.get("start"),
                           "vod_links": [{"provider": p, "url": VOD_PROVIDERS[p]} for p in (w.get("vods") or []) if p in VOD_PROVIDERS]}
         if not out_works[wid]["vod_links"]:
