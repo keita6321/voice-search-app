@@ -4,7 +4,8 @@ import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { xToolsPage } from './x-tools.mjs';
-import { costarPairsPage, nextIndexPage, seasonPage, sequelGuidePage, nextWorkPages, rankingPage, startLabel, vodPage, workPages, workIndexPage } from './articles.mjs';
+import { plateClientData, plateFontHref, plateOf, splitTitle } from './plate.mjs';
+import { castOf, costarPairsPage, nextIndexPage, seasonPage, sequelGuidePage, nextWorkPages, rankingPage, startLabel, vodPage, workPages, workIndexPage } from './articles.mjs';
 
 if (Number(process.versions.node.split('.')[0]) < 18) {
   throw new Error('Node.js 18 or later is required.');
@@ -326,10 +327,21 @@ const dateHtml = {
 }[UPDATE_DATE_STYLE];
 const newsLink = latestNews ? `<${latestNews.url ? `a href="${escHtml(latestNews.url)}" data-ga-event="news_click" data-ga-page-type="home"` : 'span'} class="news-item"><time datetime="${escHtml(latestNews.date)}">${md(latestNews.date)}</time>${escHtml(latestNews.text)}</${latestNews.url ? 'a' : 'span'}>` : '';
 const newsHtml = `<!--news-->${UPDATE_DATE_STYLE === 'search' ? dateHtml : ''}<div class="newsbar">${latestNews ? `<b class="news-label">お知らせ</b><div class="news-track"><div class="news-run">${newsLink}</div></div>` : '<span class="news-track"></span>'}<a class="x-follow" href="https://x.com/animecastnow" target="_blank" rel="noopener" data-ga-event="x_follow_click" data-ga-page-type="home" aria-label="X（@animecastnow）をフォロー">＋ Xでフォロー</a></div><!--/news-->`;
+// タイトルプレート（作品のジャンルごとの見た目）を index.html のスクリプトに渡す。トップの注目作品の作品名だけ Web フォントを読み込む
+let workNotesForPlate = {};
+try { workNotesForPlate = JSON.parse(await readFile(path.join(root, 'data', 'work_notes.json'), 'utf8')); } catch (error) { if (error.code !== 'ENOENT') throw error; }
+const nextForPlate = await readFile(path.join(root, 'data-next.json'), 'utf8').then(JSON.parse).catch(() => null);
+const plateTitles = [...Object.values(data.works), ...Object.values(nextForPlate?.works ?? {})].map(w => w.title);
+const plateJson = JSON.stringify(plateClientData(plateTitles)).replace(/</g, '\\u003c');
+const featuredTitles = Object.values(data.works).map(w => w.title).filter(t => workNotesForPlate[t]?.catch).map(t => splitTitle(t).main);
+const fontHref = plateFontHref(featuredTitles);
+const plateFontHtml = `<!--plate-font-->${fontHref ? `<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="${escHtml(fontHref)}">` : ''}<!--/plate-font-->`;
 const template = rawTemplate.replace(/\d{4}年( ?)[冬春夏秋]アニメ/g, (_, space) => (space ? label.replace('年', '年 ') : label))
   .replace(/<!--updates-->[\s\S]*?<!--\/updates-->/, `<!--updates-->${UPDATE_DATE_STYLE === 'sub' ? dateHtml : ''}<!--/updates-->`)
   .replace(/<!--h1date-->[\s\S]*?<!--\/h1date-->/, `<!--h1date-->${UPDATE_DATE_STYLE === 'h1' ? dateHtml : ''}<!--/h1date-->`)
-  .replace(/<!--news-->[\s\S]*?<!--\/news-->/, newsHtml);
+  .replace(/<!--news-->[\s\S]*?<!--\/news-->/, newsHtml)
+  .replace(/<!--plate-font-->[\s\S]*?<!--\/plate-font-->/, () => plateFontHtml)
+  .replace(/\/\*PLATE\*\/[\s\S]*?\/\*\/PLATE\*\//, () => `/*PLATE*/${plateJson}/*/PLATE*/`);
 if (template !== rawTemplate) await writeFile(path.join(root, 'index.html'), template);
 // 来期の先行取得（data-next.json）。なければ来期のページは作らない
 let next = null;
@@ -454,24 +466,23 @@ try {
 } catch (error) {
   if (error.code !== 'ENOENT') throw error;
 }
-let thumbnailOverrides = {};
-try {
-  thumbnailOverrides = JSON.parse(await readFile(path.join(root, 'data', 'thumbnail-overrides.json'), 'utf8')).works ?? {};
-} catch (error) {
-  if (error.code !== 'ENOENT') throw error;
-}
-// トップの「今期の注目作品」：手書きの紹介（catch）があり、画像と配信先がある作品。提携サービスで見られる作品を先に
+// トップの「今期の注目作品」：手書きの紹介（catch）があり、配信先がある作品。提携サービスで見られる作品を先に。
+// 画像は使わず、作品ごとのタイトルプレート（scripts/plate.mjs、data/work_style.json）で見せる
+const castByWork = castOf(data);
 const featured = Object.entries(notes)
   .filter(([title, note]) => title !== '_about' && note.catch)
   .map(([title, note]) => {
     const entry = Object.entries(data.works).find(([, work]) => work.title === title);
-    const thumbnail = thumbnailOverrides[title] || entry?.[1].thumbnail;
-    if (!entry || !thumbnail || !entry[1].vod_links?.length) return null;
+    if (!entry || !entry[1].vod_links?.length) return null;
     const [id, work] = entry;
     // 紹介文で独占配信とされている作品は、配信先データと食い違うおそれがあるのでバッジを出さない
     const exclusive = JSON.stringify(note).includes('独占配信');
     const partner = exclusive ? null : work.vod_links.find(v => partnerServices.includes(v.provider))?.provider ?? null;
-    return { id, title, thumbnail, catch: note.catch, partner };
+    const plate = plateOf(title);
+    // 主役級3人（作品ページのキャストと同じ順番）。役名は「・」より前の短い形
+    const cast = (castByWork.get(id) ?? []).slice(0, 3).map(({ actor, roles }) => ({ c: String(roles[0] ?? '').split(/[・（(]/)[0], n: actor.name }));
+    const { main, sub } = splitTitle(title);
+    return { id, title, t1: main, t2: sub, catch: note.catch, partner, genre: plate.key, label: plate.label, tags: plate.tags, cast };
   })
   .filter(Boolean)
   .sort((a, b) => Number(Boolean(b.partner)) - Number(Boolean(a.partner)));
@@ -482,7 +493,7 @@ try {
 } catch (error) {
   if (error.code !== 'ENOENT') throw error;
 }
-const articleContext = { data, notes, past: pastWorksOf, prevSeasons, thumbnailOverrides, seasonLabel: label, seasonLabelOf: seasonLabel, nextLabel: next ? seasonLabel(next.season) : '', origin, ogImage, aboutHtml, partnerLinks, partnerServices };
+const articleContext = { data, notes, past: pastWorksOf, prevSeasons, seasonLabel: label, seasonLabelOf: seasonLabel, nextLabel: next ? seasonLabel(next.season) : '', origin, ogImage, aboutHtml, partnerLinks, partnerServices };
 // X 運用ツール（オーナー専用。noindex、サイトマップにも入れない）
 await mkdir(path.join(root, 'tools', 'x'), { recursive: true });
 await writeFile(path.join(root, 'tools', 'x', 'index.html'), xToolsPage({ data, next, castLog, origin, past: pastWorksOf, seasonLabel: label, nextLabel: next ? seasonLabel(next.season) : '' }));
