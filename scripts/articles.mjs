@@ -81,7 +81,7 @@ table.compare tr.partner td{background:#f5f2fa}.pr{font-size:10px;color:#62517f}
 .sched-date{text-align:center;font-weight:900;color:#1d2a44;font-size:15px;line-height:1.25}.sched-date small{display:block;font-size:11px;color:#62517f;font-weight:700}.sched-date .countdown{display:block;margin-top:4px;font-size:10px;color:#5d5a52;font-weight:700}
 .sched-title{display:block;font-weight:800;font-size:15px;line-height:1.4;color:#1d2a44;text-decoration:none}
 .sched>li{grid-template-columns:96px minmax(0,1fr);align-items:start}
-.mini-plate{box-sizing:border-box;position:relative;display:flex;flex-direction:column;justify-content:space-between;flex:none;width:96px;aspect-ratio:4/3;padding:5px 6px;border-radius:10px;overflow:hidden;color:#fff;text-decoration:none}.mini-plate .mini-ic{position:absolute;right:-6px;bottom:-8px;width:52px;height:52px;opacity:.18}.mini-plate i{position:relative;font-style:normal;font-size:9.5px;font-weight:700;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mini-plate b{position:relative;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;font-size:12px;line-height:1.25;font-weight:800;font-synthesis:none}
+.mini-plate{box-sizing:border-box;position:relative;display:flex;flex-direction:column;justify-content:flex-end;flex:none;width:96px;aspect-ratio:4/3;padding:5px 6px;border-radius:10px;overflow:hidden;color:#fff;text-decoration:none}.mini-plate .mini-ic{position:absolute;right:-6px;bottom:-8px;width:52px;height:52px;opacity:.18}.mini-plate i{position:relative;font-style:normal;font-size:9.5px;font-weight:700;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mini-plate b{position:relative;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;font-size:12px;line-height:1.25;font-weight:800;font-synthesis:none}
 .sched-day{display:inline-block;margin-bottom:3px;padding:1px 8px;border-radius:999px;background:#efebf5;color:#62517f;font-size:11px;font-weight:800}.sched-day .countdown{display:inline;margin-left:4px;font-size:11px;color:#62517f}
 .sched-catch{margin-top:3px;font-size:12px;color:#62517f;font-weight:700}
 .newcast{margin:18px 0 10px;padding:14px 16px;border-radius:14px;background:#1d2a44;color:#fff}.newcast h2{margin:0 0 4px;font-size:17px;color:#fff}.newcast>p{margin:0 0 10px;font-size:12px;opacity:.8}
@@ -99,7 +99,7 @@ table.compare tr.partner td{background:#f5f2fa}.pr{font-size:10px;color:#62517f}
 .pair-works{margin:8px 0 0;padding:0;list-style:none;font-size:13px;line-height:1.7}.pair-works li::before{content:"・";color:#62517f}.pair-works a{color:#62517f;font-weight:700}.pair-works span{display:block;margin-left:1em;color:#5d5a52;font-size:12px;line-height:1.5}
 .seq{list-style:none;margin:12px 0;padding:0;display:grid;gap:12px}
 .seq>li{padding:14px 16px;border:1px solid #e3dcef;border-radius:14px;background:#fff}
-.mini-plate{box-sizing:border-box;position:relative;display:flex;flex-direction:column;justify-content:space-between;flex:none;width:96px;aspect-ratio:4/3;padding:5px 6px;border-radius:10px;overflow:hidden;color:#fff;text-decoration:none}.mini-plate .mini-ic{position:absolute;right:-6px;bottom:-8px;width:52px;height:52px;opacity:.18}.mini-plate i{position:relative;font-style:normal;font-size:9.5px;font-weight:700;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mini-plate b{position:relative;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;font-size:12px;line-height:1.25;font-weight:800;font-synthesis:none}
+.mini-plate{box-sizing:border-box;position:relative;display:flex;flex-direction:column;justify-content:flex-end;flex:none;width:96px;aspect-ratio:4/3;padding:5px 6px;border-radius:10px;overflow:hidden;color:#fff;text-decoration:none}.mini-plate .mini-ic{position:absolute;right:-6px;bottom:-8px;width:52px;height:52px;opacity:.18}.mini-plate i{position:relative;font-style:normal;font-size:9.5px;font-weight:700;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mini-plate b{position:relative;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;font-size:12px;line-height:1.25;font-weight:800;font-synthesis:none}
 .seq-head{display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;align-items:center}.seq-head .note{margin:4px 0 0}
 .seq-title{font-size:16px;font-weight:900;line-height:1.45}.seq-title a{color:#1d2a44;text-decoration:none}
 .seq-prev{margin:8px 0 4px;padding:8px 12px;border-radius:10px;background:#f8f6fc;font-size:13px;line-height:1.6}.seq-prev b{color:#62517f}
@@ -375,7 +375,7 @@ const castLead = (title, cast) => cast.length ? `「${title}」の声優は、${
 // 作品の小さなタイトルプレート（/next/・/sequel/ の作品カードの左）。他社の画像は使わず、ジャンルの色・柄・アイコンと作品名で見せる
 function miniPlate(title, href, text = splitTitle(title).main) {
   const p = plateOf(title);
-  return `<a class="mini-plate" href="${esc(href)}" tabindex="-1" aria-hidden="true" style="${plateStyle(p)}">${iconSvg(p.icon, 'mini-ic')}<i>${esc(p.short || 'アニメ')}</i><b style="font-family:${esc(p.font)}">${esc(text)}</b></a>`;
+  return `<a class="mini-plate" href="${esc(href)}" tabindex="-1" aria-hidden="true" style="${plateStyle(p)}">${iconSvg(p.icon, 'mini-ic')}<b style="font-family:${esc(p.font)}">${esc(text)}</b></a>`;
 }
 
 export function castOf(data) {
