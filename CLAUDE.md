@@ -54,7 +54,7 @@ npm run posts -- --start YYYY-MM-DD --days 7 --campaign 2027winter --season-tag 
   - `data.json`：今期。
   - `data-next.json`：来期。
   - `data/registry/people.json`：声優 ID の台帳。URL を固定するためのもので、ID は変えない。
-  - `data/work_notes.json`：手書きの作品紹介。（中身は Claude の下書き）
+  - `data/work_notes.json`：作品紹介（中身は Claude の下書き）。2026-11-26 から作品ページの紹介文と「前作は見ておくべき？」は出していない（`scripts/articles.mjs` の `SHOW_AI_NOTES`）。使っているのは短いキャッチコピー（catch）だけ。
   - `data/owner_notes.json`：作品ページの「運営者のひとこと」。運営者（ゆすら）本人の回答をもとに、言い回しだけ整えたもの。内容を足さない・作らない。公開前に本人が確認する。ひとことがある作品は、トップの注目作品で先に並ぶ。
   - `data/past-works.json`：声優の主な過去作。作品ページのキャストに「主な出演」として1つ出す。
   - `data/prev-seasons.json`：続編の「前のシーズンから見るなら」。Prime Video の作品ページで、前のシーズンがプライム会員なら追加料金なしで見られると確かめたものだけ載せる（日付つき）。

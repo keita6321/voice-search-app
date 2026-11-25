@@ -436,9 +436,12 @@ const workCtaHtml = provider => (PARTNER_OFFERS[provider]
   ? `<span class="cta-main">この作品は${esc(label(provider))}で配信中</span><span class="cta-sub">${esc(PARTNER_OFFERS[provider].cta)} ↗</span>`
   : `${esc(ctaText(provider))} ↗`);
 
-// 手書きの作品紹介（data/work_notes.json）
+// 作品紹介（data/work_notes.json）。中身は Claude の下書きで、運営者が確かめていないため、いまは出さない
+// （2026-11-26 オーナー判断。ASP の審査で「運営者自身の考察・体験がない」と指摘されたため）。
+// 作品の説明は「運営者のひとこと」（data/owner_notes.json）を使う。短いキャッチコピー（catch）だけは使い続ける
+const SHOW_AI_NOTES = false;
 function notesSection(note, title) {
-  if (!note) return '';
+  if (!note || !SHOW_AI_NOTES) return '';
   const hosts = (note.sources ?? []).map(url => {
     try { return `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(new URL(url).hostname)}</a>`; } catch { return ''; }
   }).filter(Boolean);
@@ -521,7 +524,7 @@ function prevSection({ ctx, id, work, pageType }) {
   return `<section class="prev" aria-labelledby="prev-h">
 <h2 id="prev-h">前のシーズンから見るなら</h2>
 <p>「${esc(entry.series)}」の${esc(entry.label)}は、${esc(label(entry.provider))}でプライム会員なら追加料金なしで見られます（${esc(entry.checked)}時点）。</p>
-${ctx.notes?.[work.title]?.before ? `<p class="note">${esc(ctx.notes[work.title].before)}</p>` : ''}
+${SHOW_AI_NOTES && ctx.notes?.[work.title]?.before ? `<p class="note">${esc(ctx.notes[work.title].before)}</p>` : ''}
 <p><a class="cta" href="${esc(url)}" target="_blank" rel="sponsored noopener" data-ga-event="vod_click" data-ga-provider="${esc(entry.provider)}" data-ga-work-id="${esc(id)}" data-ga-work-title="${esc(work.title)}" data-ga-page-type="${esc(pageType)}" data-ga-position="1">${esc(ctaText(entry.provider))} ↗</a></p>
 ${note ? `<p class="note">${esc(note)}</p>` : ''}
 </section>`;
@@ -893,7 +896,7 @@ export function sequelGuidePage(ctx, next) {
     .filter(x => x.id && ctx.partnerLinks?.[x.entry.provider]);
   const card = (x, index) => {
     const url = ctx.partnerLinks[x.entry.provider];
-    const before = ctx.notes?.[x.title]?.before;
+    const before = SHOW_AI_NOTES ? ctx.notes?.[x.title]?.before : null;
     const date = startLabel(x.work.start_date);
     return `<li><div class="seq-head">${miniPlate(x.title, `/work/${x.id}/`, x.entry.series)}<div>${genreChip(x.title, ' seq-genre')}<div class="seq-title"><a href="/work/${esc(x.id)}/">${esc(x.title)}</a></div>
 ${x.when === 'next' && date ? `<p class="note">${esc(date)}から放送開始予定 ${countdown(x.work.start_date)}</p>` : ''}</div></div>
