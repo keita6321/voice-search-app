@@ -385,6 +385,20 @@ function genreChip(title, cls = '') {
   return `<span class="genre-chip${cls}" style="color:${p.color}">${iconSvg(p.icon, '')}${esc(p.short)}</span>`;
 }
 
+// 運営者（ゆすら）のひとこと。本人の回答をもとにしたもの（data/owner_notes.json）。AI の下書きの作品紹介とは分けて置く
+let OWNER_NOTES = {};
+try { OWNER_NOTES = JSON.parse(readFileSync(new URL('../data/owner_notes.json', import.meta.url), 'utf8')); } catch (error) { if (error.code !== 'ENOENT') throw error; }
+export const ownerNoteOf = title => (title !== '_about' && OWNER_NOTES[title]?.comment ? OWNER_NOTES[title] : null);
+function ownerSection(title) {
+  const n = ownerNoteOf(title);
+  if (!n) return '';
+  const [y, m, d] = String(n.date).split('-').map(Number);
+  return `<section class="owner-note" aria-labelledby="owner-h"><h2 id="owner-h">運営者のひとこと</h2>
+<p class="owner-meta"><b>ゆすら</b>（<a href="/about/#owner">運営者について</a>）・${esc(n.watched)}（${y}年${m}月${d}日時点）</p>
+<p>${esc(n.comment)}</p>
+${n.recommend ? `<p class="owner-rec"><b>こんな人におすすめ</b>${esc(n.recommend)}</p>` : ''}</section>`;
+}
+
 export function castOf(data) {
   const byWork = new Map();
   for (const actor of data.voice_actors) {
@@ -593,6 +607,7 @@ ${others.length && partners.length ? `<p class="note">リンクは提携して�
 ${buttons ? `<p class="top-cta">${buttons}</p>
 ${notesFor.map(note => `<p class="note">${esc(note)}</p>`).join('\n')}` : ''}
 ${castSection}
+${ownerSection(work.title)}
 ${costarSection}
 ${prevSection({ ctx, id, work, pageType: 'work_prev' })}
 ${vodSection}
@@ -705,6 +720,7 @@ export function nextWorkPages(ctx, next, skipIds = new Set()) {
     const body = `<h1>「${esc(work.title)}」の声優・キャストと放送日（${esc(nextLabel)}）</h1>
 <p class="lead">${lead}</p>
 ${castSection}
+${ownerSection(work.title)}
 ${costarSection}
 ${prevSection({ ctx, id, work, pageType: 'next_work_prev' })}
 <h2>配信</h2>
