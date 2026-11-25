@@ -105,7 +105,9 @@ button{font:inherit;color:inherit;cursor:pointer}
 .plate{position:relative;display:flex;flex-direction:column;justify-content:space-between;aspect-ratio:1200/630;padding:10px 12px;box-sizing:border-box;overflow:hidden;color:#fff}
 .plate-ic{position:absolute;right:-10px;bottom:-16px;width:118px;height:118px;opacity:.16}
 .plate-top,.plate-bottom{position:relative;display:block;min-width:0}
-.plate-chip{display:inline-block;padding:2px 8px;border-radius:999px;background:rgba(255,255,255,.2);font-size:11px;font-weight:700;vertical-align:middle}
+.plate-gen{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:999px;background:#fff;font-size:11px;font-weight:800;vertical-align:middle}
+.plate-gi{width:13px;height:13px}
+.plate-chip{display:inline-block;margin-left:4px;padding:2px 8px;border-radius:999px;background:rgba(255,255,255,.2);font-size:11px;font-weight:700;vertical-align:middle}
 .plate-title{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-size:24px;line-height:1.22;letter-spacing:.02em;font-weight:800;font-synthesis:none}
 .plate-title.l2{font-size:19px}.plate-title.l3{font-size:15.5px;-webkit-line-clamp:3}
 .plate-cast{display:flex;gap:5px;overflow:hidden;margin-top:6px}
@@ -113,6 +115,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .plate-cast em{display:block;font-style:normal;font-size:10px;font-weight:500;opacity:.85;overflow:hidden;text-overflow:ellipsis}
 .feature-body{display:block;padding:9px 11px 11px}
 .feature-tags{display:block;margin-bottom:2px;font-size:11px;font-weight:700;color:var(--ac);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wgen{display:inline-flex;align-items:center;gap:3px;margin-bottom:3px;font-size:11px;font-weight:800}.wgen svg{width:13px;height:13px}
 .feature-card p{margin:0 0 3px;font-size:14px;font-weight:900;line-height:1.4}
 .feature-card strong{display:block;font-size:11px;font-weight:700;color:var(--sub);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .feature-card p{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.8em}
@@ -293,7 +296,7 @@ const PLATE=/*PLATE*/{"g":{"fantasy":{"l":"異世界・ファンタジー","c":"
 const plateOf=t=>{const P=PLATE||{g:{},w:{}};const e=P.w[t];const k=Array.isArray(e)?e[0]:(e||'none');const g=P.g[k]||P.g.none||{c:'#1d2a44',b:'none',s:'auto',f:'sans-serif',i:'',l:''};return{...g,k,l:Array.isArray(e)?e[1]:g.l}};
 const plateIcon=(d,c)=>d?`<svg class="${c}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`:'';
 const plateHtml=w=>{const p=plateOf(w.title);const t=w.t1||w.title;const size=t.length>22?' l3':t.length>9?' l2':'';
-  return `<span class="plate" style="background-color:${p.c};background-image:${p.b};background-size:${p.s}">${plateIcon(p.i,'plate-ic')}<span class="plate-top">${w.t2?`<span class="plate-chip">${esc(w.t2)}</span>`:''}</span><span class="plate-bottom"><span class="plate-title${size}" style="font-family:${p.f}">${esc(t)}</span>${(w.cast||[]).length?`<span class="plate-cast">${w.cast.map(x=>`<span>${x.c?`<em>${esc(x.c)}</em>`:''}${esc(x.n)}</span>`).join('')}</span>`:''}</span></span>`};
+  return `<span class="plate" style="background-color:${p.c};background-image:${p.b};background-size:${p.s}">${plateIcon(p.i,'plate-ic')}<span class="plate-top">${p.l?`<span class="plate-gen" style="color:${p.c}">${plateIcon(p.i,'plate-gi')}${esc(p.l)}</span>`:''}${w.t2?`<span class="plate-chip">${esc(w.t2)}</span>`:''}</span><span class="plate-bottom"><span class="plate-title${size}" style="font-family:${p.f}">${esc(t)}</span>${(w.cast||[]).length?`<span class="plate-cast">${w.cast.map(x=>`<span>${x.c?`<em>${esc(x.c)}</em>`:''}${esc(x.n)}</span>`).join('')}</span>`:''}</span></span>`};
 // 作品数が同じなら、この順で優先する（無料体験があるサービスを先に）
 const partnerRank=p=>{const i=[...PARTNER_SERVICES].indexOf(p);return i<0?99:i};
 // 提携サービスの無料体験など（各社公式で条件を確認してから書く。確認日も入れる）。scripts/articles.mjs の PARTNER_NOTES と同じ内容にする
@@ -565,7 +568,7 @@ function detail(a){
   <header class="detail-head"><div class="detail-bar"><button class="back" id="bk" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>声優一覧へ戻る</span></button><img class="detail-brand" src="/assets/logo.svg" alt="ANIME CAST NOW" width="780" height="100"><span aria-hidden="true"></span></div>
   <div class="profile"><div class="profile-copy"><h2 id="detail-name">${esc(a.name)}</h2><small>${esc(a.reading)}</small><em>${a.roles.length?`今期 ${a.roles.length}作品に出演中`:`来期 ${a.next.length}作品に出演予定`}${a.roles.length&&a.next?.length?`<span class="em-next">・来期 ${a.next.length}作品</span>`:''}</em><a class="share-x" id="share-x" data-ga-event="share_x_click" data-ga-va-id="${esc(a.actor_id)}" data-ga-va-name="${esc(a.name)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(a.name)}さんの出演情報をXでシェア">Xでシェア</a><button type="button" class="share-native" id="share-native" hidden data-ga-event="share_native_click" data-ga-va-id="${esc(a.actor_id)}" data-ga-va-name="${esc(a.name)}">LINEなどで送る</button></div></div></header>
   <div class="modal-scroll"><p class="pr-note">当ページのリンクには広告が含まれています。</p>${a.roles.length?bestVodHtml(a)+'<h3>今期の出演作品</h3>':''}<div class="work-grid">`+a.roles.filter(r=>D.works[r.work_id]?.vod_links?.length).map(r=>{const w=D.works[r.work_id];const p=plateOf(w.title);
-   return `<article class="work" style="--wc:${p.c}"><div class="work-main"><div class="work-intro"><div class="work-copy"><h4><a class="work-link" href="/work/${esc(r.work_id)}/">${esc(w.title)}</a></h4>${w.credit?`<div class="cr">${esc(w.credit)}</div>`:''}
+   return `<article class="work" style="--wc:${p.c}"><div class="work-main"><div class="work-intro"><div class="work-copy">${p.l?`<span class="wgen" style="color:${p.c}">${plateIcon(p.i,'')}${esc(p.l)}</span>`:''}<h4><a class="work-link" href="/work/${esc(r.work_id)}/">${esc(w.title)}</a></h4>${w.credit?`<div class="cr">${esc(w.credit)}</div>`:''}
    <div class="castline"><b>${esc(r.character_name)}</b> ／ ${esc(a.name)}</div><div class="vods">`+vodLinksHtml(w,r,a)+`</div></div></div></div>`+
    ((r.official_url||w.official_url)?`<a class="off" href="${esc(r.official_url||w.official_url)}" data-ga-event="official_site_click" data-ga-work-id="${esc(r.work_id)}" data-ga-work-title="${esc(w.title)}" data-ga-va-id="${esc(a.actor_id)}" target="_blank" rel="noopener">公式サイト</a>`:'')+'</article>'}).join('')+`</div>${a.roles.length?endCtaHtml(a):''}${nextHtml(a)}<section class="past" id="past-works" hidden></section><aside class="follow-x"><p><b>新しいキャスト情報は X でも発信しています</b><span>@animecastnow</span></p><a href="https://x.com/animecastnow" target="_blank" rel="noopener" data-ga-event="x_follow_click" data-ga-page-type="va" aria-label="X（@animecastnow）をフォロー">＋ フォロー</a></aside></div>${a.roles.length?stickyBarHtml(a):''}</div>`;
   $('#bk').onclick=closeDetail;

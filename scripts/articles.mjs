@@ -81,7 +81,7 @@ table.compare tr.partner td{background:#f5f2fa}.pr{font-size:10px;color:#62517f}
 .sched-date{text-align:center;font-weight:900;color:#1d2a44;font-size:15px;line-height:1.25}.sched-date small{display:block;font-size:11px;color:#62517f;font-weight:700}.sched-date .countdown{display:block;margin-top:4px;font-size:10px;color:#5d5a52;font-weight:700}
 .sched-title{display:block;font-weight:800;font-size:15px;line-height:1.4;color:#1d2a44;text-decoration:none}
 .sched>li{grid-template-columns:96px minmax(0,1fr);align-items:start}
-.mini-plate{box-sizing:border-box;position:relative;display:flex;flex-direction:column;justify-content:flex-end;flex:none;width:96px;aspect-ratio:4/3;padding:5px 6px;border-radius:10px;overflow:hidden;color:#fff;text-decoration:none}.mini-plate .mini-ic{position:absolute;right:-6px;bottom:-8px;width:52px;height:52px;opacity:.18}.mini-plate i{position:relative;font-style:normal;font-size:9.5px;font-weight:700;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mini-plate b{position:relative;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;font-size:12px;line-height:1.25;font-weight:800;font-synthesis:none}
+.genre-chip{display:flex;width:fit-content;align-items:center;gap:3px;margin:5px 0 2px;padding:1px 8px;border:1px solid currentColor;border-radius:999px;background:#fff;font-size:11px;font-weight:800;line-height:1.6;vertical-align:top}.genre-chip svg{width:12px;height:12px}.genre-chip.seq-genre{margin:0 0 4px}.mini-plate{box-sizing:border-box;position:relative;display:flex;flex-direction:column;justify-content:flex-end;flex:none;width:96px;aspect-ratio:4/3;padding:5px 6px;border-radius:10px;overflow:hidden;color:#fff;text-decoration:none}.mini-plate .mini-ic{position:absolute;right:-6px;bottom:-8px;width:52px;height:52px;opacity:.18}.mini-plate i{position:relative;font-style:normal;font-size:9.5px;font-weight:700;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mini-plate b{position:relative;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;font-size:12px;line-height:1.25;font-weight:800;font-synthesis:none}
 .sched-day{display:inline-block;margin-bottom:3px;padding:1px 8px;border-radius:999px;background:#efebf5;color:#62517f;font-size:11px;font-weight:800}.sched-day .countdown{display:inline;margin-left:4px;font-size:11px;color:#62517f}
 .sched-catch{margin-top:3px;font-size:12px;color:#62517f;font-weight:700}
 .newcast{margin:18px 0 10px;padding:14px 16px;border-radius:14px;background:#1d2a44;color:#fff}.newcast h2{margin:0 0 4px;font-size:17px;color:#fff}.newcast>p{margin:0 0 10px;font-size:12px;opacity:.8}
@@ -99,7 +99,7 @@ table.compare tr.partner td{background:#f5f2fa}.pr{font-size:10px;color:#62517f}
 .pair-works{margin:8px 0 0;padding:0;list-style:none;font-size:13px;line-height:1.7}.pair-works li::before{content:"・";color:#62517f}.pair-works a{color:#62517f;font-weight:700}.pair-works span{display:block;margin-left:1em;color:#5d5a52;font-size:12px;line-height:1.5}
 .seq{list-style:none;margin:12px 0;padding:0;display:grid;gap:12px}
 .seq>li{padding:14px 16px;border:1px solid #e3dcef;border-radius:14px;background:#fff}
-.mini-plate{box-sizing:border-box;position:relative;display:flex;flex-direction:column;justify-content:flex-end;flex:none;width:96px;aspect-ratio:4/3;padding:5px 6px;border-radius:10px;overflow:hidden;color:#fff;text-decoration:none}.mini-plate .mini-ic{position:absolute;right:-6px;bottom:-8px;width:52px;height:52px;opacity:.18}.mini-plate i{position:relative;font-style:normal;font-size:9.5px;font-weight:700;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mini-plate b{position:relative;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;font-size:12px;line-height:1.25;font-weight:800;font-synthesis:none}
+.genre-chip{display:flex;width:fit-content;align-items:center;gap:3px;margin:5px 0 2px;padding:1px 8px;border:1px solid currentColor;border-radius:999px;background:#fff;font-size:11px;font-weight:800;line-height:1.6;vertical-align:top}.genre-chip svg{width:12px;height:12px}.genre-chip.seq-genre{margin:0 0 4px}.mini-plate{box-sizing:border-box;position:relative;display:flex;flex-direction:column;justify-content:flex-end;flex:none;width:96px;aspect-ratio:4/3;padding:5px 6px;border-radius:10px;overflow:hidden;color:#fff;text-decoration:none}.mini-plate .mini-ic{position:absolute;right:-6px;bottom:-8px;width:52px;height:52px;opacity:.18}.mini-plate i{position:relative;font-style:normal;font-size:9.5px;font-weight:700;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mini-plate b{position:relative;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;font-size:12px;line-height:1.25;font-weight:800;font-synthesis:none}
 .seq-head{display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;align-items:center}.seq-head .note{margin:4px 0 0}
 .seq-title{font-size:16px;font-weight:900;line-height:1.45}.seq-title a{color:#1d2a44;text-decoration:none}
 .seq-prev{margin:8px 0 4px;padding:8px 12px;border-radius:10px;background:#f8f6fc;font-size:13px;line-height:1.6}.seq-prev b{color:#62517f}
@@ -376,6 +376,13 @@ const castLead = (title, cast) => cast.length ? `「${title}」の声優は、${
 function miniPlate(title, href, text = splitTitle(title).main) {
   const p = plateOf(title);
   return `<a class="mini-plate" href="${esc(href)}" tabindex="-1" aria-hidden="true" style="${plateStyle(p)}">${iconSvg(p.icon, 'mini-ic')}<b style="font-family:${esc(p.font)}">${esc(text)}</b></a>`;
+}
+
+// ジャンル名の小さなラベル（/next/・/sequel/ で日付や作品名の横に出す）。作品名と混ざらないよう、カードの外に枠線つきで置く
+function genreChip(title, cls = '') {
+  const p = plateOf(title);
+  if (p.key === 'none') return '';
+  return `<span class="genre-chip${cls}" style="color:${p.color}">${iconSvg(p.icon, '')}${esc(p.short)}</span>`;
 }
 
 export function castOf(data) {
@@ -783,7 +790,7 @@ export function nextIndexPage(ctx, next, castLog = null) {
     // タイトルプレート（ジャンルの色・柄と作品名）と、作品紹介のキャッチコピー
     const thumb = miniPlate(work.title, `/work/${id}/`);
     const catchCopy = ctx.notes?.[work.title]?.catch;
-    return `<li>${thumb}<div><span class="sched-day">${date ? `${Number(match[1])}/${Number(match[2])}${esc(date.slice(-3))}${countdown(work.start_date)}` : '放送日未定'}</span><a class="sched-title" href="/work/${esc(id)}/">${esc(work.title)}</a>${catchCopy ? `<div class="sched-catch">${esc(catchCopy)}</div>` : ''}<div class="sched-cast">${cast.length ? `${names.join('、')}${cast.length > 4 ? ` ほか${cast.length - 4}名` : ''}` : 'キャスト未発表'}</div>${prev ? `<a class="sched-chip" href="/work/${esc(id)}/#prev-h">前のシーズンはPrime Videoで</a>` : ''}</div></li>`;
+    return `<li>${thumb}<div><span class="sched-day">${date ? `${Number(match[1])}/${Number(match[2])}${esc(date.slice(-3))}${countdown(work.start_date)}` : '放送日未定'}</span>${genreChip(work.title)}<a class="sched-title" href="/work/${esc(id)}/">${esc(work.title)}</a>${catchCopy ? `<div class="sched-catch">${esc(catchCopy)}</div>` : ''}<div class="sched-cast">${cast.length ? `${names.join('、')}${cast.length > 4 ? ` ほか${cast.length - 4}名` : ''}` : 'キャスト未発表'}</div>${prev ? `<a class="sched-chip" href="/work/${esc(id)}/#prev-h">前のシーズンはPrime Videoで</a>` : ''}</div></li>`;
   };
   const groups = new Map();
   for (const entry of works) {
@@ -872,7 +879,7 @@ export function sequelGuidePage(ctx, next) {
     const url = ctx.partnerLinks[x.entry.provider];
     const before = ctx.notes?.[x.title]?.before;
     const date = startLabel(x.work.start_date);
-    return `<li><div class="seq-head">${miniPlate(x.title, `/work/${x.id}/`, x.entry.series)}<div><div class="seq-title"><a href="/work/${esc(x.id)}/">${esc(x.title)}</a></div>
+    return `<li><div class="seq-head">${miniPlate(x.title, `/work/${x.id}/`, x.entry.series)}<div>${genreChip(x.title, ' seq-genre')}<div class="seq-title"><a href="/work/${esc(x.id)}/">${esc(x.title)}</a></div>
 ${x.when === 'next' && date ? `<p class="note">${esc(date)}から放送開始予定 ${countdown(x.work.start_date)}</p>` : ''}</div></div>
 <div class="seq-prev">前に見ておく：<b>${esc(x.entry.series)}</b>の${esc(x.entry.label)}<br>${esc(label(x.entry.provider))}で、プライム会員なら追加料金なしで見られます（${esc(x.entry.checked)}時点）。</div>
 ${before ? `<p class="note">${esc(before)}</p>` : ''}
