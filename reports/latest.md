@@ -1,13 +1,13 @@
-# アクセスのまとめ（2026-11-19〜2026-11-25）
+# アクセスのまとめ（2026-11-20〜2026-11-26）
 
-作成：2026-11-26T13:12+09:00（GA4 は昨日まで、Search Console は 2026-10-27〜2026-11-23）
+作成：2026-11-27T00:56+09:00（GA4 は昨日まで、Search Console は 2026-10-28〜2026-11-24）
 
 ## 日本からのアクセス（直近7日。海外のデータセンターからの自動アクセスを除いた、実際の利用者に近い数字）
-- セッション 22（前週比 +5%）／エンゲージ 21
+- セッション 21（前週比 -5%）／エンゲージ 20
 
 | 流入元 | セッション | エンゲージ | 滞在合計(秒) |
 |---|---|---|---|
-| Organic Search | 12 | 11 | 344 |
+| Organic Search | 11 | 10 | 333 |
 | Direct | 6 | 6 | 110 |
 | Organic Social | 3 | 3 | 1420 |
 | Referral | 1 | 1 | 2 |
@@ -20,7 +20,6 @@
 | /ranking | 2 | 2 | 18 |
 | /va/0433 | 2 | 2 | 221 |
 | /sequel | 1 | 1 | 0 |
-| /va/0050 | 1 | 1 | 11 |
 | /va/0080 | 1 | 1 | 19 |
 | /va/0100 | 1 | 1 | 22 |
 | /va/0473 | 1 | 1 | 17 |
@@ -44,34 +43,32 @@
 | season_view_change | 1 |
 
 ## 全体（直近7日。海外からの自動アクセスも含む）
-- セッション 41（前週比 -46%）
-- ユーザー 36（前週比 -52%）／うち新規 34
-- ページの表示 149（前週比 -9%）
-- エンゲージのあったセッション 37（前週比 -37%）
-- 1セッションあたりの滞在 47秒
+- セッション 37（前週比 -55%）
+- ユーザー 32（前週比 -60%）／うち新規 30
+- ページの表示 141（前週比 -19%）
+- エンゲージのあったセッション 33（前週比 -48%）
+- 1セッションあたりの滞在 51秒
 
 ## 流入元（直近7日）
 | 参照元/メディア | セッション | エンゲージ |
 |---|---|---|
-| (direct) / (none) | 25 | 22 |
+| (direct) / (none) | 22 | 19 |
 | google / organic | 8 | 7 |
-| yahoo / organic | 4 | 4 |
 | x / social | 3 | 3 |
+| yahoo / organic | 3 | 3 |
 | adv-console.a8.net / referral | 1 | 1 |
 
 ## 最初に開いたページ（直近7日）
 | ページ | セッション | エンゲージ率 | 平均滞在(秒) |
 |---|---|---|---|
-| / | 20 | 95.0% | 66 |
-| /next | 5 | 100.0% | 47 |
+| / | 20 | 90.0% | 66 |
+| /next | 4 | 100.0% | 59 |
 | /ranking | 2 | 100.0% | 9 |
-| /va/0206 | 2 | 0.0% | 0 |
 | /va/0433 | 2 | 100.0% | 110 |
-| /privacy | 1 | 100.0% | 0 |
 | /sequel | 1 | 100.0% | 0 |
-| /va/0050 | 1 | 100.0% | 11 |
 | /va/0080 | 1 | 100.0% | 19 |
 | /va/0100 | 1 | 100.0% | 22 |
+| /va/0206 | 1 | 0.0% | 0 |
 | /va/0473 | 1 | 100.0% | 17 |
 | /va/0696 | 1 | 0.0% | 0 |
 | /work/w4aef8908 | 1 | 100.0% | 16 |
@@ -81,12 +78,12 @@
 ## イベント（直近7日／前の7日）
 | イベント | 回数 | 前の7日 | 人数 |
 |---|---|---|---|
-| page_view | 149 | 163 | 36 |
-| user_engagement | 44 | 45 | 23 |
-| session_start | 41 | 68 | 36 |
-| first_visit | 34 | 67 | 34 |
+| page_view | 141 | 174 | 32 |
+| user_engagement | 41 | 49 | 20 |
+| session_start | 37 | 74 | 32 |
+| first_visit | 30 | 73 | 30 |
 | search | 17 | 2 | 1 |
-| scroll | 16 | 13 | 13 |
+| scroll | 16 | 14 | 13 |
 | click | 4 | 2 | 1 |
 | va_open | 4 | 2 | 1 |
 | vod_click | 3 | 0 | 1 |
@@ -109,11 +106,6 @@
 | 日 | 端末 | ブラウザ | 地域 | 着地 | セッション | 滞在合計(秒) |
 |---|---|---|---|---|---|---|
 | 20261120 | desktop | Chrome | Kawasaki | / | 2 | 81 |
-| 20261119 | desktop | Chrome | (not set) | /va/0206 | 1 | 0 |
-| 20261119 | desktop | Chrome | Frankfurt am Main | / | 1 | 1 |
-| 20261119 | desktop | Chrome | Frankfurt am Main | /privacy | 1 | 0 |
-| 20261119 | desktop | Chrome | Warsaw | /next | 1 | 1 |
-| 20261119 | mobile | Safari | Ashburn | / | 1 | 3 |
 | 20261120 | desktop | Chrome | Burnaby | / | 1 | 12 |
 | 20261120 | desktop | Chrome | Kawasaki | /ranking | 1 | 0 |
 | 20261120 | desktop | Chrome | Kawasaki | /sequel | 1 | 0 |
@@ -132,78 +124,80 @@
 | 20261124 | desktop | Chrome | (not set) | /va/0206 | 1 | 0 |
 | 20261124 | desktop | Chrome | Burnaby | / | 1 | 5 |
 | 20261124 | mobile | Safari | Ashburn | / | 1 | 3 |
+| 20261126 | desktop | Chrome | Minsk | / | 1 | 0 |
+| 20261126 | desktop | Chrome | San Francisco | / | 1 | 1 |
 
 ## 流入元×端末（直近7日）
 | 流入元 | 端末 | OS | セッション | 滞在合計(秒) |
 |---|---|---|---|---|
-| Direct | desktop | Windows | 15 | 114 |
+| Direct | desktop | Windows | 12 | 112 |
+| Direct | desktop | Linux | 7 | 28 |
 | Organic Search | mobile | Android | 7 | 235 |
-| Direct | desktop | Linux | 6 | 27 |
-| Direct | mobile | iOS | 3 | 6 |
-| Organic Search | mobile | iOS | 3 | 33 |
+| Direct | mobile | iOS | 2 | 3 |
 | Organic Search | desktop | Windows | 2 | 76 |
+| Organic Search | mobile | iOS | 2 | 22 |
 | Organic Social | mobile | Android | 2 | 1374 |
 | Direct | mobile | Android | 1 | 0 |
 | Organic Social | tablet | iOS | 1 | 46 |
 | Referral | desktop | Windows | 1 | 2 |
 
-## Google 検索（2026-10-27〜2026-11-23）
-- クリック 12／表示 635
+## Google 検索（2026-10-28〜2026-11-24）
+- クリック 12／表示 655
 
 ### 検索された言葉
 | 言葉 | クリック | 表示 | 平均順位 |
 |---|---|---|---|
 | 声優 出演数ランキング(2026) | 1 | 5 | 7.4 |
 | とある暗部の少女共棲 prime | 1 | 1 | 11 |
-| 矢 鹿まや 生天目 | 0 | 28 | 8.0 |
+| 矢 鹿まや 生天目 | 0 | 29 | 8.1 |
 | 声優 出演数 ランキング 2026 | 0 | 9 | 7.3 |
 | 朱色の仮面 東京リベンジャーズ | 0 | 9 | 8.1 |
 | 北見六花 表 | 0 | 8 | 5.5 |
+| 日差敦 | 0 | 8 | 4.6 |
 | 新テニスの王子様 u17 world cup 決勝メンバー決定戦 配信 | 0 | 7 | 40.3 |
-| 日差敦 | 0 | 7 | 4.6 |
 | 目覚めたら最強装備と宇宙船持ちだったので一戸建て目指して傭兵として自由に生きたい 配信 | 0 | 7 | 41.7 |
 | ダークサモナーとデキている 配信 | 0 | 5 | 40.4 |
 | 朱色の仮面 配信 | 0 | 5 | 31.4 |
 | マロニエ王国の七人の騎士 配信 | 0 | 4 | 47 |
 | 凶乱令嬢ニアリストン 病弱令嬢に転生した神殺しの武人の華麗なる無双録 配信 | 0 | 4 | 44.2 |
+| 生徒会にも穴はある 声優 | 0 | 4 | 10 |
 | duel masters lost 断罪の少年 配信 | 0 | 3 | 17.7 |
+| fx戦士くるみちゃん プライム | 0 | 3 | 10 |
 | わたしの幸せな結婚 特別篇 配信 | 0 | 3 | 32.3 |
 | アニメ キャスト | 0 | 3 | 5 |
 | カードファイト ヴァンガード divinez 運命星戦編 配信 | 0 | 3 | 31.7 |
 | ケロロ軍曹 配信 | 0 | 3 | 39.3 |
 | ダークサモナーとデキている アマプラ | 0 | 3 | 9.3 |
 | 声優 出演数 ランキング | 0 | 3 | 9.7 |
-| 生徒会にも穴はある 声優 | 0 | 3 | 10 |
 | 目覚めたら最強装備と宇宙船持ちだったので 声優 | 0 | 3 | 10.7 |
 | 石見舞菜香 | 0 | 3 | 38.3 |
+| 風を継ぐもの アニメ いつから | 0 | 3 | 9.3 |
 | battle spirits re 絶界の空 配信 | 0 | 2 | 46.5 |
 | dreamland 配信 | 0 | 2 | 53 |
-| fx戦士くるみちゃん プライム | 0 | 2 | 9.5 |
 | tank chair戦車椅子 配信 | 0 | 2 | 47 |
 | どうも好きな人に惚れ薬を依頼された魔女です 配信 | 0 | 2 | 32 |
 | アオアシ season2 配信 | 0 | 2 | 80 |
-| アニメフェスタ アニメ一覧 | 0 | 2 | 1 |
 
 ### ページ
 | ページ | クリック | 表示 | 平均順位 |
 |---|---|---|---|
 | https://animecastnow.com/next/ | 5 | 62 | 15.3 |
-| https://animecastnow.com/ranking/ | 3 | 104 | 12.7 |
+| https://animecastnow.com/ranking/ | 3 | 105 | 12.6 |
 | https://animecastnow.com/work/wf9098d76/ | 1 | 3 | 9.3 |
 | https://animecastnow.com/va/0617/ | 1 | 2 | 6.5 |
 | https://animecastnow.com/work/w1cb15f5c/ | 1 | 2 | 19.5 |
 | https://animecastnow.com/va/0696/ | 1 | 1 | 1 |
-| https://animecastnow.com/ | 0 | 33 | 9.8 |
-| https://animecastnow.com/va/0050/ | 0 | 23 | 7.6 |
-| https://animecastnow.com/work/wf0774604/ | 0 | 22 | 12.8 |
+| https://animecastnow.com/ | 0 | 36 | 10.4 |
+| https://animecastnow.com/va/0050/ | 0 | 25 | 7.6 |
+| https://animecastnow.com/work/wf0774604/ | 0 | 24 | 12.6 |
 | https://animecastnow.com/work/wfafd71ff/ | 0 | 16 | 15.4 |
 | https://animecastnow.com/work/w535580c3/ | 0 | 14 | 18.2 |
 | https://animecastnow.com/work/w7419bb6a/ | 0 | 14 | 34.6 |
+| https://animecastnow.com/work/wc4798f29/ | 0 | 12 | 12 |
 | https://animecastnow.com/va/0491/ | 0 | 11 | 17.8 |
 | https://animecastnow.com/work/ | 0 | 11 | 11.8 |
-| https://animecastnow.com/work/wc4798f29/ | 0 | 11 | 12.3 |
-| https://animecastnow.com/work/w1bf13874/ | 0 | 9 | 11.3 |
+| https://animecastnow.com/work/w1bf13874/ | 0 | 11 | 10.9 |
 | https://animecastnow.com/work/w3dc47a36/ | 0 | 9 | 28 |
 | https://animecastnow.com/work/w633d0ada/ | 0 | 9 | 9.6 |
+| https://animecastnow.com/va/0735/ | 0 | 8 | 4.6 |
 | https://animecastnow.com/work/w595b9dbf/ | 0 | 8 | 43.5 |
-| https://animecastnow.com/work/wbe8c4220/ | 0 | 8 | 10.8 |
