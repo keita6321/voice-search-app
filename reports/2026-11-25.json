@@ -1,0 +1,3032 @@
+{
+ "generated_at": "2026-11-26T13:12+09:00",
+ "range": {
+  "last7": [
+   "2026-11-19",
+   "2026-11-25"
+  ],
+  "prev7": [
+   "2026-11-12",
+   "2026-11-18"
+  ],
+  "last28": [
+   "2026-10-29",
+   "2026-11-25"
+  ],
+  "search": [
+   "2026-10-27",
+   "2026-11-23"
+  ]
+ },
+ "daily": [
+  {
+   "date": "20261115",
+   "sessions": 23.0,
+   "activeUsers": 22.0,
+   "newUsers": 21.0,
+   "screenPageViews": 50.0,
+   "engagedSessions": 18.0,
+   "userEngagementDuration": 207.0
+  },
+  {
+   "date": "20261116",
+   "sessions": 22.0,
+   "activeUsers": 22.0,
+   "newUsers": 15.0,
+   "screenPageViews": 42.0,
+   "engagedSessions": 13.0,
+   "userEngagementDuration": 143.0
+  },
+  {
+   "date": "20261117",
+   "sessions": 13.0,
+   "activeUsers": 13.0,
+   "newUsers": 13.0,
+   "screenPageViews": 27.0,
+   "engagedSessions": 12.0,
+   "userEngagementDuration": 62.0
+  },
+  {
+   "date": "20261118",
+   "sessions": 12.0,
+   "activeUsers": 12.0,
+   "newUsers": 12.0,
+   "screenPageViews": 30.0,
+   "engagedSessions": 10.0,
+   "userEngagementDuration": 81.0
+  },
+  {
+   "date": "20261120",
+   "sessions": 10.0,
+   "activeUsers": 6.0,
+   "newUsers": 4.0,
+   "screenPageViews": 55.0,
+   "engagedSessions": 10.0,
+   "userEngagementDuration": 146.0
+  },
+  {
+   "date": "20261122",
+   "sessions": 8.0,
+   "activeUsers": 8.0,
+   "newUsers": 8.0,
+   "screenPageViews": 19.0,
+   "engagedSessions": 7.0,
+   "userEngagementDuration": 127.0
+  },
+  {
+   "date": "20261119",
+   "sessions": 6.0,
+   "activeUsers": 6.0,
+   "newUsers": 6.0,
+   "screenPageViews": 11.0,
+   "engagedSessions": 5.0,
+   "userEngagementDuration": 16.0
+  },
+  {
+   "date": "20261123",
+   "sessions": 6.0,
+   "activeUsers": 6.0,
+   "newUsers": 6.0,
+   "screenPageViews": 13.0,
+   "engagedSessions": 5.0,
+   "userEngagementDuration": 126.0
+  },
+  {
+   "date": "20261114",
+   "sessions": 4.0,
+   "activeUsers": 4.0,
+   "newUsers": 4.0,
+   "screenPageViews": 8.0,
+   "engagedSessions": 4.0,
+   "userEngagementDuration": 4.0
+  },
+  {
+   "date": "20261121",
+   "sessions": 4.0,
+   "activeUsers": 4.0,
+   "newUsers": 4.0,
+   "screenPageViews": 12.0,
+   "engagedSessions": 4.0,
+   "userEngagementDuration": 53.0
+  },
+  {
+   "date": "20261124",
+   "sessions": 4.0,
+   "activeUsers": 4.0,
+   "newUsers": 4.0,
+   "screenPageViews": 7.0,
+   "engagedSessions": 3.0,
+   "userEngagementDuration": 25.0
+  },
+  {
+   "date": "20261125",
+   "sessions": 3.0,
+   "activeUsers": 2.0,
+   "newUsers": 2.0,
+   "screenPageViews": 32.0,
+   "engagedSessions": 3.0,
+   "userEngagementDuration": 1420.0
+  },
+  {
+   "date": "20261113",
+   "sessions": 2.0,
+   "activeUsers": 2.0,
+   "newUsers": 2.0,
+   "screenPageViews": 6.0,
+   "engagedSessions": 2.0,
+   "userEngagementDuration": 0.0
+  }
+ ],
+ "channel_last7": [
+  {
+   "sessionSourceMedium": "(direct) / (none)",
+   "sessions": 25.0,
+   "engagedSessions": 22.0,
+   "userEngagementDuration": 147.0
+  },
+  {
+   "sessionSourceMedium": "google / organic",
+   "sessions": 8.0,
+   "engagedSessions": 7.0,
+   "userEngagementDuration": 276.0
+  },
+  {
+   "sessionSourceMedium": "yahoo / organic",
+   "sessions": 4.0,
+   "engagedSessions": 4.0,
+   "userEngagementDuration": 68.0
+  },
+  {
+   "sessionSourceMedium": "x / social",
+   "sessions": 3.0,
+   "engagedSessions": 3.0,
+   "userEngagementDuration": 1420.0
+  },
+  {
+   "sessionSourceMedium": "adv-console.a8.net / referral",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 2.0
+  }
+ ],
+ "channel_prev7": [
+  {
+   "sessionSourceMedium": "(direct) / (none)",
+   "sessions": 52.0
+  },
+  {
+   "sessionSourceMedium": "x / social",
+   "sessions": 9.0
+  },
+  {
+   "sessionSourceMedium": "(not set)",
+   "sessions": 8.0
+  },
+  {
+   "sessionSourceMedium": "google / organic",
+   "sessions": 5.0
+  },
+  {
+   "sessionSourceMedium": "t.co / referral",
+   "sessions": 2.0
+  }
+ ],
+ "landing_last7": [
+  {
+   "landingPage": "/",
+   "sessions": 20.0,
+   "engagementRate": 0.95,
+   "userEngagementDuration": 1318.0
+  },
+  {
+   "landingPage": "/next",
+   "sessions": 5.0,
+   "engagementRate": 1.0,
+   "userEngagementDuration": 237.0
+  },
+  {
+   "landingPage": "/ranking",
+   "sessions": 2.0,
+   "engagementRate": 1.0,
+   "userEngagementDuration": 18.0
+  },
+  {
+   "landingPage": "/va/0206",
+   "sessions": 2.0,
+   "engagementRate": 0.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "landingPage": "/va/0433",
+   "sessions": 2.0,
+   "engagementRate": 1.0,
+   "userEngagementDuration": 221.0
+  },
+  {
+   "landingPage": "/privacy",
+   "sessions": 1.0,
+   "engagementRate": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "landingPage": "/sequel",
+   "sessions": 1.0,
+   "engagementRate": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "landingPage": "/va/0050",
+   "sessions": 1.0,
+   "engagementRate": 1.0,
+   "userEngagementDuration": 11.0
+  },
+  {
+   "landingPage": "/va/0080",
+   "sessions": 1.0,
+   "engagementRate": 1.0,
+   "userEngagementDuration": 19.0
+  },
+  {
+   "landingPage": "/va/0100",
+   "sessions": 1.0,
+   "engagementRate": 1.0,
+   "userEngagementDuration": 22.0
+  },
+  {
+   "landingPage": "/va/0473",
+   "sessions": 1.0,
+   "engagementRate": 1.0,
+   "userEngagementDuration": 17.0
+  },
+  {
+   "landingPage": "/va/0696",
+   "sessions": 1.0,
+   "engagementRate": 0.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "landingPage": "/work/w4aef8908",
+   "sessions": 1.0,
+   "engagementRate": 1.0,
+   "userEngagementDuration": 16.0
+  },
+  {
+   "landingPage": "/work/wa147cdd6",
+   "sessions": 1.0,
+   "engagementRate": 1.0,
+   "userEngagementDuration": 29.0
+  },
+  {
+   "landingPage": "/work/wf9098d76",
+   "sessions": 1.0,
+   "engagementRate": 1.0,
+   "userEngagementDuration": 5.0
+  }
+ ],
+ "pages_last7": [
+  {
+   "pagePath": "/",
+   "screenPageViews": 54.0,
+   "activeUsers": 19.0,
+   "userEngagementDuration": 505.0
+  },
+  {
+   "pagePath": "/next/",
+   "screenPageViews": 20.0,
+   "activeUsers": 6.0,
+   "userEngagementDuration": 259.0
+  },
+  {
+   "pagePath": "/ranking/",
+   "screenPageViews": 8.0,
+   "activeUsers": 3.0,
+   "userEngagementDuration": 324.0
+  },
+  {
+   "pagePath": "/va/0433/",
+   "screenPageViews": 8.0,
+   "activeUsers": 2.0,
+   "userEngagementDuration": 489.0
+  },
+  {
+   "pagePath": "/sequel/",
+   "screenPageViews": 6.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "pagePath": "/costar/",
+   "screenPageViews": 4.0,
+   "activeUsers": 2.0,
+   "userEngagementDuration": 110.0
+  },
+  {
+   "pagePath": "/va/0206/",
+   "screenPageViews": 4.0,
+   "activeUsers": 3.0,
+   "userEngagementDuration": 55.0
+  },
+  {
+   "pagePath": "/work/w6276c40d/",
+   "screenPageViews": 4.0,
+   "activeUsers": 2.0,
+   "userEngagementDuration": 11.0
+  },
+  {
+   "pagePath": "/work/wa147cdd6/",
+   "screenPageViews": 4.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 29.0
+  },
+  {
+   "pagePath": "/privacy/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "pagePath": "/va/0028/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "pagePath": "/va/0050/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 11.0
+  },
+  {
+   "pagePath": "/va/0080/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 19.0
+  },
+  {
+   "pagePath": "/va/0091/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "pagePath": "/va/0100/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 22.0
+  },
+  {
+   "pagePath": "/va/0361/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 15.0
+  },
+  {
+   "pagePath": "/va/0442/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "pagePath": "/va/0473/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 17.0
+  },
+  {
+   "pagePath": "/work/w4aef8908/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 16.0
+  },
+  {
+   "pagePath": "/work/w7af539b7/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 4.0
+  },
+  {
+   "pagePath": "/work/w916ce540/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 4.0
+  },
+  {
+   "pagePath": "/work/w9653231e/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "pagePath": "/work/w9882956e/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "pagePath": "/work/w9ea05b5d/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 10.0
+  },
+  {
+   "pagePath": "/work/wd519773d/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 6.0
+  },
+  {
+   "pagePath": "/work/wefe2e801/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 2.0
+  },
+  {
+   "pagePath": "/work/wf9098d76/",
+   "screenPageViews": 2.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 5.0
+  },
+  {
+   "pagePath": "/va/0696/",
+   "screenPageViews": 1.0,
+   "activeUsers": 1.0,
+   "userEngagementDuration": 0.0
+  }
+ ],
+ "events_last7": [
+  {
+   "eventName": "page_view",
+   "eventCount": 149.0,
+   "totalUsers": 36.0
+  },
+  {
+   "eventName": "user_engagement",
+   "eventCount": 44.0,
+   "totalUsers": 23.0
+  },
+  {
+   "eventName": "session_start",
+   "eventCount": 41.0,
+   "totalUsers": 36.0
+  },
+  {
+   "eventName": "first_visit",
+   "eventCount": 34.0,
+   "totalUsers": 34.0
+  },
+  {
+   "eventName": "search",
+   "eventCount": 17.0,
+   "totalUsers": 1.0
+  },
+  {
+   "eventName": "scroll",
+   "eventCount": 16.0,
+   "totalUsers": 13.0
+  },
+  {
+   "eventName": "click",
+   "eventCount": 4.0,
+   "totalUsers": 1.0
+  },
+  {
+   "eventName": "va_open",
+   "eventCount": 4.0,
+   "totalUsers": 1.0
+  },
+  {
+   "eventName": "vod_click",
+   "eventCount": 3.0,
+   "totalUsers": 1.0
+  },
+  {
+   "eventName": "ranking_click",
+   "eventCount": 2.0,
+   "totalUsers": 1.0
+  },
+  {
+   "eventName": "special_click",
+   "eventCount": 2.0,
+   "totalUsers": 2.0
+  },
+  {
+   "eventName": "cast_click",
+   "eventCount": 1.0,
+   "totalUsers": 1.0
+  },
+  {
+   "eventName": "official_site_click",
+   "eventCount": 1.0,
+   "totalUsers": 1.0
+  },
+  {
+   "eventName": "season_view_change",
+   "eventCount": 1.0,
+   "totalUsers": 1.0
+  }
+ ],
+ "events_prev7": [
+  {
+   "eventName": "page_view",
+   "eventCount": 163.0
+  },
+  {
+   "eventName": "session_start",
+   "eventCount": 68.0
+  },
+  {
+   "eventName": "first_visit",
+   "eventCount": 67.0
+  },
+  {
+   "eventName": "user_engagement",
+   "eventCount": 45.0
+  },
+  {
+   "eventName": "scroll",
+   "eventCount": 13.0
+  },
+  {
+   "eventName": "click",
+   "eventCount": 2.0
+  },
+  {
+   "eventName": "feature_click",
+   "eventCount": 2.0
+  },
+  {
+   "eventName": "official_site_click",
+   "eventCount": 2.0
+  },
+  {
+   "eventName": "search",
+   "eventCount": 2.0
+  },
+  {
+   "eventName": "va_open",
+   "eventCount": 2.0
+  },
+  {
+   "eventName": "costar_click",
+   "eventCount": 1.0
+  }
+ ],
+ "quote_posts_last28": [
+  {
+   "sessionManualAdContent": "w7c918f6a_va0433_famous_20261125",
+   "landingPage": "/va/0433",
+   "sessions": 2.0,
+   "engagedSessions": 2.0
+  },
+  {
+   "sessionManualAdContent": "(not set)",
+   "landingPage": "/va/0062",
+   "sessions": 1.0,
+   "engagedSessions": 1.0
+  },
+  {
+   "sessionManualAdContent": "(not set)",
+   "landingPage": "/va/0266",
+   "sessions": 1.0,
+   "engagedSessions": 1.0
+  },
+  {
+   "sessionManualAdContent": "(not set)",
+   "landingPage": "/va/0275",
+   "sessions": 1.0,
+   "engagedSessions": 1.0
+  },
+  {
+   "sessionManualAdContent": "(not set)",
+   "landingPage": "/work/wa147cdd6",
+   "sessions": 1.0,
+   "engagedSessions": 0.0
+  }
+ ],
+ "japan_channel_last7": [
+  {
+   "sessionDefaultChannelGroup": "Organic Search",
+   "sessions": 12.0,
+   "engagedSessions": 11.0,
+   "userEngagementDuration": 344.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Direct",
+   "sessions": 6.0,
+   "engagedSessions": 6.0,
+   "userEngagementDuration": 110.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Organic Social",
+   "sessions": 3.0,
+   "engagedSessions": 3.0,
+   "userEngagementDuration": 1420.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Referral",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 2.0
+  }
+ ],
+ "japan_channel_prev7": [
+  {
+   "sessionDefaultChannelGroup": "Organic Social",
+   "sessions": 11.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Direct",
+   "sessions": 5.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Organic Search",
+   "sessions": 5.0
+  }
+ ],
+ "japan_landing_last7": [
+  {
+   "landingPage": "/",
+   "sessions": 5.0,
+   "engagedSessions": 5.0,
+   "userEngagementDuration": 1282.0
+  },
+  {
+   "landingPage": "/next",
+   "sessions": 4.0,
+   "engagedSessions": 4.0,
+   "userEngagementDuration": 236.0
+  },
+  {
+   "landingPage": "/ranking",
+   "sessions": 2.0,
+   "engagedSessions": 2.0,
+   "userEngagementDuration": 18.0
+  },
+  {
+   "landingPage": "/va/0433",
+   "sessions": 2.0,
+   "engagedSessions": 2.0,
+   "userEngagementDuration": 221.0
+  },
+  {
+   "landingPage": "/sequel",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "landingPage": "/va/0050",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 11.0
+  },
+  {
+   "landingPage": "/va/0080",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 19.0
+  },
+  {
+   "landingPage": "/va/0100",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 22.0
+  },
+  {
+   "landingPage": "/va/0473",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 17.0
+  },
+  {
+   "landingPage": "/va/0696",
+   "sessions": 1.0,
+   "engagedSessions": 0.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "landingPage": "/work/w4aef8908",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 16.0
+  },
+  {
+   "landingPage": "/work/wa147cdd6",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 29.0
+  },
+  {
+   "landingPage": "/work/wf9098d76",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 5.0
+  }
+ ],
+ "japan_events_last7": [
+  {
+   "eventName": "page_view",
+   "eventCount": 114.0
+  },
+  {
+   "eventName": "user_engagement",
+   "eventCount": 36.0
+  },
+  {
+   "eventName": "session_start",
+   "eventCount": 22.0
+  },
+  {
+   "eventName": "search",
+   "eventCount": 17.0
+  },
+  {
+   "eventName": "first_visit",
+   "eventCount": 15.0
+  },
+  {
+   "eventName": "scroll",
+   "eventCount": 7.0
+  },
+  {
+   "eventName": "click",
+   "eventCount": 4.0
+  },
+  {
+   "eventName": "va_open",
+   "eventCount": 4.0
+  },
+  {
+   "eventName": "vod_click",
+   "eventCount": 3.0
+  },
+  {
+   "eventName": "ranking_click",
+   "eventCount": 2.0
+  },
+  {
+   "eventName": "special_click",
+   "eventCount": 2.0
+  },
+  {
+   "eventName": "cast_click",
+   "eventCount": 1.0
+  },
+  {
+   "eventName": "official_site_click",
+   "eventCount": 1.0
+  },
+  {
+   "eventName": "season_view_change",
+   "eventCount": 1.0
+  }
+ ],
+ "direct_detail_last7": [
+  {
+   "date": "20261120",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Kawasaki",
+   "landingPage": "/",
+   "sessions": 2.0,
+   "engagedSessions": 2.0,
+   "userEngagementDuration": 81.0,
+   "newUsers": 0.0
+  },
+  {
+   "date": "20261119",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "(not set)",
+   "landingPage": "/va/0206",
+   "sessions": 1.0,
+   "engagedSessions": 0.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261119",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Frankfurt am Main",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 1.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261119",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Frankfurt am Main",
+   "landingPage": "/privacy",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261119",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Warsaw",
+   "landingPage": "/next",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 1.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261119",
+   "deviceCategory": "mobile",
+   "browser": "Safari",
+   "city": "Ashburn",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 3.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261120",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Burnaby",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 12.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261120",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Kawasaki",
+   "landingPage": "/ranking",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 0.0
+  },
+  {
+   "date": "20261120",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Kawasaki",
+   "landingPage": "/sequel",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 0.0
+  },
+  {
+   "date": "20261120",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Kawasaki",
+   "landingPage": "/work/wa147cdd6",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 29.0,
+   "newUsers": 0.0
+  },
+  {
+   "date": "20261120",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "San Jose",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261120",
+   "deviceCategory": "mobile",
+   "browser": "Safari (in-app)",
+   "city": "Kawasaki",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 0.0
+  },
+  {
+   "date": "20261121",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Orlando",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261122",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Aspen",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261122",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Burnaby",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 8.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261122",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Glenview",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261122",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Xinyi District",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261122",
+   "deviceCategory": "desktop",
+   "browser": "Edge",
+   "city": "Council Bluffs",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 2.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261122",
+   "deviceCategory": "mobile",
+   "browser": "Chrome",
+   "city": "Anyang-si",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261123",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "(not set)",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 2.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261123",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Northwood",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 0.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261124",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "(not set)",
+   "landingPage": "/va/0206",
+   "sessions": 1.0,
+   "engagedSessions": 0.0,
+   "userEngagementDuration": 0.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261124",
+   "deviceCategory": "desktop",
+   "browser": "Chrome",
+   "city": "Burnaby",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 5.0,
+   "newUsers": 1.0
+  },
+  {
+   "date": "20261124",
+   "deviceCategory": "mobile",
+   "browser": "Safari",
+   "city": "Ashburn",
+   "landingPage": "/",
+   "sessions": 1.0,
+   "engagedSessions": 1.0,
+   "userEngagementDuration": 3.0,
+   "newUsers": 1.0
+  }
+ ],
+ "device_last7": [
+  {
+   "sessionDefaultChannelGroup": "Direct",
+   "deviceCategory": "desktop",
+   "operatingSystem": "Windows",
+   "sessions": 15.0,
+   "userEngagementDuration": 114.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Organic Search",
+   "deviceCategory": "mobile",
+   "operatingSystem": "Android",
+   "sessions": 7.0,
+   "userEngagementDuration": 235.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Direct",
+   "deviceCategory": "desktop",
+   "operatingSystem": "Linux",
+   "sessions": 6.0,
+   "userEngagementDuration": 27.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Direct",
+   "deviceCategory": "mobile",
+   "operatingSystem": "iOS",
+   "sessions": 3.0,
+   "userEngagementDuration": 6.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Organic Search",
+   "deviceCategory": "mobile",
+   "operatingSystem": "iOS",
+   "sessions": 3.0,
+   "userEngagementDuration": 33.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Organic Search",
+   "deviceCategory": "desktop",
+   "operatingSystem": "Windows",
+   "sessions": 2.0,
+   "userEngagementDuration": 76.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Organic Social",
+   "deviceCategory": "mobile",
+   "operatingSystem": "Android",
+   "sessions": 2.0,
+   "userEngagementDuration": 1374.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Direct",
+   "deviceCategory": "mobile",
+   "operatingSystem": "Android",
+   "sessions": 1.0,
+   "userEngagementDuration": 0.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Organic Social",
+   "deviceCategory": "tablet",
+   "operatingSystem": "iOS",
+   "sessions": 1.0,
+   "userEngagementDuration": 46.0
+  },
+  {
+   "sessionDefaultChannelGroup": "Referral",
+   "deviceCategory": "desktop",
+   "operatingSystem": "Windows",
+   "sessions": 1.0,
+   "userEngagementDuration": 2.0
+  }
+ ],
+ "search_queries": [
+  {
+   "query": "声優 出演数ランキング(2026)",
+   "clicks": 1,
+   "impressions": 5,
+   "ctr": 0.2,
+   "position": 7.4
+  },
+  {
+   "query": "とある暗部の少女共棲 prime",
+   "clicks": 1,
+   "impressions": 1,
+   "ctr": 1,
+   "position": 11
+  },
+  {
+   "query": "矢 鹿まや 生天目",
+   "clicks": 0,
+   "impressions": 28,
+   "ctr": 0,
+   "position": 8.035714285714285
+  },
+  {
+   "query": "声優 出演数 ランキング 2026",
+   "clicks": 0,
+   "impressions": 9,
+   "ctr": 0,
+   "position": 7.333333333333333
+  },
+  {
+   "query": "朱色の仮面 東京リベンジャーズ",
+   "clicks": 0,
+   "impressions": 9,
+   "ctr": 0,
+   "position": 8.11111111111111
+  },
+  {
+   "query": "北見六花 表",
+   "clicks": 0,
+   "impressions": 8,
+   "ctr": 0,
+   "position": 5.5
+  },
+  {
+   "query": "新テニスの王子様 u17 world cup 決勝メンバー決定戦 配信",
+   "clicks": 0,
+   "impressions": 7,
+   "ctr": 0,
+   "position": 40.285714285714285
+  },
+  {
+   "query": "日差敦",
+   "clicks": 0,
+   "impressions": 7,
+   "ctr": 0,
+   "position": 4.571428571428571
+  },
+  {
+   "query": "目覚めたら最強装備と宇宙船持ちだったので一戸建て目指して傭兵として自由に生きたい 配信",
+   "clicks": 0,
+   "impressions": 7,
+   "ctr": 0,
+   "position": 41.714285714285715
+  },
+  {
+   "query": "ダークサモナーとデキている 配信",
+   "clicks": 0,
+   "impressions": 5,
+   "ctr": 0,
+   "position": 40.4
+  },
+  {
+   "query": "朱色の仮面 配信",
+   "clicks": 0,
+   "impressions": 5,
+   "ctr": 0,
+   "position": 31.4
+  },
+  {
+   "query": "マロニエ王国の七人の騎士 配信",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 47
+  },
+  {
+   "query": "凶乱令嬢ニアリストン 病弱令嬢に転生した神殺しの武人の華麗なる無双録 配信",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 44.25
+  },
+  {
+   "query": "duel masters lost 断罪の少年 配信",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 17.666666666666668
+  },
+  {
+   "query": "わたしの幸せな結婚 特別篇 配信",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 32.33333333333333
+  },
+  {
+   "query": "アニメ キャスト",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 5
+  },
+  {
+   "query": "カードファイト ヴァンガード divinez 運命星戦編 配信",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 31.666666666666668
+  },
+  {
+   "query": "ケロロ軍曹 配信",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 39.333333333333336
+  },
+  {
+   "query": "ダークサモナーとデキている アマプラ",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 9.333333333333334
+  },
+  {
+   "query": "声優 出演数 ランキング",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 9.666666666666666
+  },
+  {
+   "query": "生徒会にも穴はある 声優",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 10
+  },
+  {
+   "query": "目覚めたら最強装備と宇宙船持ちだったので 声優",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 10.666666666666666
+  },
+  {
+   "query": "石見舞菜香",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 38.333333333333336
+  },
+  {
+   "query": "battle spirits re 絶界の空 配信",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 46.5
+  },
+  {
+   "query": "dreamland 配信",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 53
+  },
+  {
+   "query": "fx戦士くるみちゃん プライム",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 9.5
+  },
+  {
+   "query": "tank chair戦車椅子 配信",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 47
+  },
+  {
+   "query": "どうも好きな人に惚れ薬を依頼された魔女です 配信",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 32
+  },
+  {
+   "query": "アオアシ season2 配信",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 80
+  },
+  {
+   "query": "アニメフェスタ アニメ一覧",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 1
+  },
+  {
+   "query": "タヌキとキツネ 配信",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 60
+  },
+  {
+   "query": "ダイヤのa act2 second season 第2クール 配信",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 23
+  },
+  {
+   "query": "テムパル 配信",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 27
+  },
+  {
+   "query": "ムルシエラゴ アニメ",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 47
+  },
+  {
+   "query": "声優 アニメ 人気",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 63
+  },
+  {
+   "query": "弱気max令嬢なのに辣腕婚約者様の賭けに乗ってしまった 配信",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 39.5
+  },
+  {
+   "query": "彼女の友達 ミニアニメ劇場",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 10.5
+  },
+  {
+   "query": "恐怖コレクター アニメ アマゾンプライム",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 9
+  },
+  {
+   "query": "斧澤優 キャラ",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 4
+  },
+  {
+   "query": "桃源暗鬼 日光華厳の滝編 配信",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 44.5
+  },
+  {
+   "query": "転生したら剣でした 2期 配信",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 47.5
+  },
+  {
+   "query": "風を継ぐもの アニメ いつから",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 9.5
+  },
+  {
+   "query": "\"アゼスト\"",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 22
+  },
+  {
+   "query": "#ゾンビさがしてます 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 90
+  },
+  {
+   "query": "40代",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 21
+  },
+  {
+   "query": "amazon.co.jp わたしの幸せな結婚 特別篇",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 2
+  },
+  {
+   "query": "battle spirits [re] 絶界の空 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 83
+  },
+  {
+   "query": "fx 戦士 くるみ ちゃん アニメ アマゾン プライム",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 13
+  },
+  {
+   "query": "fx戦士くるみちゃん プライムビデオ",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 9
+  },
+  {
+   "query": "hulu.jp わたしの幸せな結婚 特別篇",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 3
+  },
+  {
+   "query": "hulu.jp ダイヤのa",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 4
+  },
+  {
+   "query": "ごーすとみーつぎゃる 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 50
+  },
+  {
+   "query": "どうも、好きな人に惚れ薬を依頼された魔女です。 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 71
+  },
+  {
+   "query": "ふつつかな悪女ではございますが 雛宮蝶鼠とりかえ伝 第2クール",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 33
+  },
+  {
+   "query": "ぷにるんず ぷに４ アニメ",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 14
+  },
+  {
+   "query": "もっとらぶらぶ作戦です 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 28
+  },
+  {
+   "query": "ゆるゆる図鑑 アニメ",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 20
+  },
+  {
+   "query": "らんま1/2 第3期 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 60
+  },
+  {
+   "query": "らんま12 3期",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 9
+  },
+  {
+   "query": "らんま12 第3期 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 45
+  },
+  {
+   "query": "アオアシシアターズ",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 6
+  },
+  {
+   "query": "アニメ 2027",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 18
+  },
+  {
+   "query": "アニメ 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 44
+  },
+  {
+   "query": "アニメ声優",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 34
+  },
+  {
+   "query": "アルシオーネ レイアース",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 78
+  },
+  {
+   "query": "ガチャを回して仲間を増やす アニメ化",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 51
+  },
+  {
+   "query": "ガールズ＆パンツァー もっとらぶらぶ作戦です！ 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 83
+  },
+  {
+   "query": "ケロロ 軍曹 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 33
+  },
+  {
+   "query": "シルバニアファミリー フレアのカラフルエブリデイ アニメ",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 35
+  },
+  {
+   "query": "ゾンビさがしてます 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 45
+  },
+  {
+   "query": "ゾンビのあふれた世界で俺だけが襲われない",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 6
+  },
+  {
+   "query": "ダイヤのa act2 second season 第2クール",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 35
+  },
+  {
+   "query": "ダークサモナーとデキている video",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 22
+  },
+  {
+   "query": "ダークサモナーとデキている ミニアニメ",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 15
+  },
+  {
+   "query": "デモンズクレスト",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 50
+  },
+  {
+   "query": "ドラゴンボール超 ビルス 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 64
+  },
+  {
+   "query": "パンどろぼう 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 40
+  },
+  {
+   "query": "ブラッククローバー 2nd season 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 86
+  },
+  {
+   "query": "ホタルの嫁入り 声優",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 57
+  },
+  {
+   "query": "ホテルインヒューマンズ 2期",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 47
+  },
+  {
+   "query": "ホテルインヒューマンズ 第2期 アニメ",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 39
+  },
+  {
+   "query": "ホテルインヒューマンズ 第2期 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 12
+  },
+  {
+   "query": "マゼンチュ 声優",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 20
+  },
+  {
+   "query": "リゼロ 4期 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 85
+  },
+  {
+   "query": "ロメリア 戦記 アニメ アマゾン プライム",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 50
+  },
+  {
+   "query": "ロメリア戦記",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 14
+  },
+  {
+   "query": "ロメリア戦記 プライムビデオ",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 9
+  },
+  {
+   "query": "ロメリア戦記 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 49
+  },
+  {
+   "query": "世界最高の暗殺者 異世界貴族に転生する 2期",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 84
+  },
+  {
+   "query": "今期アニメ 声優",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 13
+  },
+  {
+   "query": "体にいい男 アニメ",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 20
+  },
+  {
+   "query": "俺と悠兄",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 34
+  },
+  {
+   "query": "内田 直哉",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 89
+  },
+  {
+   "query": "冬アニメ",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 50
+  },
+  {
+   "query": "北見 六花",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 86
+  },
+  {
+   "query": "北見六花 声優",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 43
+  },
+  {
+   "query": "北見立花",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 23
+  },
+  {
+   "query": "和泉風花",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 46
+  },
+  {
+   "query": "声優 ランキング 2026",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 42
+  },
+  {
+   "query": "声優ランキング 2026",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 9
+  },
+  {
+   "query": "声優出演アニメ",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 6
+  },
+  {
+   "query": "天幕のジャードゥーガル 声優",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 14
+  },
+  {
+   "query": "富田美憂",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 82
+  },
+  {
+   "query": "帰還者の魔法は特別です 第2期 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 84
+  },
+  {
+   "query": "幻想水滸伝 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 86
+  },
+  {
+   "query": "彼女の友達 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 83
+  },
+  {
+   "query": "恐怖 コレクター アニメ どこで 見れる",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 19
+  },
+  {
+   "query": "恐怖 コレクター アニメ アマゾン プライム",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 10
+  },
+  {
+   "query": "新テニスの王子様 u-17 world cup 決勝メンバー決定戦 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 66
+  },
+  {
+   "query": "生徒会にも穴はある声優",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 39
+  },
+  {
+   "query": "生徒会にも穴はある！ どこで見れる",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 21
+  },
+  {
+   "query": "甲斐田裕子",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 3
+  },
+  {
+   "query": "百妖譜 京師篇 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 48
+  },
+  {
+   "query": "目覚めたら最強装備と宇宙船持ちだったので、一戸建て目指して傭兵として自由に生きたい 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 97
+  },
+  {
+   "query": "矢鹿まや 生天目",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 8
+  },
+  {
+   "query": "禎丞",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 57
+  },
+  {
+   "query": "秋アニメ 声優別",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 6
+  },
+  {
+   "query": "豊口めぐみ",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 71
+  },
+  {
+   "query": "豊口めぐみ キャラ",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 65
+  },
+  {
+   "query": "豊口めぐみキャラ",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 61
+  },
+  {
+   "query": "超巡！超条先輩 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 72
+  },
+  {
+   "query": "転生したら剣でした 2期 アニメ",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 47
+  },
+  {
+   "query": "転生ゴブリンだけど質問ある 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 59
+  },
+  {
+   "query": "転生貴族、鑑定スキルで成り上がる 第3期 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 77
+  },
+  {
+   "query": "追放された転生重騎士はゲーム知識で無双する アマプラ",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 15
+  },
+  {
+   "query": "野生のラスボスが現れた 2期 配信",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 49
+  },
+  {
+   "query": "野生のラスボスが現れた2期 配信アマゾンプライム",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 10
+  },
+  {
+   "query": "釘宮理恵",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 34
+  },
+  {
+   "query": "鈴木みのり",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 60
+  },
+  {
+   "query": "青春のやり直しは異世界で アニメ",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 18
+  },
+  {
+   "query": "首藤 志奈",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 9
+  },
+  {
+   "query": "首藤志奈",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 72
+  },
+  {
+   "query": "高野零 羊宮妃那",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 9
+  },
+  {
+   "query": "魔 入り まし た 入間 くん 声優",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 43
+  },
+  {
+   "query": "黒岩メダカに私の可愛いが通じない season2",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 20
+  }
+ ],
+ "search_pages": [
+  {
+   "page": "https://animecastnow.com/next/",
+   "clicks": 5,
+   "impressions": 62,
+   "ctr": 0.08064516129032258,
+   "position": 15.258064516129032
+  },
+  {
+   "page": "https://animecastnow.com/ranking/",
+   "clicks": 3,
+   "impressions": 104,
+   "ctr": 0.028846153846153848,
+   "position": 12.701923076923077
+  },
+  {
+   "page": "https://animecastnow.com/work/wf9098d76/",
+   "clicks": 1,
+   "impressions": 3,
+   "ctr": 0.3333333333333333,
+   "position": 9.333333333333334
+  },
+  {
+   "page": "https://animecastnow.com/va/0617/",
+   "clicks": 1,
+   "impressions": 2,
+   "ctr": 0.5,
+   "position": 6.5
+  },
+  {
+   "page": "https://animecastnow.com/work/w1cb15f5c/",
+   "clicks": 1,
+   "impressions": 2,
+   "ctr": 0.5,
+   "position": 19.5
+  },
+  {
+   "page": "https://animecastnow.com/va/0696/",
+   "clicks": 1,
+   "impressions": 1,
+   "ctr": 1,
+   "position": 1
+  },
+  {
+   "page": "https://animecastnow.com/",
+   "clicks": 0,
+   "impressions": 33,
+   "ctr": 0,
+   "position": 9.787878787878787
+  },
+  {
+   "page": "https://animecastnow.com/va/0050/",
+   "clicks": 0,
+   "impressions": 23,
+   "ctr": 0,
+   "position": 7.608695652173913
+  },
+  {
+   "page": "https://animecastnow.com/work/wf0774604/",
+   "clicks": 0,
+   "impressions": 22,
+   "ctr": 0,
+   "position": 12.818181818181818
+  },
+  {
+   "page": "https://animecastnow.com/work/wfafd71ff/",
+   "clicks": 0,
+   "impressions": 16,
+   "ctr": 0,
+   "position": 15.375
+  },
+  {
+   "page": "https://animecastnow.com/work/w535580c3/",
+   "clicks": 0,
+   "impressions": 14,
+   "ctr": 0,
+   "position": 18.214285714285715
+  },
+  {
+   "page": "https://animecastnow.com/work/w7419bb6a/",
+   "clicks": 0,
+   "impressions": 14,
+   "ctr": 0,
+   "position": 34.642857142857146
+  },
+  {
+   "page": "https://animecastnow.com/va/0491/",
+   "clicks": 0,
+   "impressions": 11,
+   "ctr": 0,
+   "position": 17.818181818181817
+  },
+  {
+   "page": "https://animecastnow.com/work/",
+   "clicks": 0,
+   "impressions": 11,
+   "ctr": 0,
+   "position": 11.818181818181818
+  },
+  {
+   "page": "https://animecastnow.com/work/wc4798f29/",
+   "clicks": 0,
+   "impressions": 11,
+   "ctr": 0,
+   "position": 12.272727272727273
+  },
+  {
+   "page": "https://animecastnow.com/work/w1bf13874/",
+   "clicks": 0,
+   "impressions": 9,
+   "ctr": 0,
+   "position": 11.333333333333334
+  },
+  {
+   "page": "https://animecastnow.com/work/w3dc47a36/",
+   "clicks": 0,
+   "impressions": 9,
+   "ctr": 0,
+   "position": 28
+  },
+  {
+   "page": "https://animecastnow.com/work/w633d0ada/",
+   "clicks": 0,
+   "impressions": 9,
+   "ctr": 0,
+   "position": 9.555555555555555
+  },
+  {
+   "page": "https://animecastnow.com/work/w595b9dbf/",
+   "clicks": 0,
+   "impressions": 8,
+   "ctr": 0,
+   "position": 43.5
+  },
+  {
+   "page": "https://animecastnow.com/work/wbe8c4220/",
+   "clicks": 0,
+   "impressions": 8,
+   "ctr": 0,
+   "position": 10.75
+  },
+  {
+   "page": "https://animecastnow.com/va/0059/",
+   "clicks": 0,
+   "impressions": 7,
+   "ctr": 0,
+   "position": 19.428571428571427
+  },
+  {
+   "page": "https://animecastnow.com/va/0735/",
+   "clicks": 0,
+   "impressions": 7,
+   "ctr": 0,
+   "position": 4.571428571428571
+  },
+  {
+   "page": "https://animecastnow.com/vod/",
+   "clicks": 0,
+   "impressions": 7,
+   "ctr": 0,
+   "position": 9.285714285714286
+  },
+  {
+   "page": "https://animecastnow.com/work/wdec78e5e/",
+   "clicks": 0,
+   "impressions": 7,
+   "ctr": 0,
+   "position": 33.42857142857143
+  },
+  {
+   "page": "https://animecastnow.com/va/0236/",
+   "clicks": 0,
+   "impressions": 6,
+   "ctr": 0,
+   "position": 4.166666666666666
+  },
+  {
+   "page": "https://animecastnow.com/va/0300/",
+   "clicks": 0,
+   "impressions": 6,
+   "ctr": 0,
+   "position": 54.666666666666664
+  },
+  {
+   "page": "https://animecastnow.com/work/w3c68d691/",
+   "clicks": 0,
+   "impressions": 6,
+   "ctr": 0,
+   "position": 34.166666666666664
+  },
+  {
+   "page": "https://animecastnow.com/work/wb224eae4/",
+   "clicks": 0,
+   "impressions": 6,
+   "ctr": 0,
+   "position": 19.5
+  },
+  {
+   "page": "https://animecastnow.com/work/wc2df3b75/",
+   "clicks": 0,
+   "impressions": 6,
+   "ctr": 0,
+   "position": 19.166666666666668
+  },
+  {
+   "page": "https://animecastnow.com/work/wd519773d/",
+   "clicks": 0,
+   "impressions": 6,
+   "ctr": 0,
+   "position": 13.833333333333334
+  },
+  {
+   "page": "https://animecastnow.com/work/wf6b55917/",
+   "clicks": 0,
+   "impressions": 6,
+   "ctr": 0,
+   "position": 7.666666666666667
+  },
+  {
+   "page": "https://animecastnow.com/va/0207/",
+   "clicks": 0,
+   "impressions": 5,
+   "ctr": 0,
+   "position": 19.6
+  },
+  {
+   "page": "https://animecastnow.com/work/w3f72ba4c/",
+   "clicks": 0,
+   "impressions": 5,
+   "ctr": 0,
+   "position": 19.2
+  },
+  {
+   "page": "https://animecastnow.com/work/w4aef8908/",
+   "clicks": 0,
+   "impressions": 5,
+   "ctr": 0,
+   "position": 20.6
+  },
+  {
+   "page": "https://animecastnow.com/work/w84d30b10/",
+   "clicks": 0,
+   "impressions": 5,
+   "ctr": 0,
+   "position": 25.8
+  },
+  {
+   "page": "https://animecastnow.com/work/wde28afde/",
+   "clicks": 0,
+   "impressions": 5,
+   "ctr": 0,
+   "position": 23.8
+  },
+  {
+   "page": "https://animecastnow.com/work/we0191e29/",
+   "clicks": 0,
+   "impressions": 5,
+   "ctr": 0,
+   "position": 31.2
+  },
+  {
+   "page": "https://animecastnow.com/work/wf2fb9b57/",
+   "clicks": 0,
+   "impressions": 5,
+   "ctr": 0,
+   "position": 11.2
+  },
+  {
+   "page": "https://animecastnow.com/work/w0f7d3bf6/",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 19
+  },
+  {
+   "page": "https://animecastnow.com/work/w1824f0ec/",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 37.75
+  },
+  {
+   "page": "https://animecastnow.com/work/w38555eb9/",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 15.25
+  },
+  {
+   "page": "https://animecastnow.com/work/w3d89d2fe/",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 27.25
+  },
+  {
+   "page": "https://animecastnow.com/work/w4d76fa22/",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 44.25
+  },
+  {
+   "page": "https://animecastnow.com/work/w8cd2faaa/",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 14.5
+  },
+  {
+   "page": "https://animecastnow.com/work/w916ce540/",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 37.5
+  },
+  {
+   "page": "https://animecastnow.com/work/wb4d26898/",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 11.75
+  },
+  {
+   "page": "https://animecastnow.com/work/wc021426f/",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 46.5
+  },
+  {
+   "page": "https://animecastnow.com/work/wd8118699/",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 17.75
+  },
+  {
+   "page": "https://animecastnow.com/work/we5c7474e/",
+   "clicks": 0,
+   "impressions": 4,
+   "ctr": 0,
+   "position": 46
+  },
+  {
+   "page": "https://animecastnow.com/about/",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 5.333333333333333
+  },
+  {
+   "page": "https://animecastnow.com/va/0100/",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 6.333333333333333
+  },
+  {
+   "page": "https://animecastnow.com/va/0214/",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 8
+  },
+  {
+   "page": "https://animecastnow.com/work/w077d4189/",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 23
+  },
+  {
+   "page": "https://animecastnow.com/work/w265db617/",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 17.666666666666668
+  },
+  {
+   "page": "https://animecastnow.com/work/w506f2ccf/",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 21
+  },
+  {
+   "page": "https://animecastnow.com/work/w641a8632/",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 33.333333333333336
+  },
+  {
+   "page": "https://animecastnow.com/work/w6503b0fc/",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 47.333333333333336
+  },
+  {
+   "page": "https://animecastnow.com/work/w80100e53/",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 32.66666666666667
+  },
+  {
+   "page": "https://animecastnow.com/work/wb79f1270/",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 11.333333333333334
+  },
+  {
+   "page": "https://animecastnow.com/work/wd8c565c6/",
+   "clicks": 0,
+   "impressions": 3,
+   "ctr": 0,
+   "position": 31.666666666666668
+  },
+  {
+   "page": "https://animecastnow.com/costar/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 37.5
+  },
+  {
+   "page": "https://animecastnow.com/va/0392/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 6
+  },
+  {
+   "page": "https://animecastnow.com/va/0445/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 6.5
+  },
+  {
+   "page": "https://animecastnow.com/work/w000eaa2a/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 9
+  },
+  {
+   "page": "https://animecastnow.com/work/w03791878/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 53
+  },
+  {
+   "page": "https://animecastnow.com/work/w03d929d6/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 9.5
+  },
+  {
+   "page": "https://animecastnow.com/work/w08b2ce08/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 9.5
+  },
+  {
+   "page": "https://animecastnow.com/work/w13096aa4/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 47
+  },
+  {
+   "page": "https://animecastnow.com/work/w473ea32c/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 43
+  },
+  {
+   "page": "https://animecastnow.com/work/w51d8bafe/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 39.5
+  },
+  {
+   "page": "https://animecastnow.com/work/w7c9a29a1/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 41
+  },
+  {
+   "page": "https://animecastnow.com/work/w8a6520c4/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 27
+  },
+  {
+   "page": "https://animecastnow.com/work/w8ccea2a7/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 10
+  },
+  {
+   "page": "https://animecastnow.com/work/wa99c7a75/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 9.5
+  },
+  {
+   "page": "https://animecastnow.com/work/wa9a48897/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 31
+  },
+  {
+   "page": "https://animecastnow.com/work/wb11124f2/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 55.5
+  },
+  {
+   "page": "https://animecastnow.com/work/wcb4d4230/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 67.5
+  },
+  {
+   "page": "https://animecastnow.com/work/wd6c7ddf7/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 43
+  },
+  {
+   "page": "https://animecastnow.com/work/wd8ce4712/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 48.5
+  },
+  {
+   "page": "https://animecastnow.com/work/we284517d/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 60
+  },
+  {
+   "page": "https://animecastnow.com/work/we8a45815/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 7.5
+  },
+  {
+   "page": "https://animecastnow.com/work/wfed89f17/",
+   "clicks": 0,
+   "impressions": 2,
+   "ctr": 0,
+   "position": 47
+  },
+  {
+   "page": "https://animecastnow.com/privacy/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 157
+  },
+  {
+   "page": "https://animecastnow.com/va/0083/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 7
+  },
+  {
+   "page": "https://animecastnow.com/va/0101/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 3
+  },
+  {
+   "page": "https://animecastnow.com/va/0134/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 8
+  },
+  {
+   "page": "https://animecastnow.com/va/0208/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 2
+  },
+  {
+   "page": "https://animecastnow.com/va/0285/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 13
+  },
+  {
+   "page": "https://animecastnow.com/va/0299/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 8
+  },
+  {
+   "page": "https://animecastnow.com/va/0367/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 1
+  },
+  {
+   "page": "https://animecastnow.com/va/0420/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 20
+  },
+  {
+   "page": "https://animecastnow.com/va/0421/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 2
+  },
+  {
+   "page": "https://animecastnow.com/va/0431/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 11
+  },
+  {
+   "page": "https://animecastnow.com/va/0527/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 9
+  },
+  {
+   "page": "https://animecastnow.com/va/0548/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 8
+  },
+  {
+   "page": "https://animecastnow.com/va/0563/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 11
+  },
+  {
+   "page": "https://animecastnow.com/va/0593/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 3
+  },
+  {
+   "page": "https://animecastnow.com/va/0623/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 11
+  },
+  {
+   "page": "https://animecastnow.com/va/0751/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 2
+  },
+  {
+   "page": "https://animecastnow.com/va/0756/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 8
+  },
+  {
+   "page": "https://animecastnow.com/work/w01c86e51/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 51
+  },
+  {
+   "page": "https://animecastnow.com/work/w0444ab20/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 8
+  },
+  {
+   "page": "https://animecastnow.com/work/w1d995a66/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 14
+  },
+  {
+   "page": "https://animecastnow.com/work/w260f1ea5/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 20
+  },
+  {
+   "page": "https://animecastnow.com/work/w2642185a/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 59
+  },
+  {
+   "page": "https://animecastnow.com/work/w2fcb8a67/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 10
+  },
+  {
+   "page": "https://animecastnow.com/work/w3d7ea0cc/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 10
+  },
+  {
+   "page": "https://animecastnow.com/work/w3f554b40/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 72
+  },
+  {
+   "page": "https://animecastnow.com/work/w400cf8bc/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 11
+  },
+  {
+   "page": "https://animecastnow.com/work/w558aadd2/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 11
+  },
+  {
+   "page": "https://animecastnow.com/work/w6643c6d3/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 18
+  },
+  {
+   "page": "https://animecastnow.com/work/w88069041/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 9
+  },
+  {
+   "page": "https://animecastnow.com/work/w9a8a5912/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 48
+  },
+  {
+   "page": "https://animecastnow.com/work/wa0567fdf/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 33
+  },
+  {
+   "page": "https://animecastnow.com/work/wa9cab2ef/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 9
+  },
+  {
+   "page": "https://animecastnow.com/work/wb55e81a3/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 35
+  },
+  {
+   "page": "https://animecastnow.com/work/wbcab671e/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 5
+  },
+  {
+   "page": "https://animecastnow.com/work/wd3cda10c/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 34
+  },
+  {
+   "page": "https://animecastnow.com/work/wd73d686a/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 10
+  },
+  {
+   "page": "https://animecastnow.com/work/we11e37b4/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 4
+  },
+  {
+   "page": "https://animecastnow.com/work/we1d17457/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 86
+  },
+  {
+   "page": "https://animecastnow.com/work/we7a4a1ae/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 9
+  },
+  {
+   "page": "https://animecastnow.com/work/wec2855ab/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 12
+  },
+  {
+   "page": "https://animecastnow.com/work/wec5a2691/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 64
+  },
+  {
+   "page": "https://animecastnow.com/work/wefe2e801/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 6
+  },
+  {
+   "page": "https://animecastnow.com/work/wf834ea20/",
+   "clicks": 0,
+   "impressions": 1,
+   "ctr": 0,
+   "position": 86
+  }
+ ],
+ "search_daily": [
+  {
+   "date": "2026-11-13",
+   "clicks": 0,
+   "impressions": 0,
+   "ctr": 0,
+   "position": 0
+  },
+  {
+   "date": "2026-11-14",
+   "clicks": 0,
+   "impressions": 8,
+   "ctr": 0,
+   "position": 23.625
+  },
+  {
+   "date": "2026-11-15",
+   "clicks": 0,
+   "impressions": 29,
+   "ctr": 0,
+   "position": 36.689655172413794
+  },
+  {
+   "date": "2026-11-16",
+   "clicks": 2,
+   "impressions": 59,
+   "ctr": 0.03389830508474576,
+   "position": 20.28813559322034
+  },
+  {
+   "date": "2026-11-17",
+   "clicks": 2,
+   "impressions": 66,
+   "ctr": 0.030303030303030304,
+   "position": 17.742424242424242
+  },
+  {
+   "date": "2026-11-18",
+   "clicks": 0,
+   "impressions": 52,
+   "ctr": 0,
+   "position": 19.25
+  },
+  {
+   "date": "2026-11-19",
+   "clicks": 0,
+   "impressions": 37,
+   "ctr": 0,
+   "position": 18.864864864864863
+  },
+  {
+   "date": "2026-11-20",
+   "clicks": 1,
+   "impressions": 66,
+   "ctr": 0.015151515151515152,
+   "position": 13.742424242424242
+  },
+  {
+   "date": "2026-11-21",
+   "clicks": 2,
+   "impressions": 91,
+   "ctr": 0.02197802197802198,
+   "position": 11.846153846153847
+  },
+  {
+   "date": "2026-11-22",
+   "clicks": 4,
+   "impressions": 134,
+   "ctr": 0.029850746268656716,
+   "position": 24.955223880597014
+  },
+  {
+   "date": "2026-11-23",
+   "clicks": 1,
+   "impressions": 93,
+   "ctr": 0.010752688172043012,
+   "position": 12.43010752688172
+  }
+ ]
+}
