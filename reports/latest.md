@@ -1,97 +1,88 @@
-# アクセスのまとめ（2026-11-20〜2026-11-26）
+# アクセスのまとめ（2026-11-21〜2026-11-27）
 
-作成：2026-11-27T13:19+09:00（GA4 は昨日まで、Search Console は 2026-10-28〜2026-11-24）
+作成：2026-11-28T12:59+09:00（GA4 は昨日まで、Search Console は 2026-10-29〜2026-11-25）
 
 ## 日本からのアクセス（直近7日。海外のデータセンターからの自動アクセスを除いた、実際の利用者に近い数字）
-- セッション 21（前週比 -5%）／エンゲージ 20
+- セッション 14（前週比 -50%）／エンゲージ 13
 
 | 流入元 | セッション | エンゲージ | 滞在合計(秒) |
 |---|---|---|---|
-| Organic Search | 11 | 10 | 333 |
-| Direct | 6 | 6 | 110 |
-| Organic Social | 3 | 3 | 1420 |
-| Referral | 1 | 1 | 2 |
+| Organic Search | 10 | 9 | 311 |
+| Organic Social | 4 | 4 | 1442 |
 
 最初に開いたページ：
 | ページ | セッション | エンゲージ | 滞在合計(秒) |
 |---|---|---|---|
-| / | 5 | 5 | 1282 |
 | /next | 4 | 4 | 236 |
-| /ranking | 2 | 2 | 18 |
 | /va/0433 | 2 | 2 | 221 |
-| /sequel | 1 | 1 | 0 |
+| / | 1 | 1 | 1199 |
+| /ranking | 1 | 1 | 18 |
+| /va/0062 | 1 | 1 | 22 |
 | /va/0080 | 1 | 1 | 19 |
-| /va/0100 | 1 | 1 | 22 |
 | /va/0473 | 1 | 1 | 17 |
 | /va/0696 | 1 | 0 | 0 |
 | /work/w4aef8908 | 1 | 1 | 16 |
-| /work/wa147cdd6 | 1 | 1 | 29 |
 | /work/wf9098d76 | 1 | 1 | 5 |
 
 イベント：
 | イベント | 回数 |
 |---|---|
 | search | 17 |
-| scroll | 7 |
 | click | 4 |
+| scroll | 4 |
 | va_open | 4 |
 | vod_click | 3 |
 | ranking_click | 2 |
-| special_click | 2 |
 | cast_click | 1 |
 | official_site_click | 1 |
-| season_view_change | 1 |
+| special_click | 1 |
 
 ## 全体（直近7日。海外からの自動アクセスも含む）
-- セッション 37（前週比 -55%）
-- ユーザー 32（前週比 -60%）／うち新規 30
-- ページの表示 141（前週比 -19%）
-- エンゲージのあったセッション 33（前週比 -48%）
-- 1セッションあたりの滞在 51秒
+- セッション 28（前週比 -69%）
+- ユーザー 27（前週比 -68%）／うち新規 27
+- ページの表示 88（前週比 -61%）
+- エンゲージのあったセッション 24（前週比 -67%）
+- 1セッションあたりの滞在 63秒
 
 ## 流入元（直近7日）
 | 参照元/メディア | セッション | エンゲージ |
 |---|---|---|
-| (direct) / (none) | 22 | 19 |
+| (direct) / (none) | 14 | 11 |
 | google / organic | 8 | 7 |
-| x / social | 3 | 3 |
-| yahoo / organic | 3 | 3 |
-| adv-console.a8.net / referral | 1 | 1 |
+| x / social | 4 | 4 |
+| yahoo / organic | 2 | 2 |
 
 ## 最初に開いたページ（直近7日）
 | ページ | セッション | エンゲージ率 | 平均滞在(秒) |
 |---|---|---|---|
-| / | 20 | 90.0% | 66 |
+| / | 14 | 85.7% | 87 |
 | /next | 4 | 100.0% | 59 |
-| /ranking | 2 | 100.0% | 9 |
 | /va/0433 | 2 | 100.0% | 110 |
-| /sequel | 1 | 100.0% | 0 |
+| /ranking | 1 | 100.0% | 18 |
+| /va/0062 | 1 | 100.0% | 22 |
 | /va/0080 | 1 | 100.0% | 19 |
-| /va/0100 | 1 | 100.0% | 22 |
 | /va/0206 | 1 | 0.0% | 0 |
 | /va/0473 | 1 | 100.0% | 17 |
 | /va/0696 | 1 | 0.0% | 0 |
 | /work/w4aef8908 | 1 | 100.0% | 16 |
-| /work/wa147cdd6 | 1 | 100.0% | 29 |
 | /work/wf9098d76 | 1 | 100.0% | 5 |
 
 ## イベント（直近7日／前の7日）
 | イベント | 回数 | 前の7日 | 人数 |
 |---|---|---|---|
-| page_view | 141 | 174 | 32 |
-| user_engagement | 41 | 49 | 20 |
-| session_start | 37 | 74 | 32 |
-| first_visit | 30 | 73 | 30 |
+| page_view | 88 | 223 | 27 |
+| session_start | 28 | 82 | 27 |
+| user_engagement | 28 | 63 | 17 |
+| first_visit | 27 | 75 | 27 |
 | search | 17 | 2 | 1 |
-| scroll | 16 | 14 | 13 |
+| scroll | 12 | 16 | 10 |
 | click | 4 | 2 | 1 |
 | va_open | 4 | 2 | 1 |
 | vod_click | 3 | 0 | 1 |
 | ranking_click | 2 | 0 | 1 |
-| special_click | 2 | 0 | 2 |
 | cast_click | 1 | 0 | 1 |
 | official_site_click | 1 | 2 | 1 |
-| season_view_change | 1 | 0 | 1 |
+| special_click | 1 | 1 | 1 |
 
 ## 引用ポストから（直近28日、utm_campaign=quote）
 | utm_content | 着地 | セッション | エンゲージ |
@@ -101,17 +92,11 @@
 | (not set) | /va/0266 | 1 | 1 |
 | (not set) | /va/0275 | 1 | 1 |
 | (not set) | /work/wa147cdd6 | 1 | 0 |
+| wa9a48897_va0062_now_20261127 | /va/0062 | 1 | 1 |
 
 ## 直接（Direct）で来た人の内訳（直近7日）
 | 日 | 端末 | ブラウザ | 地域 | 着地 | セッション | 滞在合計(秒) |
 |---|---|---|---|---|---|---|
-| 20261120 | desktop | Chrome | Kawasaki | / | 2 | 81 |
-| 20261120 | desktop | Chrome | Burnaby | / | 1 | 12 |
-| 20261120 | desktop | Chrome | Kawasaki | /ranking | 1 | 0 |
-| 20261120 | desktop | Chrome | Kawasaki | /sequel | 1 | 0 |
-| 20261120 | desktop | Chrome | Kawasaki | /work/wa147cdd6 | 1 | 29 |
-| 20261120 | desktop | Chrome | San Jose | / | 1 | 0 |
-| 20261120 | mobile | Safari (in-app) | Kawasaki | / | 1 | 0 |
 | 20261121 | desktop | Chrome | Orlando | / | 1 | 0 |
 | 20261122 | desktop | Chrome | Aspen | / | 1 | 0 |
 | 20261122 | desktop | Chrome | Burnaby | / | 1 | 8 |
@@ -130,19 +115,18 @@
 ## 流入元×端末（直近7日）
 | 流入元 | 端末 | OS | セッション | 滞在合計(秒) |
 |---|---|---|---|---|
-| Direct | desktop | Windows | 12 | 112 |
-| Direct | desktop | Linux | 7 | 28 |
+| Direct | desktop | Windows | 7 | 2 |
 | Organic Search | mobile | Android | 7 | 235 |
-| Direct | mobile | iOS | 2 | 3 |
+| Direct | desktop | Linux | 5 | 16 |
+| Organic Social | mobile | Android | 3 | 1396 |
 | Organic Search | desktop | Windows | 2 | 76 |
-| Organic Search | mobile | iOS | 2 | 22 |
-| Organic Social | mobile | Android | 2 | 1374 |
 | Direct | mobile | Android | 1 | 0 |
+| Direct | mobile | iOS | 1 | 3 |
+| Organic Search | mobile | iOS | 1 | 0 |
 | Organic Social | tablet | iOS | 1 | 46 |
-| Referral | desktop | Windows | 1 | 2 |
 
-## Google 検索（2026-10-28〜2026-11-24）
-- クリック 12／表示 655
+## Google 検索（2026-10-29〜2026-11-25）
+- クリック 12／表示 659
 
 ### 検索された言葉
 | 言葉 | クリック | 表示 | 平均順位 |
@@ -181,14 +165,14 @@
 ### ページ
 | ページ | クリック | 表示 | 平均順位 |
 |---|---|---|---|
-| https://animecastnow.com/next/ | 5 | 62 | 15.3 |
+| https://animecastnow.com/next/ | 5 | 63 | 15.3 |
 | https://animecastnow.com/ranking/ | 3 | 105 | 12.6 |
 | https://animecastnow.com/work/wf9098d76/ | 1 | 3 | 9.3 |
 | https://animecastnow.com/va/0617/ | 1 | 2 | 6.5 |
 | https://animecastnow.com/work/w1cb15f5c/ | 1 | 2 | 19.5 |
 | https://animecastnow.com/va/0696/ | 1 | 1 | 1 |
 | https://animecastnow.com/ | 0 | 36 | 10.4 |
-| https://animecastnow.com/va/0050/ | 0 | 25 | 7.6 |
+| https://animecastnow.com/va/0050/ | 0 | 28 | 7.9 |
 | https://animecastnow.com/work/wf0774604/ | 0 | 24 | 12.6 |
 | https://animecastnow.com/work/wfafd71ff/ | 0 | 16 | 15.4 |
 | https://animecastnow.com/work/w535580c3/ | 0 | 14 | 18.2 |
